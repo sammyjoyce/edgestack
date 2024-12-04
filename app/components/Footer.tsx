@@ -53,7 +53,7 @@ export default function Footer() {
                 <a 
                   key={item.name} 
                   href={item.href} 
-                  className="text-gray-400 hover:text-accent-400 transition-colors duration-300"
+                  className="text-gray-400 hover:text-amber-400 transition-colors duration-300"
                 >
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
@@ -67,22 +67,22 @@ export default function Footer() {
                 <h3 className="text-sm font-semibold leading-6 text-white">Services</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   <li>
-                    <a href="/services/renovations" className="text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300">
+                    <a href="/services/renovations" className="text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300">
                       Renovations
                     </a>
                   </li>
                   <li>
-                    <a href="/services/extensions" className="text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300">
+                    <a href="/services/extensions" className="text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300">
                       Extensions
                     </a>
                   </li>
                   <li>
-                    <a href="/services/new-builds" className="text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300">
+                    <a href="/services/new-builds" className="text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300">
                       New Builds
                     </a>
                   </li>
                   <li>
-                    <a href="/services/commercial" className="text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300">
+                    <a href="/services/commercial" className="text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300">
                       Commercial
                     </a>
                   </li>
@@ -92,17 +92,17 @@ export default function Footer() {
                 <h3 className="text-sm font-semibold leading-6 text-white">Company</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   <li>
-                    <a href="/about" className="text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300">
+                    <a href="/about" className="text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300">
                       About Us
                     </a>
                   </li>
                   <li>
-                    <a href="/projects" className="text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300">
+                    <a href="/projects" className="text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300">
                       Projects
                     </a>
                   </li>
                   <li>
-                    <a href="/contact" className="text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300">
+                    <a href="/contact" className="text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300">
                       Contact
                     </a>
                   </li>
@@ -116,10 +116,10 @@ export default function Footer() {
                   <li>
                     <a 
                       href="tel:0404289437" 
-                      className="group text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300"
+                      className="group text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300"
                     >
                       <span className="inline-flex items-center">
-                        <svg className="mr-2 h-4 w-4 text-gray-400 group-hover:text-accent-400 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="mr-2 h-4 w-4 text-gray-400 group-hover:text-amber-400 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
                         0404 289 437
@@ -129,10 +129,10 @@ export default function Footer() {
                   <li>
                     <a 
                       href="mailto:info@lushconstructions.com.au" 
-                      className="group text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300"
+                      className="group text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300"
                     >
                       <span className="inline-flex items-center">
-                        <svg className="mr-2 h-4 w-4 text-gray-400 group-hover:text-accent-400 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="mr-2 h-4 w-4 text-gray-400 group-hover:text-amber-400 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                         info@lushconstructions.com.au
@@ -156,12 +156,12 @@ export default function Footer() {
                 <h3 className="text-sm font-semibold leading-6 text-white">Legal</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   <li>
-                    <a href="/privacy" className="text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300">
+                    <a href="/privacy" className="text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300">
                       Privacy Policy
                     </a>
                   </li>
                   <li>
-                    <a href="/terms" className="text-sm leading-6 text-gray-300 hover:text-accent-400 transition-colors duration-300">
+                    <a href="/terms" className="text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300">
                       Terms of Service
                     </a>
                   </li>
