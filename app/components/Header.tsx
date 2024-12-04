@@ -1,224 +1,82 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { NavLink } from "react-router";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const navLinkClass = ({ isActive }) => 
+    `text-primary-100 hover:text-white transition-colors duration-200 ${isActive ? 'font-semibold text-white' : ''}`;
+
   return (
-    <nav className="z-50 w-full lg:relative my_shadow_nav container mx-auto">
-      <div className="font-Cuprum text-[#D3D3D3] sp">
-        <div className="lg:hidden">
-          <div className="w-[0%] absolute left-0 z-30 cursor-pointer"></div>
-          <div
-            className={`h-screen absolute top-0 z-50 transition-all duration-300 ${
-              isOpen ? 'left-0' : '-left-[75%]'
-            }`}
-          >
-            <ul className="mt-4">
-              <li className="py-[1px] px-5">
-                <Link
-                  to="/"
-                  className="text-[#95979d] hover:text-[#3F4044] py-2 w-full px-1 rounded-sm block hover:bg-gray-100"
-                >
-                  <span
-                    className="fade-in"
-                    style={{ fontWeight: 'normal', textDecoration: 'none' }}
-                  >
-                    Home
-                  </span>
-                </Link>
-              </li>
-              <li className="py-[1px] px-5">
-                <Link
-                  to="/ourservices"
-                  className="text-[#95979d] hover:text-[#3F4044] py-2 w-full px-1 rounded-sm block hover:bg-gray-100"
-                >
-                  <span
-                    className="fade-in"
-                    style={{ fontWeight: 'normal', textDecoration: 'none' }}
-                  >
-                    Our Services
-                  </span>
-                </Link>
-              </li>
-              <li className="py-[1px] px-5">
-                <Link
-                  to="/gallery"
-                  className="text-[#95979d] hover:text-[#3F4044] py-2 w-full px-1 rounded-sm block hover:bg-gray-100"
-                >
-                  <span
-                    className="fade-in"
-                    style={{ fontWeight: 'normal', textDecoration: 'none' }}
-                  >
-                    Gallery
-                  </span>
-                </Link>
-              </li>
-              <li className="py-[1px] px-5">
-                <Link
-                  to="/aboutus"
-                  className="text-[#95979d] hover:text-[#3F4044] py-2 w-full px-1 rounded-sm block hover:bg-gray-100"
-                >
-                  <span
-                    className="fade-in"
-                    style={{ fontWeight: 'normal', textDecoration: 'none' }}
-                  >
-                    About Us
-                  </span>
-                </Link>
-              </li>
-              <li className="py-[1px] px-5">
-                <Link
-                  to="/contactus"
-                  className="text-[#95979d] hover:text-[#3F4044] py-2 w-full px-1 rounded-sm block hover:bg-gray-100"
-                >
-                  <span
-                    className="fade-in"
-                    style={{ fontWeight: 'normal', textDecoration: 'none' }}
-                  >
-                    Contact Us
-                  </span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <Link to="/" className="inline-block">
+    <header className="sticky inset-x-0 top-0 max-w-container mx-auto px-4 sm:px-6 lg:px-8 z-50 w-full flex-none text-sm font-semibold bg-gray-950/95 backdrop-blur supports-[backdrop-filter]:bg-gray-950/80">
+      <nav aria-label="Global" className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative flex items-center py-4">
+          <div className="absolute inset-x-0 bottom-0 h-px bg-gray-800/50"></div>
+          
+          {/* Logo */}
+          <NavLink to="/" className="flex-none">
             <img
               src="/assets/logo_284x137-KoakP1Oi.png"
-              alt="LUSH CONSTRUCTIONS construction company Home Improvement high-quality construction"
+              alt="LUSH CONSTRUCTIONS"
+              className="h-20 w-auto"
             />
-          </Link>
-          <div>
-            <div className="flex items-center">
-              <div className="md:block hidden">
-                <div>
-                  <div className="flex items-end flex-col">
-                    <h2 className="text-white font-bold text-center mb-1 sticky top-2 -mt-8">
-                      PLEASE CONTACT 0404 289 437 FOR A QUOTE
-                    </h2>
-                    <ul className="flex items-center justify-end hover:text-[#5A5A5A] gap-4 mt-2">
-                      <li>
-                        <Link
-                          to="/"
-                          className="flex items-center text-lg hover:text-white text-[17px] font-Inter focus:text-white"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <span
-                            className="fade-in"
-                            style={{
-                              fontWeight: 'normal',
-                              textDecoration: 'none',
-                            }}
-                          >
-                            Home
-                          </span>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/ourservices"
-                          className="flex items-center text-lg hover:text-white text-[17px] font-Inter focus:text-white"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <span
-                            className="fade-in"
-                            style={{
-                              fontWeight: 'normal',
-                              textDecoration: 'none',
-                            }}
-                          >
-                            Our Services
-                          </span>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/gallery"
-                          className="flex items-center text-lg hover:text-white text-[17px] font-Inter focus:text-white"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <span
-                            className="fade-in"
-                            style={{
-                              fontWeight: 'normal',
-                              textDecoration: 'none',
-                            }}
-                          >
-                            Gallery
-                          </span>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/aboutus"
-                          className="flex items-center text-lg hover:text-white text-[17px] font-Inter focus:text-white"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <span
-                            className="fade-in"
-                            style={{
-                              fontWeight: 'normal',
-                              textDecoration: 'none',
-                            }}
-                          >
-                            About Us
-                          </span>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/contactus"
-                          className="flex items-center text-lg hover:text-white text-[17px] font-Inter focus:text-white"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <span
-                            className="fade-in"
-                            style={{
-                              fontWeight: 'normal',
-                              textDecoration: 'none',
-                            }}
-                          >
-                            Contact Us
-                          </span>
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="md:hidden">
-            <div className="flex items-end flex-col">
-              <h2 className="text-white font-bold text-center mb-1 -mt-6">
-                CONTACT 0404 289 437
-              </h2>
-              <button
-                className="text-white mt-2"
-                onClick={() => setIsOpen(!isOpen)}
+          </NavLink>
+
+          {/* Announcement Banner */}
+          <a href="tel:0404289437" className="group -my-2 ml-6 hidden items-center gap-2 rounded bg-gray-900/50 px-4 py-2 text-xs text-gray-300 ring-1 ring-gray-700 hover:bg-gray-800/50 hover:text-white hover:ring-gray-600 shadow-premium transition-all duration-300 sm:flex md:ml-8 lg:hidden min-[80rem]:flex">
+            <svg className="size-4 fill-accent-400 group-hover:fill-accent-300 transition-colors duration-300" viewBox="0 0 24 24">
+              <path fillRule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5z" clipRule="evenodd" />
+            </svg>
+            <span className="font-semibold">PLEASE CONTACT</span>
+            <svg width="2" height="2" aria-hidden="true" className="fill-gray-500">
+              <circle cx="1" cy="1" r="1" />
+            </svg>
+            <span className="font-medium group-hover:text-accent-400 transition-colors duration-300">0404 289 437</span>
+            <svg width="2" height="2" aria-hidden="true" className="fill-gray-500">
+              <circle cx="1" cy="1" r="1" />
+            </svg>
+            <span className="font-medium">FOR A QUOTE</span>
+            <svg viewBox="0 0 5 8" className="h-2 w-[5px] fill-gray-500 group-hover:fill-accent-400 transition-colors duration-300" fillRule="evenodd" clipRule="evenodd" aria-hidden="true">
+              <path d="M.2.24A.75.75 0 0 1 1.26.2l3.5 3.25a.75.75 0 0 1 0 1.1L1.26 7.8A.75.75 0 0 1 .24 6.7L3.148 4 .24 1.3A.75.75 0 0 1 .2.24Z" />
+            </svg>
+          </a>
+
+          {/* Desktop Navigation */}
+          <div className="ml-auto hidden lg:flex lg:items-center">
+            {[
+              { name: 'Home', path: '/' },
+              { name: 'Our Services', path: '/ourservices' },
+              { name: 'Gallery', path: '/gallery' },
+              { name: 'About Us', path: '/aboutus' },
+              { name: 'Contact Us', path: '/contactus' }
+            ].map((item, index) => (
+              <NavLink
+                key={item.name}
+                to={item.path}
+                className={`${navLinkClass} ${index > 0 ? 'ml-8' : ''}`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-10 h-10"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  ></path>
-                </svg>
-              </button>
-            </div>
+                {item.name}
+              </NavLink>
+            ))}
           </div>
+
+
+          {/* Mobile Menu Button */}
+          <button
+            type="button"
+            className="-my-1 -mr-1 ml-6 flex size-8 items-center justify-center lg:hidden"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <span className="sr-only">Open navigation</span>
+            <svg viewBox="0 0 24 24" className="size-6 stroke-primary-100 hover:stroke-white transition-colors duration-200">
+              <path d="M3.75 12h16.5M3.75 6.75h16.5M3.75 17.25h16.5" fill="none" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          </button>
+
+
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
 }
 

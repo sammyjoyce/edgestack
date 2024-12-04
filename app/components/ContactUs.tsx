@@ -1,105 +1,230 @@
-import React from 'react';
+import React from "react";
+import { BuildingOffice2Icon, EnvelopeIcon, PhoneIcon, ClockIcon } from '@heroicons/react/24/outline'
 
-function ContactUs() {
+export default function ContactUs() {
   return (
-    <div className="sp" id="contact-us">
-      <h2 className="title">Contact Us</h2>
-      <h3 className="title2 my-10">WE ARE JUST A PHONE CALL AWAY!</h3>
-      <h2 className="p">
-        - Email: contact@lushconstructions.com || info@lushconstructions.com
-      </h2>
-      <p className="p">- Phone: 0404 289 437</p>
-      <p className="p">- Address: PO BOX 821 Marrickville, NSW 2204</p>
-      <p className="p mt-10">- ABN: 99 652 947 528</p>
-      <p className="p">- ACN: 141 565 746</p>
-      <p className="p">- License Number: TBD</p>
-      <section className="text-white">
-        <h2 className="title2 my-4 !text-xl">Follow</h2>
-        <ul className="icons flex gap-3">
-          <li className="border border-white rounded-sm">
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.instagram.com/lushconstructions"
-            >
+    <div className="relative isolate bg-gray-950" id="contact-us">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2 gap-x-8">
+        <div className="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48">
+          <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
+            <div className="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden ring-1 ring-white/5 lg:w-1/2">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="40"
-                width="40"
-                viewBox="0 0 448 512"
-                className="p-2"
+                className="absolute inset-0 h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+                aria-hidden="true"
               >
-                <path
-                  fill="#FFF"
-                  d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
-                ></path>
+                <defs>
+                  <pattern
+                    id="54f88622-e7f8-4f1d-aaf9-c2f5e46dd1f2"
+                    width={200}
+                    height={200}
+                    x="100%"
+                    y={-1}
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path d="M.5 200V.5H200" fill="none" />
+                  </pattern>
+                </defs>
+                <svg x="100%" y={-1} className="overflow-visible fill-gray-800/20">
+                  <path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
+                </svg>
+                <rect width="100%" height="100%" strokeWidth={0} fill="url(#54f88622-e7f8-4f1d-aaf9-c2f5e46dd1f2)" />
               </svg>
-            </a>
-          </li>
-        </ul>
-      </section>
-      <div className="md:flex gap-10 mt-10 items-end">
-        <div className="md:w-1/2">
-          <h3 className="title2">GET IN TOUCH</h3>
-          <form
-            action="https://api.web3forms.com/submit"
-            method="POST"
-            className="md:mt-28 mt-12"
-          >
-            <div>
-              <input
-                type="hidden"
-                name="access_key"
-                value="a99ac5a8-4ff7-4500-80ca-fc44b389460b"
-              />
-              <div className="flex gap-4 items-center">
-                <input
-                  className="placeholder:text-md placeholder:text-base py-2 text-white border-b-2 border-[#c9c9c9] focus:border-[#f2849e]"
-                  type="text"
-                  name="name"
-                  id="name"
-                  placeholder="Name"
-                />
-                <input
-                  className="placeholder:text-md placeholder:text-base py-2 border-b-2 text-white border-[#c9c9c9] focus:border-[#f2849e]"
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Email"
-                />
+            </div>
+            <h2 className="text-base font-semibold leading-7 text-accent-400">Let's Transform Your Space</h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl [text-wrap:balance]">Ready to Start Your Project?</p>
+            <p className="mt-6 text-lg leading-8 text-gray-300">
+              From concept to completion, we're here to help bring your vision to life. Our expert team specializes in turning your ideas into stunning reality.
+            </p>
+            
+            <div className="mt-10 rounded bg-gray-900/40 p-8 ring-1 ring-white/10 backdrop-blur-sm shadow-premium">
+              <h3 className="text-lg font-semibold leading-7 text-white">Contact Information</h3>
+              <dl className="mt-6 space-y-6 text-base leading-7 text-gray-300">
+                <div className="flex gap-x-4">
+                  <dt className="flex-none">
+                    <span className="sr-only">Address</span>
+                    <BuildingOffice2Icon className="h-7 w-6 text-accent-400" aria-hidden="true" />
+                  </dt>
+                  <dd>
+                    PO BOX 821
+                    <br />
+                    Marrickville, NSW 2204
+                  </dd>
+                </div>
+                <div className="flex gap-x-4">
+                  <dt className="flex-none">
+                    <span className="sr-only">Telephone</span>
+                    <PhoneIcon className="h-7 w-6 text-accent-400" aria-hidden="true" />
+                  </dt>
+                  <dd>
+                    <a href="tel:0404289437" className="hover:text-accent-400 transition-colors">
+                      0404 289 437
+                    </a>
+                  </dd>
+                </div>
+                <div className="flex gap-x-4">
+                  <dt className="flex-none">
+                    <span className="sr-only">Email</span>
+                    <EnvelopeIcon className="h-7 w-6 text-accent-400" aria-hidden="true" />
+                  </dt>
+                  <dd>
+                    <a href="mailto:contact@lushconstructions.com" className="hover:text-accent-400 transition-colors">
+                      contact@lushconstructions.com
+                    </a>
+                  </dd>
+                </div>
+                <div className="flex gap-x-4">
+                  <dt className="flex-none">
+                    <span className="sr-only">Hours</span>
+                    <ClockIcon className="h-7 w-6 text-accent-400" aria-hidden="true" />
+                  </dt>
+                  <dd>
+                    Monday - Friday: 7am - 5pm
+                    <br />
+                    Saturday: By appointment
+                  </dd>
+                </div>
+              </dl>
+              <div className="mt-8 space-y-2 text-sm/6 text-gray-400">
+                <p>ABN: 99 652 947 528</p>
+                <p>ACN: 141 565 746</p>
+                <p>License Number: TBD</p>
               </div>
-              <div className="mt-4">
-                <textarea
-                  className="placeholder:text-md placeholder:text-base py-2 border-b-2 text-white border-[#c9c9c9] focus:border-[#f2849e]"
-                  name="message"
-                  id="message"
-                  placeholder="Message"
-                  rows="4"
-                ></textarea>
+              <div className="mt-8">
+                <h3 className="text-sm font-semibold text-white">Follow Us</h3>
+                <ul className="mt-4 flex gap-3">
+                  <li>
+                    <a
+                      href="https://www.instagram.com/lushconstructions"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-gray-300 hover:bg-accent-400/10 hover:text-accent-400 hover:border-accent-400/50 transition-all duration-300"
+                    >
+                      <span className="sr-only">Instagram</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                        className="h-5 w-5"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
+                        />
+                      </svg>
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
-            <input type="submit" className="py-2 bg-white" value="Send" />
-          </form>
+          </div>
         </div>
-        <div className="md:w-1/2 md:mt-0 mt-10">
-          <section>
-            <div className="map-div">
-              <iframe
-                src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=PO%20BOX%20821%20Marrickville,%20NSW%202204+(lushconstructions)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                width="100%"
-                height="350px"
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="rounded-md"
-                title="Lush Constructions Location"
-              ></iframe>
+
+        <form 
+          action="https://api.web3forms.com/submit" 
+          method="POST" 
+          className="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48 relative"
+        >
+          <div className="absolute inset-0 -z-10 overflow-hidden">
+            <div className="absolute left-1/2 top-0 -z-10 h-[1000px] w-[1000px] -translate-x-1/2 bg-gradient-radial from-accent-500/10 via-transparent to-transparent"></div>
+          </div>
+          
+          <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+              <input type="hidden" name="access_key" value="a99ac5a8-4ff7-4500-80ca-fc44b389460b" />
+              
+              <div className="sm:col-span-2">
+                <label htmlFor="project-type" className="block text-sm font-medium leading-6 text-white">
+                  Project Type
+                </label>
+                <div className="mt-2.5">
+                  <select
+                    id="project-type"
+                    name="project-type"
+                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-accent-500 sm:text-sm sm:leading-6 transition-all"
+                  >
+                    <option value="">Select a renovation type</option>
+                    <option value="full-home">Full Home Renovation</option>
+                    <option value="kitchen">Kitchen Renovation</option>
+                    <option value="bathroom">Bathroom Renovation</option>
+                    <option value="extension">Home Extension</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label htmlFor="name" className="block text-sm font-medium leading-6 text-white">
+                  Name
+                </label>
+                <div className="mt-2.5">
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    autoComplete="name"
+                    required
+                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-accent-500 sm:text-sm sm:leading-6 transition-all"
+                    placeholder="Your full name"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
+                  Email
+                </label>
+                <div className="mt-2.5">
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    autoComplete="email"
+                    required
+                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-accent-500 sm:text-sm sm:leading-6 transition-all"
+                    placeholder="you@example.com"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="phone" className="block text-sm font-medium leading-6 text-white">
+                  Phone Number
+                </label>
+                <div className="mt-2.5">
+                  <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    autoComplete="tel"
+                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-accent-500 sm:text-sm sm:leading-6 transition-all"
+                    placeholder="Your phone number"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="message" className="block text-sm font-medium leading-6 text-white">
+                  Message
+                </label>
+                <div className="mt-2.5">
+                  <textarea
+                    name="message"
+                    id="message"
+                    rows={4}
+                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-accent-500 sm:text-sm sm:leading-6 transition-all resize-none"
+                    placeholder="Tell us about your project..."
+                  />
+                </div>
+              </div>
             </div>
-          </section>
-        </div>
+            <div className="mt-8 flex justify-start">
+              <button
+                type="submit"
+                className="rounded-md bg-accent-500 px-5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-accent-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500 transition-all duration-300"
+              >
+                Send Message
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   );
 }
-
-export default ContactUs;
