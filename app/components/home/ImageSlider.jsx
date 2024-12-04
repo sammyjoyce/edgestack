@@ -71,14 +71,14 @@ const ImageSlider = ({ images, alt }) => {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="hidden group-hover:flex items-center justify-center absolute top-1/2 left-2 transform -translate-y-1/2 bg-white/10 rounded-full p-2 backdrop-blur-sm hover:bg-white/20 transition-all z-10"
+        className="hidden group-hover:flex items-center justify-center absolute top-1/2 left-2 transform -translate-y-1/2 bg-white/10 rounded-full p-2 backdrop-blur-xs hover:bg-white/20 transition-all z-10"
         aria-label="Previous Slide"
       >
         <ChevronLeftIcon className="h-6 w-6 text-white" />
       </button>
       <button
         onClick={nextSlide}
-        className="hidden group-hover:flex items-center justify-center absolute top-1/2 right-2 transform -translate-y-1/2 bg-white/10 rounded-full p-2 backdrop-blur-sm hover:bg-white/20 transition-all z-10"
+        className="hidden group-hover:flex items-center justify-center absolute top-1/2 right-2 transform -translate-y-1/2 bg-white/10 rounded-full p-2 backdrop-blur-xs hover:bg-white/20 transition-all z-10"
         aria-label="Next Slide"
       >
         <ChevronRightIcon className="h-6 w-6 text-white" />

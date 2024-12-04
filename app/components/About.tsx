@@ -47,7 +47,7 @@ export default function AboutUs() {
         <svg className="absolute h-full w-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="grid-about" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-accent-500/10" />
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-amber-500/10" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid-about)" />
@@ -56,7 +56,7 @@ export default function AboutUs() {
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 lg:px-8 xl:grid-cols-3">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-base font-semibold leading-7 text-accent-400">About Us</h2>
+          <h2 className="text-base font-semibold leading-7 text-amber-400">About Us</h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl [text-wrap:balance]">
             Meet Our Team
           </p>
@@ -67,7 +67,7 @@ export default function AboutUs() {
           <div className="mt-10 space-y-4">
             {features.map((feature) => (
               <div key={feature} className="flex items-center gap-x-2">
-                <CheckCircleIcon className="size-5 flex-none text-accent-400" aria-hidden="true" />
+                <CheckCircleIcon className="size-5 flex-none text-amber-400" aria-hidden="true" />
                 <span className="text-gray-300">{feature}</span>
               </div>
             ))}
@@ -78,7 +78,7 @@ export default function AboutUs() {
           className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-8 xl:col-span-2"
         >
           {team.map((person) => (
-            <li key={person.name} className="rounded bg-gray-950/50 ring-1 ring-primary-700 hover:ring-primary-600 shadow-subtle hover:shadow-elevated transition-all duration-200">
+            <li key={person.name} className="rounded bg-gray-950/50 ring-1 ring-cyan-700 hover:ring-cyan-600 shadow-subtle hover:shadow-elevated transition-all duration-200">
               <img className="mx-auto  w-full h-auto rounded object-cover" src={person.imageUrl} alt="" />
               <div className="p-8"><h3 className="text-base font-semibold leading-7 tracking-tight text-white">{person.name}</h3>
               <p className="text-sm leading-6 text-gray-400">{person.role}</p>
@@ -89,7 +89,7 @@ export default function AboutUs() {
                     href={person.instagramUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-accent-400 transition-colors"
+                    className="text-gray-400 hover:text-amber-400 transition-colors"
                   >
                     <span className="sr-only">Instagram</span>
                     <svg
@@ -111,7 +111,7 @@ export default function AboutUs() {
       </div>
       <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">
         <div
-          className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-gray-900 to-accent-900/50 opacity-30"
+          className="aspect-1155/678 w-[72.1875rem] bg-linear-to-tr from-gray-900 to-amber-900/50 opacity-30"
           style={{
             clipPath:
               'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',

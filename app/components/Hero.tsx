@@ -56,9 +56,9 @@ export default function Hero() {
             <div className="relative px-6 py-32 sm:py-40 lg:px-8 lg:py-56 lg:pr-0">
               <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
                 <div className="hidden sm:mb-10 sm:flex">
-                  <div className="relative rounded px-4 py-2 text-sm text-gray-200 ring-1 ring-gray-700 hover:ring-gray-600 bg-gray-900/50 shadow-premium backdrop-blur transition-all duration-300">
+                  <div className="relative rounded px-4 py-2 text-sm text-gray-200 ring-1 ring-gray-700 hover:ring-gray-600 bg-gray-900/50 shadow-premium backdrop-blur-sm transition-all duration-300">
                     Call us for a free quote{' '}
-                    <a href="tel:0404289437" className="whitespace-nowrap font-semibold text-white group-hover:text-accent-400">
+                    <a href="tel:0404289437" className="whitespace-nowrap font-semibold text-white group-hover:text-amber-400">
                       <span aria-hidden="true" className="absolute inset-0" />
                       0404 289 437 <span aria-hidden="true" className="ml-1 transition-transform duration-200 group-hover:translate-x-1">→</span>
                     </a>
@@ -73,7 +73,7 @@ export default function Hero() {
                 <div className="mt-10 flex items-center gap-x-6">
                   <a
                     href="/contactus"
-                    className="rounded bg-accent-500 px-5 py-3 text-sm font-semibold text-white shadow-elegant hover:bg-accent-400 hover:shadow-float focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400 transition-all duration-300"
+                    className="rounded bg-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-elegant hover:bg-amber-400 hover:shadow-float focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 transition-all duration-300"
                   >
                     Get a Quote
                   </a>
@@ -96,9 +96,9 @@ export default function Hero() {
               <img
                 src={slide.src}
                 alt={slide.alt}
-                className="aspect-[3/2] object-cover lg:aspect-auto lg:size-full"
+                className="aspect-3/2 object-cover lg:aspect-auto lg:size-full"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-950/50 to-transparent"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-gray-950/50 to-transparent"></div>
             </div>
           ))}
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">

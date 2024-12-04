@@ -13,13 +13,13 @@ const ServiceItem = ({ service, isReversed }) => {
           </div>
           <div className="flex flex-col justify-center px-4 lg:px-8 xl:px-16">
             <div className="flex items-center gap-x-3 mb-6">
-              <Icon className="h-8 w-8 text-accent-500" aria-hidden="true" />
+              <Icon className="h-8 w-8 text-amber-500" aria-hidden="true" />
               <h3 className="text-2xl font-semibold text-white">{title}</h3>
             </div>
-            <p className="text-lg text-primary-200 mb-8">{description}</p>
+            <p className="text-lg text-cyan-200 mb-8">{description}</p>
             <a
               href={`tel:${contact}`}
-              className="text-base font-semibold text-primary-200 hover:text-white transition-colors duration-200"
+              className="text-base font-semibold text-cyan-200 hover:text-white transition-colors duration-200"
             >
               {contact}
             </a>
@@ -29,13 +29,13 @@ const ServiceItem = ({ service, isReversed }) => {
         <>
           <div className="flex flex-col justify-center px-4 lg:px-8 xl:px-16">
             <div className="flex items-center gap-x-3 mb-6">
-              <Icon className="h-8 w-8 text-accent-500" aria-hidden="true" />
+              <Icon className="h-8 w-8 text-amber-500" aria-hidden="true" />
               <h3 className="text-2xl font-semibold text-white">{title}</h3>
             </div>
-            <p className="text-lg text-primary-200 mb-8">{description}</p>
+            <p className="text-lg text-cyan-200 mb-8">{description}</p>
             <a
               href={`tel:${contact}`}
-              className="text-base font-semibold text-primary-200 hover:text-white transition-colors duration-200"
+              className="text-base font-semibold text-cyan-200 hover:text-white transition-colors duration-200"
             >
               {contact}
             </a>

@@ -30,19 +30,19 @@ export default function ContactUs() {
                 <rect width="100%" height="100%" strokeWidth={0} fill="url(#54f88622-e7f8-4f1d-aaf9-c2f5e46dd1f2)" />
               </svg>
             </div>
-            <h2 className="text-base font-semibold leading-7 text-accent-400">Let's Transform Your Space</h2>
+            <h2 className="text-base font-semibold leading-7 text-amber-400">Let's Transform Your Space</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl [text-wrap:balance]">Ready to Start Your Project?</p>
             <p className="mt-6 text-lg leading-8 text-gray-300">
               From concept to completion, we're here to help bring your vision to life. Our expert team specializes in turning your ideas into stunning reality.
             </p>
             
-            <div className="mt-10 rounded bg-gray-900/40 p-8 ring-1 ring-white/10 backdrop-blur-sm shadow-premium">
+            <div className="mt-10 rounded bg-gray-900/40 p-8 ring-1 ring-white/10 backdrop-blur-xs shadow-premium">
               <h3 className="text-lg font-semibold leading-7 text-white">Contact Information</h3>
               <dl className="mt-6 space-y-6 text-base leading-7 text-gray-300">
                 <div className="flex gap-x-4">
                   <dt className="flex-none">
                     <span className="sr-only">Address</span>
-                    <BuildingOffice2Icon className="h-7 w-6 text-accent-400" aria-hidden="true" />
+                    <BuildingOffice2Icon className="h-7 w-6 text-amber-400" aria-hidden="true" />
                   </dt>
                   <dd>
                     PO BOX 821
@@ -53,10 +53,10 @@ export default function ContactUs() {
                 <div className="flex gap-x-4">
                   <dt className="flex-none">
                     <span className="sr-only">Telephone</span>
-                    <PhoneIcon className="h-7 w-6 text-accent-400" aria-hidden="true" />
+                    <PhoneIcon className="h-7 w-6 text-amber-400" aria-hidden="true" />
                   </dt>
                   <dd>
-                    <a href="tel:0404289437" className="hover:text-accent-400 transition-colors">
+                    <a href="tel:0404289437" className="hover:text-amber-400 transition-colors">
                       0404 289 437
                     </a>
                   </dd>
@@ -64,10 +64,10 @@ export default function ContactUs() {
                 <div className="flex gap-x-4">
                   <dt className="flex-none">
                     <span className="sr-only">Email</span>
-                    <EnvelopeIcon className="h-7 w-6 text-accent-400" aria-hidden="true" />
+                    <EnvelopeIcon className="h-7 w-6 text-amber-400" aria-hidden="true" />
                   </dt>
                   <dd>
-                    <a href="mailto:contact@lushconstructions.com" className="hover:text-accent-400 transition-colors">
+                    <a href="mailto:contact@lushconstructions.com" className="hover:text-amber-400 transition-colors">
                       contact@lushconstructions.com
                     </a>
                   </dd>
@@ -75,7 +75,7 @@ export default function ContactUs() {
                 <div className="flex gap-x-4">
                   <dt className="flex-none">
                     <span className="sr-only">Hours</span>
-                    <ClockIcon className="h-7 w-6 text-accent-400" aria-hidden="true" />
+                    <ClockIcon className="h-7 w-6 text-amber-400" aria-hidden="true" />
                   </dt>
                   <dd>
                     Monday - Friday: 7am - 5pm
@@ -97,7 +97,7 @@ export default function ContactUs() {
                       href="https://www.instagram.com/lushconstructions"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-gray-300 hover:bg-accent-400/10 hover:text-accent-400 hover:border-accent-400/50 transition-all duration-300"
+                      className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-gray-300 hover:bg-amber-400/10 hover:text-amber-400 hover:border-amber-400/50 transition-all duration-300"
                     >
                       <span className="sr-only">Instagram</span>
                       <svg
@@ -125,7 +125,7 @@ export default function ContactUs() {
           className="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48 relative"
         >
           <div className="absolute inset-0 -z-10 overflow-hidden">
-            <div className="absolute left-1/2 top-0 -z-10 h-[1000px] w-[1000px] -translate-x-1/2 bg-gradient-radial from-accent-500/10 via-transparent to-transparent"></div>
+            <div className="absolute left-1/2 top-0 -z-10 h-[1000px] w-[1000px] -translate-x-1/2 bg-gradient-radial from-amber-500/10 via-transparent to-transparent"></div>
           </div>
           
           <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
@@ -140,7 +140,7 @@ export default function ContactUs() {
                   <select
                     id="project-type"
                     name="project-type"
-                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-accent-500 sm:text-sm sm:leading-6 transition-all"
+                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-xs ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all"
                   >
                     <option value="">Select a renovation type</option>
                     <option value="full-home">Full Home Renovation</option>
@@ -163,7 +163,7 @@ export default function ContactUs() {
                     id="name"
                     autoComplete="name"
                     required
-                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-accent-500 sm:text-sm sm:leading-6 transition-all"
+                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-xs ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all"
                     placeholder="Your full name"
                   />
                 </div>
@@ -179,7 +179,7 @@ export default function ContactUs() {
                     id="email"
                     autoComplete="email"
                     required
-                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-accent-500 sm:text-sm sm:leading-6 transition-all"
+                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-xs ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -194,7 +194,7 @@ export default function ContactUs() {
                     name="phone"
                     id="phone"
                     autoComplete="tel"
-                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-accent-500 sm:text-sm sm:leading-6 transition-all"
+                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-xs ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all"
                     placeholder="Your phone number"
                   />
                 </div>
@@ -208,7 +208,7 @@ export default function ContactUs() {
                     name="message"
                     id="message"
                     rows={4}
-                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-accent-500 sm:text-sm sm:leading-6 transition-all resize-none"
+                    className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-xs ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6 transition-all resize-none"
                     placeholder="Tell us about your project..."
                   />
                 </div>
@@ -217,7 +217,7 @@ export default function ContactUs() {
             <div className="mt-8 flex justify-start">
               <button
                 type="submit"
-                className="rounded-md bg-accent-500 px-5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-accent-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500 transition-all duration-300"
+                className="rounded-md bg-amber-500 px-5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 transition-all duration-300"
               >
                 Send Message
               </button>
