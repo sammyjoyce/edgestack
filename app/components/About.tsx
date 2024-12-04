@@ -28,7 +28,7 @@ const team = [
 
 export default function AboutUs() {
   return (
-    <div className="relative bg-gray-950 py-24 sm:py-32 overflow-hidden">
+    <div className="relative bg-black py-24 sm:py-32 overflow-hidden">
       {/* Gradient polygon background */}
       <div 
         className="absolute inset-0 w-full h-full"
@@ -78,7 +78,7 @@ export default function AboutUs() {
           className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-8 xl:col-span-2"
         >
           {team.map((person) => (
-            <li key={person.name} className="rounded bg-gray-950/50 ring-1 ring-cyan-700 hover:ring-cyan-600 shadow-subtle hover:shadow-elevated transition-all duration-200">
+            <li key={person.name} className="rounded bg-black/50 ring-1 ring-amber-700 hover:ring-amber-600 shadow-subtle hover:shadow-elevated transition-all duration-200">
               <img className="mx-auto  w-full h-auto rounded object-cover" src={person.imageUrl} alt="" />
               <div className="p-8"><h3 className="text-base font-semibold leading-7 tracking-tight text-white">{person.name}</h3>
               <p className="text-sm leading-6 text-gray-400">{person.role}</p>

@@ -201,7 +201,7 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
               alt={`${alt} - Image ${index + 1}`}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/50 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent" />
           </div>
         ))}
       </div>
@@ -211,7 +211,7 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
 
 export default function OurServices() {
   return (
-    <section className="relative isolate bg-gray-950 py-24 sm:py-32">
+    <section className="relative isolate bg-black py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-base font-semibold leading-7 text-amber-400">Our Services</h2>

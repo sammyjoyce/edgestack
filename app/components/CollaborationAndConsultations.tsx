@@ -23,18 +23,18 @@ const collaborations: Collaboration[] = [
 
 export default function CollaborationAndConsultations() {
   return (
-    <div className="bg-gray-950 py-24 sm:py-32">
+    <div className="bg-black py-24 sm:py-32">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 lg:px-8 xl:grid-cols-3">
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none xl:col-span-2">
           {collaborations.map((collab) => (
-            <div key={collab.name} className="flex flex-col rounded bg-gray-950/50 p-8 ring-1 ring-cyan-700 hover:ring-cyan-600 shadow-subtle hover:shadow-elevated transition-all duration-200">
+            <div key={collab.name} className="flex flex-col rounded bg-black/50 p-8 ring-1 ring-amber-700 hover:ring-amber-600 shadow-subtle hover:shadow-elevated transition-all duration-200">
               <dt className="text-base font-semibold leading-7 text-white">
                 <div className="mb-6 flex h-10 w-10 items-center justify-center rounded bg-amber-500">
                   <collab.icon className="h-6 w-6 text-white" aria-hidden="true" />
                 </div>
                 {collab.name}
               </dt>
-              <dd className="mt-1 flex flex-auto flex-col text-base leading-7 text-cyan-200">
+              <dd className="mt-1 flex flex-auto flex-col text-base leading-7 text-amber-200">
                 <p className="flex-auto">{collab.description}</p>
                 {collab.link && (
                   <p className="mt-6">
@@ -48,9 +48,9 @@ export default function CollaborationAndConsultations() {
           ))}
         </div>
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-base font-semibold leading-7 text-cyan-200">Collaboration</h2>
+          <h2 className="text-base font-semibold leading-7 text-amber-200">Collaboration</h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Building Together</p>
-          <p className="mt-6 text-lg leading-8 text-cyan-200">
+          <p className="mt-6 text-lg leading-8 text-amber-200">
             We believe in collaborative construction, working closely with clients, architects, and designers to bring your vision to life.
           </p>
         </div>

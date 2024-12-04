@@ -16,10 +16,10 @@ const ServiceItem = ({ service, isReversed }) => {
               <Icon className="h-8 w-8 text-amber-500" aria-hidden="true" />
               <h3 className="text-2xl font-semibold text-white">{title}</h3>
             </div>
-            <p className="text-lg text-cyan-200 mb-8">{description}</p>
+            <p className="text-lg text-amber-200 mb-8">{description}</p>
             <a
               href={`tel:${contact}`}
-              className="text-base font-semibold text-cyan-200 hover:text-white transition-colors duration-200"
+              className="text-base font-semibold text-amber-200 hover:text-white transition-colors duration-200"
             >
               {contact}
             </a>
@@ -32,10 +32,10 @@ const ServiceItem = ({ service, isReversed }) => {
               <Icon className="h-8 w-8 text-amber-500" aria-hidden="true" />
               <h3 className="text-2xl font-semibold text-white">{title}</h3>
             </div>
-            <p className="text-lg text-cyan-200 mb-8">{description}</p>
+            <p className="text-lg text-amber-200 mb-8">{description}</p>
             <a
               href={`tel:${contact}`}
-              className="text-base font-semibold text-cyan-200 hover:text-white transition-colors duration-200"
+              className="text-base font-semibold text-amber-200 hover:text-white transition-colors duration-200"
             >
               {contact}
             </a>
