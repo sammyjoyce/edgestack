@@ -42,13 +42,13 @@ export default function ContactUs() {
                 />
               </div>
             </div>
-            <h2 className="text-[13px] font-semibold leading-7 text-gray-300">Let's Transform Your Space</h2>
-            <p className="mt-2 text-[64px] leading-[68px] tracking-[-1.43px] font-medium bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent [text-wrap:balance]">Ready to Start Your Project?</p>
-            <p className="mt-6 text-[15px] leading-8 text-gray-300">
+            <h2 className="sr-only">Contact form</h2>
+            <p className="mt-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-gradient-to-r from-white via-white/80 to-gray-300/50 sm:bg-gradient-to-b md:bg-gradient-to-r bg-clip-text text-transparent [text-wrap:balance]">Ready to Start Your Project?</p>
+            <p className="mt-6 text-[15px] sm:text-[14px] leading-normal text-gray-300">
               From concept to completion, we're here to help bring your vision to life. Our expert team specializes in turning your ideas into stunning reality.
             </p>
             
-            <dl className="mt-10 space-y-4 text-[15px] leading-7 text-gray-300">
+            <dl className="mt-10 space-y-4 text-[15px] sm:text-[14px] leading-normal text-gray-300">
               <div className="flex gap-x-4">
                 <dt className="flex-none">
                   <span className="sr-only">Address</span>
@@ -66,7 +66,7 @@ export default function ContactUs() {
                   <PhoneIcon className="h-7 w-6 text-gray-300" aria-hidden="true" />
                 </dt>
                 <dd>
-                  <a href="tel:0404289437" className="hover:text-gray-100 transition-colors">
+                  <a href="tel:0404289437" className="hover:text-gray-100 transition-all duration-300 ease-in-out">
                     0404 289 437
                   </a>
                 </dd>
@@ -77,7 +77,7 @@ export default function ContactUs() {
                   <EnvelopeIcon className="h-7 w-6 text-gray-300" aria-hidden="true" />
                 </dt>
                 <dd>
-                  <a href="mailto:contact@lushconstructions.com" className="hover:text-gray-100 transition-colors">
+                  <a href="mailto:contact@lushconstructions.com" className="hover:text-gray-100 transition-all duration-300 ease-in-out">
                     contact@lushconstructions.com
                   </a>
                 </dd>
@@ -94,20 +94,20 @@ export default function ContactUs() {
                 </dd>
               </div>
             </dl>
-            <div className="mt-8 space-y-2 text-[11px] leading-6 text-gray-400">
+            <div className="mt-8 space-y-2 text-[11px] leading-none text-gray-400">
               <p className="font-medium">ABN: 99 652 947 528</p>
               <p className="font-medium">ACN: 141 565 746</p>
               <p className="font-medium">License Number: TBD</p>
             </div>
             <div className="mt-8">
-              <h3 className="text-sm font-semibold text-gray-100">Follow Us</h3>
+              <h3 className="text-[15px] sm:text-[14px] leading-normal font-semibold text-gray-100">Follow Us</h3>
               <ul className="mt-4 flex gap-3">
                 <li>
                   <a
                     href="https://www.instagram.com/lushconstructions"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-800 text-gray-300 hover:bg-gray-800/10 hover:text-gray-100 hover:border-gray-700/50 transition-all duration-300"
+                    className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-800 text-gray-300 hover:bg-gray-800/10 hover:text-gray-100 hover:border-gray-700 transition-all duration-300 ease-in-out"
                   >
                     <span className="sr-only">Instagram</span>
                     <svg
@@ -133,19 +133,19 @@ export default function ContactUs() {
           method="POST" 
           className="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48 bg-gray-900/50 backdrop-blur-sm"
         >
-          <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
+          <div className="mx-auto max-w-xl lg:max-w-lg">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
               <input type="hidden" name="access_key" value="a99ac5a8-4ff7-4500-80ca-fc44b389460b" />
               
               <div className="sm:col-span-2">
-                <label htmlFor="project-type" className="block text-sm font-semibold leading-6 text-gray-300">
+                <label htmlFor="project-type" className="block text-[13px] leading-tight font-semibold text-gray-300">
                   Project Type
                 </label>
                 <div className="mt-2.5">
                   <select
                     id="project-type"
                     name="project-type"
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 sm:text-sm sm:leading-6 transition-all"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
                   >
                     <option value="">Select a renovation type</option>
                     <option value="full-home">Full Home Renovation</option>
@@ -158,7 +158,7 @@ export default function ContactUs() {
               </div>
 
               <div>
-                <label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-300">
+                <label htmlFor="first-name" className="block text-[13px] leading-tight font-semibold text-gray-300">
                   First name
                 </label>
                 <div className="mt-2.5">
@@ -168,12 +168,12 @@ export default function ContactUs() {
                     id="first-name"
                     autoComplete="given-name"
                     required
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 sm:text-sm sm:leading-6 transition-all"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-300">
+                <label htmlFor="last-name" className="block text-[13px] leading-tight font-semibold text-gray-300">
                   Last name
                 </label>
                 <div className="mt-2.5">
@@ -183,13 +183,13 @@ export default function ContactUs() {
                     id="last-name"
                     autoComplete="family-name"
                     required
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 sm:text-sm sm:leading-6 transition-all"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
                   />
                 </div>
               </div>
 
               <div className="sm:col-span-2">
-                <label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-300">
+                <label htmlFor="email" className="block text-[13px] leading-tight font-semibold text-gray-300">
                   Email
                 </label>
                 <div className="mt-2.5">
@@ -199,12 +199,12 @@ export default function ContactUs() {
                     id="email"
                     autoComplete="email"
                     required
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 sm:text-sm sm:leading-6 transition-all"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
                   />
                 </div>
               </div>
               <div className="sm:col-span-2">
-                <label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-300">
+                <label htmlFor="phone-number" className="block text-[13px] leading-tight font-semibold text-gray-300">
                   Phone number
                 </label>
                 <div className="mt-2.5">
@@ -213,12 +213,12 @@ export default function ContactUs() {
                     name="phone-number"
                     id="phone-number"
                     autoComplete="tel"
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 sm:text-sm sm:leading-6 transition-all"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
                   />
                 </div>
               </div>
               <div className="sm:col-span-2">
-                <label htmlFor="message" className="block text-sm font-semibold leading-6 text-gray-300">
+                <label htmlFor="message" className="block text-[13px] leading-tight font-semibold text-gray-300">
                   Message
                 </label>
                 <div className="mt-2.5">
@@ -226,7 +226,7 @@ export default function ContactUs() {
                     name="message"
                     id="message"
                     rows={4}
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 sm:text-sm sm:leading-6 transition-all"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
                   ></textarea>
                 </div>
               </div>
@@ -234,7 +234,7 @@ export default function ContactUs() {
             <div className="mt-8 flex justify-end">
               <button
                 type="submit"
-                className="rounded-md bg-black px-3.5 py-2.5 text-center text-sm font-semibold text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 hover:bg-gray-900 hover:text-white hover:ring-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700 transition-all"
+                className="rounded-md bg-black px-3.5 py-2.5 text-center text-[13px] leading-tight font-semibold text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 hover:bg-gray-900 hover:text-white hover:ring-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700 transition-all duration-300 ease-in-out"
               >
                 Send message
               </button>

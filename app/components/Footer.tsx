@@ -77,7 +77,7 @@ const socialLinks = navigation.filter(item => item.name);
 
 export default function Footer() {
   return (
-    <footer className="bg-black" aria-labelledby="footer-heading">
+    <footer className="relative" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
@@ -89,12 +89,12 @@ export default function Footer() {
               src="/logo.svg"
               alt="Lush Constructions"
             />
-            <p className="text-[15px] leading-6 text-gray-300">
+            <p className="text-[15px] sm:text-[14px] leading-normal text-gray-300">
               Building dreams into reality with expert craftsmanship and dedication to quality.
             </p>
             <div className="flex space-x-6">
               {socialLinks.map((item) => (
-                <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-100 transition-colors duration-200">
+                <a key={item.name} href={item.href} className="text-gray-400 hover:opacity-80 transition-all duration-300 ease-in-out">
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
                 </a>
@@ -104,11 +104,11 @@ export default function Footer() {
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-[13px] font-semibold text-gray-100">Services</h3>
+                <h3 className="text-[13px] leading-tight font-semibold text-gray-100">Services</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation[0].services.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-[13px] text-gray-300 hover:text-gray-100 transition-colors duration-200">
+                      <a href={item.href} className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out">
                         {item.name}
                       </a>
                     </li>
@@ -116,11 +116,11 @@ export default function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-[13px] font-semibold text-gray-100">Company</h3>
+                <h3 className="text-[13px] leading-tight font-semibold text-gray-100">Company</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation[0].company.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-[13px] text-gray-300 hover:text-gray-100 transition-colors duration-200">
+                      <a href={item.href} className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out">
                         {item.name}
                       </a>
                     </li>
@@ -130,12 +130,12 @@ export default function Footer() {
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-[13px] font-semibold text-gray-100">Contact</h3>
+                <h3 className="text-[13px] leading-tight font-semibold text-gray-100">Contact</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   <li>
                     <a 
                       href="tel:0404289437" 
-                      className="text-[13px] text-gray-300 hover:text-gray-100 transition-colors duration-200"
+                      className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
                     >
                       0404 289 437
                     </a>
@@ -143,24 +143,24 @@ export default function Footer() {
                   <li>
                     <a 
                       href="mailto:info@lushconstructions.com.au" 
-                      className="text-[13px] text-gray-300 hover:text-gray-100 transition-colors duration-200"
+                      className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
                     >
                       info@lushconstructions.com.au
                     </a>
                   </li>
                   <li>
-                    <p className="text-[13px] text-gray-300">
+                    <p className="text-[13px] leading-tight text-gray-300">
                       Sydney, NSW
                     </p>
                   </li>
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-[13px] font-semibold text-gray-100">Legal</h3>
+                <h3 className="text-[13px] leading-tight font-semibold text-gray-100">Legal</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation[0].legal.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-[13px] text-gray-300 hover:text-gray-100 transition-colors duration-200">
+                      <a href={item.href} className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out">
                         {item.name}
                       </a>
                     </li>
@@ -171,7 +171,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-gray-800 pt-8 md:flex md:items-center md:justify-between">
-          <p className="text-[11px] leading-5 text-gray-400">&copy; {new Date().getFullYear()} Lush Constructions. All rights reserved.</p>
+          <p className="text-[11px] leading-none text-gray-400">&copy; {new Date().getFullYear()} Lush Constructions. All rights reserved.</p>
         </div>
       </div>
     </footer>
