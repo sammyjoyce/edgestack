@@ -1,6 +1,5 @@
-'use client'
-
-import { useState, useEffect } from 'react';
+import { ChevronRightIcon } from '@heroicons/react/16/solid';
+import { useState, useEffect } from 'react'
 
 const slides = [
   {
@@ -29,6 +28,40 @@ const slides = [
   }
 ];
 
+const HeroText = ({ title, description }) => (
+  <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
+    <div className="hidden sm:mb-10 sm:flex">
+      <div className="relative rounded px-4 py-2 text-sm text-gray-200 ring-1 ring-gray-700 hover:ring-gray-600 bg-black/50 shadow-premium backdrop-blur-xs transition-all duration-300">
+        Call us for a free quote{' '}
+        <a href="tel:0404289437" className="whitespace-nowrap font-semibold text-gray-100 group-hover:text-gray-100">
+          <span aria-hidden="true" className="absolute inset-0" />
+          0404 289 437 <span aria-hidden="true" className="ml-1 transition-transform duration-200 group-hover:translate-x-1">→</span>
+        </a>
+      </div>
+    </div>
+    <h1 className="text-[64px] leading-[68px] tracking-[-1.43px] font-medium bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent md:text-[64px] md:leading-[68px] sm:text-[40px] sm:leading-[44px] sm:tracking-[-0.015em]">
+      {title}
+    </h1>
+    <p className="mt-8 text-gray-300 text-lg leading-relaxed">
+      {description}
+    </p>
+    <div className="mt-10 flex items-center gap-x-6">
+      <a
+        href="/contact"
+        className="rounded px-4 py-2.5 text-sm font-semibold text-gray-100 bg-gray-900/5 ring-1 ring-gray-800 hover:ring-gray-700 transition-all duration-300"
+      >
+        Get a Quote
+      </a>
+      <a href="/ourservices" className="text-sm font-semibold leading-6 text-gray-400 transition-colors duration-300 hover:text-white">
+        Our Services 
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" className="inline-block ml-1.5 transition-transform group-hover:translate-x-0.5">
+          <path d="M5.46967 11.4697C5.17678 11.7626 5.17678 12.2374 5.46967 12.5303C5.76256 12.8232 6.23744 12.8232 6.53033 12.5303L10.5303 8.53033C10.8207 8.23999 10.8236 7.77014 10.5368 7.47624L6.63419 3.47624C6.34492 3.17976 5.87009 3.17391 5.57361 3.46318C5.27713 3.75244 5.27128 4.22728 5.56054 4.52376L8.94583 7.99351L5.46967 11.4697Z" />
+        </svg>
+      </a>
+    </div>
+  </div>
+);
+
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -40,81 +73,62 @@ export default function Hero() {
   }, [currentIndex]);
 
   return (
-    <div className="bg-black">
-      <div className="relative">
-        <div className="mx-auto max-w-7xl">
-          <div className="relative z-10 pt-14 lg:w-full lg:max-w-2xl">
-            <svg
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-              className="absolute inset-y-0 right-8 hidden h-full w-80 translate-x-1/2 transform fill-black lg:block"
-            >
-              <polygon points="0,0 90,0 50,100 0,100" />
-            </svg>
+    <div className="relative isolate overflow-hidden bg-black">
+      {/* Background gradient effect */}
+      <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+        aria-hidden="true"
+      >
+        <div
+          className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-gray-800 to-gray-900 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+          style={{
+            clipPath:
+              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+          }}
+        />
+      </div>
 
-            <div className="relative px-6 py-32 sm:py-40 lg:px-8 lg:py-56 lg:pr-0">
-              <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
-                <div className="hidden sm:mb-10 sm:flex">
-                  <div className="relative rounded px-4 py-2 text-sm text-gray-200 ring-1 ring-gray-700 hover:ring-gray-600 bg-black/50 shadow-premium backdrop-blur-sm transition-all duration-300">
-                    Call us for a free quote{' '}
-                    <a href="tel:0404289437" className="whitespace-nowrap font-semibold text-white group-hover:text-amber-400">
-                      <span aria-hidden="true" className="absolute inset-0" />
-                      0404 289 437 <span aria-hidden="true" className="ml-1 transition-transform duration-200 group-hover:translate-x-1">→</span>
-                    </a>
-                  </div>
-                </div>
-                <h1 className="text-pretty font-display text-5xl font-bold tracking-tight text-white sm:text-7xl [text-wrap:balance]">
-                  {slides[currentIndex].title}
-                </h1>
-                <p className="mt-8 text-pretty text-lg text-gray-300 sm:text-xl [text-wrap:balance] leading-relaxed">
-                  {slides[currentIndex].description}
-                </p>
-                <div className="mt-10 flex items-center gap-x-6">
-                  <a
-                    href="/contactus"
-                    className="rounded bg-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-elegant hover:bg-amber-400 hover:shadow-float focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 transition-all duration-300"
-                  >
-                    Get a Quote
-                  </a>
-                  <a href="/ourservices" className="group text-sm font-semibold text-gray-300 hover:text-white transition-colors duration-300">
-                    View Services <span aria-hidden="true" className="ml-1 transition-transform duration-200 group-hover:translate-x-1">→</span>
-                  </a>
-                </div>
-              </div>
-            </div>
+      {/* Main content */}
+      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
+        <div className="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
+          <div className="mt-24 sm:mt-32 lg:mt-16">
+            <a href="/projects" className="inline-flex space-x-6">
+              <span className="rounded-full bg-gray-900/50 px-3 py-1 text-sm font-semibold leading-6 text-gray-100 ring-1 ring-gray-800/50 backdrop-blur-xs">
+                Latest Projects
+              </span>
+              <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-gray-300">
+                <span>View our work</span>
+                <ChevronRightIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
+              </span>
+            </a>
+          </div>
+          <HeroText title={slides[currentIndex].title} description={slides[currentIndex].description} />
+          <div className="mt-10 flex items-center gap-x-6">
+            <a
+              href="/contact"
+              className="rounded bg-gray-900/50 px-3.5 py-2.5 text-sm font-semibold text-gray-100 shadow-premium backdrop-blur-xs ring-1 ring-gray-800/50 hover:bg-gray-800/50 hover:text-gray-100 hover:ring-gray-700/50 transition-all duration-300"
+            >
+              Get a Quote
+            </a>
+            <a href="/projects" className="text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-200">
+              View Projects <span aria-hidden="true">→</span>
+            </a>
           </div>
         </div>
-        <div className="bg-gray-50 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-          {slides.map((slide, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                index === currentIndex ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
+        <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
+          <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
+            <div className="relative aspect-[2/1] h-[24.75rem] md:h-[32rem] lg:h-[40rem] rounded-lg bg-gray-900/50 ring-1 ring-gray-800/50 backdrop-blur-xs">
               <img
-                src={slide.src}
-                alt={slide.alt}
-                className="aspect-3/2 object-cover lg:aspect-auto lg:size-full"
+                src={slides[currentIndex].src}
+                alt={slides[currentIndex].alt}
+                className="absolute left-0 top-0 w-full h-full rounded-lg object-cover"
+                width={2432}
+                height={1442}
               />
-              <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent"></div>
             </div>
-          ))}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`h-1.5 rounded-full transition-all ${
-                  index === currentIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/50'
-                }`}
-                aria-label={`Go to image ${index + 1}`}
-              />
-            ))}
           </div>
         </div>
       </div>
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-black sm:h-32" />
     </div>
-  )
+  );
 }
