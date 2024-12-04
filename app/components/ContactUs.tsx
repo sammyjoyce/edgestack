@@ -42,13 +42,13 @@ export default function ContactUs() {
                 />
               </div>
             </div>
-            <h2 className="text-base font-semibold leading-7 text-gray-300">Let's Transform Your Space</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-100 sm:text-4xl [text-wrap:balance]">Ready to Start Your Project?</p>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
+            <h2 className="text-[13px] font-semibold leading-7 text-gray-300">Let's Transform Your Space</h2>
+            <p className="mt-2 text-[64px] leading-[68px] tracking-[-1.43px] font-medium bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent [text-wrap:balance]">Ready to Start Your Project?</p>
+            <p className="mt-6 text-[15px] leading-8 text-gray-300">
               From concept to completion, we're here to help bring your vision to life. Our expert team specializes in turning your ideas into stunning reality.
             </p>
             
-            <dl className="mt-10 space-y-4 text-base leading-7 text-gray-300">
+            <dl className="mt-10 space-y-4 text-[15px] leading-7 text-gray-300">
               <div className="flex gap-x-4">
                 <dt className="flex-none">
                   <span className="sr-only">Address</span>
@@ -94,7 +94,7 @@ export default function ContactUs() {
                 </dd>
               </div>
             </dl>
-            <div className="mt-8 space-y-2 text-sm/6 text-gray-400">
+            <div className="mt-8 space-y-2 text-[11px] leading-6 text-gray-400">
               <p className="font-medium">ABN: 99 652 947 528</p>
               <p className="font-medium">ACN: 141 565 746</p>
               <p className="font-medium">License Number: TBD</p>

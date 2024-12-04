@@ -237,10 +237,10 @@ export default function OurServices() {
     <div className="relative bg-black py-24 sm:py-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-4xl font-semibold tracking-tight bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent">
+          <h2 className="text-[64px] leading-[68px] tracking-[-1.43px] font-medium bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent">
             Our Services
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-300 max-lg:text-center">
+          <p className="mt-6 text-[15px] leading-8 text-gray-300 max-lg:text-center">
             We specialize in a wide range of construction and renovation services, delivering exceptional results that exceed expectations.
           </p>
         </div>
