@@ -40,7 +40,7 @@ export default function Hero() {
   }, [currentIndex]);
 
   return (
-    <div className="bg-gray-950">
+    <div className="bg-black">
       <div className="relative">
         <div className="mx-auto max-w-7xl">
           <div className="relative z-10 pt-14 lg:w-full lg:max-w-2xl">
@@ -48,7 +48,7 @@ export default function Hero() {
               viewBox="0 0 100 100"
               preserveAspectRatio="none"
               aria-hidden="true"
-              className="absolute inset-y-0 right-8 hidden h-full w-80 translate-x-1/2 transform fill-gray-950 lg:block"
+              className="absolute inset-y-0 right-8 hidden h-full w-80 translate-x-1/2 transform fill-black lg:block"
             >
               <polygon points="0,0 90,0 50,100 0,100" />
             </svg>
@@ -98,7 +98,7 @@ export default function Hero() {
                 alt={slide.alt}
                 className="aspect-3/2 object-cover lg:aspect-auto lg:size-full"
               />
-              <div className="absolute inset-0 bg-linear-to-t from-gray-950/50 to-transparent"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent"></div>
             </div>
           ))}
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">

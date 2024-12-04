@@ -5,7 +5,7 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinkClass = ({ isActive }) => 
-    `text-cyan-100 hover:text-white transition-colors duration-200 ${isActive ? 'font-semibold text-white' : ''}`;
+    `text-amber-100 hover:text-white transition-colors duration-200 ${isActive ? 'font-semibold text-white' : ''}`;
 
   return (
     <header className="sticky inset-x-0 top-0 max-w-container mx-auto px-4 sm:px-6 lg:px-8 z-50 w-full flex-none text-sm font-semibold bg-gray-950/95 backdrop-blur-sm supports-backdrop-filter:bg-gray-950/80">
@@ -68,7 +68,7 @@ function Header() {
             onClick={() => setIsOpen(!isOpen)}
           >
             <span className="sr-only">Open navigation</span>
-            <svg viewBox="0 0 24 24" className="size-6 stroke-cyan-100 hover:stroke-white transition-colors duration-200">
+            <svg viewBox="0 0 24 24" className="size-6 stroke-amber-100 hover:stroke-white transition-colors duration-200">
               <path d="M3.75 12h16.5M3.75 6.75h16.5M3.75 17.25h16.5" fill="none" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </button>
