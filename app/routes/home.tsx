@@ -1,6 +1,5 @@
 import React from "react";
 import AboutUs from "../components/About";
-import CollaborationAndConsultations from "../components/CollaborationAndConsultations";
 import ContactUs from "../components/ContactUs";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -29,7 +28,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 			<Header />
 			<ImageSlider />
 			<OurServices />
-			<CollaborationAndConsultations />
 			<AboutUs />
 			<ContactUs />
 			<Footer />

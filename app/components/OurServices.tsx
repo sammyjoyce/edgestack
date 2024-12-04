@@ -164,14 +164,14 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
         <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
           <button
             onClick={previousImage}
-            className="rounded-full bg-white/10 p-2 text-white backdrop-blur-xs transition-all hover:bg-white/20"
+            className="rounded-full bg-black/50 p-2 text-gray-100 backdrop-blur-xs transition-all hover:bg-gray-900/50"
             aria-label="Previous image"
           >
             <ChevronLeftIcon className="h-6 w-6" />
           </button>
           <button
             onClick={nextImage}
-            className="rounded-full bg-white/10 p-2 text-white backdrop-blur-xs transition-all hover:bg-white/20"
+            className="rounded-full bg-black/50 p-2 text-gray-100 backdrop-blur-xs transition-all hover:bg-gray-900/50"
             aria-label="Next image"
           >
             <ChevronRightIcon className="h-6 w-6" />
@@ -182,7 +182,7 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
             <button
               key={index}
               className={`h-1.5 rounded-full transition-all ${
-                index === currentImageIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/50'
+                index === currentImageIndex ? 'w-4 bg-gray-100' : 'w-1.5 bg-gray-300/50'
               }`}
               onClick={() => setCurrentImageIndex(index)}
               aria-label={`Go to image ${index + 1}`}
@@ -201,7 +201,7 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
               alt={`${alt} - Image ${index + 1}`}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-101"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
           </div>
         ))}
       </div>
@@ -209,68 +209,122 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
   );
 }
 
+const ServiceCard = ({ service, className }) => {
+  return (
+    <div className={`relative ${className}`}>
+      <div className="absolute inset-px rounded-lg bg-gray-900/50"></div>
+      <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)]">
+        <div className="px-8 pt-8 pb-3 sm:px-10 sm:pt-10">
+          <h3 className="text-[32px] leading-[36px] tracking-[-0.5px] font-medium 
+            bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent max-lg:text-center">
+            {service.title}
+          </h3>
+          <p className="mt-4 text-gray-300 text-base/6 leading-relaxed max-lg:text-center">
+            {service.description}
+          </p>
+        </div>
+        <div className="relative flex-1 w-full mt-6">
+          <ImageSlider images={service.images} alt={service.alt} />
+        </div>
+      </div>
+      <div className="pointer-events-none absolute inset-px rounded-lg ring-1 ring-gray-800"></div>
+    </div>
+  );
+};
+
 export default function OurServices() {
   return (
     <div className="relative bg-black py-24 sm:py-32 overflow-hidden">
-      {/* Decorative background */}
-      <div className="absolute inset-y-0 left-0 -z-10 w-[200%] overflow-hidden lg:w-[100%] xl:-ml-96">
-        <svg className="absolute h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_bottom_right,white,transparent)]" aria-hidden="true">
-          <defs>
-            <pattern id="services-pattern" width="200" height="200" patternUnits="userSpaceOnUse">
-              <path d="M.5 200V.5H200" fill="none"></path>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" strokeWidth="1" fill="url(#services-pattern)"></rect>
-        </svg>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl lg:mx-0">
+          <h2 className="text-[64px] leading-[68px] tracking-[-1.43px] font-medium 
+            bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent">
+            Our Services
+          </h2>
+          <p className="mt-6 text-lg leading-8 text-gray-300">
+            We specialize in transforming spaces with expert craftsmanship and attention to detail.
+            From kitchens to complete home renovations, we bring your vision to life.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3">
+          {/* Each row is wrapped in a div to ensure equal heights */}
+          <div className="grid gap-4 lg:grid-cols-3 lg:contents">
+            <div className="relative lg:col-span-2">
+              <ServiceCard 
+                service={services[0]}
+                className="lg:rounded-l-[2rem] h-full"
+              />
+            </div>
+            <div className="relative">
+              <ServiceCard 
+                service={services[1]}
+                className="lg:rounded-r-[2rem] h-full"
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-3 lg:contents">
+            <div className="relative">
+              <ServiceCard 
+                service={services[2]}
+                className="lg:rounded-l-[2rem] h-full"
+              />
+            </div>
+            <div className="relative lg:col-span-2">
+              <ServiceCard 
+                service={services[3]}
+                className="lg:rounded-r-[2rem] h-full"
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-3 lg:contents">
+            <div className="relative lg:col-span-2">
+              <ServiceCard 
+                service={services[4]}
+                className="lg:rounded-l-[2rem] h-full"
+              />
+            </div>
+            <div className="relative">
+              <ServiceCard 
+                service={services[5]}
+                className="lg:rounded-r-[2rem] h-full"
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-3 lg:contents">
+            <div className="relative">
+              <ServiceCard 
+                service={services[6]}
+                className="lg:rounded-l-[2rem] h-full"
+              />
+            </div>
+            <div className="relative lg:col-span-2">
+              <ServiceCard 
+                service={services[7]}
+                className="lg:rounded-r-[2rem] h-full"
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-3 lg:contents">
+            <div className="relative lg:col-span-2">
+              <ServiceCard 
+                service={services[8]}
+                className="lg:rounded-l-[2rem] h-full"
+              />
+            </div>
+            <div className="relative">
+              <ServiceCard 
+                service={services[9]}
+                className="lg:rounded-r-[2rem] h-full"
+              />
+            </div>
+          </div>
+        </div>
       </div>
-      <section className="relative isolate bg-black py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-base font-semibold leading-7 text-amber-400">Our Services</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl [text-wrap:balance]">
-              Comprehensive Construction Solutions
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
-              From concept to completion, we deliver exceptional craftsmanship and attention to detail in every project.
-            </p>
-          </div>
-
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {services.map((service) => (
-              <div key={service.title} className="group flex flex-col">
-                <ImageSlider images={service.images} alt={service.alt} />
-                <div className="mt-8">
-                  <div className="flex items-center gap-x-3">
-                    <h3 className="text-lg font-semibold leading-8 tracking-tight text-white group-hover:text-amber-400 transition-colors duration-300">
-                      {service.title}
-                    </h3>
-                  </div>
-                  <p className="mt-5 text-sm leading-7 text-gray-300">{service.description}</p>
-                  <div className="mt-6 flex items-center gap-x-3">
-                    <service.icon className="h-5 w-5 flex-none text-amber-400" aria-hidden="true" />
-                    <a
-                      href={`tel:${service.contact.replace(/\s/g, '')}`}
-                      className="text-sm leading-6 text-gray-300 hover:text-amber-400 transition-colors duration-300"
-                    >
-                      {service.contact}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">
-          <div
-            className="aspect-1155/678 w-[72.1875rem] bg-linear-to-tr from-amber-900 to-amber-800/70 opacity-30"
-            style={{
-              clipPath:
-                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            }}
-          />
-        </div>
-      </section>
     </div>
   );
 }
