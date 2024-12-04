@@ -32,10 +32,10 @@ export default function AboutUs() {
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 lg:px-8 xl:grid-cols-5">
         <div className="max-w-2xl xl:col-span-2">
-          <h2 className="text-4xl font-semibold tracking-tight text-pretty bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent sm:text-5xl">
+          <h2 className="text-[64px] leading-[68px] tracking-[-1.43px] font-medium bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent">
             Meet Our Team
           </h2>
-          <p className="mt-6 text-lg/8 text-gray-300">
+          <p className="mt-6 text-[15px] leading-8 text-gray-300">
             Our skilled team brings together decades of construction expertise, innovative thinking, and unwavering commitment to quality. Each project we undertake reflects our dedication to excellence and client satisfaction.
           </p>
         </div>
@@ -50,8 +50,8 @@ export default function AboutUs() {
               />
               <div className="max-w-xl flex-auto">
                 <h3 className="text-lg font-semibold tracking-tight text-gray-100">{person.name}</h3>
-                <p className="text-base text-gray-400">{person.role}</p>
-                <p className="mt-6 text-base text-gray-300">{person.bio}</p>
+                <p className="text-[13px] text-gray-400">{person.role}</p>
+                <p className="mt-6 text-[15px] text-gray-300">{person.bio}</p>
                 <ul role="list" className="mt-6 flex gap-x-6">
                   <li>
                     <a href={person.instagramUrl} className="text-gray-400 hover:text-gray-100 transition-colors duration-200">

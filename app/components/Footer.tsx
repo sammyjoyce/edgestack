@@ -2,6 +2,50 @@ import React from "react";
 
 const navigation = [
   {
+    services: [
+      {
+        name: 'Renovations',
+        href: '/services/renovations'
+      },
+      {
+        name: 'Extensions',
+        href: '/services/extensions'
+      },
+      {
+        name: 'New Builds',
+        href: '/services/new-builds'
+      },
+      {
+        name: 'Commercial',
+        href: '/services/commercial'
+      }
+    ],
+    company: [
+      {
+        name: 'About Us',
+        href: '/about'
+      },
+      {
+        name: 'Projects',
+        href: '/projects'
+      },
+      {
+        name: 'Contact',
+        href: '/contact'
+      }
+    ],
+    legal: [
+      {
+        name: 'Privacy Policy',
+        href: '/privacy'
+      },
+      {
+        name: 'Terms of Service',
+        href: '/terms'
+      }
+    ]
+  },
+  {
     name: 'Facebook',
     href: '#',
     icon: (props: any) => (
@@ -29,7 +73,7 @@ const navigation = [
   }
 ]
 
-const socialLinks = navigation;
+const socialLinks = navigation.filter(item => item.name);
 
 export default function Footer() {
   return (
@@ -42,19 +86,15 @@ export default function Footer() {
           <div className="space-y-8">
             <img
               className="h-7"
-              src="/assets/logo_284x137-KoakP1Oi.png"
+              src="/logo.svg"
               alt="Lush Constructions"
             />
-            <p className="text-sm leading-6 text-gray-300">
-              Crafting exceptional spaces with precision and passion.
+            <p className="text-[15px] leading-6 text-gray-300">
+              Building dreams into reality with expert craftsmanship and dedication to quality.
             </p>
             <div className="flex space-x-6">
               {socialLinks.map((item) => (
-                <a 
-                  key={item.name} 
-                  href={item.href} 
-                  className="text-gray-400 hover:text-gray-100 transition-colors duration-300"
-                >
+                <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-100">
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
                 </a>
@@ -64,114 +104,74 @@ export default function Footer() {
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold leading-6 text-gray-100">Services</h3>
+                <h3 className="text-[13px] font-semibold leading-6 text-gray-100">Services</h3>
                 <ul role="list" className="mt-6 space-y-4">
-                  <li>
-                    <a href="/services/renovations" className="text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
-                      Renovations
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/services/extensions" className="text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
-                      Extensions
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/services/new-builds" className="text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
-                      New Builds
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/services/commercial" className="text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
-                      Commercial
-                    </a>
-                  </li>
+                  {navigation[0].services.map((item) => (
+                    <li key={item.name}>
+                      <a href={item.href} className="text-[13px] leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold leading-6 text-gray-100">Company</h3>
+                <h3 className="text-[13px] font-semibold leading-6 text-gray-100">Company</h3>
                 <ul role="list" className="mt-6 space-y-4">
-                  <li>
-                    <a href="/about" className="text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
-                      About Us
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/projects" className="text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
-                      Projects
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/contact" className="text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
-                      Contact
-                    </a>
-                  </li>
+                  {navigation[0].company.map((item) => (
+                    <li key={item.name}>
+                      <a href={item.href} className="text-[13px] leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold leading-6 text-gray-100">Contact</h3>
+                <h3 className="text-[13px] font-semibold leading-6 text-gray-100">Contact</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   <li>
                     <a 
                       href="tel:0404289437" 
-                      className="group text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300"
+                      className="text-[13px] leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300"
                     >
-                      <span className="inline-flex items-center">
-                        <svg className="mr-2 h-4 w-4 text-gray-400 group-hover:text-gray-100 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                        0404 289 437
-                      </span>
+                      0404 289 437
                     </a>
                   </li>
                   <li>
                     <a 
                       href="mailto:info@lushconstructions.com.au" 
-                      className="group text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300"
+                      className="text-[13px] leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300"
                     >
-                      <span className="inline-flex items-center">
-                        <svg className="mr-2 h-4 w-4 text-gray-400 group-hover:text-gray-100 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        info@lushconstructions.com.au
-                      </span>
+                      info@lushconstructions.com.au
                     </a>
                   </li>
                   <li>
-                    <p className="group text-sm leading-6 text-gray-300">
-                      <span className="inline-flex items-center">
-                        <svg className="mr-2 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        Sydney, NSW
-                      </span>
+                    <p className="text-[13px] leading-6 text-gray-300">
+                      Sydney, NSW
                     </p>
                   </li>
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold leading-6 text-gray-100">Legal</h3>
+                <h3 className="text-[13px] font-semibold leading-6 text-gray-100">Legal</h3>
                 <ul role="list" className="mt-6 space-y-4">
-                  <li>
-                    <a href="/privacy" className="text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
-                      Privacy Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/terms" className="text-sm leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
-                      Terms of Service
-                    </a>
-                  </li>
+                  {navigation[0].legal.map((item) => (
+                    <li key={item.name}>
+                      <a href={item.href} className="text-[13px] leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-300">
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
           </div>
         </div>
         <div className="mt-16 border-t border-gray-800 pt-8 sm:mt-20 lg:mt-24">
-          <p className="text-xs leading-5 text-gray-400">&copy; {new Date().getFullYear()} Lush Constructions. All rights reserved.</p>
+          <p className="text-[11px] leading-5 text-gray-400">&copy; {new Date().getFullYear()} Lush Constructions. All rights reserved.</p>
         </div>
       </div>
     </footer>
