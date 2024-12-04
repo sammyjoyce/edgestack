@@ -40,9 +40,9 @@ export default function AboutUs() {
           </p>
         </div>
 
-        <ul role="list" className="space-y-12 divide-y divide-gray-800 xl:col-span-3">
+        <ul role="list" className="space-y-16 xl:col-span-3">
           {team.map((person) => (
-            <li key={person.name} className="flex flex-col gap-10 pt-12 sm:flex-row">
+            <li key={person.name} className="flex flex-col gap-10 sm:flex-row">
               <img 
                 src={person.imageUrl} 
                 alt={person.name}
