@@ -3,7 +3,7 @@ function BackToTop() {
     <button
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="fixed bottom-5 right-5 z-50 rounded-full bg-red-600 p-3 text-white shadow-md transition hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-hidden focus:ring-0 active:bg-red-800 active:shadow-lg"
+      className="fixed bottom-5 right-5 z-50 rounded-full bg-gray-900 p-3 text-gray-100 shadow-premium ring-1 ring-gray-800 transition hover:bg-gray-800 hover:text-gray-100 hover:ring-gray-700 focus:bg-gray-800 focus:ring-gray-700 focus:outline-none active:bg-gray-800"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

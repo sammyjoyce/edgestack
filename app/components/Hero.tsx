@@ -39,26 +39,12 @@ const HeroText = ({ title, description }) => (
         </a>
       </div>
     </div>
-    <h1 className="text-[64px] leading-[68px] tracking-[-1.43px] font-medium bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent md:text-[64px] md:leading-[68px] sm:text-[40px] sm:leading-[44px] sm:tracking-[-0.015em]">
+    <h1 className="mt-10 text-[64px] font-medium leading-[68px] tracking-[-1.43px] bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent">
       {title}
     </h1>
-    <p className="mt-8 text-gray-300 text-lg leading-relaxed">
+    <p className="mt-6 text-lg leading-8 text-gray-300">
       {description}
     </p>
-    <div className="mt-10 flex items-center gap-x-6">
-      <a
-        href="/contact"
-        className="rounded px-4 py-2.5 text-sm font-semibold text-gray-100 bg-gray-900/5 ring-1 ring-gray-800 hover:ring-gray-700 transition-all duration-300"
-      >
-        Get a Quote
-      </a>
-      <a href="/ourservices" className="text-sm font-semibold leading-6 text-gray-400 transition-colors duration-300 hover:text-white">
-        Our Services 
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" className="inline-block ml-1.5 transition-transform group-hover:translate-x-0.5">
-          <path d="M5.46967 11.4697C5.17678 11.7626 5.17678 12.2374 5.46967 12.5303C5.76256 12.8232 6.23744 12.8232 6.53033 12.5303L10.5303 8.53033C10.8207 8.23999 10.8236 7.77014 10.5368 7.47624L6.63419 3.47624C6.34492 3.17976 5.87009 3.17391 5.57361 3.46318C5.27713 3.75244 5.27128 4.22728 5.56054 4.52376L8.94583 7.99351L5.46967 11.4697Z" />
-        </svg>
-      </a>
-    </div>
   </div>
 );
 
@@ -90,33 +76,23 @@ export default function Hero() {
       {/* Main content */}
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
         <div className="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
-          <div className="mt-24 sm:mt-32 lg:mt-16">
-            <a href="/projects" className="inline-flex space-x-6">
-              <span className="rounded-full bg-gray-900/50 px-3 py-1 text-sm font-semibold leading-6 text-gray-100 ring-1 ring-gray-800/50 backdrop-blur-xs">
-                Latest Projects
-              </span>
-              <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-gray-300">
-                <span>View our work</span>
-                <ChevronRightIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
-              </span>
-            </a>
-          </div>
+
           <HeroText title={slides[currentIndex].title} description={slides[currentIndex].description} />
           <div className="mt-10 flex items-center gap-x-6">
             <a
               href="/contact"
-              className="rounded bg-gray-900/50 px-3.5 py-2.5 text-sm font-semibold text-gray-100 shadow-premium backdrop-blur-xs ring-1 ring-gray-800/50 hover:bg-gray-800/50 hover:text-gray-100 hover:ring-gray-700/50 transition-all duration-300"
+              className="rounded bg-gray-900 px-3.5 py-2.5 text-[13px] font-semibold text-gray-100 shadow-premium backdrop-blur-xs ring-1 ring-gray-800 hover:bg-gray-800 hover:text-gray-100 hover:ring-gray-700 transition-all duration-300"
             >
               Get a Quote
             </a>
-            <a href="/projects" className="text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-200">
+            <a href="/projects" className="text-[13px] font-semibold leading-6 text-gray-300 hover:text-gray-100 transition-colors duration-200">
               View Projects <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>
         <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
           <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
-            <div className="relative aspect-[2/1] h-[24.75rem] md:h-[32rem] lg:h-[40rem] rounded-lg bg-gray-900/50 ring-1 ring-gray-800/50 backdrop-blur-xs">
+            <div className="relative aspect-[2/1] h-[24.75rem] md:h-[32rem] lg:h-[40rem] rounded-lg bg-gray-900 ring-1 ring-gray-800 backdrop-blur-xs">
               <img
                 src={slides[currentIndex].src}
                 alt={slides[currentIndex].alt}

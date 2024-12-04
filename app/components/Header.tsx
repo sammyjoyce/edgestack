@@ -5,13 +5,13 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinkClass = ({ isActive }) => 
-    `text-gray-300 hover:text-gray-100 transition-colors duration-200 ${isActive ? 'font-semibold text-gray-100' : ''}`;
+    `text-[13px] text-gray-300 hover:text-gray-100 transition-colors duration-200 ${isActive ? 'font-semibold text-gray-100' : ''}`;
 
   return (
-    <header className="sticky inset-x-0 top-0 max-w-container mx-auto px-4 sm:px-6 lg:px-8 z-50 w-full flex-none text-sm font-semibold bg-black/95 backdrop-blur-xs supports-backdrop-filter:bg-black/80 shadow-premium">
+    <header className="sticky inset-x-0 top-0 max-w-container mx-auto px-4 sm:px-6 lg:px-8 z-50 w-full flex-none text-[13px] font-semibold bg-black/95 backdrop-blur-xs supports-backdrop-filter:bg-black/80 shadow-premium">
       <nav aria-label="Global" className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center py-4">
-          <div className="absolute inset-x-0 bottom-0 h-px bg-gray-800/50"></div>
+          <div className="absolute inset-x-0 bottom-0 h-px bg-gray-800"></div>
           
           {/* Logo */}
           <NavLink to="/" className="flex-none">
@@ -23,7 +23,7 @@ function Header() {
           </NavLink>
 
           {/* Announcement Banner */}
-          <a href="tel:0404289437" className="group -my-2 ml-6 hidden items-center gap-2 rounded bg-black/50 px-4 py-2 text-xs text-gray-300 ring-1 ring-gray-700 hover:bg-gray-800/50 hover:text-white hover:ring-gray-600 shadow-premium transition-all duration-300 sm:flex md:ml-8 lg:hidden min-[80rem]:flex">
+          <a href="tel:0404289437" className="group -my-2 ml-6 hidden items-center gap-2 rounded bg-black/50 px-4 py-2 text-[11px] text-gray-300 ring-1 ring-gray-800 hover:bg-gray-800/50 hover:text-gray-100 hover:ring-gray-700 shadow-premium transition-all duration-300 sm:flex md:ml-8 lg:hidden min-[80rem]:flex">
             <svg className="size-4 fill-gray-300 group-hover:fill-gray-100 transition-colors duration-300" viewBox="0 0 24 24">
               <path fillRule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5z" clipRule="evenodd" />
             </svg>
