@@ -159,19 +159,19 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
   };
 
   return (
-    <div className="relative group">
-      <div className="relative h-80 w-full overflow-hidden rounded bg-black">
+    <div className="relative group h-full min-h-[300px]">
+      <div className="absolute inset-0 overflow-hidden rounded bg-gray-950">
         <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
           <button
             onClick={previousImage}
-            className="rounded-full bg-black/50 p-2 text-gray-100 backdrop-blur-xs transition-all hover:bg-gray-900/50"
+            className="rounded-full bg-white/10 p-2 text-gray-100 backdrop-blur-sm transition-all hover:bg-white/20"
             aria-label="Previous image"
           >
             <ChevronLeftIcon className="h-6 w-6" />
           </button>
           <button
             onClick={nextImage}
-            className="rounded-full bg-black/50 p-2 text-gray-100 backdrop-blur-xs transition-all hover:bg-gray-900/50"
+            className="rounded-full bg-white/10 p-2 text-gray-100 backdrop-blur-sm transition-all hover:bg-white/20"
             aria-label="Next image"
           >
             <ChevronRightIcon className="h-6 w-6" />
@@ -182,7 +182,7 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
             <button
               key={index}
               className={`h-1.5 rounded-full transition-all ${
-                index === currentImageIndex ? 'w-4 bg-gray-100' : 'w-1.5 bg-gray-300/50'
+                index === currentImageIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/40'
               }`}
               onClick={() => setCurrentImageIndex(index)}
               aria-label={`Go to image ${index + 1}`}
@@ -199,9 +199,10 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
             <img
               src={image}
               alt={`${alt} - Image ${index + 1}`}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-101"
+              className="absolute inset-0 h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-gray-950/30" />
+            <div className="absolute inset-0 bg-black/5" />
           </div>
         ))}
       </div>
@@ -214,33 +215,33 @@ const ServiceCard = ({ service, className }) => {
     <div className={`relative ${className}`}>
       <div className="absolute inset-px rounded-lg bg-gray-900/50"></div>
       <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)]">
-        <div className="px-8 pt-8 pb-3 sm:px-10 sm:pt-10">
-          <h3 className="text-[32px] leading-[36px] tracking-[-0.5px] font-medium 
-            bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent max-lg:text-center">
+        <div className="h-full px-8 pt-8 pb-3 sm:px-10 sm:pt-10">
+          <h3 className="text-xl sm:text-xl lg:text-2xl leading-tight tracking-[-0.37px] font-medium 
+            bg-gradient-to-r from-white via-white/80 to-gray-300/50 sm:bg-gradient-to-b md:bg-gradient-to-r bg-clip-text text-transparent max-lg:text-center">
             {service.title}
           </h3>
-          <p className="mt-4 text-gray-300 text-base/6 leading-relaxed max-lg:text-center">
+          <p className="mt-4 text-[15px] sm:text-[14px] leading-normal text-gray-300 max-lg:text-center line-clamp-3">
             {service.description}
           </p>
         </div>
-        <div className="relative flex-1 w-full mt-6">
+        <div className="flex-1 w-full min-h-[320px] sm:min-h-[347px] md:min-h-[387px] lg:min-h-[413px]">
           <ImageSlider images={service.images} alt={service.alt} />
         </div>
       </div>
-      <div className="pointer-events-none absolute inset-px rounded-lg ring-1 ring-gray-800"></div>
+      <div className="pointer-events-none absolute inset-px rounded-lg ring-1 ring-gray-800 hover:ring-gray-700 transition-all duration-300 ease-in-out"></div>
     </div>
   );
 };
 
 export default function OurServices() {
   return (
-    <div className="relative bg-black py-24 sm:py-32 overflow-hidden">
+    <div className="relative py-24 sm:py-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-[64px] leading-[68px] tracking-[-1.43px] font-medium bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-gradient-to-r from-white via-white/80 to-gray-300/50 sm:bg-gradient-to-b md:bg-gradient-to-r bg-clip-text text-transparent">
             Our Services
           </h2>
-          <p className="mt-6 text-[15px] leading-8 text-gray-300 max-lg:text-center">
+          <p className="mt-6 text-[15px] sm:text-[14px] leading-normal text-gray-300 max-lg:text-center">
             We specialize in a wide range of construction and renovation services, delivering exceptional results that exceed expectations.
           </p>
         </div>

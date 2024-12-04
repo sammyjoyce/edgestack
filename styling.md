@@ -1,43 +1,75 @@
 # Styling Rules
 
 ## Colors
+
 ### Backgrounds
-```
-bg-black        // Primary, Marketing
-bg-gray-900     // Secondary
-bg-gray-800     // Tertiary, Quinary
-bg-gray-800/90  // Quaternary
-```
+backgrounds:
+  primary: bg-black        // Marketing sections
+  secondary: bg-gray-900   // Content areas
+  tertiary: bg-gray-800   // Cards, containers
+  quaternary: bg-gray-700  // Interactive elements
 
 ### Borders
-```
-border-gray-800  // Primary
-border-gray-700  // Secondary
-border-gray-600  // Tertiary
-```
+borders:
+  primary: border-gray-800
+  secondary: border-gray-700
+  tertiary: border-gray-600
 
 ### Text Colors
-```
-text-gray-100   // Primary
-text-gray-300   // Secondary
-text-gray-400   // Tertiary
-
-// Gradient Text
-bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent
-```
+text:
+  primary: text-gray-100
+  secondary: text-gray-300
+  tertiary: text-gray-400
+  gradient: bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent
+  responsive_gradient:
+    mobile: sm:bg-gradient-to-b
+    tablet_up: md:bg-gradient-to-r
 
 ## Typography
-### Font Sizes
-```
-text-[11px]   // Micro (0.6875rem)
-text-xs       // Mini (12px, 0.75rem)
-text-[13px]   // Small (0.8125rem)
-text-[15px]   // Regular (0.9375rem)
-text-lg       // Large (18px, 1.125rem)
-text-xl       // Title 3 (20px, 1.25rem)
-text-2xl      // Title 2 (24px, 1.5rem)
-text-4xl      // Title 1 (36px, 2.25rem)
 
-// Display Size
-text-[64px] leading-[68px] tracking-[-1.43px]
-```
+### Font Sizes
+text_sizes:
+  display:
+    desktop: text-[64px] leading-[68px] tracking-[-1.43px]
+    tablet: md:text-[52px] md:leading-[56px]
+    mobile: sm:text-[40px] sm:leading-[44px]
+  
+  title1:
+    desktop: text-4xl leading-tight tracking-[-1.43px]
+    mobile: sm:text-2xl
+  
+  title2:
+    desktop: text-2xl leading-tight tracking-[-0.37px]
+    mobile: sm:text-xl
+  
+  title3:
+    desktop: text-xl leading-snug
+    mobile: sm:text-[17px]
+  
+  body:
+    large: text-lg sm:text-base leading-relaxed
+    regular: text-[15px] sm:text-[14px] leading-normal
+    small: text-[13px] leading-tight
+    mini: text-xs leading-none
+    micro: text-[11px] leading-none
+
+### Common Text Patterns
+common_patterns:
+  hero: text-[64px] leading-[68px] tracking-[-1.43px] sm:text-[40px] sm:leading-[44px] sm:tracking-[-0.015em]
+  section_header: text-[32px] leading-tight tracking-[-0.5px] sm:text-[24px] sm:leading-snug
+  navigation: text-[13px] leading-none font-medium sm:text-[15px] sm:leading-loose
+  caption: text-xs text-gray-400 leading-normal tracking-wide
+
+## Animations & Transitions
+
+### Transitions
+transitions:
+  default: transition-all duration-300 ease-in-out
+  fast: transition-all duration-150 ease-in-out
+  slow: transition-all duration-500 ease-in-out
+
+### Transform Values
+hover_states:
+  scale: hover:scale-102 active:scale-98
+  opacity: hover:opacity-80
+  background: hover:bg-gray-800
