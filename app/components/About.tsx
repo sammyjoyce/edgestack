@@ -1,14 +1,3 @@
-import { CheckCircleIcon } from '@heroicons/react/20/solid'
-
-const features = [
-  'Custom Home Builds',
-  'Home Extensions & Renovations',
-  'Commercial Construction',
-  'Project Management',
-  'Design & Planning',
-  'Council Approvals',
-]
-
 const team = [
   {
     name: 'Merlin',
@@ -28,96 +17,56 @@ const team = [
 
 export default function AboutUs() {
   return (
-    <div className="relative bg-black py-24 sm:py-32 overflow-hidden">
-      {/* Gradient polygon background */}
-      <div 
-        className="absolute inset-0 w-full h-full"
-        aria-hidden="true"
-      >
-   <defs>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#13B5C8" stroke-width="0.5" opacity="0.2"/>
-    </pattern>
-  </defs>
-  <rect width="100%" height="100%" fill="url(#grid)" />
-      </div>
-      
-      {/* Grid pattern */}
-      <div className="absolute inset-0 w-full h-full" aria-hidden="true">
-        <svg className="absolute h-full w-full" xmlns="http://www.w3.org/2000/svg">
+    <div className="relative bg-black py-24 md:py-32 overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute inset-y-0 right-0 -z-10 w-[200%] overflow-hidden lg:w-[100%] xl:-mr-96">
+        <svg className="absolute h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_left,white,transparent)]" aria-hidden="true">
           <defs>
-            <pattern id="grid-about" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-amber-500/10" />
+            <pattern id="about-pattern" width="200" height="200" patternUnits="userSpaceOnUse">
+              <path d="M.5 200V.5H200" fill="none"></path>
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#grid-about)" />
+          <rect width="100%" height="100%" strokeWidth="1" fill="url(#about-pattern)"></rect>
         </svg>
       </div>
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 lg:px-8 xl:grid-cols-3">
-        <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-base font-semibold leading-7 text-amber-400">About Us</h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl [text-wrap:balance]">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 lg:px-8 xl:grid-cols-5">
+        <div className="max-w-2xl xl:col-span-2">
+          <h2 className="text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl">
             Meet Our Team
+          </h2>
+          <p className="mt-6 text-lg/8 text-gray-300">
+            Our skilled team brings together decades of construction expertise, innovative thinking, and unwavering commitment to quality. Each project we undertake reflects our dedication to excellence and client satisfaction.
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
-            The building team at Lush Constructions consists of dedicated professionals who bring your vision to life. 
-            We strive to deliver the highest quality of construction to make your dreams a reality.
-          </p>
-          <div className="mt-10 space-y-4">
-            {features.map((feature) => (
-              <div key={feature} className="flex items-center gap-x-2">
-                <CheckCircleIcon className="size-5 flex-none text-amber-400" aria-hidden="true" />
-                <span className="text-gray-300">{feature}</span>
-              </div>
-            ))}
-          </div>
         </div>
-        <ul
-          role="list"
-          className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-8 xl:col-span-2"
-        >
+
+        <ul role="list" className="-mt-12 space-y-12 divide-y divide-gray-800 xl:col-span-3">
           {team.map((person) => (
-            <li key={person.name} className="rounded bg-black/50 ring-1 ring-amber-700 hover:ring-amber-600 shadow-subtle hover:shadow-elevated transition-all duration-200">
-              <img className="mx-auto  w-full h-auto rounded object-cover" src={person.imageUrl} alt="" />
-              <div className="p-8"><h3 className="text-base font-semibold leading-7 tracking-tight text-white">{person.name}</h3>
-              <p className="text-sm leading-6 text-gray-400">{person.role}</p>
-              <p className="mt-4 text-base leading-7 text-gray-300">{person.bio}</p>
-              <ul role="list" className="mt-6 flex justify-center gap-x-6">
-                <li>
-                  <a
-                    href={person.instagramUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-amber-400 transition-colors"
-                  >
-                    <span className="sr-only">Instagram</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 448 512"
-                      className="h-5 w-5"
-                      aria-hidden="true"
-                      fill="currentColor"
-                    >
-                      <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
-                    </svg>
-                  </a>
-                </li>
-              </ul>
+            <li key={person.name} className="flex flex-col gap-10 pt-12 sm:flex-row">
+              <img 
+                src={person.imageUrl} 
+                alt={person.name}
+                className="aspect-[4/5] w-52 flex-none rounded object-cover ring-1 ring-white/10"
+              />
+              <div className="max-w-xl flex-auto">
+                <h3 className="text-lg font-semibold tracking-tight text-white">{person.name}</h3>
+                <p className="text-base text-gray-400">{person.role}</p>
+                <p className="mt-6 text-base text-gray-300">{person.bio}</p>
+                <ul role="list" className="mt-6 flex gap-x-6">
+                  <li>
+                    <a href={person.instagramUrl} className="text-gray-400 hover:text-accent-400 transition-colors duration-200">
+                      <span className="sr-only">Instagram</span>
+                      <svg className="size-5" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
+                        <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" />
+                      </svg>
+                    </a>
+                  </li>
+                </ul>
               </div>
             </li>
           ))}
         </ul>
       </div>
-      <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">
-        <div
-          className="aspect-1155/678 w-[72.1875rem] bg-linear-to-tr from-gray-900 to-amber-900/50 opacity-30"
-          style={{
-            clipPath:
-              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-          }}
-        />
-      </div>
     </div>
-  );
+  )
 }

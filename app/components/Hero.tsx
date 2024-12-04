@@ -56,7 +56,7 @@ export default function Hero() {
             <div className="relative px-6 py-32 sm:py-40 lg:px-8 lg:py-56 lg:pr-0">
               <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
                 <div className="hidden sm:mb-10 sm:flex">
-                  <div className="relative rounded px-4 py-2 text-sm text-gray-200 ring-1 ring-gray-700 hover:ring-gray-600 bg-gray-900/50 shadow-premium backdrop-blur-sm transition-all duration-300">
+                  <div className="relative rounded px-4 py-2 text-sm text-gray-200 ring-1 ring-gray-700 hover:ring-gray-600 bg-black/50 shadow-premium backdrop-blur-sm transition-all duration-300">
                     Call us for a free quote{' '}
                     <a href="tel:0404289437" className="whitespace-nowrap font-semibold text-white group-hover:text-amber-400">
                       <span aria-hidden="true" className="absolute inset-0" />
