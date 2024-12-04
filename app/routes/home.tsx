@@ -1,20 +1,21 @@
-import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import ImageSlider from '../components/Slider';
-import OurServices from '../components/OurServices';
-import AllAspectsCarpentry from '../components/AllAspectsCarpentry';
-import CollaborationAndConsultations from '../components/CollaborationAndConsultations';
-import AboutUs from '../components/AboutUs';
-import ContactUs from '../components/ContactUs';
-import BackToTop from '../components/BackToTop';
-import { Welcome } from "../welcome/welcome";
+import React from "react";
+import AboutUs from "../components/About";
+import CollaborationAndConsultations from "../components/CollaborationAndConsultations";
+import ContactUs from "../components/ContactUs";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import OurServices from "../components/OurServices";
+import ImageSlider from "../components/Hero";
 import type { Route } from "./+types/home";
+
 
 export function meta({}: Route.MetaArgs) {
 	return [
 		{ title: "Lush Constructions" },
-		{ name: "description", content: "High-Quality Solutions for Home & Office Improvement" },
+		{
+			name: "description",
+			content: "High-Quality Solutions for Home & Office Improvement",
+		},
 	];
 }
 
@@ -27,13 +28,10 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 		<>
 			<Header />
 			<ImageSlider />
-			<Welcome message={loaderData.message} />
 			<OurServices />
-			<AllAspectsCarpentry />
 			<CollaborationAndConsultations />
 			<AboutUs />
 			<ContactUs />
-			<BackToTop />
 			<Footer />
 		</>
 	);

@@ -1,59 +1,69 @@
-import React from 'react';
+import React from "react";
+import { CalendarDaysIcon, HandRaisedIcon } from '@heroicons/react/24/outline'
 
-function CollaborationAndConsultations() {
-  return (
-    <div className="sp">
-      <h2 className="text-[18px] font-bold text-white my-8">
-        COLLABORATION AND CONSULTATIONS
-      </h2>
-      <p className="p">
-        With promoting a culture for collaboration and consultations within
-        our building company, we prioritise open communication and teamwork
-        at every stage of our projects. Our approach values the diverse
-        expertise within our team, encouraging seamless coordination between
-        architects, engineers and construction professionals. By promoting a
-        collaborative environment, we ensure that innovative ideas are
-        shared, challenges are addressed collectively and decisions are made
-        with a comprehensive understanding of the project's requirements.
-        This commitment to collaboration not only enhances efficiency but
-        also results in high-quality outcomes that exceed client
-        expectations.
-      </p>
-      <h2 className="text-[18px] font-bold text-white my-8">
-        PROJECT MANAGEMENT
-      </h2>
-      <p className="p">
-        Our team at Lush Constructions works collectively with our clients,
-        their architect and design team. Along with other trades to
-        guarantee we meet the brief to the highest of standards.
-      </p>
-      <p className="p !py-8">
-        As an owner/builder company, from the initial consultation we build
-        trusted relationships with our clients. This ensures their
-        understanding that they will be dealing with the same people from
-        the start to the finish of their project.
-      </p>
-      <p className="p">
-        Throughout the build you will be scheduled onsite meetings during
-        various stages of the project as it progresses and evolves. Making
-        sure everyone is on the same page or where site constraints may call
-        for an alteration in design.
-      </p>
-      <img
-        className="w-full rounded-md !py-12"
-        src="/assets/pic13-C3BImLY9.png"
-        alt="Home building Basement waterproofing Bathroom remodeling Building construction Furniture assembly"
-      />
-      <p className="p">
-        With over a decade of expertise, Lush Constructions stands at the
-        forefront of the Australian construction industry. Our mission is
-        clear – to deliver unparalleled quality in every nail driven and
-        brick laid. From cozy homes to sprawling corporate offices, city
-        councils to government projects, we bring dreams to life through
-        meticulous craftsmanship and dedicated service.
-      </p>
-    </div>
-  );
+interface Collaboration {
+  name: string;
+  icon: React.ElementType;
+  description: string;
+  link?: string;
 }
 
-export default CollaborationAndConsultations;
+const collaborations: Collaboration[] = [
+  {
+    name: 'Free Consultations',
+    icon: CalendarDaysIcon,
+    description: 'Book a free consultation with our experts. We\'ll discuss your project needs and provide professional advice.',
+  },
+  {
+    name: 'Expert Support',
+    icon: HandRaisedIcon,
+    description: 'Our team of skilled professionals is here to guide you through every step of your construction journey.',
+  },
+];
+
+export default function CollaborationAndConsultations() {
+  return (
+    <div className="bg-gray-950 py-24 sm:py-32">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 lg:px-8 xl:grid-cols-3">
+        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none xl:col-span-2">
+          {collaborations.map((collab) => (
+            <div key={collab.name} className="flex flex-col rounded bg-gray-950/50 p-8 ring-1 ring-primary-700 hover:ring-primary-600 shadow-subtle hover:shadow-elevated transition-all duration-200">
+              <dt className="text-base font-semibold leading-7 text-white">
+                <div className="mb-6 flex h-10 w-10 items-center justify-center rounded bg-accent-500">
+                  <collab.icon className="h-6 w-6 text-white" aria-hidden="true" />
+                </div>
+                {collab.name}
+              </dt>
+              <dd className="mt-1 flex flex-auto flex-col text-base leading-7 text-primary-200">
+                <p className="flex-auto">{collab.description}</p>
+                {collab.link && (
+                  <p className="mt-6">
+                    <a href={collab.link} className="text-sm font-semibold leading-6 text-accent-500 hover:text-accent-400 transition-colors duration-200">
+                      Learn more <span aria-hidden="true">→</span>
+                    </a>
+                  </p>
+                )}
+              </dd>
+            </div>
+          ))}
+        </div>
+        <div className="mx-auto max-w-2xl lg:mx-0">
+          <h2 className="text-base font-semibold leading-7 text-primary-200">Collaboration</h2>
+          <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Building Together</p>
+          <p className="mt-6 text-lg leading-8 text-primary-200">
+            We believe in collaborative construction, working closely with clients, architects, and designers to bring your vision to life.
+          </p>
+        </div>
+      </div>
+      <div className="absolute left-1/2 top-0 -z-10 -translate-x-1/2 blur-3xl xl:-top-6" aria-hidden="true">
+        <div
+          className="aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#1f2937] to-[#1e3a8a] opacity-30"
+          style={{
+            clipPath:
+              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+          }}
+        />
+      </div>
+    </div>
+  )
+}
