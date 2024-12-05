@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const navigation = [
 	{
@@ -47,13 +48,26 @@ const socialLinks = navigation[0].social;
 
 export default function Footer() {
 	return (
-		<footer className="relative" aria-labelledby="footer-heading">
+		<motion.footer
+			initial={{ opacity: 0 }}
+			whileInView={{ opacity: 1 }}
+			viewport={{ once: true }}
+			transition={{ duration: 0.8 }}
+			className="relative"
+			aria-labelledby="footer-heading"
+		>
 			<h2 id="footer-heading" className="sr-only">
 				Footer
 			</h2>
 			<div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8">
 				<div className="xl:grid xl:grid-cols-3 xl:gap-8">
-					<div className="space-y-8">
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+						className="space-y-8"
+					>
 						<img
 							className="h-16 w-auto"
 							src="/assets/logo_284x137-KoakP1Oi.png"
@@ -75,8 +89,14 @@ export default function Footer() {
 								</a>
 							))}
 						</div>
-					</div>
-					<div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
+					</motion.div>
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6, delay: 0.2 }}
+						className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0"
+					>
 						<div className="md:grid md:grid-cols-2 md:gap-8">
 							<div>
 								<h3 className="text-[13px] leading-tight font-semibold text-gray-100">
@@ -143,7 +163,7 @@ export default function Footer() {
 								</ul>
 							</div>
 						</div>
-					</div>
+					</motion.div>
 				</div>
 				<div className="mt-8 border-t border-gray-800 pt-8 md:flex md:items-center md:justify-between">
 					<p className="text-[11px] leading-none text-gray-400">
@@ -152,6 +172,6 @@ export default function Footer() {
 					</p>
 				</div>
 			</div>
-		</footer>
+		</motion.footer>
 	);
 }

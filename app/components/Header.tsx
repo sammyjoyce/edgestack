@@ -4,6 +4,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { NavLink } from "react-router";
+import { motion, AnimatePresence } from "framer-motion";
 
 const menuItems = [
 	{ name: "Home", path: "#hero" },
@@ -87,7 +88,12 @@ function Header() {
 					</div>
 
 					{/* Desktop navigation */}
-					<div className="hidden lg:flex lg:gap-x-12">
+					<motion.div 
+						initial={{ opacity: 0, y: -10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.5 }}
+						className="hidden lg:flex lg:gap-x-12"
+					>
 						{menuItems.map((item) =>
 							item.submenu ? (
 								<Popover key={item.name} className="relative">
@@ -138,7 +144,7 @@ function Header() {
 								</NavLink>
 							),
 						)}
-					</div>
+					</motion.div>
 				</div>
 			</nav>
 
@@ -148,7 +154,17 @@ function Header() {
 				open={mobileMenuOpen}
 				onClose={setMobileMenuOpen}
 			>
-				<div className="fixed inset-0 z-50" />
+				<AnimatePresence>
+					{mobileMenuOpen && (
+						<motion.div 
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.2 }}
+							className="fixed inset-0 z-50"
+						/>
+					)}
+				</AnimatePresence>
 				<DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black/95 backdrop-blur-lg px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900 shadow-2xl inset-shadow-sm inset-shadow-white/5">
 					<div className="flex items-center justify-between">
 						<NavLink
