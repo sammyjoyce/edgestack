@@ -1,14 +1,24 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router";
-import { Dialog, DialogPanel } from '@headlessui/react'
+import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Popover } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 const menuItems = [
-  { name: 'Home', path: '/' },
-  { name: 'Our Services', path: '/ourservices' },
-  { name: 'Gallery', path: '/gallery' },
-  { name: 'About Us', path: '/aboutus' },
-  { name: 'Contact Us', path: '/contactus' }
+  { name: 'Home', path: '#hero' },
+  { 
+    name: 'Our Services', 
+    path: '#services',
+    submenu: [
+      { name: 'Renovations', path: '#service-renovations' },
+      { name: 'Extensions', path: '#service-extensions' },
+      { name: 'New Builds', path: '#service-new-builds' },
+      { name: 'Commercial', path: '#service-commercial' }
+    ]
+  },
+  { name: 'About Us', path: '#about' },
+  { name: 'Contact Us', path: '#contact' }
 ];
 
 function Header() {
@@ -16,6 +26,15 @@ function Header() {
 
   const navLinkClass = ({ isActive }) => 
     `text-[13px] leading-none font-medium sm:text-[15px] sm:leading-loose ${isActive ? 'text-gray-100' : 'text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out'}`;
+
+  const scrollToSection = (event, sectionId) => {
+    event.preventDefault();
+    const element = document.getElementById(sectionId.replace('#', ''));
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setMobileMenuOpen(false);
+    }
+  };
 
   return (
     <header className="sticky inset-x-0 top-0 z-50 w-full flex-none text-[13px] font-semibold bg-black/60 backdrop-blur-xs supports-backdrop-filter:bg-black/60 shadow-premium inset-shadow-sm inset-shadow-black/10">
@@ -58,13 +77,50 @@ function Header() {
           {/* Desktop navigation */}
           <div className="hidden lg:flex lg:gap-x-12">
             {menuItems.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.path}
-                className={navLinkClass}
-              >
-                {item.name}
-              </NavLink>
+              item.submenu ? (
+                <Popover key={item.name} className="relative">
+                  {({ open }) => (
+                    <>
+                      <Popover.Button className={`flex items-center gap-x-1 text-[13px] leading-none font-medium sm:text-[15px] sm:leading-loose text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out ${open ? 'text-gray-100' : ''}`}>
+                        {item.name}
+                        <ChevronDownIcon
+                          className={`h-5 w-5 flex-none text-gray-400 ${open ? 'rotate-180 text-gray-100' : ''} transition-transform duration-300`}
+                          aria-hidden="true"
+                        />
+                      </Popover.Button>
+                      <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2">
+                        <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-gray-800 bg-gray-900/95 backdrop-blur-sm">
+                          <div className="relative grid gap-6 px-5 py-6 sm:gap-8 sm:p-8">
+                            {item.submenu.map((subItem) => (
+                              <NavLink
+                                key={subItem.name}
+                                to={subItem.path}
+                                className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-800/50 hover:inset-shadow-sm hover:inset-shadow-white/5"
+                                onClick={(e) => scrollToSection(e, subItem.path)}
+                              >
+                                <div className="ml-4">
+                                  <p className="text-base font-medium text-gray-300 hover:text-gray-100">
+                                    {subItem.name}
+                                  </p>
+                                </div>
+                              </NavLink>
+                            ))}
+                          </div>
+                        </div>
+                      </Popover.Panel>
+                    </>
+                  )}
+                </Popover>
+              ) : (
+                <NavLink
+                  key={item.name}
+                  to={item.path}
+                  className={navLinkClass}
+                  onClick={(e) => scrollToSection(e, item.path)}
+                >
+                  {item.name}
+                </NavLink>
+              )
             ))}
           </div>
         </div>
@@ -72,7 +128,7 @@ function Header() {
 
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-50" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black/95 backdrop-blur-lg px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900 shadow-2xl inset-shadow-sm inset-shadow-white/5">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black/95 backdrop-blur-lg px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900 shadow-2xl inset-shadow-sm inset-shadow-white/5">
           <div className="flex items-center justify-between">
             <NavLink to="/" className="-m-1.5 p-1.5" onClick={() => setMobileMenuOpen(false)}>
               <img
@@ -94,14 +150,29 @@ function Header() {
             <div className="-my-6 divide-y divide-gray-800">
               <div className="space-y-2 py-6">
                 {menuItems.map((item) => (
-                  <NavLink
-                    key={item.name}
-                    to={item.path}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:text-gray-100 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item.name}
-                  </NavLink>
+                  <div key={item.name}>
+                    <NavLink
+                      to={item.path}
+                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:text-gray-100 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
+                      onClick={(e) => scrollToSection(e, item.path)}
+                    >
+                      {item.name}
+                    </NavLink>
+                    {item.submenu && (
+                      <div className="mt-2 space-y-2 pl-6">
+                        {item.submenu.map((subItem) => (
+                          <NavLink
+                            key={subItem.name}
+                            to={subItem.path}
+                            className="-mx-3 block rounded-lg px-3 py-2 text-sm font-medium leading-7 text-gray-400 hover:text-gray-100 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
+                            onClick={(e) => scrollToSection(e, subItem.path)}
+                          >
+                            {subItem.name}
+                          </NavLink>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
               <div className="py-6">
@@ -114,7 +185,7 @@ function Header() {
               </div>
             </div>
           </div>
-        </DialogPanel>
+        </Dialog.Panel>
       </Dialog>
     </header>
   );
