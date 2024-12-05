@@ -32,20 +32,41 @@ const slides = [
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(slides[0]);
+  const [nextSlide, setNextSlide] = useState(slides[1]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((currentIndex + 1) % slides.length);
+      setIsTransitioning(true);
+      const nextIndex = (currentIndex + 1) % slides.length;
+      setNextSlide(slides[nextIndex]);
+      
+      // After starting the fade out, wait for it to complete before changing slides
+      setTimeout(() => {
+        setCurrentIndex(nextIndex);
+        setCurrentSlide(slides[nextIndex]);
+        setNextSlide(slides[(nextIndex + 1) % slides.length]);
+        setIsTransitioning(false);
+      }, 1000); // Match this with the CSS transition duration
     }, 5000);
+    
     return () => clearInterval(timer);
   }, [currentIndex]);
 
   return (
     <div className="relative isolate overflow-hidden pt-14">
+      {/* Current Image */}
       <img
-        src={slides[currentIndex].src}
-        alt={slides[currentIndex].alt}
-        className="absolute inset-0 -z-10 size-full object-cover opacity-50"
+        src={currentSlide.src}
+        alt={currentSlide.alt}
+        className={`absolute inset-0 -z-10 size-full object-cover transition-opacity duration-[2000ms] ease-in-out ${isTransitioning ? 'opacity-0' : 'opacity-50'}`}
+      />
+      {/* Next Image (preloaded) */}
+      <img
+        src={nextSlide.src}
+        alt={nextSlide.alt}
+        className={`absolute inset-0 -z-20 size-full object-cover transition-opacity duration-[2000ms] ease-in-out ${isTransitioning ? 'opacity-50' : 'opacity-0'}`}
       />
       <div
         aria-hidden="true"
@@ -60,7 +81,7 @@ export default function Hero() {
         />
       </div>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto  py-32 sm:py-48 lg:py-56">
+        <div className="mx-auto py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded px-4 py-2 text-xs leading-none text-gray-300 ring-1 ring-gray-800 hover:ring-gray-700 bg-black/50 shadow-premium backdrop-blur-xs transition-all duration-300 ease-in-out">
               Call us for a free quote{' '}
@@ -71,12 +92,14 @@ export default function Hero() {
             </div>
           </div>
           <div className="text-center">
-            <h1 className="text-[40px] leading-[44px] tracking-[-1.43px] md:text-[52px] md:leading-[56px] lg:text-[64px] lg:leading-[68px] font-medium bg-linear-to-r/oklch from-white/95 via-white/90 to-white/80 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent">
-              {slides[currentIndex].title}
-            </h1>
-            <p className="mt-8 text-[15px] sm:text-[14px] leading-normal text-pretty text-gray-300">
-              {slides[currentIndex].description}
-            </p>
+            <div className="relative">
+              <h1 className="text-[40px] leading-[44px] tracking-[-1.43px] md:text-[52px] md:leading-[56px] lg:text-[64px] lg:leading-[68px] font-medium bg-linear-to-r/oklch from-white/95 via-white/90 to-white/80 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent transition-transform duration-[2000ms] ease-in-out">
+                {currentSlide.title}
+              </h1>
+              <p className="mt-8 text-[15px] sm:text-[14px] leading-normal text-pretty text-gray-300 transition-all duration-[2000ms] ease-in-out">
+                {currentSlide.description}
+              </p>
+            </div>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="#contact"
@@ -104,5 +127,5 @@ export default function Hero() {
         />
       </div>
     </div>
-  )
+  );
 }
