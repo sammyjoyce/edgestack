@@ -22,7 +22,7 @@ export default function AboutUs() {
 		<div className="relative">
 			{/* Decorative background */}
 			<div className="absolute inset-0 pointer-events-none">
-				<div className="absolute inset-y-0 right-0 w-[200%] lg:w-[100%] xl:-mr-96">
+				<div className="absolute inset-y-0 right-0 w-full">
 					<svg
 						className="h-full w-full stroke-gray-800/40 [mask-image:radial-gradient(100%_100%_at_top_left,white,transparent)]"
 						aria-hidden="true"

@@ -12,8 +12,10 @@ function BackToTop() {
 				strokeWidth="1.5"
 				stroke="currentColor"
 				className="h-6 w-6"
+				role="img"
 				aria-label="back to top"
 			>
+				<title>Back to top</title>
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"
