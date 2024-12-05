@@ -3,8 +3,8 @@ import {
 	ChevronRightIcon,
 	PhoneIcon,
 } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
 import { motion } from "framer-motion";
+import React, { useState } from "react";
 
 const services = [
 	{
@@ -335,7 +335,8 @@ export default function OurServices() {
 							</h2>
 							<p className="mt-6 text-[15px] sm:text-[14px] leading-normal text-gray-300 max-lg:text-center">
 								We specialize in a wide range of construction and renovation
-								services, delivering exceptional results that exceed expectations.
+								services, delivering exceptional results that exceed
+								expectations.
 							</p>
 						</div>
 
