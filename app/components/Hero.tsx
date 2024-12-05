@@ -60,7 +60,7 @@ export default function Hero() {
         />
       </div>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+        <div className="mx-auto  py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded px-4 py-2 text-xs leading-none text-gray-300 ring-1 ring-gray-800 hover:ring-gray-700 bg-black/50 shadow-premium backdrop-blur-xs transition-all duration-300 ease-in-out">
               Call us for a free quote{' '}
@@ -79,12 +79,12 @@ export default function Hero() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
-                href="/contact"
+                href="#contact"
                 className="rounded bg-gray-900 px-3.5 py-2.5 text-[13px] leading-none font-semibold text-gray-100 shadow-premium backdrop-blur-xs ring-1 ring-gray-800 hover:bg-gray-800 hover:text-gray-100 hover:ring-gray-700 transition-all duration-300 ease-in-out"
               >
                 Get a Quote
               </a>
-              <a href="/ourservices" className="text-[13px] leading-none font-semibold text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out">
+              <a href="#services" className="text-[13px] leading-none font-semibold text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out">
                 Our Services <span aria-hidden="true">→</span>
               </a>
             </div>

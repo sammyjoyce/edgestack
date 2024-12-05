@@ -236,9 +236,9 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
   );
 }
 
-const ServiceCard = ({ service, className }) => {
+const ServiceCard = ({ service, className, id }: { service: any, className: string, id: string }) => {
   return (
-    <div id={`service-${service.title.toLowerCase().replace(/\s+/g, '-')}`} className={`relative ${className}`}>
+    <div id={id} className={`relative ${className}`}>
       <div className="absolute inset-px rounded-lg bg-gray-900/50"></div>
       <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] bg-gray-900/30 shadow-premium inset-shadow-sm inset-shadow-white/5 hover:inset-shadow-xs hover:inset-shadow-white/10 transition-all duration-300 ease-in-out">
         <div className="h-full px-8 pt-8 pb-3 sm:px-10 sm:pt-10">
@@ -279,12 +279,14 @@ export default function OurServices() {
               <ServiceCard 
                 service={services[0]}
                 className="lg:rounded-l-[2rem] h-full"
+                id="service-renovations"
               />
             </div>
             <div className="relative">
               <ServiceCard 
                 service={services[1]}
                 className="lg:rounded-r-[2rem] h-full"
+                id="service-extensions"
               />
             </div>
           </div>
@@ -294,12 +296,14 @@ export default function OurServices() {
               <ServiceCard 
                 service={services[2]}
                 className="lg:rounded-l-[2rem] h-full"
+                id="service-granny-flats"
               />
             </div>
             <div className="relative lg:col-span-2">
               <ServiceCard 
                 service={services[3]}
                 className="lg:rounded-r-[2rem] h-full"
+                id="service-new-builds"
               />
             </div>
           </div>
@@ -309,12 +313,14 @@ export default function OurServices() {
               <ServiceCard 
                 service={services[4]}
                 className="lg:rounded-l-[2rem] h-full"
+                id="service-shop-office-fit-outs"
               />
             </div>
             <div className="relative">
               <ServiceCard 
                 service={services[5]}
                 className="lg:rounded-r-[2rem] h-full"
+                id="service-kitchens-bathrooms"
               />
             </div>
           </div>
@@ -324,12 +330,14 @@ export default function OurServices() {
               <ServiceCard 
                 service={services[6]}
                 className="lg:rounded-l-[2rem] h-full"
+                id="service-remedial-works"
               />
             </div>
             <div className="relative lg:col-span-2">
               <ServiceCard 
                 service={services[7]}
                 className="lg:rounded-r-[2rem] h-full"
+                id="service-decks-fences-pergolas"
               />
             </div>
           </div>
@@ -339,12 +347,14 @@ export default function OurServices() {
               <ServiceCard 
                 service={services[8]}
                 className="lg:rounded-l-[2rem] h-full"
+                id="service-doors-stairs-flooring"
               />
             </div>
             <div className="relative">
               <ServiceCard 
                 service={services[9]}
                 className="lg:rounded-r-[2rem] h-full"
+                id="service-roofing"
               />
             </div>
           </div>
