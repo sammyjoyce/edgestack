@@ -2,9 +2,9 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { Popover } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { NavLink } from "react-router";
-import { motion, AnimatePresence } from "framer-motion";
 
 const menuItems = [
 	{ name: "Home", path: "#hero" },
@@ -49,7 +49,7 @@ function Header() {
 							<img
 								src="/assets/logo_284x137-KoakP1Oi.png"
 								alt="LUSH CONSTRUCTIONS"
-								className="h-20 w-auto"
+								className="h-[32px] w-auto sm:h-[40px]"
 							/>
 						</NavLink>
 
@@ -88,7 +88,7 @@ function Header() {
 					</div>
 
 					{/* Desktop navigation */}
-					<motion.div 
+					<motion.div
 						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.5 }}
@@ -156,7 +156,7 @@ function Header() {
 			>
 				<AnimatePresence>
 					{mobileMenuOpen && (
-						<motion.div 
+						<motion.div
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
@@ -175,7 +175,7 @@ function Header() {
 							<img
 								src="/assets/logo_284x137-KoakP1Oi.png"
 								alt="LUSH CONSTRUCTIONS"
-								className="h-20 w-auto"
+								className="h-[32px] w-auto sm:h-[40px]"
 							/>
 						</NavLink>
 						<button

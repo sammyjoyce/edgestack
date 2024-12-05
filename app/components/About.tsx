@@ -52,7 +52,7 @@ export default function AboutUs() {
 					whileInView={{ opacity: 1 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.8 }}
-					className="py-16 sm:py-24 md:py-32" 
+					className="py-16 sm:py-24 md:py-32"
 					id="about"
 				>
 					<div className="mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 lg:px-8 xl:grid-cols-5">
@@ -73,17 +73,20 @@ export default function AboutUs() {
 								transition={{ duration: 0.6, delay: 0.4 }}
 							>
 								<p className="mt-6 text-[15px] sm:text-[14px] leading-normal text-gray-300">
-									Our skilled team brings together decades of construction expertise,
-									innovative thinking, and unwavering commitment to quality. Each
-									project we undertake reflects our dedication to excellence and
-									client satisfaction.
+									Our skilled team brings together decades of construction
+									expertise, innovative thinking, and unwavering commitment to
+									quality. Each project we undertake reflects our dedication to
+									excellence and client satisfaction.
 								</p>
 							</motion.div>
 						</motion.div>
 
 						<ul className="space-y-16 xl:col-span-3">
 							{team.map((person) => (
-								<li key={person.name} className="flex flex-col gap-10 sm:flex-row">
+								<li
+									key={person.name}
+									className="flex flex-col gap-10 sm:flex-row"
+								>
 									<img
 										src={person.imageUrl}
 										alt={person.name}
