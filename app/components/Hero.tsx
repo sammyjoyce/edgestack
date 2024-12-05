@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/16/solid'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const slides = [
   {
@@ -32,42 +33,29 @@ const slides = [
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(slides[0]);
-  const [nextSlide, setNextSlide] = useState(slides[1]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setIsTransitioning(true);
-      const nextIndex = (currentIndex + 1) % slides.length;
-      setNextSlide(slides[nextIndex]);
-      
-      // After starting the fade out, wait for it to complete before changing slides
-      setTimeout(() => {
-        setCurrentIndex(nextIndex);
-        setCurrentSlide(slides[nextIndex]);
-        setNextSlide(slides[(nextIndex + 1) % slides.length]);
-        setIsTransitioning(false);
-      }, 1000); // Match this with the CSS transition duration
-    }, 5000);
-    
+      setCurrentIndex((prev) => (prev + 1) % slides.length);
+    }, 6700);
     return () => clearInterval(timer);
-  }, [currentIndex]);
+  }, []);
 
   return (
     <div className="relative isolate overflow-hidden pt-14">
-      {/* Current Image */}
-      <img
-        src={currentSlide.src}
-        alt={currentSlide.alt}
-        className={`absolute inset-0 -z-10 size-full object-cover transition-opacity duration-[2000ms] ease-in-out ${isTransitioning ? 'opacity-0' : 'opacity-50'}`}
-      />
-      {/* Next Image (preloaded) */}
-      <img
-        src={nextSlide.src}
-        alt={nextSlide.alt}
-        className={`absolute inset-0 -z-20 size-full object-cover transition-opacity duration-[2000ms] ease-in-out ${isTransitioning ? 'opacity-50' : 'opacity-0'}`}
-      />
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentIndex}
+          src={slides[currentIndex].src}
+          alt={slides[currentIndex].alt}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.5 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="absolute inset-0 -z-10 size-full object-cover"
+        />
+      </AnimatePresence>
+
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -92,14 +80,22 @@ export default function Hero() {
             </div>
           </div>
           <div className="text-center">
-            <div className="relative">
-              <h1 className="text-[40px] leading-[44px] tracking-[-1.43px] md:text-[52px] md:leading-[56px] lg:text-[64px] lg:leading-[68px] font-medium bg-linear-to-r/oklch from-white/95 via-white/90 to-white/80 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent transition-transform duration-[2000ms] ease-in-out">
-                {currentSlide.title}
-              </h1>
-              <p className="mt-8 text-[15px] sm:text-[14px] leading-normal text-pretty text-gray-300 transition-all duration-[2000ms] ease-in-out">
-                {currentSlide.description}
-              </p>
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
+                <h1 className="text-[40px] leading-[44px] tracking-[-1.43px] md:text-[52px] md:leading-[56px] lg:text-[64px] lg:leading-[68px] font-medium bg-linear-to-r/oklch from-white/95 via-white/90 to-white/80 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent">
+                  {slides[currentIndex].title}
+                </h1>
+                <p className="mt-8 text-[15px] sm:text-[14px] leading-normal text-pretty text-gray-300">
+                  {slides[currentIndex].description}
+                </p>
+              </motion.div>
+            </AnimatePresence>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="#contact"

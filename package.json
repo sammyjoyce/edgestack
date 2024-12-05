@@ -5,6 +5,7 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "wrangler dev",
+	"format": "biome check --write **/*.{ts,tsx}",
     "typecheck": "react-router typegen && tsc --build --noEmit"
   },
   "dependencies": {
@@ -13,6 +14,7 @@
     "@react-router/node": "*",
     "@react-router/serve": "*",
     "@tailwindcss/vite": "^4.0.0-beta.5",
+    "framer-motion": "^11.13.1",
     "isbot": "^5.1.17",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
