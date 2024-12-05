@@ -52,7 +52,7 @@ export default function AboutUs() {
 					whileInView={{ opacity: 1 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.8 }}
-					className="py-24 md:py-32" 
+					className="py-16 sm:py-24 md:py-32" 
 					id="about"
 				>
 					<div className="mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 lg:px-8 xl:grid-cols-5">
@@ -87,7 +87,7 @@ export default function AboutUs() {
 									<img
 										src={person.imageUrl}
 										alt={person.name}
-										className="aspect-[4/5] w-52 flex-none rounded object-cover ring-1 ring-gray-800 hover:ring-gray-700 shadow-premium inset-shadow-sm inset-shadow-black/10 hover:inset-shadow-xs transition-all duration-300 ease-in-out"
+										className="w-full sm:w-52 aspect-[4/5] flex-none rounded object-cover ring-1 ring-gray-800 hover:ring-gray-700 shadow-premium inset-shadow-sm inset-shadow-black/10 hover:inset-shadow-xs transition-all duration-300 ease-in-out"
 									/>
 									<div className="max-w-xl flex-auto">
 										<h3 className="text-xl leading-snug sm:text-[17px] font-semibold tracking-tight text-gray-100">
