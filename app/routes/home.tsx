@@ -3,10 +3,9 @@ import AboutUs from "../components/About";
 import ContactUs from "../components/ContactUs";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import OurServices from "../components/OurServices";
 import ImageSlider from "../components/Hero";
+import OurServices from "../components/OurServices";
 import type { Route } from "./+types/home";
-
 
 export function meta({}: Route.MetaArgs) {
 	return [
