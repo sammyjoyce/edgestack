@@ -43,8 +43,20 @@ function Header() {
             </a>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="ml-auto hidden lg:flex lg:items-center lg:gap-x-8">
+          {/* Mobile menu button */}
+          <div className="flex lg:hidden">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-md p-2.5 text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <span className="sr-only">Open main menu</span>
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+
+          {/* Desktop navigation */}
+          <div className="hidden lg:flex lg:gap-x-12">
             {menuItems.map((item) => (
               <NavLink
                 key={item.name}
@@ -55,66 +67,51 @@ function Header() {
               </NavLink>
             ))}
           </div>
-
-          {/* Mobile Menu Button */}
-          <div className="flex lg:hidden">
-            <button
-              type="button"
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
-              onClick={() => setMobileMenuOpen(true)}
-            >
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon className="size-6" aria-hidden="true" />
-            </button>
-          </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Dialog */}
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm transition-all duration-300 ease-in-out" aria-hidden="true" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black/95 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-800 transition-all duration-300 ease-in-out">
+        <div className="fixed inset-0 z-50" />
+        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black/95 backdrop-blur-lg px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900">
           <div className="flex items-center justify-between">
-            <div className="invisible">
+            <NavLink to="/" className="-m-1.5 p-1.5" onClick={() => setMobileMenuOpen(false)}>
               <img
-                className="h-20 w-auto"
                 src="/assets/logo_284x137-KoakP1Oi.png"
-                alt=""
+                alt="LUSH CONSTRUCTIONS"
+                className="h-20 w-auto"
               />
-            </div>
+            </NavLink>
             <button
               type="button"
               className="-m-2.5 rounded-md p-2.5 text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="sr-only">Close menu</span>
-              <XMarkIcon className="size-6" aria-hidden="true" />
+              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
           <div className="mt-6 flow-root">
-            <div className="space-y-2 py-6">
-              {menuItems.map((item) => (
-                <NavLink
-                  key={item.name}
-                  to={item.path}
-                  className={({ isActive }) => 
-                    `-mx-3 block rounded-lg px-3 py-4 text-base font-semibold leading-7 ${
-                      isActive ? 'text-gray-100' : 'text-gray-300 hover:text-gray-100'
-                    } hover:bg-gray-800/50 transition-all duration-300 ease-in-out`
-                  }
-                  onClick={() => setMobileMenuOpen(false)}
+            <div className="-my-6 divide-y divide-gray-800">
+              <div className="space-y-2 py-6">
+                {menuItems.map((item) => (
+                  <NavLink
+                    key={item.name}
+                    to={item.path}
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:text-gray-100 hover:bg-gray-900/50 transition-all duration-300 ease-in-out"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </NavLink>
+                ))}
+              </div>
+              <div className="py-6">
+                <a
+                  href="tel:0404289437"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:text-gray-100 hover:bg-gray-900/50 transition-all duration-300 ease-in-out"
                 >
-                  {item.name}
-                </NavLink>
-              ))}
-            </div>
-            <div className="py-6">
-              <a
-                href="tel:0404289437"
-                className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:text-gray-100 hover:bg-gray-800/50 transition-all duration-300 ease-in-out"
-              >
-                Call Now: 0404 289 437
-              </a>
+                  Call Us: 0404 289 437
+                </a>
+              </div>
             </div>
           </div>
         </DialogPanel>
