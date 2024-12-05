@@ -85,9 +85,9 @@ export default function Footer() {
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
             <img
-              className="h-7"
-              src="/logo.svg"
-              alt="Lush Constructions"
+              className="h-16 w-auto"
+              src="/assets/logo_284x137-KoakP1Oi.png"
+              alt="LUSH CONSTRUCTIONS"
             />
             <p className="text-[15px] sm:text-[14px] leading-normal text-gray-300">
               Building dreams into reality with expert craftsmanship and dedication to quality.

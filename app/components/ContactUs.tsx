@@ -38,12 +38,12 @@ export default function ContactUs() {
                     clipPath:
                       'polygon(74.1% 56.1%, 100% 38.6%, 97.5% 73.3%, 85.5% 100%, 80.7% 98.2%, 72.5% 67.7%, 60.2% 37.8%, 52.4% 32.2%, 47.5% 41.9%, 45.2% 65.8%, 27.5% 23.5%, 0.1% 35.4%, 17.9% 0.1%, 27.6% 23.5%, 76.1% 2.6%, 74.1% 56.1%)',
                   }}
-                  className="aspect-1155/678 w-[72.1875rem] bg-gradient-to-br from-gray-800/20 to-gray-700/20 opacity-20"
+                  className="aspect-1155/678 w-[72.1875rem] bg-linear-to-br/oklch from-gray-800/20 to-gray-700/20 opacity-20"
                 />
               </div>
             </div>
             <h2 className="sr-only">Contact form</h2>
-            <p className="mt-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-gradient-to-r from-white via-white/80 to-gray-300/50 sm:bg-gradient-to-b md:bg-gradient-to-r bg-clip-text text-transparent [text-wrap:balance]">Ready to Start Your Project?</p>
+            <p className="mt-2 text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent [text-wrap:balance]">Ready to Start Your Project?</p>
             <p className="mt-6 text-[15px] sm:text-[14px] leading-normal text-gray-300">
               From concept to completion, we're here to help bring your vision to life. Our expert team specializes in turning your ideas into stunning reality.
             </p>

@@ -201,7 +201,7 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
               alt={`${alt} - Image ${index + 1}`}
               className="absolute inset-0 h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-gray-950/30" />
+            <div className="absolute inset-0 bg-linear-to-b/oklch from-transparent via-transparent to-gray-950/30" />
             <div className="absolute inset-0 bg-black/5" />
           </div>
         ))}
@@ -217,7 +217,7 @@ const ServiceCard = ({ service, className }) => {
       <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)]">
         <div className="h-full px-8 pt-8 pb-3 sm:px-10 sm:pt-10">
           <h3 className="text-xl sm:text-xl lg:text-2xl leading-tight tracking-[-0.37px] font-medium 
-            bg-gradient-to-r from-white via-white/80 to-gray-300/50 sm:bg-gradient-to-b md:bg-gradient-to-r bg-clip-text text-transparent max-lg:text-center">
+            bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent max-lg:text-center">
             {service.title}
           </h3>
           <p className="mt-4 text-[15px] sm:text-[14px] leading-normal text-gray-300 max-lg:text-center line-clamp-3">
@@ -238,7 +238,7 @@ export default function OurServices() {
     <div className="relative py-24 sm:py-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-gradient-to-r from-white via-white/80 to-gray-300/50 sm:bg-gradient-to-b md:bg-gradient-to-r bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent">
             Our Services
           </h2>
           <p className="mt-6 text-[15px] sm:text-[14px] leading-normal text-gray-300 max-lg:text-center">
