@@ -26,7 +26,7 @@ const services = [
 		description:
 			"Expand your living space with our professional extension services. We handle everything from planning to final touches, ensuring seamless integration with your existing structure.",
 		images: [
-			"/assets/pic02-CwMetA50.png",
+			"/assets/pic13-C3BImLY9.png",
 			"/assets/pic03-C9sA_m8s.png",
 			"/assets/pic04-CxD2NUJX.png",
 		],
@@ -40,7 +40,7 @@ const services = [
 		description:
 			"Custom-built secondary dwellings perfect for family or rental opportunities. We create comfortable, self-contained living spaces that add value to your property.",
 		images: [
-			"/assets/pic02-CwMetA50.png",
+			"/assets/pic09-By9toE8x.png",
 			"/assets/pic03-C9sA_m8s.png",
 			"/assets/pic04-CxD2NUJX.png",
 		],
@@ -68,7 +68,7 @@ const services = [
 		description:
 			"Professional commercial space renovations and custom fit-outs. We create functional and attractive workspaces that reflect your brand and business needs.",
 		images: [
-			"/assets/pic02-CwMetA50.png",
+			"/assets/pic06-BnCQnmx7.png",
 			"/assets/pic03-C9sA_m8s.png",
 			"/assets/pic04-CxD2NUJX.png",
 		],
@@ -82,9 +82,9 @@ const services = [
 		description:
 			"Transform your essential spaces with modern renovations. Our expert team delivers high-quality finishes, expert waterproofing, and beautiful, functional designs.",
 		images: [
-			"/assets/pic02-CwMetA50.png",
-			"/assets/pic03-C9sA_m8s.png",
 			"/assets/pic04-CxD2NUJX.png",
+			"/assets/pic03-C9sA_m8s.png",
+			"/assets/pic02-CwMetA50.png",
 		],
 		alt: "Kitchen and Bathroom Renovations",
 		contact: "0404 289 437",
@@ -124,7 +124,7 @@ const services = [
 		description:
 			"Quality installations for essential home features. We specialize in custom staircases, door installations, and premium flooring solutions that enhance your home's functionality and appeal.",
 		images: [
-			"/assets/pic02-CwMetA50.png",
+			"/assets/pic09-By9toE8x.png",
 			"/assets/pic03-C9sA_m8s.png",
 			"/assets/pic04-CxD2NUJX.png",
 		],
@@ -152,7 +152,7 @@ const services = [
 		description:
 			"Professional interior and exterior painting services for a fresh, modern look. Our expert team ensures flawless finishes and lasting results.",
 		images: [
-			"/assets/pic02-CwMetA50.png",
+			"/assets/pic13-C3BImLY9.png",
 			"/assets/pic03-C9sA_m8s.png",
 			"/assets/pic04-CxD2NUJX.png",
 		],
@@ -272,7 +272,7 @@ const ServiceCard = ({
 			<div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] bg-black/20 backdrop-blur-sm shadow-premium inset-shadow-sm inset-shadow-white/5 hover:inset-shadow-xs hover:inset-shadow-white/10 transition-all duration-300 ease-in-out">
 				<div className="h-full px-8 pt-8 pb-3 sm:px-10 sm:pt-10">
 					<h3
-						className="text-xl sm:text-xl lg:text-2xl leading-tight tracking-[-0.37px] font-medium 
+						className="text-xl sm:text-xl md:text-3xl lg:text-4xl leading-tight tracking-[-0.37px] font-medium 
             bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent max-lg:text-center"
 					>
 						{service.title}
