@@ -145,7 +145,7 @@ export default function ContactUs() {
                   <select
                     id="project-type"
                     name="project-type"
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out inset-shadow-sm inset-shadow-white/5 focus:inset-shadow-xs"
                   >
                     <option value="">Select a renovation type</option>
                     <option value="full-home">Full Home Renovation</option>
@@ -168,7 +168,7 @@ export default function ContactUs() {
                     id="first-name"
                     autoComplete="given-name"
                     required
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out inset-shadow-sm inset-shadow-white/5 focus:inset-shadow-xs"
                   />
                 </div>
               </div>
@@ -183,7 +183,7 @@ export default function ContactUs() {
                     id="last-name"
                     autoComplete="family-name"
                     required
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out inset-shadow-sm inset-shadow-white/5 focus:inset-shadow-xs"
                   />
                 </div>
               </div>
@@ -199,7 +199,7 @@ export default function ContactUs() {
                     id="email"
                     autoComplete="email"
                     required
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out inset-shadow-sm inset-shadow-white/5 focus:inset-shadow-xs"
                   />
                 </div>
               </div>
@@ -213,7 +213,7 @@ export default function ContactUs() {
                     name="phone-number"
                     id="phone-number"
                     autoComplete="tel"
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out inset-shadow-sm inset-shadow-white/5 focus:inset-shadow-xs"
                   />
                 </div>
               </div>
@@ -226,7 +226,7 @@ export default function ContactUs() {
                     name="message"
                     id="message"
                     rows={4}
-                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out"
+                    className="block w-full rounded-md border-0 bg-black/50 px-3.5 py-2 text-[13px] leading-tight text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-gray-700 transition-all duration-300 ease-in-out inset-shadow-sm inset-shadow-white/5 focus:inset-shadow-xs"
                   ></textarea>
                 </div>
               </div>
@@ -234,7 +234,7 @@ export default function ContactUs() {
             <div className="mt-8 flex justify-end">
               <button
                 type="submit"
-                className="rounded-md bg-black px-3.5 py-2.5 text-center text-[13px] leading-tight font-semibold text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 hover:bg-gray-900 hover:text-white hover:ring-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700 transition-all duration-300 ease-in-out"
+                className="rounded-md bg-black px-3.5 py-2.5 text-center text-[13px] leading-tight font-semibold text-gray-100 shadow-premium ring-1 ring-inset ring-gray-800 hover:bg-gray-900 hover:text-white hover:ring-gray-700 inset-shadow-sm inset-shadow-white/5 hover:inset-shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700 transition-all duration-300 ease-in-out"
               >
                 Send message
               </button>

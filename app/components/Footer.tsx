@@ -94,7 +94,7 @@ export default function Footer() {
             </p>
             <div className="flex space-x-6">
               {socialLinks.map((item) => (
-                <a key={item.name} href={item.href} className="text-gray-400 hover:opacity-80 transition-all duration-300 ease-in-out">
+                <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-100 rounded-full p-1.5 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out">
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
                 </a>
@@ -108,7 +108,7 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation[0].services.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out">
+                      <a href={item.href} className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 rounded px-2 py-1 -mx-2 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out">
                         {item.name}
                       </a>
                     </li>
@@ -120,7 +120,7 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation[0].company.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out">
+                      <a href={item.href} className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 rounded px-2 py-1 -mx-2 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out">
                         {item.name}
                       </a>
                     </li>
@@ -135,7 +135,7 @@ export default function Footer() {
                   <li>
                     <a 
                       href="tel:0404289437" 
-                      className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
+                      className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 rounded px-2 py-1 -mx-2 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
                     >
                       0404 289 437
                     </a>
@@ -143,7 +143,7 @@ export default function Footer() {
                   <li>
                     <a 
                       href="mailto:info@lushconstructions.com.au" 
-                      className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
+                      className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 rounded px-2 py-1 -mx-2 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
                     >
                       info@lushconstructions.com.au
                     </a>
@@ -160,7 +160,7 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation[0].legal.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out">
+                      <a href={item.href} className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 rounded px-2 py-1 -mx-2 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out">
                         {item.name}
                       </a>
                     </li>
