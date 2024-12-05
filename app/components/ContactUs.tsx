@@ -5,12 +5,26 @@ import {
 	PhoneIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
+import { motion } from "framer-motion";
 
 export default function ContactUs() {
 	return (
-		<div className="relative isolate overflow-hidden" id="contact">
+		<motion.div
+			initial={{ opacity: 0 }}
+			whileInView={{ opacity: 1 }}
+			viewport={{ once: true }}
+			transition={{ duration: 0.8 }}
+			className="relative isolate overflow-hidden"
+			id="contact"
+		>
 			<div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
-				<div className="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48">
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.6, delay: 0.2 }}
+					className="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48"
+				>
 					<div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
 						<div className="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden ring-1 ring-gray-800 lg:w-1/2">
 							<svg
@@ -164,12 +178,12 @@ export default function ContactUs() {
 							</ul>
 						</div>
 					</div>
-				</div>
+				</motion.div>
 
 				<form
 					action="https://api.web3forms.com/submit"
 					method="POST"
-					className="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48 bg-gray-900/50 backdrop-blur-sm"
+					className="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48 bg-black/20 backdrop-blur-sm"
 				>
 					<div className="mx-auto max-w-xl lg:max-w-lg">
 						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
@@ -302,6 +316,6 @@ export default function ContactUs() {
 					</div>
 				</form>
 			</div>
-		</div>
+		</motion.div>
 	);
 }

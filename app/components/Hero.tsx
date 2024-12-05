@@ -1,4 +1,4 @@
-"use client";
+
 
 import { ChevronRightIcon } from "@heroicons/react/16/solid";
 import { AnimatePresence, motion } from "framer-motion";
