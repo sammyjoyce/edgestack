@@ -214,7 +214,7 @@ const ServiceCard = ({ service, className }) => {
   return (
     <div className={`relative ${className}`}>
       <div className="absolute inset-px rounded-lg bg-gray-900/50"></div>
-      <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)]">
+      <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] bg-gray-900/30 shadow-premium inset-shadow-sm inset-shadow-white/5 hover:inset-shadow-xs hover:inset-shadow-white/10 transition-all duration-300 ease-in-out">
         <div className="h-full px-8 pt-8 pb-3 sm:px-10 sm:pt-10">
           <h3 className="text-xl sm:text-xl lg:text-2xl leading-tight tracking-[-0.37px] font-medium 
             bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent max-lg:text-center">
