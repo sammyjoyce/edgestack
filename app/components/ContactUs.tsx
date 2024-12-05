@@ -47,7 +47,10 @@ export default function ContactUs() {
 									x="100%"
 									y={-1}
 									className="overflow-visible fill-gray-900/20"
+									role="presentation"
+									aria-hidden="true"
 								>
+									<title>Decorative Pattern</title>
 									<path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
 								</svg>
 								<rect

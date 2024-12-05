@@ -235,14 +235,14 @@ function ImageSlider({ images, alt }: { images: string[]; alt: string }) {
 				</div>
 
 				{/* Navigation dots */}
-				<div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 space-x-2">
+				<div className="absolute bottom-8 md:bottom-4 left-1/2 z-10 flex -translate-x-1/2 space-x-3">
 					{images.map((_, index) => (
 						<button
 							key={index}
-							className={`h-1.5 rounded-full transition-all ${
+							className={`h-2.5 rounded-full transition-all ${
 								index === currentImageIndex
-									? "w-4 bg-white"
-									: "w-1.5 bg-white/40"
+									? "w-8 bg-white"
+									: "w-2.5 bg-white/40"
 							}`}
 							onClick={() => scrollToImage(index)}
 							aria-label={`Go to image ${index + 1}`}
@@ -266,22 +266,22 @@ const ServiceCard = ({
 			viewport={{ once: true }}
 			transition={{ duration: 0.6 }}
 			id={id}
-			className={`relative ${className}`}
+			className={`relative @container ${className}`}
 		>
 			<div className="absolute inset-px rounded-lg" />
 			<div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] bg-black/20 backdrop-blur-sm shadow-premium inset-shadow-sm inset-shadow-white/5 hover:inset-shadow-xs hover:inset-shadow-white/10 transition-all duration-300 ease-in-out">
-				<div className="h-full px-8 pt-8 pb-3 sm:px-10 sm:pt-10">
+				<div className="h-full px-8 pt-6 pb-4 sm:px-10 sm:pt-8">
 					<h3
-						className="text-xl sm:text-xl md:text-3xl lg:text-4xl leading-tight tracking-[-0.37px] font-medium 
+						className="text-xl sm:text-xl  leading-tight tracking-[-0.37px] font-medium 
             bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent max-lg:text-center"
 					>
 						{service.title}
 					</h3>
-					<p className="mt-4 text-[15px] sm:text-[14px] leading-normal text-gray-300 max-lg:text-center line-clamp-3">
+					<p className="mt-2.5 text-[13px] leading-normal text-gray-300 max-lg:text-center line-clamp-2">
 						{service.description}
 					</p>
 				</div>
-				<div className="flex-1 w-full min-h-[320px] sm:min-h-[347px] md:min-h-[387px] lg:min-h-[413px]">
+				<div className="flex-1 w-full min-h-[280px] sm:min-h-[307px] md:min-h-[347px] lg:min-h-[373px]">
 					<ImageSlider images={service.images} alt={service.alt} />
 				</div>
 			</div>
@@ -295,7 +295,7 @@ export default function OurServices() {
 		<div className="relative">
 			{/* Decorative background */}
 			<div className="absolute inset-0 pointer-events-none">
-				<div className="absolute inset-y-0 right-0 w-[200%] lg:w-[100%] xl:-mr-96">
+				<div className="absolute inset-y-0 right-0 w-full">
 					<svg
 						className="h-full w-full stroke-gray-800/40 [mask-image:radial-gradient(100%_100%_at_top_left,white,transparent)]"
 						aria-hidden="true"

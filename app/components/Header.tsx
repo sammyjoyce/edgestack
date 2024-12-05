@@ -3,7 +3,8 @@ import { Popover } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import { NavLink } from "react-router";
 
 const menuItems = [
@@ -25,10 +26,17 @@ const menuItems = [
 function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-	const navLinkClass = ({ isActive }) =>
-		`text-[13px] leading-none font-medium sm:text-[15px] sm:leading-loose ${isActive ? "text-gray-100" : "text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"}`;
+	const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+		`text-[13px] leading-none font-medium sm:text-[15px] sm:leading-loose ${
+			isActive
+				? "text-gray-100"
+				: "text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
+		}`;
 
-	const scrollToSection = (event, sectionId) => {
+	const scrollToSection = (
+		event: React.MouseEvent<HTMLAnchorElement>,
+		sectionId: string,
+	) => {
 		event.preventDefault();
 		const element = document.getElementById(sectionId.replace("#", ""));
 		if (element) {
@@ -61,7 +69,10 @@ function Header() {
 							<svg
 								className="size-4 fill-gray-300 group-hover:fill-gray-100 transition-all duration-300 ease-in-out"
 								viewBox="0 0 24 24"
+								role="img"
+								aria-label="Phone"
 							>
+								<title>Phone</title>
 								<path
 									fillRule="evenodd"
 									d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5z"
