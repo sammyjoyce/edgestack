@@ -1,59 +1,55 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router";
+import { Dialog, DialogPanel } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+
+const menuItems = [
+  { name: 'Home', path: '/' },
+  { name: 'Our Services', path: '/ourservices' },
+  { name: 'Gallery', path: '/gallery' },
+  { name: 'About Us', path: '/aboutus' },
+  { name: 'Contact Us', path: '/contactus' }
+];
 
 function Header() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinkClass = ({ isActive }) => 
-    `text-[13px] leading-none font-medium sm:text-[15px] sm:leading-loose text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out ${isActive ? 'font-semibold text-gray-100' : ''}`;
+    `text-[13px] leading-none font-medium sm:text-[15px] sm:leading-loose ${isActive ? 'text-gray-100' : 'text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out'}`;
 
   return (
-    <header className="sticky inset-x-0 top-0 max-w-container mx-auto px-4 sm:px-6 lg:px-8 z-50 w-full flex-none text-[13px] font-semibold backdrop-blur-xs supports-backdrop-filter:bg-black/60 shadow-premium">
-      <nav aria-label="Global" className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative flex items-center py-4">
+    <header className="sticky inset-x-0 top-0 z-50 w-full flex-none text-[13px] font-semibold bg-black/60 backdrop-blur-xs supports-backdrop-filter:bg-black/60 shadow-premium">
+      <nav className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="relative flex items-center justify-between py-4">
           <div className="absolute inset-x-0 bottom-0 h-px bg-gray-800"></div>
           
-          {/* Logo */}
-          <NavLink to="/" className="flex-none">
-            <img
-              src="/assets/logo_284x137-KoakP1Oi.png"
-              alt="LUSH CONSTRUCTIONS"
-              className="h-20 w-auto"
-            />
-          </NavLink>
+          <div className="flex items-center">
+            {/* Logo */}
+            <NavLink to="/" className="relative z-10">
+              <img
+                src="/assets/logo_284x137-KoakP1Oi.png"
+                alt="LUSH CONSTRUCTIONS"
+                className="h-20 w-auto"
+              />
+            </NavLink>
 
-          {/* Announcement Banner */}
-          <a href="tel:0404289437" className="group -my-2 ml-6 hidden items-center gap-2 rounded bg-black/50 px-4 py-2 text-xs leading-none font-medium text-gray-300 ring-1 ring-gray-800 hover:bg-gray-800/50 hover:text-gray-100 hover:ring-gray-700 shadow-premium transition-all duration-300 ease-in-out sm:flex md:ml-8 lg:hidden min-[80rem]:flex">
-            <svg className="size-4 fill-gray-300 group-hover:fill-gray-100 transition-all duration-300 ease-in-out" viewBox="0 0 24 24">
-              <path fillRule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5z" clipRule="evenodd" />
-            </svg>
-            <span className="font-semibold">Get a Quote</span>
-            <svg width="2" height="2" aria-hidden="true" className="fill-gray-500">
-              <circle cx="1" cy="1" r="1" />
-            </svg>
-            <span className="font-medium group-hover:text-gray-100 transition-all duration-300 ease-in-out">0404 289 437</span>
-            <svg width="2" height="2" aria-hidden="true" className="fill-gray-500">
-              <circle cx="1" cy="1" r="1" />
-            </svg>
-            <span className="font-medium">CALL NOW</span>
-            <svg viewBox="0 0 5 8" className="h-2 w-[5px] fill-gray-500 group-hover:fill-gray-100 transition-all duration-300 ease-in-out" fillRule="evenodd" clipRule="evenodd" aria-hidden="true">
-              <path d="M.2.24A.75.75 0 0 1 1.26.2l3.5 3.25a.75.75 0 0 1 0 1.1L1.26 7.8A.75.75 0 0 1 .24 6.7L3.148 4 .24 1.3A.75.75 0 0 1 .2.24Z" />
-            </svg>
-          </a>
+            {/* Announcement Banner */}
+            <a href="tel:0404289437" className="group hidden items-center gap-2 rounded bg-gray-900 px-4 py-2 text-xs leading-none font-medium text-gray-300 ring-1 ring-gray-800 hover:bg-gray-800 hover:text-gray-100 hover:ring-gray-700 shadow-premium transition-all duration-300 ease-in-out sm:ml-8 sm:flex lg:hidden min-[80rem]:flex">
+              <svg className="size-4 fill-gray-300 group-hover:fill-gray-100 transition-all duration-300 ease-in-out" viewBox="0 0 24 24">
+                <path fillRule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5z" clipRule="evenodd" />
+              </svg>
+              <span className="font-semibold">Get a Quote</span>
+              <span className="font-medium group-hover:text-gray-100 transition-all duration-300 ease-in-out">0404 289 437</span>
+            </a>
+          </div>
 
           {/* Desktop Navigation */}
-          <div className="ml-auto hidden lg:flex lg:items-center">
-            {[
-              { name: 'Home', path: '/' },
-              { name: 'Our Services', path: '/ourservices' },
-              { name: 'Gallery', path: '/gallery' },
-              { name: 'About Us', path: '/aboutus' },
-              { name: 'Contact Us', path: '/contactus' }
-            ].map((item, index) => (
+          <div className="ml-auto hidden lg:flex lg:items-center lg:gap-x-8">
+            {menuItems.map((item) => (
               <NavLink
                 key={item.name}
                 to={item.path}
-                className={`${navLinkClass} ${index > 0 ? 'ml-8' : ''}`}
+                className={navLinkClass}
               >
                 {item.name}
               </NavLink>
@@ -61,18 +57,68 @@ function Header() {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            type="button"
-            className="-my-1 -mr-1 ml-6 flex size-8 items-center justify-center lg:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <span className="sr-only">Open navigation</span>
-            <svg viewBox="0 0 24 24" className="size-6 stroke-gray-300 hover:stroke-gray-100 transition-all duration-300 ease-in-out">
-              <path d="M3.75 12h16.5M3.75 6.75h16.5M3.75 17.25h16.5" fill="none" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </button>
+          <div className="flex lg:hidden">
+            <button
+              type="button"
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <span className="sr-only">Open main menu</span>
+              <Bars3Icon className="size-6" aria-hidden="true" />
+            </button>
+          </div>
         </div>
       </nav>
+
+      {/* Mobile Menu Dialog */}
+      <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm transition-all duration-300 ease-in-out" aria-hidden="true" />
+        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black/95 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-800 transition-all duration-300 ease-in-out">
+          <div className="flex items-center justify-between">
+            <div className="invisible">
+              <img
+                className="h-20 w-auto"
+                src="/assets/logo_284x137-KoakP1Oi.png"
+                alt=""
+              />
+            </div>
+            <button
+              type="button"
+              className="-m-2.5 rounded-md p-2.5 text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span className="sr-only">Close menu</span>
+              <XMarkIcon className="size-6" aria-hidden="true" />
+            </button>
+          </div>
+          <div className="mt-6 flow-root">
+            <div className="space-y-2 py-6">
+              {menuItems.map((item) => (
+                <NavLink
+                  key={item.name}
+                  to={item.path}
+                  className={({ isActive }) => 
+                    `-mx-3 block rounded-lg px-3 py-4 text-base font-semibold leading-7 ${
+                      isActive ? 'text-gray-100' : 'text-gray-300 hover:text-gray-100'
+                    } hover:bg-gray-800/50 transition-all duration-300 ease-in-out`
+                  }
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </NavLink>
+              ))}
+            </div>
+            <div className="py-6">
+              <a
+                href="tel:0404289437"
+                className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:text-gray-100 hover:bg-gray-800/50 transition-all duration-300 ease-in-out"
+              >
+                Call Now: 0404 289 437
+              </a>
+            </div>
+          </div>
+        </DialogPanel>
+      </Dialog>
     </header>
   );
 }

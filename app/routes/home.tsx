@@ -24,7 +24,7 @@ export function loader({ context }: Route.LoaderArgs) {
 
 export default function Home({ loaderData }: Route.ComponentProps) {
 	return (
-		<div className="bg-[linear-gradient(180deg,rgba(97,106,115,0),rgba(97,106,115,0.1)_20%,rgba(97,106,115,0.1)_80%,rgba(97,106,115,0))]">
+		<div className="bg-[linear-gradient(180deg,rgba(97,106,115,0),rgba(97,106,115,0.1)_20%,rgba(97,106,115,0.1)_80%,rgba(97,106,115,0))] overflow-x-hidden">
 			<Header />
 			<ImageSlider />
 			<OurServices />

@@ -32,7 +32,7 @@ export default function AboutUs() {
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 lg:px-8 xl:grid-cols-5">
         <div className="mx-auto xl:col-span-2 max-w-2xl lg:mx-0">
-          <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-gradient-to-r from-white via-white/80 to-gray-300/50 sm:bg-gradient-to-b md:bg-gradient-to-r bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent">
             About Us
           </h2>
           <p className="mt-6 text-[15px] sm:text-[14px] leading-normal text-gray-300">

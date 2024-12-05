@@ -20,10 +20,10 @@ text:
   primary: text-gray-100
   secondary: text-gray-300
   tertiary: text-gray-400
-  gradient: bg-gradient-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent
+  gradient: bg-linear-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent
   responsive_gradient:
-    mobile: sm:bg-gradient-to-b
-    tablet_up: md:bg-gradient-to-r
+    mobile: sm:bg-linear-to-b
+    tablet_up: md:bg-linear-to-r
 
 ## Typography
 
