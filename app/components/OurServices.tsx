@@ -149,34 +149,76 @@ const services = [
 
 function ImageSlider({ images, alt }: { images: string[], alt: string }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const sliderRef = React.useRef<HTMLDivElement>(null);
 
-  const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  const scrollToImage = (index: number) => {
+    if (!sliderRef.current) return;
+    sliderRef.current.scrollTo({
+      left: index * sliderRef.current.offsetWidth,
+      behavior: 'smooth',
+    });
   };
 
-  const previousImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-  };
+  // Update current index based on scroll position
+  React.useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    const handleScroll = () => {
+      const index = Math.round(slider.scrollLeft / slider.offsetWidth);
+      setCurrentImageIndex(index);
+    };
+
+    slider.addEventListener('scroll', handleScroll);
+    return () => slider.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="relative group h-full min-h-[300px]">
       <div className="absolute inset-0 overflow-hidden rounded bg-gray-950">
-        <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+        {/* Swipeable container */}
+        <div
+          ref={sliderRef}
+          className="absolute inset-0 flex snap-x snap-mandatory overflow-x-auto scrollbar-hide"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {images.map((image, index) => (
+            <div
+              key={image}
+              className="relative h-full w-full flex-none snap-start snap-always"
+            >
+              <img
+                src={image}
+                alt={`${alt} - Image ${index + 1}`}
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-linear-to-b/oklch from-transparent via-transparent to-gray-950/30" />
+              <div className="absolute inset-0 bg-black/5" />
+            </div>
+          ))}
+        </div>
+
+        {/* Navigation arrows - visible on desktop */}
+        <div className="absolute inset-0 hidden items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity z-10 md:flex">
           <button
-            onClick={previousImage}
+            onClick={() => scrollToImage(currentImageIndex - 1)}
             className="rounded-full bg-white/10 p-2 text-gray-100 backdrop-blur-sm transition-all hover:bg-white/20"
             aria-label="Previous image"
+            disabled={currentImageIndex === 0}
           >
             <ChevronLeftIcon className="h-6 w-6" />
           </button>
           <button
-            onClick={nextImage}
+            onClick={() => scrollToImage(currentImageIndex + 1)}
             className="rounded-full bg-white/10 p-2 text-gray-100 backdrop-blur-sm transition-all hover:bg-white/20"
             aria-label="Next image"
+            disabled={currentImageIndex === images.length - 1}
           >
             <ChevronRightIcon className="h-6 w-6" />
           </button>
         </div>
+
+        {/* Navigation dots */}
         <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 space-x-2">
           {images.map((_, index) => (
             <button
@@ -184,27 +226,11 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
               className={`h-1.5 rounded-full transition-all ${
                 index === currentImageIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/40'
               }`}
-              onClick={() => setCurrentImageIndex(index)}
+              onClick={() => scrollToImage(index)}
               aria-label={`Go to image ${index + 1}`}
             />
           ))}
         </div>
-        {images.map((image, index) => (
-          <div
-            key={image}
-            className={`absolute inset-0 transition-opacity duration-500 ${
-              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <img
-              src={image}
-              alt={`${alt} - Image ${index + 1}`}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-linear-to-b/oklch from-transparent via-transparent to-gray-950/30" />
-            <div className="absolute inset-0 bg-black/5" />
-          </div>
-        ))}
       </div>
     </div>
   );
@@ -212,7 +238,7 @@ function ImageSlider({ images, alt }: { images: string[], alt: string }) {
 
 const ServiceCard = ({ service, className }) => {
   return (
-    <div className={`relative ${className}`}>
+    <div id={`service-${service.title.toLowerCase().replace(/\s+/g, '-')}`} className={`relative ${className}`}>
       <div className="absolute inset-px rounded-lg bg-gray-900/50"></div>
       <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] bg-gray-900/30 shadow-premium inset-shadow-sm inset-shadow-white/5 hover:inset-shadow-xs hover:inset-shadow-white/10 transition-all duration-300 ease-in-out">
         <div className="h-full px-8 pt-8 pb-3 sm:px-10 sm:pt-10">
@@ -235,7 +261,7 @@ const ServiceCard = ({ service, className }) => {
 
 export default function OurServices() {
   return (
-    <div className="relative py-24 sm:py-32 overflow-hidden">
+    <div className="relative py-24 sm:py-32 overflow-hidden" id="services">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent">

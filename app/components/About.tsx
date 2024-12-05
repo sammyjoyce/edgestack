@@ -17,7 +17,7 @@ const team = [
 
 export default function AboutUs() {
   return (
-    <div className="relative py-24 md:py-32 overflow-hidden">
+    <div className="relative py-24 md:py-32 overflow-hidden" id="about">
       {/* Decorative background */}
       <div className="absolute inset-y-0 right-0 -z-10 w-[200%] overflow-hidden lg:w-[100%] xl:-mr-96">
         <svg className="absolute h-full w-full stroke-gray-800 [mask-image:radial-gradient(100%_100%_at_top_left,white,transparent)]" aria-hidden="true">
