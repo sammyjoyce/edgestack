@@ -3,8 +3,8 @@ import {
 	ChevronRightIcon,
 	PhoneIcon,
 } from "@heroicons/react/24/outline";
-import { motion } from "framer-motion";
-import React, { useState } from "react";
+import { HTMLMotionProps, motion, MotionValue, useMotionValueEvent, useSpring } from "framer-motion";
+import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 
 const services = [
 	{
@@ -255,70 +255,70 @@ function ImageSlider({ images, alt }: { images: string[]; alt: string }) {
 }
 
 const ServiceCard = ({
-	service,
-	className,
-	id,
+  service,
+  className,
+  id,
 }: { service: any; className: string; id: string }) => {
-	return (
-		<motion.div
-			initial={{ opacity: 0, y: 20 }}
-			whileInView={{ opacity: 1, y: 0 }}
-			viewport={{ once: true }}
-			transition={{ duration: 0.6 }}
-			id={id}
-			className={`relative @container ${className}`}
-		>
-			<div className="absolute inset-px rounded-lg" />
-			<div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] bg-black/20 backdrop-blur-sm shadow-premium inset-shadow-sm inset-shadow-white/5 hover:inset-shadow-xs hover:inset-shadow-white/10 transition-all duration-300 ease-in-out">
-				<div className="h-full px-8 pt-6 pb-4 sm:px-10 sm:pt-8">
-					<h3
-						className="text-xl sm:text-xl  leading-tight tracking-[-0.37px] font-medium 
-            bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent max-lg:text-center"
-					>
-						{service.title}
-					</h3>
-					<p className="mt-2.5 text-[13px] leading-normal text-gray-300 max-lg:text-center line-clamp-2">
-						{service.description}
-					</p>
-				</div>
-				<div className="flex-1 w-full min-h-[280px] sm:min-h-[307px] md:min-h-[347px] lg:min-h-[373px]">
-					<ImageSlider images={service.images} alt={service.alt} />
-				</div>
-			</div>
-			<div className="pointer-events-none absolute inset-px rounded-lg ring-1 ring-gray-800 hover:ring-gray-700 transition-all duration-300 ease-in-out" />
-		</motion.div>
-	);
-};
+  let ref = useRef<HTMLDivElement | null>(null)
+
+  let computeOpacity = useCallback(() => {
+    let element = ref.current
+    if (!element) return 1
+
+    let rect = element.getBoundingClientRect()
+    let windowWidth = window.innerWidth
+
+    if (rect.left < 0) {
+      let diff = Math.abs(rect.left)
+      let percent = diff / rect.width
+      return Math.max(0.5, 1 - percent)
+    } else if (rect.right > windowWidth) {
+      let diff = rect.right - windowWidth
+      let percent = diff / rect.width
+      return Math.max(0.5, 1 - percent)
+    } else {
+      return 1
+    }
+  }, [ref])
+
+  let opacity = useSpring(computeOpacity(), {
+    stiffness: 154,
+    damping: 23,
+  })
+
+  useLayoutEffect(() => {
+    opacity.set(computeOpacity())
+  }, [computeOpacity, opacity])
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ opacity }}
+      className="relative flex aspect-[9/16] w-full shrink-0 snap-start scroll-ml-[var(--scroll-padding)] flex-col justify-end overflow-hidden rounded-3xl p-6 shadow-lg"
+    >
+      <img
+        alt=""
+        src={service.images[0]}
+        className="absolute inset-0 h-full  w-full object-cover"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 rounded-3xl bg-gradient-to-t from-black from-[calc(7/16*100%)] ring-1 ring-inset ring-gray-950/10 sm:from-25%"
+      />
+      <div className="relative">
+        <h3 className="text-4xl font-semibold text-white">
+    
+            {service.title}
+  
+        </h3>
+      </div>
+    </motion.div>
+  )
+}
 
 export default function OurServices() {
 	return (
 		<div className="relative">
-			{/* Decorative background */}
-			<div className="absolute inset-0 pointer-events-none">
-				<div className="absolute inset-y-0 right-0 w-full">
-					<svg
-						className="h-full w-full stroke-gray-800/40 [mask-image:radial-gradient(100%_100%_at_top_left,white,transparent)]"
-						aria-hidden="true"
-					>
-						<defs>
-							<pattern
-								id="services-pattern"
-								width="200"
-								height="200"
-								patternUnits="userSpaceOnUse"
-							>
-								<path d="M.5 200V.5H200" fill="none" />
-							</pattern>
-						</defs>
-						<rect
-							width="100%"
-							height="100%"
-							strokeWidth="1"
-							fill="url(#services-pattern)"
-						/>
-					</svg>
-				</div>
-			</div>
 			<div className="relative">
 				<motion.div
 					initial={{ opacity: 0 }}
@@ -330,102 +330,26 @@ export default function OurServices() {
 				>
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<div className="mx-auto max-w-2xl text-center">
-							<h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-transparent">
+							<h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight tracking-[-1.43px] font-medium bg-linear-to-r/oklch from-gray-700 via-gray-800 to-gray-900 sm:bg-linear-to-b/oklch md:bg-linear-to-r/oklch bg-clip-text text-gray-800">
 								Our Services
 							</h2>
-							<p className="mt-6 text-[15px] sm:text-[14px] leading-normal text-gray-300 max-lg:text-center">
+							<p className="mt-6 text-[15px] sm:text-[14px] leading-normal text-gray-900 max-lg:text-center">
 								We specialize in a wide range of construction and renovation
 								services, delivering exceptional results that exceed
 								expectations.
 							</p>
 						</div>
 
-						<div className="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3">
-							{/* Each row is wrapped in a div to ensure equal heights */}
-							<div className="grid gap-4 lg:grid-cols-3 lg:contents">
-								<div className="relative lg:col-span-2">
+						<div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:mt-16">
+							{services.map((service, index) => (
+								<div key={index} className="relative">
 									<ServiceCard
-										service={services[0]}
-										className="lg:rounded-l-[2rem] h-full"
-										id="service-renovations"
+										service={service}
+										className="w-full"
+										id={`service-${service.name.toLowerCase()}`}
 									/>
 								</div>
-								<div className="relative">
-									<ServiceCard
-										service={services[1]}
-										className="lg:rounded-r-[2rem] h-full"
-										id="service-extensions"
-									/>
-								</div>
-							</div>
-
-							<div className="grid gap-4 lg:grid-cols-3 lg:contents">
-								<div className="relative">
-									<ServiceCard
-										service={services[2]}
-										className="lg:rounded-l-[2rem] h-full"
-										id="service-granny-flats"
-									/>
-								</div>
-								<div className="relative lg:col-span-2">
-									<ServiceCard
-										service={services[3]}
-										className="lg:rounded-r-[2rem] h-full"
-										id="service-new-builds"
-									/>
-								</div>
-							</div>
-
-							<div className="grid gap-4 lg:grid-cols-3 lg:contents">
-								<div className="relative lg:col-span-2">
-									<ServiceCard
-										service={services[4]}
-										className="lg:rounded-l-[2rem] h-full"
-										id="service-shop-office-fit-outs"
-									/>
-								</div>
-								<div className="relative">
-									<ServiceCard
-										service={services[5]}
-										className="lg:rounded-r-[2rem] h-full"
-										id="service-kitchens-bathrooms"
-									/>
-								</div>
-							</div>
-
-							<div className="grid gap-4 lg:grid-cols-3 lg:contents">
-								<div className="relative">
-									<ServiceCard
-										service={services[6]}
-										className="lg:rounded-l-[2rem] h-full"
-										id="service-remedial-works"
-									/>
-								</div>
-								<div className="relative lg:col-span-2">
-									<ServiceCard
-										service={services[7]}
-										className="lg:rounded-r-[2rem] h-full"
-										id="service-decks-fences-pergolas"
-									/>
-								</div>
-							</div>
-
-							<div className="grid gap-4 lg:grid-cols-3 lg:contents">
-								<div className="relative lg:col-span-2">
-									<ServiceCard
-										service={services[8]}
-										className="lg:rounded-l-[2rem] h-full"
-										id="service-doors-stairs-flooring"
-									/>
-								</div>
-								<div className="relative">
-									<ServiceCard
-										service={services[9]}
-										className="lg:rounded-r-[2rem] h-full"
-										id="service-roofing"
-									/>
-								</div>
-							</div>
+							))}
 						</div>
 					</div>
 				</motion.div>

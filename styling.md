@@ -4,6 +4,12 @@
 
 ### Backgrounds
 backgrounds:
+  primary: bg-brick        // Brick inspired sections
+  secondary: bg-timber     // Timber inspired areas
+  tertiary: bg-sisal       // Sisal inspired elements
+  quaternary: bg-travertine // Travertine inspired elements
+  highlight: bg-gold       // Gold highlights
+backgrounds:
   primary: bg-black        // Marketing sections
   secondary: bg-gray-900   // Content areas
   tertiary: bg-gray-800   // Cards, containers
@@ -11,16 +17,24 @@ backgrounds:
 
 ### Borders
 borders:
+  primary: border-brick
+  secondary: border-timber
+  tertiary: border-sisal
+borders:
   primary: border-gray-800
   secondary: border-gray-700
   tertiary: border-gray-600
 
 ### Text Colors
 text:
+  primary: text-timber
+  secondary: text-sisal
+  highlight: text-gold
+text:
   primary: text-gray-100
   secondary: text-gray-300
   tertiary: text-gray-400
-  gradient: bg-linear-to-r from-white via-white/80 to-gray-300/50 bg-clip-text text-transparent
+  gradient: bg-linear-to-r from-gray-700 via-gray-800 to-gray-900 bg-clip-text text-transparent
   responsive_gradient:
     mobile: sm:bg-linear-to-b
     tablet_up: md:bg-linear-to-r
@@ -63,6 +77,8 @@ common_patterns:
 ## Animations & Transitions
 
 ### Transitions
+transitions:
+  natural: transition-natural
 transitions:
   default: transition-all duration-300 ease-in-out
   fast: transition-all duration-150 ease-in-out

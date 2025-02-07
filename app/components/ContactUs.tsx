@@ -14,7 +14,7 @@ export default function ContactUs() {
 			whileInView={{ opacity: 1 }}
 			viewport={{ once: true }}
 			transition={{ duration: 0.8 }}
-			className="relative isolate overflow-hidden"
+			className="relative isolate overflow-hidden bg-black"
 			id="contact"
 		>
 			<div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
@@ -150,7 +150,7 @@ export default function ContactUs() {
 						<div className="mt-8 space-y-2 text-[11px] leading-none text-gray-400">
 							<p className="font-medium">ABN: 99 652 947 528</p>
 							<p className="font-medium">ACN: 141 565 746</p>
-							<p className="font-medium">License Number: TBD</p>
+							<p className="font-medium">License Number: 463253C</p>
 						</div>
 						<div className="mt-8">
 							<h3 className="text-[15px] sm:text-[14px] leading-normal font-semibold text-gray-100">
