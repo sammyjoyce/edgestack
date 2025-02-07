@@ -46,7 +46,7 @@ function Header() {
 	};
 
 	return (
-		<header className="sticky inset-x-0 top-0 z-50 w-full flex-none text-[13px] font-semibold bg-black/60 backdrop-blur-xs supports-backdrop-filter:bg-black/60 shadow-premium inset-shadow-sm inset-shadow-black/10">
+		<header className="sticky inset-x-0 top-0 z-50 w-full flex-none text-[13px] font-semibold bg-black backdrop-blur-xs supports-backdrop-filter:bg-black shadow-premium inset-shadow-sm inset-shadow-black/10">
 			<nav className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className="relative flex items-center justify-between py-4">
 					<div className="absolute inset-x-0 bottom-0 h-px bg-gray-800" />
