@@ -5,7 +5,7 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "wrangler dev",
-    "format": "biome check --unsafe --write ./app/**/*.{ts,tsx}",
+    "format": "biome check --unsafe --write ./app/**/*.tsx",
     "typecheck": "react-router typegen && tsc --build --noEmit"
   },
   "dependencies": {

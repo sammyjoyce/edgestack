@@ -6,22 +6,28 @@ import { SectionIntro } from "./ui/SectionIntro";
 
 const projects = [
 	{
+		id: "modern-home-extension",
 		title: "Modern Home Extension",
 		image: "/assets/pic13-C3BImLY9.png",
 		description:
 			"A seamless blend of old and new, this extension maximizes light and space while maintaining character.",
+		url: "/projects/modern-home-extension",
 	},
 	{
+		id: "luxury-kitchen-renovation",
 		title: "Luxury Kitchen Renovation",
 		image: "/assets/pic09-By9toE8x.png",
 		description:
 			"Premium finishes and high-end appliances transform this kitchen into the heart of the home.",
+		url: "/projects/luxury-kitchen-renovation",
 	},
 	{
+		id: "outdoor-living-retreat",
 		title: "Outdoor Living Retreat",
 		image: "/assets/pic08-B09tdJ9o.png",
 		description:
 			"A resort-style alfresco area perfect for entertaining and relaxation, year-round.",
+		url: "/projects/outdoor-living-retreat",
 	},
 ];
 
@@ -36,7 +42,7 @@ export default function RecentProjects() {
 				<FadeInStagger>
 					<div className="flex flex-col gap-24">
 						{projects.map((project, idx) => (
-							<FadeIn key={idx}>
+							<FadeIn key={project.id}>
 								<div
 									className={clsx(
 										"grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12",
@@ -58,7 +64,7 @@ export default function RecentProjects() {
 											{project.description}
 										</p>
 										<a
-											href="#"
+											href={project.url}
 											className="font-semibold text-base text-black underline underline-offset-4 transition hover:text-gray-700"
 										>
 											View Project →
