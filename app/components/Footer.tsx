@@ -66,21 +66,21 @@ export default function Footer() {
 			<h2 id="footer-heading" className="sr-only">
 				Footer
 			</h2>
-			<div className="mx-auto max-w-7xl px-6 pt-16 pb-8 sm:pt-24 lg:px-8">
-				<div className="xl:grid xl:grid-cols-3 xl:gap-8">
+			<div className="mx-auto max-w-7xl px-6 pt-12 pb-8 sm:pt-16 md:pt-24 lg:px-8">
+				<div className="flex flex-col xl:grid xl:grid-cols-3 xl:gap-8">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className="space-y-8"
+						className="mb-10 space-y-6 sm:space-y-8 xl:mb-0"
 					>
 						<img
-							className="h-16 w-auto"
+							className="h-14 w-auto sm:h-16"
 							src="/assets/logo_284x137-KoakP1Oi.png"
 							alt="LUSH CONSTRUCTIONS"
 						/>
-						<p className="text-[15px] text-gray-300 leading-normal sm:text-[14px]">
+						<p className="max-w-sm text-[15px] text-gray-300 leading-normal sm:text-[14px]">
 							Building dreams into reality with expert craftsmanship and
 							dedication to quality.
 						</p>
@@ -102,14 +102,14 @@ export default function Footer() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6, delay: 0.2 }}
-						className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0"
+						className="grid grid-cols-2 gap-x-8 gap-y-10 xl:col-span-2"
 					>
 						<div className="md:grid md:grid-cols-2 md:gap-8">
 							<div>
 								<h3 className="font-semibold text-[13px] text-gray-100 leading-tight">
 									Services
 								</h3>
-								<ul className="mt-6 space-y-4">
+								<ul className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
 									{navigation[0].services.map((item) => (
 										<li key={item.name}>
 											<a
@@ -126,7 +126,7 @@ export default function Footer() {
 								<h3 className="font-semibold text-[13px] text-gray-100 leading-tight">
 									Company
 								</h3>
-								<ul className="mt-6 space-y-4">
+								<ul className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
 									{navigation[0].company.map((item) => (
 										<li key={item.name}>
 											<a
@@ -145,7 +145,7 @@ export default function Footer() {
 								<h3 className="font-semibold text-[13px] text-gray-100 leading-tight">
 									Contact
 								</h3>
-								<ul className="mt-6 space-y-4">
+								<ul className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
 									<li>
 										<a
 											href="tel:0404289437"

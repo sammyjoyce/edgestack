@@ -1,5 +1,3 @@
-'use client'
-
 import { useRef } from 'react'
 import {
   motion,
@@ -8,6 +6,7 @@ import {
   useTransform,
 } from 'framer-motion'
 import type React from 'react'
+import clsx from 'clsx'
 
 const MotionImage = motion.img
 
@@ -54,7 +53,7 @@ export function GrayscaleTransitionImage({
 
   return (
     // Apply passed className to the wrapper div
-    <div ref={ref} className={`group relative ${className ?? ''}`}>
+    <div ref={ref} className={clsx('group relative', className)}>
       <MotionImage
         {...imgProps} // Spread defined, compatible img props
         style={{ filter } as any} // Apply motion style

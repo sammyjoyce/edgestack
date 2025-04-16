@@ -14,24 +14,24 @@
     "@react-router/node": "*",
     "@react-router/serve": "*",
     "@tailwindcss/vite": "*",
-    "framer-motion": "^11.13.1",
+    "framer-motion": "*",
     "isbot": "^5.1.17",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "*",
+    "react-dom": "*",
     "react-router": "*"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@cloudflare/workers-types": "^4.20241202.0",
-    "@hiogawa/vite-node-miniflare": "0.1.1",
+    "@biomejs/biome": "*",
+    "@cloudflare/workers-types": "*",
+    "@hiogawa/vite-node-miniflare": "*",
     "@react-router/dev": "*",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "*",
+    "@types/react-dom": "*",
     "tailwindcss": "*",
     "typescript": "^5.6.3",
-    "vite": "^5.4.11",
+    "vite": "*",
     "vite-tsconfig-paths": "^5.1.2",
-    "wrangler": "^3.92.0"
+    "wrangler": "*"
   },
   "trustedDependencies": [
     "@biomejs/biome"

@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 import { Container } from "./ui/Container";
 import { FadeIn, FadeInStagger } from "./ui/FadeIn";
@@ -37,20 +38,23 @@ export default function RecentProjects() {
 						{projects.map((project, idx) => (
 							<FadeIn key={idx}>
 								<div
-									className={`grid grid-cols-1 items-center gap-12 md:grid-cols-2 ${idx % 2 === 1 ? "md:flex-row-reverse" : ""}`}
+									className={clsx(
+										"grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12",
+										idx % 2 === 1 && "md:flex-row-reverse",
+									)}
 								>
-									<div>
+									<div className="w-full">
 										<img
 											src={project.image}
 											alt={project.title}
 											className="aspect-3/2 w-full rounded-md object-cover"
 										/>
 									</div>
-									<div className="flex flex-col justify-center px-2 md:px-8">
-										<h3 className="mb-6 font-serif text-3xl text-black leading-snug">
+									<div className="flex w-full flex-col justify-center px-4 py-6 md:px-8 md:py-0">
+										<h3 className="mb-4 font-serif text-2xl text-black leading-snug md:mb-6 md:text-3xl">
 											{project.title}
 										</h3>
-										<p className="mb-6 max-w-xl text-gray-700 text-lg">
+										<p className="mb-4 text-base text-gray-700 md:mb-6 md:text-lg">
 											{project.description}
 										</p>
 										<a

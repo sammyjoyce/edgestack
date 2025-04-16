@@ -2,6 +2,7 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { Popover } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
 import { useState } from "react";
@@ -28,11 +29,12 @@ function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 	const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-		`relative px-5 py-2 rounded-full font-semibold text-base tracking-tight transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/60 ${
+		clsx(
+			"relative px-5 py-2 rounded-full font-semibold text-base tracking-tight transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/60",
 			isActive
 				? "text-black bg-white/90 shadow-md"
-				: "text-gray-900 hover:text-black hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out after:absolute after:left-5 after:right-5 after:bottom-1 after:h-0.5 after:bg-black/70 after:scale-x-0 after:origin-left"
-		}`;
+				: "text-gray-900 hover:text-black hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out after:absolute after:left-5 after:right-5 after:bottom-1 after:h-0.5 after:bg-black/70 after:scale-x-0 after:origin-left",
+		);
 
 	const scrollToSection = (
 		event: React.MouseEvent<HTMLAnchorElement>,
@@ -60,11 +62,17 @@ function Header() {
 									{({ open }) => (
 										<>
 											<Popover.Button
-												className={`flex items-center gap-x-1 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:text-gray-100 ${open ? "text-gray-100" : ""}`}
+												className={clsx(
+													"flex items-center gap-x-1 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:text-gray-100",
+													open && "text-gray-100",
+												)}
 											>
 												{item.name}
 												<ChevronDownIcon
-													className={`h-5 w-5 flex-none text-gray-400 ${open ? "rotate-180 text-gray-100" : ""} transition-transform duration-300`}
+													className={clsx(
+														"h-5 w-5 flex-none text-gray-400 transition-transform duration-300",
+														open && "rotate-180 text-gray-100",
+													)}
 													aria-hidden="true"
 												/>
 											</Popover.Button>

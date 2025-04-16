@@ -45,7 +45,7 @@ export default function OurServices() {
 				</section>
 
 				<FadeInStagger faster>
-					<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+					<div className="grid grid-cols-1 gap-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
 						{services.map((service, index) => (
 							<FadeIn key={index}>
 								<div className="group relative overflow-hidden rounded-lg">
@@ -59,9 +59,9 @@ export default function OurServices() {
 									</div>
 
 									{/* Service Info */}
-									<div className="absolute inset-0 z-10 flex flex-col justify-end p-6">
-										<div className="flex flex-col gap-3">
-											<h3 className="font-bold text-4xl text-white">
+									<div className="absolute inset-0 z-10 flex flex-col justify-end p-4 sm:p-6">
+										<div className="flex flex-col gap-2 sm:gap-3">
+											<h3 className="font-bold text-3xl text-white sm:text-4xl">
 												{service.title}
 											</h3>
 											<a
