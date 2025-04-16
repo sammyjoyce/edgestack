@@ -66,7 +66,7 @@ export default function Footer() {
 			<h2 id="footer-heading" className="sr-only">
 				Footer
 			</h2>
-			<div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8">
+			<div className="mx-auto max-w-7xl px-6 pt-16 pb-8 sm:pt-24 lg:px-8">
 				<div className="xl:grid xl:grid-cols-3 xl:gap-8">
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
@@ -80,7 +80,7 @@ export default function Footer() {
 							src="/assets/logo_284x137-KoakP1Oi.png"
 							alt="LUSH CONSTRUCTIONS"
 						/>
-						<p className="text-[15px] sm:text-[14px] leading-normal text-gray-300">
+						<p className="text-[15px] text-gray-300 leading-normal sm:text-[14px]">
 							Building dreams into reality with expert craftsmanship and
 							dedication to quality.
 						</p>
@@ -89,7 +89,7 @@ export default function Footer() {
 								<a
 									key={item.name}
 									href={item.href}
-									className="text-gray-400 hover:text-gray-100 rounded-full p-1.5 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
+									className="rounded-full p-1.5 text-gray-400 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
 								>
 									<span className="sr-only">{item.name}</span>
 									<item.icon className="h-6 w-6" aria-hidden="true" />
@@ -106,7 +106,7 @@ export default function Footer() {
 					>
 						<div className="md:grid md:grid-cols-2 md:gap-8">
 							<div>
-								<h3 className="text-[13px] leading-tight font-semibold text-gray-100">
+								<h3 className="font-semibold text-[13px] text-gray-100 leading-tight">
 									Services
 								</h3>
 								<ul className="mt-6 space-y-4">
@@ -114,7 +114,7 @@ export default function Footer() {
 										<li key={item.name}>
 											<a
 												href={item.href}
-												className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 rounded px-2 py-1 -mx-2 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
+												className="-mx-2 rounded px-2 py-1 text-[13px] text-gray-300 leading-tight transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
 											>
 												{item.name}
 											</a>
@@ -123,7 +123,7 @@ export default function Footer() {
 								</ul>
 							</div>
 							<div className="mt-10 md:mt-0">
-								<h3 className="text-[13px] leading-tight font-semibold text-gray-100">
+								<h3 className="font-semibold text-[13px] text-gray-100 leading-tight">
 									Company
 								</h3>
 								<ul className="mt-6 space-y-4">
@@ -131,7 +131,7 @@ export default function Footer() {
 										<li key={item.name}>
 											<a
 												href={item.href}
-												className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 rounded px-2 py-1 -mx-2 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
+												className="-mx-2 rounded px-2 py-1 text-[13px] text-gray-300 leading-tight transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
 											>
 												{item.name}
 											</a>
@@ -142,14 +142,14 @@ export default function Footer() {
 						</div>
 						<div className="md:grid md:gap-8">
 							<div>
-								<h3 className="text-[13px] leading-tight font-semibold text-gray-100">
+								<h3 className="font-semibold text-[13px] text-gray-100 leading-tight">
 									Contact
 								</h3>
 								<ul className="mt-6 space-y-4">
 									<li>
 										<a
 											href="tel:0404289437"
-											className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 rounded px-2 py-1 -mx-2 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
+											className="-mx-2 rounded px-2 py-1 text-[13px] text-gray-300 leading-tight transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
 										>
 											0404 289 437
 										</a>
@@ -157,13 +157,13 @@ export default function Footer() {
 									<li className="max-w-[200px] sm:max-w-full">
 										<a
 											href="mailto:info@lushconstructions.com.au"
-											className="text-[13px] leading-tight text-gray-300 hover:text-gray-100 rounded px-2 py-1 -mx-2 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out block overflow-hidden text-ellipsis"
+											className="-mx-2 block overflow-hidden text-ellipsis rounded px-2 py-1 text-[13px] text-gray-300 leading-tight transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
 										>
 											info@lushconstructions.com.au
 										</a>
 									</li>
 									<li>
-										<p className="text-[13px] leading-tight text-gray-300">
+										<p className="text-[13px] text-gray-300 leading-tight">
 											Sydney, NSW
 										</p>
 									</li>
@@ -172,10 +172,12 @@ export default function Footer() {
 						</div>
 					</motion.div>
 				</div>
-				<div className="mt-8 border-t border-gray-800 pt-8 md:flex md:items-center md:justify-between">
-					<p className="text-[11px] leading-none text-gray-400">
+				<div className="mt-8 border-gray-800 border-t pt-8 md:flex md:items-center md:justify-between">
+					<p className="text-[11px] text-gray-400 leading-none">
 						&copy; {new Date().getFullYear()} Lush Constructions. All rights
 						reserved.
+						<br />
+						NSW Builder License: 4632530
 					</p>
 				</div>
 			</div>

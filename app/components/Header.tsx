@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
 import { useState } from "react";
 import { NavLink } from "react-router";
+import { Button } from "./ui/Button";
 
 const menuItems = [
 	{ name: "Home", path: "#hero" },
@@ -27,10 +28,10 @@ function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 	const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-		`text-[13px] leading-none font-medium sm:text-[15px] sm:leading-loose ${
+		`relative px-5 py-2 rounded-full font-semibold text-base tracking-tight transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/60 ${
 			isActive
-				? "text-gray-100"
-				: "text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
+				? "text-black bg-white/90 shadow-md"
+				: "text-gray-900 hover:text-black hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out after:absolute after:left-5 after:right-5 after:bottom-1 after:h-0.5 after:bg-black/70 after:scale-x-0 after:origin-left"
 		}`;
 
 	const scrollToSection = (
@@ -46,72 +47,20 @@ function Header() {
 	};
 
 	return (
-		<header className="sticky inset-x-0 top-0 z-50 w-full flex-none text-[13px] font-semibold bg-black backdrop-blur-xs supports-backdrop-filter:bg-black shadow-premium inset-shadow-sm inset-shadow-black/10">
+		<header className="sticky inset-shadow-black/10 inset-shadow-sm inset-x-0 top-0 z-50 w-full flex-none bg-black font-semibold text-[13px] text-white shadow-premium backdrop-blur-xs supports-backdrop-filter:bg-black">
 			<nav className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className="relative flex items-center justify-between py-4">
 					<div className="absolute inset-x-0 bottom-0 h-px bg-gray-800" />
 
-					<div className="flex items-center">
-						{/* Logo */}
-						<NavLink to="/" className="relative z-10">
-							<img
-								src="/assets/logo_284x137-KoakP1Oi.png"
-								alt="LUSH CONSTRUCTIONS"
-								className="h-[32px] w-auto sm:h-[40px]"
-							/>
-						</NavLink>
-
-						{/* Announcement Banner */}
-						<a
-							href="tel:0404289437"
-							className="group hidden items-center gap-2 rounded bg-gray-900 px-4 py-2 text-xs leading-none font-medium text-gray-300 ring-1 ring-gray-800 hover:bg-gray-800 hover:text-gray-100 hover:ring-gray-700 shadow-premium inset-shadow-sm inset-shadow-white/5 hover:inset-shadow-xs transition-all duration-300 ease-in-out sm:ml-8 sm:flex lg:hidden min-[80rem]:flex"
-						>
-							<svg
-								className="size-4 fill-gray-300 group-hover:fill-gray-100 transition-all duration-300 ease-in-out"
-								viewBox="0 0 24 24"
-								role="img"
-								aria-label="Phone"
-							>
-								<title>Phone</title>
-								<path
-									fillRule="evenodd"
-									d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5z"
-									clipRule="evenodd"
-								/>
-							</svg>
-							<span className="font-semibold">Get a Quote</span>
-							<span className="font-medium group-hover:text-gray-100 transition-all duration-300 ease-in-out">
-								0404 289 437
-							</span>
-						</a>
-					</div>
-
-					{/* Mobile menu button */}
-					<div className="flex lg:hidden">
-						<button
-							type="button"
-							className="inline-flex items-center justify-center rounded-md p-2.5 text-gray-300 hover:text-gray-100 hover:bg-gray-900 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
-							onClick={() => setMobileMenuOpen(true)}
-						>
-							<span className="sr-only">Open main menu</span>
-							<Bars3Icon className="h-6 w-6" aria-hidden="true" />
-						</button>
-					</div>
-
-					{/* Desktop navigation */}
-					<motion.div
-						initial={{ opacity: 0, y: -10 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5 }}
-						className="hidden lg:flex lg:gap-x-12"
-					>
-						{menuItems.map((item) =>
+					{/* Left navigation items */}
+					<div className="hidden lg:flex lg:items-center lg:gap-x-6">
+						{menuItems.slice(0, 2).map((item) =>
 							item.submenu ? (
 								<Popover key={item.name} className="relative">
 									{({ open }) => (
 										<>
 											<Popover.Button
-												className={`flex items-center gap-x-1 text-[13px] leading-none font-medium sm:text-[15px] sm:leading-loose text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out ${open ? "text-gray-100" : ""}`}
+												className={`flex items-center gap-x-1 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:text-gray-100 ${open ? "text-gray-100" : ""}`}
 											>
 												{item.name}
 												<ChevronDownIcon
@@ -119,20 +68,20 @@ function Header() {
 													aria-hidden="true"
 												/>
 											</Popover.Button>
-											<Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2">
-												<div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-gray-800 bg-gray-900/95 backdrop-blur-sm">
+											<Popover.Panel className="-translate-x-1/2 absolute left-1/2 z-10 mt-3 w-screen max-w-min transform px-2">
+												<div className="overflow-hidden rounded-lg bg-gray-900/95 shadow-lg ring-1 ring-gray-800 backdrop-blur-sm">
 													<div className="relative grid gap-6 px-5 py-6 sm:gap-8 sm:p-8">
 														{item.submenu.map((subItem) => (
 															<NavLink
 																key={subItem.name}
 																to={subItem.path}
-																className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-800/50 hover:inset-shadow-sm hover:inset-shadow-white/5"
+																className="-m-3 flex items-start rounded-lg p-3 hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-800/50"
 																onClick={(e) =>
 																	scrollToSection(e, subItem.path)
 																}
 															>
 																<div className="ml-4">
-																	<p className="text-base font-medium text-gray-300 hover:text-gray-100">
+																	<p className="font-medium text-gray-300 text-sm hover:text-gray-100">
 																		{subItem.name}
 																	</p>
 																</div>
@@ -148,14 +97,78 @@ function Header() {
 								<NavLink
 									key={item.name}
 									to={item.path}
-									className={navLinkClass}
+									className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
 									onClick={(e) => scrollToSection(e, item.path)}
 								>
 									{item.name}
 								</NavLink>
 							),
 						)}
-					</motion.div>
+					</div>
+
+					{/* Mobile menu button (left) */}
+					<div className="flex lg:hidden">
+						<button
+							type="button"
+							className="inline-flex items-center justify-center rounded-md p-2.5 text-gray-300 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900 hover:text-gray-100"
+							onClick={() => setMobileMenuOpen(true)}
+						>
+							<span className="sr-only">Open main menu</span>
+							<Bars3Icon className="h-6 w-6" aria-hidden="true" />
+						</button>
+					</div>
+
+					{/* Logo (centered) */}
+					<div className="-translate-x-1/2 absolute left-1/2 flex transform justify-center">
+						<NavLink to="/" className="relative z-10">
+							<img
+								src="/assets/logo_284x137-KoakP1Oi.png"
+								alt="LUSH CONSTRUCTIONS"
+								className="h-[32px] w-auto sm:h-[40px]"
+							/>
+						</NavLink>
+					</div>
+
+					{/* Right navigation items and CTA */}
+					<div className="flex items-center">
+						{/* Desktop right nav items */}
+						<div className="hidden lg:flex lg:items-center lg:gap-x-6">
+							{menuItems.slice(2).map((item) => (
+								<NavLink
+									key={item.name}
+									to={item.path}
+									className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
+									onClick={(e) => scrollToSection(e, item.path)}
+								>
+									{item.name}
+								</NavLink>
+							))}
+						</div>
+
+						{/* CTA Button (using Button component) */}
+						<Button
+							to="tel:0404289437"
+							className="group ml-6 hidden items-center gap-2 sm:ml-8 sm:flex lg:ml-6 min-[80rem]:flex"
+							invert
+						>
+							<span className="flex items-center gap-x-2">
+								<svg
+									className="size-4 fill-gray-800 transition-all duration-300 ease-in-out group-hover:fill-black"
+									viewBox="0 0 24 24"
+									role="img"
+									aria-label="Phone"
+								>
+									<title>Phone</title>
+									<path
+										fillRule="evenodd"
+										d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5z"
+										clipRule="evenodd"
+									/>
+								</svg>
+								<span>0404 289 437</span>
+							</span>
+						</Button>
+					</div>
 				</div>
 			</nav>
 
@@ -176,7 +189,7 @@ function Header() {
 						/>
 					)}
 				</AnimatePresence>
-				<DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black/95 backdrop-blur-lg px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900 shadow-2xl inset-shadow-sm inset-shadow-white/5">
+				<DialogPanel className="fixed inset-shadow-sm inset-shadow-white/5 inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black/95 px-6 py-6 shadow-2xl backdrop-blur-lg sm:max-w-sm sm:ring-1 sm:ring-gray-900">
 					<div className="flex items-center justify-between">
 						<NavLink
 							to="/"
@@ -191,7 +204,7 @@ function Header() {
 						</NavLink>
 						<button
 							type="button"
-							className="-m-2.5 rounded-md p-2.5 text-gray-300 hover:text-gray-100 transition-all duration-300 ease-in-out"
+							className="-m-2.5 rounded-md p-2.5 text-gray-300 transition-all duration-300 ease-in-out hover:text-gray-100"
 							onClick={() => setMobileMenuOpen(false)}
 						>
 							<span className="sr-only">Close menu</span>
@@ -205,7 +218,7 @@ function Header() {
 									<div key={item.name}>
 										<NavLink
 											to={item.path}
-											className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:text-gray-100 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
+											className="-mx-3 block rounded-full px-5 py-2 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
 											onClick={(e) => scrollToSection(e, item.path)}
 										>
 											{item.name}
@@ -216,7 +229,7 @@ function Header() {
 													<NavLink
 														key={subItem.name}
 														to={subItem.path}
-														className="-mx-3 block rounded-lg px-3 py-2 text-sm font-medium leading-7 text-gray-400 hover:text-gray-100 hover:bg-gray-900/50 hover:inset-shadow-sm hover:inset-shadow-white/5 transition-all duration-300 ease-in-out"
+														className="-mx-3 block rounded-full px-5 py-2 font-semibold text-gray-400 text-sm transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
 														onClick={(e) => scrollToSection(e, subItem.path)}
 													>
 														{subItem.name}
@@ -228,12 +241,9 @@ function Header() {
 								))}
 							</div>
 							<div className="py-6">
-								<a
-									href="tel:0404289437"
-									className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:text-gray-100 hover:bg-gray-900/50 transition-all duration-300 ease-in-out"
-								>
+								<Button to="tel:0404289437" invert className="block w-full">
 									Call Us: 0404 289 437
-								</a>
+								</Button>
 							</div>
 						</div>
 					</div>
