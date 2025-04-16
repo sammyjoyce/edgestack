@@ -46,8 +46,8 @@ export default function OurServices() {
 
 				<FadeInStagger faster>
 					<div className="grid grid-cols-1 gap-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
-						{services.map((service, index) => (
-							<FadeIn key={index}>
+						{services.map((service) => (
+							<FadeIn key={service.title}>
 								<div className="group relative overflow-hidden rounded-lg">
 									{/* Service Image */}
 									<div className="aspect-[5/9] overflow-hidden">
