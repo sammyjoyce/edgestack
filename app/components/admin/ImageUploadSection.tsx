@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react"; // Import useEffect
 import { useFetcher } from "react-router";
 import { Button } from "../ui/Button";
 import { GrayscaleTransitionImage } from "../ui/GrayscaleTransitionImage";
@@ -25,8 +25,24 @@ export function ImageUploadSection({ initialContent, sectionRef }: ImageUploadSe
     { key: 'service_4_image', label: 'Service 4 Image' },
   ];
 
-  // One fetcher per field
+  // One fetcher per field and refs for file inputs
   const fetchers = imageFields.map(() => useFetcher());
+  const fileInputRefs = imageFields.map(() => useRef<HTMLInputElement>(null));
+
+  // Effect to clear file input on successful upload
+  useEffect(() => {
+    fetchers.forEach((fetcher, idx) => {
+      if (fetcher.state === 'idle' && fetcher.data?.success) {
+        const inputRef = fileInputRefs[idx];
+        if (inputRef.current) {
+          inputRef.current.value = ''; // Clear the file input
+        }
+        // TODO: Consider adding revalidation logic here if needed
+        // Example: revalidate(); // If using useRevalidator hook from parent
+      }
+    });
+    // Depend on fetcher states and data to re-run the effect
+  }, [fetchers, fileInputRefs]); // Add fileInputRefs to dependency array
 
   return (
     <section id="image-uploads" ref={ref} className="bg-gray-50 rounded-lg shadow p-6 mt-8">
@@ -47,6 +63,7 @@ export function ImageUploadSection({ initialContent, sectionRef }: ImageUploadSe
                   type="file"
                   name="image"
                   id={`${key}_input`}
+                  ref={fileInputRefs[idx]} // Assign ref to the input
                   data-key={key}
                   accept="image/*"
                   className="w-full border rounded p-1"
