@@ -38,6 +38,7 @@ export function ImageUploadSection({ initialContent, sectionRef }: ImageUploadSe
             <FadeIn key={key}>
               <fetcher.Form
                 method="post"
+                action="/admin/upload" // Point to the correct upload action route
                 encType="multipart/form-data"
                 className="flex flex-col items-center bg-white rounded-lg shadow p-4 gap-2 border"
               >
