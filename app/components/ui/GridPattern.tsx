@@ -28,7 +28,7 @@ export function GridPattern({
 }) {
   let id = useId()
   let ref = useRef<React.ElementRef<'svg'>>(null)
-  let currentBlock = useRef<[x: number, y: number]>()
+  let currentBlock = useRef<[x: number, y: number] | null>(null)
   let counter = useRef(0)
   let [hoveredBlocks, setHoveredBlocks] = useState<
     Array<[x: number, y: number, key: number]>

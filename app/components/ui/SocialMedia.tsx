@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import clsx from 'clsx'
+// Removed Link import from 'next/link'
 
 function FacebookIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -74,16 +74,19 @@ export function SocialMedia({
     >
       {socialMediaProfiles.map((socialMediaProfile) => (
         <li key={socialMediaProfile.title}>
-          <Link
+          {/* Replace next/link Link with standard anchor tag */}
+          <a
             href={socialMediaProfile.href}
             aria-label={socialMediaProfile.title}
+            target="_blank" // Add target="_blank" for external links
+            rel="noopener noreferrer" // Add rel for security
             className={clsx(
               'transition',
               invert ? 'hover:text-neutral-200' : 'hover:text-neutral-700',
             )}
           >
             <socialMediaProfile.icon className="h-6 w-6 fill-current" />
-          </Link>
+          </a>
         </li>
       ))}
     </ul>

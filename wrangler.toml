@@ -1,5 +1,68 @@
-workers_dev = true
+# Top-level configuration
 name = "lush"
-compatibility_date = "2024-11-18"
+compatibility_date = "2025-03-11"
+compatibility_flags = ["nodejs_compat"]
 main = "./build/server/index.js"
 assets = { directory = "./build/client/" }
+workers_dev = true
+
+# Public environment variables (do NOT put secrets here)
+[vars]
+CLOUDFLARE_ACCOUNT_ID = "427aa00a5888cad78805c7128db1f817"
+CLOUDFLARE_DATABASE_ID = "89bb8c60-84fb-4f13-9320-e5cf623f4963"
+JWT_SECRET = "dev_secret_change_me" # Change this for production!
+# CLOUDFLARE_D1_TOKEN is a secret and should NOT be here
+# PUBLIC_R2_URL is a secret and should NOT be here
+
+[env.production.vars]
+# You can override public vars for production here if needed
+# CLOUDFLARE_ACCOUNT_ID = "your-prod-account-id"
+# CLOUDFLARE_DATABASE_ID = "your-prod-database-id"
+
+# Worker entry point
+main = "./build/server/index.js" # Assuming this remains the entry point after build
+
+
+# D1 Database Binding
+# IMPORTANT: After creating the database using 'wrangler d1 create lush-content-db',
+# replace "YOUR_D1_DATABASE_ID_HERE" with the actual database ID provided by the command.
+[[d1_databases]]
+binding = "DB" # Binding name used in the Worker code
+database_name = "lush-content-db"
+# IMPORTANT: Replace the placeholder below with your actual D1 database ID after creation
+# To find your D1 database ID, run: wrangler d1 list
+# Example: database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+database_id = "89bb8c60-84fb-4f13-9320-e5cf623f4963"
+migrations_dir = "drizzle"
+
+[[r2_buckets]]
+binding = "ASSETS_BUCKET" # Binding name used in the Worker code
+bucket_name = "lush-assets"
+# Public URL for CMS image serving:
+# https://your-account-id-here.r2.cloudflarestorage.com/lush-assets/
+# IMPORTANT: Set the PUBLIC_R2_URL secret for production:
+# wrangler secret put PUBLIC_R2_URL --env production
+
+# Environment Variables
+# If your bucket is public, set PUBLIC_R2_URL (used in backend code to construct public image URLs)
+# To set: wrangler secret put PUBLIC_R2_URL --env production
+
+[env.production]
+# Production environment overrides can be set here if needed
+
+# Secrets Configuration
+# Run the following commands to set secrets needed by the application:
+# wrangler secret put ADMIN_USERNAME
+# wrangler secret put ADMIN_PASSWORD
+# wrangler secret put JWT_SECRET # For authentication/session management
+# If R2 bucket is public, also run:
+# wrangler secret put PUBLIC_R2_URL --env production # Or appropriate environment
+
+# Environment-specific overrides (optional)
+# [env.production]
+#   # Override bindings, secrets, or asset paths for production
+#   # database_id = "<your-prod-d1-id>"
+#   # public_url = "<your-prod-r2-url>"
+
+[observability]
+enabled = true

@@ -4,14 +4,23 @@ import { Container } from "./ui/Container";
 import { FadeIn, FadeInStagger } from "./ui/FadeIn";
 import { SectionIntro } from "./ui/SectionIntro";
 
-const projects = [
+// Define props interface
+interface RecentProjectsProps {
+	introTitle?: string;
+	introText?: string;
+	// Project data could also be passed as props if needed later
+	// projects?: Array<{ id: string; title: string; image: string; description: string; url: string }>;
+}
+
+// Hardcoded project data for now
+const defaultProjects = [
 	{
 		id: "modern-home-extension",
 		title: "Modern Home Extension",
 		image: "/assets/pic13-C3BImLY9.png",
 		description:
 			"A seamless blend of old and new, this extension maximizes light and space while maintaining character.",
-		url: "/projects/modern-home-extension",
+		url: "#", // Link to contact or specific project page if exists
 	},
 	{
 		id: "luxury-kitchen-renovation",
@@ -19,7 +28,7 @@ const projects = [
 		image: "/assets/pic09-By9toE8x.png",
 		description:
 			"Premium finishes and high-end appliances transform this kitchen into the heart of the home.",
-		url: "/projects/luxury-kitchen-renovation",
+		url: "#",
 	},
 	{
 		id: "outdoor-living-retreat",
@@ -27,17 +36,27 @@ const projects = [
 		image: "/assets/pic08-B09tdJ9o.png",
 		description:
 			"A resort-style alfresco area perfect for entertaining and relaxation, year-round.",
-		url: "/projects/outdoor-living-retreat",
+		url: "#",
 	},
 ];
 
-export default function RecentProjects() {
+export default function RecentProjects({
+	introTitle,
+	introText,
+}: RecentProjectsProps) {
+	// Use default projects if none are passed via props (though props aren't defined for projects yet)
+	const projects = defaultProjects;
+
 	return (
 		<section id="projects" className="w-full bg-white py-20">
+			{/* Use props for intro title and text, with defaults */}
 			<SectionIntro
-				title="Recent Projects"
+				title={introTitle ?? "Recent Projects"}
 				className="mb-16 max-w-6xl px-4 lg:px-8"
-			/>
+			>
+				{introText && <p>{introText}</p>}{" "}
+				{/* Conditionally render intro text if provided */}
+			</SectionIntro>
 			<Container className="max-w-6xl px-4 lg:px-8">
 				<FadeInStagger>
 					<div className="flex flex-col gap-24">
@@ -46,17 +65,28 @@ export default function RecentProjects() {
 								<div
 									className={clsx(
 										"grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12",
-										idx % 2 === 1 && "md:flex-row-reverse",
+										// Alternate layout direction based on index
+										idx % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row",
 									)}
 								>
-									<div className="w-full">
+									<div
+										className={clsx(
+											"w-full",
+											idx % 2 === 1 ? "md:order-last" : "",
+										)}
+									>
 										<img
 											src={project.image}
 											alt={project.title}
 											className="aspect-3/2 w-full rounded-md object-cover"
 										/>
 									</div>
-									<div className="flex w-full flex-col justify-center px-4 py-6 md:px-8 md:py-0">
+									<div
+										className={clsx(
+											"flex w-full flex-col justify-center px-4 py-6 md:px-8 md:py-0",
+											idx % 2 === 1 ? "md:order-first" : "",
+										)}
+									>
 										<h3 className="mb-4 font-serif text-2xl text-black leading-snug md:mb-6 md:text-3xl">
 											{project.title}
 										</h3>

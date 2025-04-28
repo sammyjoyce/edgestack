@@ -1,7 +1,13 @@
 import { FadeIn } from "./ui/FadeIn";
-import { SectionIntro } from "./ui/SectionIntro";
 
-export default function AboutUs() {
+// Define props interface
+interface AboutProps {
+	title?: string;
+	text?: string;
+	imageUrl?: string;
+}
+
+export default function AboutUs({ title, text, imageUrl }: AboutProps) {
 	return (
 		<section className="bg-white py-12 sm:py-20 md:py-28" id="about">
 			<div className="mx-auto max-w-7xl px-4 lg:px-6">
@@ -17,37 +23,24 @@ export default function AboutUs() {
 							</FadeIn>
 							<FadeIn>
 								<h2 className="font-medium font-serif text-3xl tracking-tight sm:text-4xl md:text-5xl">
-									About Us
+									{/* Use title prop, fallback to default */}
+									{title ?? "About Us"}
 								</h2>
 							</FadeIn>
 						</div>
 						<div className="space-y-4 text-gray-700">
-							<p className="mb-2 text-lg">
-								At Lush Constructions, we're driven by a passion for building
-								more than just structures – we craft homes, communities, and
-								memories that last a lifetime.
-							</p>
+							{/* Use text prop, fallback to default. Split into paragraphs if needed, or use dangerouslySetInnerHTML if text contains HTML */}
 							<p className="text-base sm:text-lg">
-								With a relentless focus on quality, transparency, and trust,
-								we're dedicated to turning your vision into a breathtaking
-								reality.
-							</p>
-							<p className="text-base sm:text-lg">
-								As proud members of Master Builders NSW, we uphold the highest
-								standards in the industry, ensuring every project is delivered
-								with precision, care, and a commitment to excellence.
-							</p>
-							<p className="text-base sm:text-lg">
-								Whether you're dreaming of a grand renovation, a thoughtful
-								extension, or a brand-new build, our team of experts is here to
-								guide you every step of the way.
+								{text ??
+									`At Lush Constructions, we're driven by a passion for building more than just structures – we craft homes, communities, and memories that last a lifetime. With a relentless focus on quality, transparency, and trust, we're dedicated to turning your vision into a breathtaking reality. As proud members of Master Builders NSW, we uphold the highest standards in the industry, ensuring every project is delivered with precision, care, and a commitment to excellence. Whether you're dreaming of a grand renovation, a thoughtful extension, or a brand-new build, our team of experts is here to guide you every step of the way.`}
 							</p>
 						</div>
 					</div>
 					<div className="w-full md:w-1/2">
 						<img
-							src="/assets/team.jpg"
-							alt="About Us"
+							// Use imageUrl prop, fallback to default
+							src={imageUrl ?? "/assets/team.jpg"}
+							alt={title ?? "About Us"} // Use title for alt text
 							className="aspect-3/2 w-full rounded-md object-cover"
 						/>
 					</div>
