@@ -1,4 +1,4 @@
-import { data, json } from "react-router"; // Import json helper
+import { data } from "react-router"; // Use data helper instead of json
 import type { ActionFunctionArgs } from "react-router";
 import { getSessionCookie, verify } from "../utils/auth";
 import { updateContent } from "../db/index"; // Import database update function
@@ -15,9 +15,9 @@ interface CloudflareEnv {
 export async function action({ request, context }: ActionFunctionArgs & { context: CloudflareEnv }) {
   const sessionValue = getSessionCookie(request);
   // Use await with verify as it's async
-  if (!sessionValue || !context.JWT_SECRET || !(await verify(sessionValue, context.JWT_SECRET))) { 
-    // Use json helper for consistency
-    return json({ error: "Unauthorized" }, { status: 401 }); 
+  if (!sessionValue || !context.JWT_SECRET || !(await verify(sessionValue, context.JWT_SECRET))) {
+    // Use data helper
+    return data({ error: "Unauthorized" }, { status: 401 });
   }
   if (request.method === "POST") {
     try {
@@ -26,10 +26,10 @@ export async function action({ request, context }: ActionFunctionArgs & { contex
       const key = formData.get("key"); // Get the key for the database update
 
       if (!file || !(file instanceof File)) {
-        return json({ success: false, error: "No file uploaded or invalid format." }, { status: 400 });
+        return data({ success: false, error: "No file uploaded or invalid format." }, { status: 400 });
       }
       if (!key || typeof key !== 'string') {
-        return json({ success: false, error: "Missing key for database update." }, { status: 400 });
+        return data({ success: false, error: "Missing key for database update." }, { status: 400 });
       }
 
       // Generate a unique filename
@@ -50,13 +50,13 @@ export async function action({ request, context }: ActionFunctionArgs & { contex
       await updateContent(context.db, { [key]: publicUrl });
 
       // Return success with the URL (useful for UI update)
-      return json({ success: true, url: publicUrl, key: key }); // Include key in response
+      return data({ success: true, url: publicUrl, key: key }); // Include key in response
 
     } catch (error: any) {
       console.error("Upload Action Error:", error); // Log the error server-side
-      return json({ success: false, error: "Error processing file upload." }, { status: 500 });
+      return data({ success: false, error: "Error processing file upload." }, { status: 500 });
     }
   }
-  // Use json helper for consistency
-  return json({ error: "Invalid method" }, { status: 405 }); 
+  // Use data helper
+  return data({ error: "Invalid method" }, { status: 405 });
 }
