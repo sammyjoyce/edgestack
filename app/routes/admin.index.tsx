@@ -29,13 +29,15 @@ export async function action({ request, context }: { request: Request, context: 
   }
   if (request.method === "POST") {
     try {
-      const data = await request.json();
-      // Type guard to ensure data is Record<string, string>
-      if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
-        await updateContent(context.db as any, data as Record<string, string>);
-      } else {
+      const formData = await request.formData();
+      const updates: Record<string, string> = {};
+      for (const [key, value] of formData.entries()) {
+        if (typeof value === 'string') updates[key] = value;
+      }
+      if (Object.keys(updates).length === 0) {
         throw new Error('Invalid content update payload');
       }
+      await updateContent(context.db as any, updates);
       return { success: true };
     } catch (error: any) {
       return { success: false, error: "Error processing content update.", status: 500 };
