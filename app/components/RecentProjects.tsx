@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link
 import { Container } from "./ui/Container";
 import { FadeIn, FadeInStagger } from "./ui/FadeIn";
 import { SectionIntro } from "./ui/SectionIntro";
@@ -93,12 +94,13 @@ export default function RecentProjects({
 										<p className="mb-4 text-base text-gray-700 md:mb-6 md:text-lg">
 											{project.description}
 										</p>
-										<a
-											href={project.url}
+										{/* Use Link instead of a */}
+										<Link
+											to={`/projects/${project.id}`} // Construct the path to the detail route
 											className="font-semibold text-base text-black underline underline-offset-4 transition hover:text-gray-700"
 										>
-											View Project →
-										</a>
+											View Project Details →
+										</Link>
 									</div>
 								</div>
 							</FadeIn>
