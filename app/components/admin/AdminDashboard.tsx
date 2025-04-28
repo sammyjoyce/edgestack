@@ -8,6 +8,7 @@ import { ServicesSectionEditor } from "./ServicesSectionEditor";
 import { Container } from "../ui/Container";
 import { SectionIntro } from "../ui/SectionIntro";
 import { FadeIn } from "../ui/FadeIn";
+import { Button } from "../ui/Button";
 import type { loader } from "../../routes/admin.index";
 
 export default function AdminDashboard() {

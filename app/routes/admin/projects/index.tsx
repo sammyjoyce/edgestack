@@ -2,7 +2,7 @@
 import { useLoaderData, Link } from "react-router-dom";
 import { data } from "react-router"; // Assuming 'data' is the correct helper
 import type { LoaderFunctionArgs } from "react-router";
-import { getAllProjects } from "../../../db/index";
+import { getAllProjects, initDrizzle } from "../../../db/index";
 import type { Project } from "../../../../database/schema";
 import { getSessionCookie, verify } from "../../../utils/auth";
 import { Button } from "../../../components/ui/Button";
@@ -15,14 +15,14 @@ interface CloudflareEnv {
 }
 
 // Loader to fetch all projects
-export async function loader({ request, context }: LoaderFunctionArgs & { context: any }) {
+export async function loader({ request, context }: LoaderFunctionArgs & { context: CloudflareEnv }) {
   const sessionValue = getSessionCookie(request);
-  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
-  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
+  if (!sessionValue || !context.JWT_SECRET || !(await verify(sessionValue, context.JWT_SECRET))) {
     throw new Response("Unauthorized", { status: 401 });
   }
   try {
-    const projects = await getAllProjects(context.cloudflare?.env?.db);
+    const db = initDrizzle(context.db);
+    const projects = await getAllProjects(db);
     return { projects };
   } catch (error) {
     console.error("Error fetching projects:", error);

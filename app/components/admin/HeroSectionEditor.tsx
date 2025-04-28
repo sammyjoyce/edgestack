@@ -78,15 +78,15 @@ export function HeroSectionEditor({
               <svg className="w-10 h-10 text-gray-400 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5V19a2 2 0 002 2h14a2 2 0 002-2v-2.5M16 3.13a4 4 0 010 7.75M8 3.13a4 4 0 000 7.75M12 21v-4m0 0a4 4 0 01-4-4V7m4 10a4 4 0 004-4V7" /></svg>
               <span className="text-gray-500 text-sm">No image selected</span>
             </div>
-          )
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            className="mb-2"
-            onChange={handleFileChange}
-            disabled={imageUploading}
-          />
+           )}
+           <input
+             type="file"
+             accept="image/*"
+             ref={fileInputRef}
+             className="mb-2"
+             onChange={handleFileChange}
+             disabled={imageUploading}
+           />
           {imageUploading && (
             <span className="text-blue-500 text-sm">Uploading...</span>
           )}
