@@ -80,7 +80,6 @@ export async function createProject(db: ReturnType<typeof initDrizzle>, projectD
     ...projectData,
     isFeatured: projectData.isFeatured ?? false,
     sortOrder: projectData.sortOrder ?? 0, // Default sort order might need adjustment based on desired behavior
-    createdAt: projectData.createdAt ?? new Date(),
     createdAt: new Date(),
     updatedAt: new Date(),
   };

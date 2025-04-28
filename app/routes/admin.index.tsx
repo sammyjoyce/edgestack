@@ -14,7 +14,7 @@ import type { Route } from "./+types/admin.index";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);
-  if (!sessionValue || !(context.cloudflare.env as any).JWT_SECRET || !verify(sessionValue, (context.cloudflare.env as any).JWT_SECRET)) {
+  if (!sessionValue || !(context.cloudflare.env as any).JWT_SECRET || !(await verify(sessionValue, (context.cloudflare.env as any).JWT_SECRET))) {
     return { error: "Unauthorized", status: 401 };
   }
   const items = await getAllContent(context.db as any);
@@ -24,7 +24,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 export async function action({ request, context }: { request: Request, context: any }) {
   console.log("admin.index.tsx action invoked", request.method, request.url);
   const sessionValue = getSessionCookie(request);
-  if (!sessionValue || !(context.cloudflare.env as any).JWT_SECRET || !verify(sessionValue, (context.cloudflare.env as any).JWT_SECRET)) {
+  if (!sessionValue || !(context.cloudflare.env as any).JWT_SECRET || !(await verify(sessionValue, (context.cloudflare.env as any).JWT_SECRET))) {
     return { error: "Unauthorized", status: 401 };
   }
   if (request.method === "POST") {
