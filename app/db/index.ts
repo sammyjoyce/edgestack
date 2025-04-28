@@ -33,13 +33,13 @@ export async function updateContent(
   updates: Record<string, string>
 ) {
   const batch = Object.entries(updates).map(([key, value]) => {
-    const insertValue: typeof schema.content.$inferInsert = { key, value };
+    const insertValue: typeof schema.content.$inferInsert = { key, value }; // page/updatedAt use defaults
     return db
       .insert(schema.content)
       .values(insertValue)
       .onConflictDoUpdate({
         target: schema.content.key,
-        set: { value }
+        set: { value, updatedAt: new Date() } // bump timestamp on every update
       });
   });
   return Promise.all(batch);
