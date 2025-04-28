@@ -27,16 +27,17 @@ export const meta: Route.MetaFunction = () => {
 	];
 };
 
-// Update loader to fetch dynamic content from D1
+// Update loader to fetch dynamic content and featured projects from D1
 export async function loader({ context }: Route.LoaderArgs) {
 	let contentMap: Record<string, string> = {};
+	let featuredProjects: Project[] = []; // Initialize featuredProjects array
 
 	try {
-		// Query the content table - Remove explicit type argument from .all()
-		const results = await context.db.select({ key: schema.content.key, value: schema.content.value }).from(schema.content);
+		// Query the content table
+		const contentResults = await context.db.select({ key: schema.content.key, value: schema.content.value }).from(schema.content);
 
-		if (results) {
-			contentMap = (results as Array<{ key: string; value: string }>).reduce(
+		if (contentResults) {
+			contentMap = (contentResults as Array<{ key: string; value: string }>).reduce(
 				(acc: Record<string, string>, { key, value }) => {
 					acc[key] = value;
 					return acc;
@@ -44,22 +45,29 @@ export async function loader({ context }: Route.LoaderArgs) {
 				{},
 			);
 		}
+
+		// Fetch featured projects using the new DB function
+		featuredProjects = await getFeaturedProjects(context.db);
+
 	} catch (error) {
-		console.error("Error fetching content from D1:", error);
+		console.error("Error fetching data from D1:", error);
+		// Return empty data in case of error to prevent crashes
+		contentMap = {};
+		featuredProjects = [];
 	}
 
 	return {
-		content: contentMap as Record<string, string>,
+		content: contentMap,
+		projects: featuredProjects, // Add projects to loader data
 	};
 }
 
+
 export default function Home() {
-	// Use the local ContentMap type for loader data
-	const loaderData = useLoaderData<typeof loader>();
-	const { content } = loaderData;
+	const { content, projects } = useLoaderData<typeof loader>(); // Destructure projects
 
 	return (
-		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 via-gray-600/10 to-100% to-gray-600/0">
+		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
 			{/* Pass fetched content down to components as props */}
 			<Header />
 			{/* Use optional chaining and default values for robustness */}
