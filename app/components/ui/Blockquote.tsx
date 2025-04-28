@@ -1,9 +1,17 @@
-import Image, { type ImageProps } from 'next/image'
 import clsx from 'clsx'
 
-import { Border } from '@/components/Border'
+import { Border } from './Border' // Assuming path alias is correct
 
-type ImagePropsWithOptionalAlt = Omit<ImageProps, 'alt'> & { alt?: string }
+// Removed ImageProps and Image import from 'next/image'
+
+// Define props for the standard img tag if needed, or simplify
+interface SimpleImageProps {
+  src: string;
+  alt?: string;
+  // Add other relevant img attributes if necessary, like width, height, loading, etc.
+  sizes?: string; // Keep sizes if used
+  className?: string;
+}
 
 function BlockquoteWithImage({
   author,
@@ -14,7 +22,7 @@ function BlockquoteWithImage({
   author: { name: string; role: string }
   children: React.ReactNode
   className?: string
-  image: ImagePropsWithOptionalAlt
+  image: SimpleImageProps // Use the simplified image props
 }) {
   return (
     <figure
@@ -27,11 +35,13 @@ function BlockquoteWithImage({
         {typeof children === 'string' ? <p>{children}</p> : children}
       </blockquote>
       <div className="col-start-1 row-start-2 overflow-hidden rounded-xl bg-neutral-100 sm:col-span-5 sm:row-span-full sm:rounded-3xl">
-        <Image
-          alt=""
-          {...image}
-          sizes="(min-width: 1024px) 17.625rem, (min-width: 768px) 16rem, (min-width: 640px) 40vw, 3rem"
-          className="h-12 w-12 object-cover grayscale sm:aspect-7/9 sm:h-auto sm:w-full"
+        {/* Replace next/image Image with standard img tag */}
+        <img
+          alt={image.alt ?? ""}
+          src={image.src}
+          sizes={image.sizes ?? "(min-width: 1024px) 17.625rem, (min-width: 768px) 16rem, (min-width: 640px) 40vw, 3rem"} // Keep sizes or adjust as needed
+          className={image.className ?? "h-12 w-12 object-cover grayscale sm:aspect-7/9 sm:h-auto sm:w-full"} // Keep className or adjust
+          // Add loading="lazy" if appropriate
         />
       </div>
       <figcaption className="text-sm text-neutral-950 sm:col-span-7 sm:row-start-3 sm:text-base">
@@ -67,15 +77,27 @@ function BlockquoteWithoutImage({
   )
 }
 
+// Update the props definition for the main Blockquote component
+type BlockquoteBaseProps = {
+  author: { name: string; role: string };
+  children: React.ReactNode;
+  className?: string;
+};
+
+type BlockquoteWithImageProps = BlockquoteBaseProps & {
+  image: SimpleImageProps;
+};
+
+type BlockquoteWithoutImageProps = BlockquoteBaseProps & {
+  image?: undefined;
+};
+
 export function Blockquote(
-  props:
-    | React.ComponentPropsWithoutRef<typeof BlockquoteWithImage>
-    | (React.ComponentPropsWithoutRef<typeof BlockquoteWithoutImage> & {
-        image?: undefined
-      }),
+  props: BlockquoteWithImageProps | BlockquoteWithoutImageProps
 ) {
   if (props.image) {
-    return <BlockquoteWithImage {...props} />
+    // Type assertion needed because TS can't automatically narrow here based on the check
+    return <BlockquoteWithImage {...(props as BlockquoteWithImageProps)} />
   }
 
   return <BlockquoteWithoutImage {...props} />

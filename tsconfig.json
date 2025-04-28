@@ -1,25 +1,14 @@
 {
 	"files": [],
 	"references": [
-		{
-			"path": "./tsconfig.node.json"
-		},
-		{
-			"path": "./tsconfig.cloudflare.json"
-		}
+	  { "path": "./tsconfig.node.json" },
+	  { "path": "./tsconfig.cloudflare.json" }
 	],
 	"compilerOptions": {
-		"baseUrl": ".",
-		"paths": {
-			"@/components/*": [
-				"app/components/ui/*"
-			]
-		},
-		"checkJs": true,
-		"forceConsistentCasingInFileNames": true,
-		"isolatedModules": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"noEmit": true
+	  "checkJs": true,
+	  "verbatimModuleSyntax": true,
+	  "skipLibCheck": true,
+	  "strict": true,
+	  "noEmit": true
 	}
-}
+  }
