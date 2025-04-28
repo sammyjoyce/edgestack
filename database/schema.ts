@@ -19,6 +19,8 @@ export const projects = sqliteTable('projects', {
   description: text('description'),
   details: text('details'), // Optional field for location, duration, budget etc.
   imageUrl: text('image_url'), // Optional image URL
+  isFeatured: integer('is_featured', { mode: 'boolean' }).default(false), // Flag for home page display
+  sortOrder: integer('sort_order').default(0), // Order on home page
   createdAt: integer('created_at', { mode: 'timestamp' }).default(new Date()), // Timestamp for creation
   updatedAt: integer('updated_at', { mode: 'timestamp' }).default(new Date()), // Timestamp for last update
 });

@@ -62,6 +62,7 @@ export async function action({ request, params, context }: ActionFunctionArgs & 
     const title = formData.get("title");
     const description = formData.get("description");
     const details = formData.get("details");
+    const isFeatured = formData.get("isFeatured") === "true"; // Convert checkbox value
     // TODO: Add image update handling later
 
     if (typeof title !== 'string' || title.trim() === '') {
@@ -74,7 +75,9 @@ export async function action({ request, params, context }: ActionFunctionArgs & 
       title: title.trim(),
       description: typeof description === 'string' ? description.trim() : undefined,
       details: typeof details === 'string' ? details.trim() : undefined,
+      isFeatured: isFeatured, // Add isFeatured flag
       // imageUrl update logic will go here
+      // sortOrder will be handled in the list view
     };
 
     const updatedProject = await updateProject(context.db, projectId, updatedProjectData);
@@ -179,6 +182,20 @@ export default function AdminEditProject() {
             defaultValue={currentProject.details ?? ""}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
           />
+        </div>
+
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            name="isFeatured"
+            id="isFeatured"
+            value="true" // Send "true" when checked
+            defaultChecked={currentProject.isFeatured ?? false}
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          />
+          <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-900">
+            Feature on Home Page
+          </label>
         </div>
         
         {/* TODO: Add image upload/update field later */}

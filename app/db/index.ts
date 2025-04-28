@@ -1,5 +1,5 @@
 import { drizzle } from 'drizzle-orm/d1';
-import { eq, desc } from 'drizzle-orm'; // Import desc for ordering
+import { eq, desc, asc } from 'drizzle-orm'; // Import asc for ordering
 import * as schema from '../../database/schema';
 import type { NewProject, Project } from '../../database/schema'; // Import Project types
 
@@ -54,7 +54,17 @@ export async function deleteContent(db: ReturnType<typeof initDrizzle>, key: str
 
 // Get all projects, ordered by creation date descending
 export async function getAllProjects(db: ReturnType<typeof initDrizzle>): Promise<Project[]> {
-  return db.select().from(schema.projects).orderBy(desc(schema.projects.createdAt)).all();
+  // Order by sortOrder ascending, then createdAt descending as a fallback
+  return db.select().from(schema.projects).orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt)).all();
+}
+
+// Get only featured projects, ordered by sortOrder
+export async function getFeaturedProjects(db: ReturnType<typeof initDrizzle>): Promise<Project[]> {
+  return db.select()
+    .from(schema.projects)
+    .where(eq(schema.projects.isFeatured, true))
+    .orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt)) // Order by sortOrder, then creation date
+    .all();
 }
 
 // Get a single project by its ID
@@ -63,23 +73,29 @@ export async function getProjectById(db: ReturnType<typeof initDrizzle>, id: num
   return result ?? null; // Return null if not found
 }
 
-// Create a new project
-export async function createProject(db: ReturnType<typeof initDrizzle>, projectData: NewProject): Promise<Project> {
-  // Ensure timestamps are set if not provided
-  const dataWithTimestamps = {
+// Create a new project - Ensure isFeatured and sortOrder are handled
+export async function createProject(db: ReturnType<typeof initDrizzle>, projectData: Omit<NewProject, 'id' | 'createdAt' | 'updatedAt'>): Promise<Project> {
+  // Ensure timestamps and defaults are set if not provided
+  const dataWithDefaults = {
     ...projectData,
+    isFeatured: projectData.isFeatured ?? false,
+    sortOrder: projectData.sortOrder ?? 0, // Default sort order might need adjustment based on desired behavior
     createdAt: projectData.createdAt ?? new Date(),
-    updatedAt: projectData.updatedAt ?? new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
-  const result = await db.insert(schema.projects).values(dataWithTimestamps).returning().get();
+  const result = await db.insert(schema.projects).values(dataWithDefaults).returning().get();
   return result;
 }
 
-// Update an existing project
-export async function updateProject(db: ReturnType<typeof initDrizzle>, id: number, projectData: Partial<NewProject>): Promise<Project | null> {
+// Update an existing project - Ensure isFeatured and sortOrder can be updated
+export async function updateProject(db: ReturnType<typeof initDrizzle>, id: number, projectData: Partial<Omit<NewProject, 'id' | 'createdAt'>>): Promise<Project | null> {
   // Update the 'updatedAt' timestamp
   const dataWithTimestamp = {
     ...projectData,
+    // Explicitly handle boolean conversion if needed, depending on form data
+    isFeatured: projectData.isFeatured, 
+    sortOrder: projectData.sortOrder,
     updatedAt: new Date(),
   };
   const result = await db
