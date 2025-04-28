@@ -3,14 +3,15 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 // Define the schema for the content table
 export const content = sqliteTable('content', {
   key: text('key').primaryKey().notNull(), // Text primary key
-  value: text('value').notNull(), // Text value for content
+  page: text('page').notNull().default('global'), // Logical page this content belongs to
+  type: text('type').notNull().default('text'),   // Content type (text, image, markdown, etc.)
+  value: text('value').notNull(),                 // Content value
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).default(new Date()), // Last update timestamp
 });
 
 // Type for content entry
-export type Content = {
-  key: string;
-  value: string;
-};
+export type Content = typeof content.$inferSelect;
+export type NewContent = typeof content.$inferInsert;
 
 // Define the schema for the projects table
 export const projects = sqliteTable('projects', {
