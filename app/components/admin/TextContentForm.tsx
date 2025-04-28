@@ -8,9 +8,32 @@ export interface TextContentFormProps {
 }
 
 export function TextContentForm({ fetcher, initialContent, formRef }: TextContentFormProps) {
-  // Local refs for textareas
   const localFormRef = useRef<HTMLFormElement>(null);
   const ref = formRef || localFormRef;
+
+  // Config array for text fields
+  const textFields = [
+    { key: 'hero_title', label: 'Hero Title', rows: 2 },
+    { key: 'hero_subtitle', label: 'Hero Subtitle', rows: 3 },
+    { key: 'about_title', label: 'About Title', rows: 2 },
+    { key: 'about_text', label: 'About Text', rows: 5 },
+    { key: 'services_intro_title', label: 'Services Intro Title', rows: 2 },
+    { key: 'services_intro_text', label: 'Services Intro Text', rows: 4 },
+    { key: 'service_1_title', label: 'Service 1 Title', rows: 2 },
+    { key: 'service_1_text', label: 'Service 1 Text', rows: 3 },
+    { key: 'service_2_title', label: 'Service 2 Title', rows: 2 },
+    { key: 'service_2_text', label: 'Service 2 Text', rows: 3 },
+    // Add more fields as needed
+  ];
+
+  // Handler for auto-save on blur
+  function handleBlur(e: React.FocusEvent<HTMLTextAreaElement>) {
+    const form = e.target.form;
+    if (form) {
+      const data = new FormData(form);
+      fetcher.submit(data, { method: 'post' });
+    }
+  }
 
   return (
     <fetcher.Form
@@ -21,44 +44,24 @@ export function TextContentForm({ fetcher, initialContent, formRef }: TextConten
     >
       <h2 className="text-xl font-semibold text-gray-800 mb-2">Text Content</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1">
-          <label htmlFor="hero_title" className="font-bold text-gray-700">Hero Title</label>
-          <textarea name="hero_title" id="hero_title" data-key="hero_title" rows={2} defaultValue={initialContent.hero_title || ""} className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="hero_subtitle" className="font-bold text-gray-700">Hero Subtitle</label>
-          <textarea name="hero_subtitle" id="hero_subtitle" data-key="hero_subtitle" rows={3} defaultValue={initialContent.hero_subtitle || ""} className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="about_title" className="font-bold text-gray-700">About Title</label>
-          <textarea name="about_title" id="about_title" data-key="about_title" rows={2} defaultValue={initialContent.about_title || ""} className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="about_text" className="font-bold text-gray-700">About Text</label>
-          <textarea name="about_text" id="about_text" data-key="about_text" rows={5} defaultValue={initialContent.about_text || ""} className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="services_intro_title" className="font-bold text-gray-700">Services Intro Title</label>
-          <textarea name="services_intro_title" id="services_intro_title" data-key="services_intro_title" rows={2} defaultValue={initialContent.services_intro_title || ""} className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="services_intro_text" className="font-bold text-gray-700">Services Intro Text</label>
-          <textarea name="services_intro_text" id="services_intro_text" data-key="services_intro_text" rows={4} defaultValue={initialContent.services_intro_text || ""} className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="service_1_title" className="font-bold text-gray-700">Service 1 Title</label>
-          <textarea name="service_1_title" id="service_1_title" data-key="service_1_title" rows={2} defaultValue={initialContent.service_1_title || ""} className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="service_1_text" className="font-bold text-gray-700">Service 1 Text</label>
-          <textarea id="service_1_text" data-key="service_1_text" rows={3} defaultValue={initialContent.service_1_text || ""} className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="service_2_title" className="font-bold text-gray-700">Service 2 Title</label>
-          <textarea id="service_2_title" data-key="service_2_title" rows={2} defaultValue={initialContent.service_2_title || ""} className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="service_2_text" className="font-bold text-gray-700">Service 2 Text</label>
+        {textFields.map(({ key, label, rows }) => (
+          <div className="flex flex-col gap-1" key={key}>
+            <label htmlFor={key} className="font-bold text-gray-700">{label}</label>
+            <textarea
+              name={key}
+              id={key}
+              data-key={key}
+              rows={rows}
+              defaultValue={initialContent[key] || ""}
+              className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+              onBlur={handleBlur}
+            />
+          </div>
+        ))}
+      </div>
+    </fetcher.Form>
+  );
+}
           <textarea name="service_2_text" id="service_2_text" data-key="service_2_text" rows={3} defaultValue={initialContent.service_2_text || ""} className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white" />
         </div>
         <div className="flex flex-col gap-1">
