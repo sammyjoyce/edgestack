@@ -1,4 +1,4 @@
-import React from "react";
+  import React from "react";
 import { useLoaderData, Link } from "react-router-dom";
 import { data } from "react-router"; // Assuming 'data' is the correct helper
 import type { LoaderFunctionArgs } from "react-router";
@@ -15,18 +15,18 @@ interface CloudflareEnv {
 }
 
 // Loader to fetch all projects
-export async function loader({ request, context }: LoaderFunctionArgs & { context: CloudflareEnv }) {
+export async function loader({ request, context }: LoaderFunctionArgs & { context: any }) {
   const sessionValue = getSessionCookie(request);
-  if (!sessionValue || !context.JWT_SECRET || !(await verify(sessionValue, context.JWT_SECRET))) {
-    // Use data helper for consistency
-    return data({ error: "Unauthorized" }, { status: 401 });
+  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
+    throw new Response("Unauthorized", { status: 401 });
   }
   try {
-    const projects = await getAllProjects(context.db);
-    return data({ projects });
+    const projects = await getAllProjects(context.cloudflare?.env?.db);
+    return { projects };
   } catch (error) {
     console.error("Error fetching projects:", error);
-    return data({ projects: [], error: "Failed to load projects" }, { status: 500 });
+    return { projects: [], error: "Failed to load projects" };
   }
 }
 

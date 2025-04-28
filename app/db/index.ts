@@ -1,5 +1,6 @@
 import { drizzle } from 'drizzle-orm/d1';
-import { eq, desc, asc } from 'drizzle-orm'; // Import asc for ordering
+import { eq, desc, asc } from 'drizzle-orm';
+import type { NewContent } from '../../database/schema'; // Import asc for ordering
 import * as schema from '../../database/schema';
 import type { NewProject, Project } from '../../database/schema'; // Import Project types
 
@@ -13,7 +14,14 @@ export function initDrizzle(d1: D1Database): ReturnType<typeof drizzle> {
 // Utility functions for working with content
 // Retrieves all content as an object keyed by 'key'
 export async function getAllContent(db: ReturnType<typeof initDrizzle>) {
-  const results = await db.select().from(schema.content).all();
+  const results = await db
+    .select()
+    .from(schema.content)
+    .orderBy(
+      asc(schema.content.sortOrder),  // honour CMS ordering first
+      asc(schema.content.key)        // deterministic fallback
+    )
+    .all();
   // Transform array of objects to a single object with key-value pairs
   return results.reduce((acc, { key, value }) => {
     acc[key] = value;
@@ -27,19 +35,31 @@ export async function getSingleContent(db: ReturnType<typeof initDrizzle>, key: 
 }
 
 // Update or insert content values (upsert)
-// Uses Drizzle's inferred type for insert values
+// Accepts either:
+//   { key1: "plain-value" }
+//   { key2: { value: "value", page: "home", section: "hero", type: "text", mediaId: 3 } }
+// so admin UIs can gradually move to the richer payload.
 export async function updateContent(
   db: ReturnType<typeof initDrizzle>, 
-  updates: Record<string, string>
+  updates: Record<
+    string,
+    | string
+    | (Partial<Omit<NewContent, 'key'>> & { value: string })
+  >
 ) {
-  const batch = Object.entries(updates).map(([key, value]) => {
-    const insertValue: typeof schema.content.$inferInsert = { key, value }; // page/updatedAt use defaults
+  const batch = Object.entries(updates).map(([key, raw]) => {
+    const data =
+      typeof raw === 'string'
+        ? ({ value: raw } as const)
+        : raw;
+
+    const insertValue: typeof schema.content.$inferInsert = { key, ...data };
     return db
       .insert(schema.content)
       .values(insertValue)
       .onConflictDoUpdate({
         target: schema.content.key,
-        set: { value, updatedAt: new Date() } // bump timestamp on every update
+        set: { ...data, updatedAt: new Date() },
       });
   });
   return Promise.all(batch);

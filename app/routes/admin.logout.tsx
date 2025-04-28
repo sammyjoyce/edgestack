@@ -10,6 +10,17 @@ export async function loader() {
   });
 }
 
+import { Button } from "../components/ui/Button";
+
 export default function Logout() {
-  return null;
+  // This should only render if the loader is not redirecting (e.g., in dev or error)
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm flex flex-col gap-6 items-center">
+        <h2 className="text-2xl font-bold text-center text-gray-800">Logged Out</h2>
+        <div className="rounded bg-green-100 text-green-700 px-3 py-2 text-center mb-2">You have been logged out.</div>
+        <Button href="/admin/login" className="mt-2 w-full text-center">Return to Login</Button>
+      </div>
+    </div>
+  );
 }
