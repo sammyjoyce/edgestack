@@ -4,49 +4,21 @@ import { Link } from "react-router-dom"; // Import Link
 import { Container } from "./ui/Container";
 import { FadeIn, FadeInStagger } from "./ui/FadeIn";
 import { SectionIntro } from "./ui/SectionIntro";
+import type { Project } from "../../database/schema"; // Import Project type
 
 // Define props interface
 interface RecentProjectsProps {
 	introTitle?: string;
 	introText?: string;
-	// Project data could also be passed as props if needed later
-	// projects?: Array<{ id: string; title: string; image: string; description: string; url: string }>;
+	projects: Project[]; // Expect projects array as a prop
 }
-
-// Hardcoded project data for now
-const defaultProjects = [
-	{
-		id: "modern-home-extension",
-		title: "Modern Home Extension",
-		image: "/assets/pic13-C3BImLY9.png",
-		description:
-			"A seamless blend of old and new, this extension maximizes light and space while maintaining character.",
-		url: "#", // Link to contact or specific project page if exists
-	},
-	{
-		id: "luxury-kitchen-renovation",
-		title: "Luxury Kitchen Renovation",
-		image: "/assets/pic09-By9toE8x.png",
-		description:
-			"Premium finishes and high-end appliances transform this kitchen into the heart of the home.",
-		url: "#",
-	},
-	{
-		id: "outdoor-living-retreat",
-		title: "Outdoor Living Retreat",
-		image: "/assets/pic08-B09tdJ9o.png",
-		description:
-			"A resort-style alfresco area perfect for entertaining and relaxation, year-round.",
-		url: "#",
-	},
-];
 
 export default function RecentProjects({
 	introTitle,
 	introText,
+	projects = [], // Default to empty array if projects prop is not provided
 }: RecentProjectsProps) {
-	// Use default projects if none are passed via props (though props aren't defined for projects yet)
-	const projects = defaultProjects;
+	// No longer use hardcoded data
 
 	return (
 		<section id="projects" className="w-full bg-white py-20">
@@ -92,11 +64,11 @@ export default function RecentProjects({
 											{project.title}
 										</h3>
 										<p className="mb-4 text-base text-gray-700 md:mb-6 md:text-lg">
-											{project.description}
+											{project.description ?? "No description available."} {/* Add fallback */}
 										</p>
-										{/* Use Link instead of a */}
+										{/* Use Link instead of a - Ensure project.id is correct type */}
 										<Link
-											to={`/projects/${project.id}`} // Construct the path to the detail route
+											to={`/projects/${project.id}`} // ID is now number
 											className="font-semibold text-base text-black underline underline-offset-4 transition hover:text-gray-700"
 										>
 											View Project Details →

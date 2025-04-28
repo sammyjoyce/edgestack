@@ -7,6 +7,12 @@ import AboutUs from "../components/About";
 import ContactUs from "../components/ContactUs";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import { getFeaturedProjects } from "../db/index"; // Import the new function
+import type { Project } from "../../database/schema"; // Import Project type
+import AboutUs from "../components/About";
+import ContactUs from "../components/ContactUs";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
 import RecentProjects from "../components/RecentProjects";
@@ -100,7 +106,7 @@ export default function Home() {
 					content?.projects_intro_text ??
 					"Take a look at some of our recent work."
 				}
-				// Assuming RecentProjects fetches its own data or uses static examples for now
+				projects={projects} // Pass fetched projects to the component
 			/>
 			<AboutUs
 				title={content?.about_title ?? "About Us"}

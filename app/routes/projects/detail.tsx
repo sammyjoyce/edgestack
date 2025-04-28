@@ -1,5 +1,8 @@
 import React from "react";
-import { useOutletContext, useParams, Link } from "react-router-dom"; // Import Link
+import { useOutletContext, useParams, Link, useLoaderData, data } from "react-router-dom"; // Import Link, useLoaderData, data
+import type { LoaderFunctionArgs } from "react-router-dom"; // Import LoaderFunctionArgs
+import { getProjectById } from "../../db/index"; // Import DB function
+import type { Project } from "../../../database/schema"; // Import Project type
 import { FadeIn } from "../../components/ui/FadeIn"; // Import FadeIn
 
 // Define the type for the context passed from the parent route
@@ -7,84 +10,92 @@ type ProjectsContext = {
   content: { [key: string]: string } | undefined;
 };
 
-// Hardcoded project data matching RecentProjects.tsx for demonstration
-// In a real app, this data would likely be fetched based on projectId
-const defaultProjects = [
-	{
-		id: "modern-home-extension",
-		title: "Modern Home Extension",
-		image: "/assets/pic13-C3BImLY9.png",
-		description:
-			"A seamless blend of old and new, this extension maximizes light and space while maintaining character. Features include large glass panels, natural wood finishes, and integrated smart home technology.",
-		details: "Location: Marrickville | Duration: 6 months | Budget: $250,000",
-	},
-	{
-		id: "luxury-kitchen-renovation",
-		title: "Luxury Kitchen Renovation",
-		image: "/assets/pic09-By9toE8x.png",
-		description:
-			"Premium finishes and high-end appliances transform this kitchen into the heart of the home. Includes custom cabinetry, marble countertops, and professional-grade cooking equipment.",
-		details: "Location: Double Bay | Duration: 3 months | Budget: $150,000",
-	},
-	{
-		id: "outdoor-living-retreat",
-		title: "Outdoor Living Retreat",
-		image: "/assets/pic08-B09tdJ9o.png",
-		description:
-			"A resort-style alfresco area perfect for entertaining and relaxation, year-round. Complete with an outdoor kitchen, fireplace, and comfortable seating.",
-		details: "Location: Mosman | Duration: 4 months | Budget: $180,000",
-	},
-];
+// Define CloudflareEnv type
+interface CloudflareEnv {
+  db: any; 
+}
+
+// Loader to fetch the specific project by ID
+export async function loader({ params, context }: LoaderFunctionArgs & { context: CloudflareEnv }) {
+  const projectId = params.projectId ? parseInt(params.projectId, 10) : NaN;
+  if (isNaN(projectId)) {
+    // Use data helper to return error response
+    return data({ error: "Invalid Project ID" }, { status: 400 });
+  }
+
+  try {
+    const project = await getProjectById(context.db, projectId);
+    if (!project) {
+      return data({ error: "Project not found" }, { status: 404 });
+    }
+    // Return project data and potentially related content if needed
+    return data({ project }); 
+  } catch (error) {
+    console.error("Error fetching project details:", error);
+    return data({ error: "Failed to load project details" }, { status: 500 });
+  }
+}
 
 
 export default function ProjectDetail() {
   // Get the content data from the parent route (optional, could be used for general text)
-  const { content } = useOutletContext<ProjectsContext>();
-  // Get the project ID from the URL parameters
-  const { projectId } = useParams<{ projectId: string }>(); // Ensure projectId is typed
+  const outletContext = useOutletContext<ProjectsContext>();
+  const content = outletContext?.content; // Handle potential undefined context
+  
+  // Get project data and error from the loader
+  const { project, error } = useLoaderData<{ project?: Project, error?: string }>();
 
-  // Find the project data based on the projectId
-  const project = defaultProjects.find(p => p.id === projectId);
+  // Handle loader errors
+  if (error && !project) {
+     return (
+       <div className="py-16 bg-white text-center">
+         <h2 className="text-2xl font-semibold text-red-700 mb-4">Error Loading Project</h2>
+         <p className="text-gray-500 mb-6">{error}</p>
+         <Link to="/projects" className="inline-block text-blue-600 hover:underline">
+           ← Back to Projects
+         </Link>
+       </div>
+     );
+  }
+
+  // Handle case where project is somehow null/undefined even without error (defensive)
+  if (!project) {
+     return (
+       <div className="py-16 bg-white text-center">
+         <h2 className="text-2xl font-semibold text-gray-700 mb-4">Project Not Found</h2>
+         <p className="text-gray-500 mb-6">The project data could not be loaded.</p>
+         <Link to="/projects" className="inline-block text-blue-600 hover:underline">
+           ← Back to Projects
+         </Link>
+       </div>
+     );
+  }
 
   return (
     <div className="py-16 bg-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        {project ? (
-          <FadeIn>
-            <article className="bg-gray-50 p-6 rounded-lg shadow-md">
-              <img 
-                src={project.image} 
-                alt={project.title} 
-                className="w-full h-64 md:h-96 object-cover rounded-md mb-6"
-              />
-              <h2 className="text-3xl font-serif font-bold text-black mb-4">
-                {project.title}
-              </h2>
-              <p className="text-gray-700 text-lg mb-4">
-                {project.description}
+        <FadeIn>
+          <article className="bg-gray-50 p-6 rounded-lg shadow-md">
+            {/* Use project.imageUrl, provide fallback */}
+            <img 
+              src={project.imageUrl ?? '/assets/placeholder.png'} // Add a placeholder image path
+              alt={project.title} 
+              className="w-full h-64 md:h-96 object-cover rounded-md mb-6 bg-gray-200" // Add bg color for missing images
+            />
+            <h2 className="text-3xl font-serif font-bold text-black mb-4">
+              {project.title}
+            </h2>
+            <p className="text-gray-700 text-lg mb-4">
+              {project.description ?? "No description provided."} {/* Fallback text */}
+            </p>
+            {project.details && (
+              <p className="text-gray-600 text-sm mb-6">
+                <strong>Details:</strong> {project.details}
               </p>
-              {project.details && (
-                <p className="text-gray-600 text-sm mb-6">
-                  <strong>Details:</strong> {project.details}
-                </p>
-              )}
-              {/* Optional: Use content from context for generic text */}
-              <p className="text-gray-500 italic mb-6">
-                {content?.project_detail_footer ?? 'Contact us for more information about similar projects.'}
-              </p>
-              <Link 
-                to="/projects" 
-                className="inline-block text-blue-600 hover:underline"
-              >
-                ← Back to Projects
-              </Link>
-            </article>
-          </FadeIn>
-        ) : (
-          <div className="text-center py-10">
-            <h2 className="text-2xl font-semibold text-gray-700 mb-4">Project Not Found</h2>
-            <p className="text-gray-500 mb-6">
-              The project you are looking for does not exist or could not be found.
+            )}
+            {/* Optional: Use content from context for generic text */}
+            <p className="text-gray-500 italic mb-6">
+              {content?.project_detail_footer ?? 'Contact us for more information about similar projects.'}
             </p>
             <Link 
               to="/projects" 
@@ -92,8 +103,8 @@ export default function ProjectDetail() {
             >
               ← Back to Projects
             </Link>
-          </div>
-        )}
+          </article>
+        </FadeIn>
       </div>
     </div>
   );
