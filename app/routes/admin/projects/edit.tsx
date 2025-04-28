@@ -63,7 +63,29 @@ export async function action({ request, params, context }: ActionFunctionArgs & 
     const description = formData.get("description");
     const details = formData.get("details");
     const isFeatured = formData.get("isFeatured") === "true"; // Convert checkbox value
-    // TODO: Add image update handling later
+    const sortOrderRaw = formData.get("sortOrder");
+    let sortOrder: number | undefined = undefined;
+    if (typeof sortOrderRaw === 'string' && sortOrderRaw.trim() !== '') {
+      sortOrder = parseInt(sortOrderRaw, 10);
+      if (isNaN(sortOrder)) sortOrder = undefined;
+    }
+
+    // Handle image upload
+    let imageUrl: string | undefined = undefined;
+    const imageFile = formData.get("image");
+    if (imageFile && imageFile instanceof File && imageFile.size > 0) {
+      // Reuse /admin/upload logic inline (could be extracted)
+      const uniqueFilename = `${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+      const fileData = await imageFile.arrayBuffer();
+      if (context.ASSETS_BUCKET) {
+        await context.ASSETS_BUCKET.put(uniqueFilename, fileData, {
+          httpMetadata: { contentType: imageFile.type },
+        });
+        imageUrl = context.PUBLIC_R2_URL
+          ? `${context.PUBLIC_R2_URL.replace(/\/?$/, '/')}${uniqueFilename}`
+          : `/assets/${uniqueFilename}`;
+      }
+    }
 
     if (typeof title !== 'string' || title.trim() === '') {
       // Need to reload project data for the form if validation fails
@@ -76,8 +98,8 @@ export async function action({ request, params, context }: ActionFunctionArgs & 
       description: typeof description === 'string' ? description.trim() : undefined,
       details: typeof details === 'string' ? details.trim() : undefined,
       isFeatured: isFeatured, // Add isFeatured flag
-      // imageUrl update logic will go here
-      // sortOrder will be handled in the list view
+      sortOrder: sortOrder,
+      ...(imageUrl ? { imageUrl } : {}),
     };
 
     const updatedProject = await updateProject(context.db, projectId, updatedProjectData);
@@ -198,7 +220,6 @@ export default function AdminEditProject() {
           </label>
         </div>
         
-        {/* TODO: Add image upload/update field later */}
         {/* Display current image if available */}
         {currentProject.imageUrl && (
           <div className="mt-4">
@@ -206,14 +227,26 @@ export default function AdminEditProject() {
             <img src={currentProject.imageUrl} alt="Current project image" className="mt-1 max-w-xs h-auto rounded border"/>
           </div>
         )}
-        {/* 
         <div>
           <label htmlFor="image" className="block text-sm font-medium text-gray-700">
             Replace Image (Optional)
           </label>
           <input type="file" name="image" id="image" accept="image/*" className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
         </div> 
-        */}
+
+        <div>
+          <label htmlFor="sortOrder" className="block text-sm font-medium text-gray-700">
+            Sort Order (lower numbers appear first)
+          </label>
+          <input
+            type="number"
+            name="sortOrder"
+            id="sortOrder"
+            min="0"
+            defaultValue={currentProject.sortOrder ?? 0}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+          />
+        </div>
 
         <div className="flex justify-end space-x-3 pt-4">
           <Button as={Link} to="/admin/projects" className="bg-gray-200 text-gray-700 hover:bg-gray-300">
