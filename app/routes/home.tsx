@@ -9,10 +9,6 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { getFeaturedProjects } from "../db/index"; // Import the new function
 import type { Project } from "../../database/schema"; // Import Project type
-// Removed duplicate AboutUs import
-import ContactUs from "../components/ContactUs";
-import Footer from "../components/Footer";
-// Removed duplicate Header import
 import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
 import RecentProjects from "../components/RecentProjects";
