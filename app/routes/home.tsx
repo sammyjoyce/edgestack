@@ -73,7 +73,7 @@ export default function Home() {
 					content?.hero_subtitle ??
 					"Your trusted partner in construction and renovation."
 				}
-				imageUrl={content?.hero_image_url ?? "/assets/team.jpg"} // Default image if not set
+				imageUrl={content?.hero_image_url ?? "/assets/rozelle.jpg"} // Default image if not set
 			/>
 			<OurServices
 				introTitle={content?.services_intro_title ?? "Our Services"}
