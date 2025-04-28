@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/d1';
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm'; // Import desc for ordering
 import * as schema from '../../database/schema';
+import type { NewProject, Project } from '../../database/schema'; // Import Project types
 
 // See: https://orm.drizzle.team/docs (Drizzle ORM official docs)
 // Initialize Drizzle ORM with D1 database (Cloudflare D1 dialect)
@@ -48,5 +49,54 @@ export async function updateContent(
 export async function deleteContent(db: ReturnType<typeof initDrizzle>, key: string) {
   return db.delete(schema.content).where(eq(schema.content.key, key)).run();
 }
+
+// --- Project CRUD Functions ---
+
+// Get all projects, ordered by creation date descending
+export async function getAllProjects(db: ReturnType<typeof initDrizzle>): Promise<Project[]> {
+  return db.select().from(schema.projects).orderBy(desc(schema.projects.createdAt)).all();
+}
+
+// Get a single project by its ID
+export async function getProjectById(db: ReturnType<typeof initDrizzle>, id: number): Promise<Project | null> {
+  const result = await db.select().from(schema.projects).where(eq(schema.projects.id, id)).get();
+  return result ?? null; // Return null if not found
+}
+
+// Create a new project
+export async function createProject(db: ReturnType<typeof initDrizzle>, projectData: NewProject): Promise<Project> {
+  // Ensure timestamps are set if not provided
+  const dataWithTimestamps = {
+    ...projectData,
+    createdAt: projectData.createdAt ?? new Date(),
+    updatedAt: projectData.updatedAt ?? new Date(),
+  };
+  const result = await db.insert(schema.projects).values(dataWithTimestamps).returning().get();
+  return result;
+}
+
+// Update an existing project
+export async function updateProject(db: ReturnType<typeof initDrizzle>, id: number, projectData: Partial<NewProject>): Promise<Project | null> {
+  // Update the 'updatedAt' timestamp
+  const dataWithTimestamp = {
+    ...projectData,
+    updatedAt: new Date(),
+  };
+  const result = await db
+    .update(schema.projects)
+    .set(dataWithTimestamp)
+    .where(eq(schema.projects.id, id))
+    .returning()
+    .get();
+  return result ?? null; // Return null if update failed or ID not found
+}
+
+// Delete a project by its ID
+export async function deleteProject(db: ReturnType<typeof initDrizzle>, id: number): Promise<{ success: boolean }> {
+  const result = await db.delete(schema.projects).where(eq(schema.projects.id, id)).run();
+  // D1 returns changes > 0 on successful deletion
+  return { success: result.changes > 0 }; 
+}
+
 
 // For more patterns, see: https://orm.drizzle.team/docs/querying
