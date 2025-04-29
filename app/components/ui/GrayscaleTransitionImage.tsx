@@ -1,43 +1,43 @@
-import { useRef } from 'react'
+import clsx from "clsx";
 import {
   motion,
   useMotionTemplate,
   useScroll,
   useTransform,
-} from 'framer-motion'
-import type React from 'react'
-import clsx from 'clsx'
+} from "framer-motion";
+import { useRef } from "react";
+import type React from "react";
 
-const MotionImage = motion.img
+const MotionImage = motion.img;
 
 // Define props based on standard img attributes we want to support
-export interface GrayscaleTransitionImageProps
+interface GrayscaleTransitionImageProps
   extends Omit<
     React.ImgHTMLAttributes<HTMLImageElement>,
-    'style' | 'className' // Exclude style (handled by motion) and className (handled by wrapper)
+    "style" | "className" // Exclude style (handled by motion) and className (handled by wrapper)
   > {
-  className?: string // Allow className for the wrapper div
-  alt?: string
+  className?: string; // Allow className for the wrapper div
+  alt?: string;
 }
 
 export function GrayscaleTransitionImage({
   className,
-  alt = '',
+  alt = "",
   src,
   width,
   height,
-  loading = 'lazy',
-  decoding = 'async',
+  loading = "lazy",
+  decoding = "async",
   // Explicitly ignore other props to avoid type conflicts with motion.img
   ..._ignoredRest
 }: GrayscaleTransitionImageProps) {
-  let ref = useRef<React.ElementRef<'div'>>(null)
-  let { scrollYProgress } = useScroll({
+  const ref = useRef<React.ElementRef<"div">>(null);
+  const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start 65%', 'end 35%'],
-  })
-  let grayscale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0, 1])
-  let filter = useMotionTemplate`grayscale(${grayscale})`
+    offset: ["start 65%", "end 35%"],
+  });
+  const grayscale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0, 1]);
+  const filter = useMotionTemplate`grayscale(${grayscale})`;
 
   // Define props specifically for the underlying img elements
   // Only include explicitly supported standard img attributes
@@ -46,14 +46,14 @@ export function GrayscaleTransitionImage({
     alt,
     width,
     height,
-    className: 'absolute inset-0 h-full w-full object-cover',
+    className: "absolute inset-0 h-full w-full object-cover",
     loading,
     decoding,
-  }
+  };
 
   return (
     // Apply passed className to the wrapper div
-    <div ref={ref} className={clsx('group relative', className)}>
+    <div ref={ref} className={clsx("group relative", className)}>
       <MotionImage
         {...imgProps} // Spread defined, compatible img props
         style={{ filter } as any} // Apply motion style
@@ -67,5 +67,5 @@ export function GrayscaleTransitionImage({
         <img {...imgProps} />
       </div>
     </div>
-  )
+  );
 }

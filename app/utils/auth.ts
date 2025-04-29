@@ -12,15 +12,12 @@ export async function sign(value: string, secret: string) {
     false,
     ["sign"]
   );
-  const sigBuf = await crypto.subtle.sign(
-    "HMAC",
-    key,
-    enc.encode(value)
-  );
-  const sigHex = Array.from(new Uint8Array(sigBuf)).map(b => b.toString(16).padStart(2, "0")).join("");
+  const sigBuf = await crypto.subtle.sign("HMAC", key, enc.encode(value));
+  const sigHex = Array.from(new Uint8Array(sigBuf))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
   return value + "." + sigHex;
 }
-
 
 export async function verify(signed: string, secret: string) {
   const [value, sig] = signed.split(".");
@@ -33,18 +30,17 @@ export async function verify(signed: string, secret: string) {
     false,
     ["sign"]
   );
-  const sigBuf = await crypto.subtle.sign(
-    "HMAC",
-    key,
-    enc.encode(value)
-  );
-  const sigHex = Array.from(new Uint8Array(sigBuf)).map(b => b.toString(16).padStart(2, "0")).join("");
+  const sigBuf = await crypto.subtle.sign("HMAC", key, enc.encode(value));
+  const sigHex = Array.from(new Uint8Array(sigBuf))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
   return sig === sigHex ? value : false;
 }
 
-
 export function getSessionCookie(request: Request) {
   const cookie = request.headers.get("cookie") || "";
-  const session = cookie.split(";").find((c) => c.trim().startsWith(COOKIE_NAME + "="));
+  const session = cookie
+    .split(";")
+    .find((c) => c.trim().startsWith(COOKIE_NAME + "="));
   return session ? session.split("=")[1] : null;
 }

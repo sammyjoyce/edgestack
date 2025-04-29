@@ -1,8 +1,8 @@
-import { drizzle } from 'drizzle-orm/d1';
-import { eq, desc, asc } from 'drizzle-orm';
-import type { NewContent } from '../../database/schema'; // Import asc for ordering
-import * as schema from '../../database/schema';
-import type { NewProject, Project } from '../../database/schema'; // Import Project types
+import { asc, desc, eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/d1";
+import type { NewContent } from "../../database/schema"; // Import asc for ordering
+import * as schema from "../../database/schema";
+import type { NewProject, Project } from "../../database/schema"; // Import Project types
 
 // See: https://orm.drizzle.team/docs (Drizzle ORM official docs)
 // Initialize Drizzle ORM with D1 database (Cloudflare D1 dialect)
@@ -18,8 +18,8 @@ export async function getAllContent(db: ReturnType<typeof initDrizzle>) {
     .select()
     .from(schema.content)
     .orderBy(
-      asc(schema.content.sortOrder),  // honour CMS ordering first
-      asc(schema.content.key)        // deterministic fallback
+      asc(schema.content.sortOrder), // honour CMS ordering first
+      asc(schema.content.key) // deterministic fallback
     )
     .all();
   // Transform array of objects to a single object with key-value pairs
@@ -30,8 +30,15 @@ export async function getAllContent(db: ReturnType<typeof initDrizzle>) {
 }
 
 // Get a single content item by key
-export async function getSingleContent(db: ReturnType<typeof initDrizzle>, key: string) {
-  return db.select().from(schema.content).where(eq(schema.content.key, key)).get();
+async function getSingleContent(
+  db: ReturnType<typeof initDrizzle>,
+  key: string
+) {
+  return db
+    .select()
+    .from(schema.content)
+    .where(eq(schema.content.key, key))
+    .get();
 }
 
 // Update or insert content values (upsert)
@@ -40,18 +47,14 @@ export async function getSingleContent(db: ReturnType<typeof initDrizzle>, key: 
 //   { key2: { value: "value", page: "home", section: "hero", type: "text", mediaId: 3 } }
 // so admin UIs can gradually move to the richer payload.
 export async function updateContent(
-  db: ReturnType<typeof initDrizzle>, 
+  db: ReturnType<typeof initDrizzle>,
   updates: Record<
     string,
-    | string
-    | (Partial<Omit<NewContent, 'key'>> & { value: string })
+    string | (Partial<Omit<NewContent, "key">> & { value: string })
   >
 ) {
   const batch = Object.entries(updates).map(([key, raw]) => {
-    const data =
-      typeof raw === 'string'
-        ? ({ value: raw } as const)
-        : raw;
+    const data = typeof raw === "string" ? ({ value: raw } as const) : raw;
 
     const insertValue: typeof schema.content.$inferInsert = { key, ...data };
     return db
@@ -66,21 +69,30 @@ export async function updateContent(
 }
 
 // Delete content by key
-export async function deleteContent(db: ReturnType<typeof initDrizzle>, key: string) {
+async function deleteContent(db: ReturnType<typeof initDrizzle>, key: string) {
   return db.delete(schema.content).where(eq(schema.content.key, key)).run();
 }
 
 // --- Project CRUD Functions ---
 
 // Get all projects, ordered by creation date descending
-export async function getAllProjects(db: ReturnType<typeof initDrizzle>): Promise<Project[]> {
+export async function getAllProjects(
+  db: ReturnType<typeof initDrizzle>
+): Promise<Project[]> {
   // Order by sortOrder ascending, then createdAt descending as a fallback
-  return db.select().from(schema.projects).orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt)).all();
+  return db
+    .select()
+    .from(schema.projects)
+    .orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt))
+    .all();
 }
 
 // Get only featured projects, ordered by sortOrder
-export async function getFeaturedProjects(db: ReturnType<typeof initDrizzle>): Promise<Project[]> {
-  return db.select()
+export async function getFeaturedProjects(
+  db: ReturnType<typeof initDrizzle>
+): Promise<Project[]> {
+  return db
+    .select()
     .from(schema.projects)
     .where(eq(schema.projects.isFeatured, true))
     .orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt)) // Order by sortOrder, then creation date
@@ -88,13 +100,23 @@ export async function getFeaturedProjects(db: ReturnType<typeof initDrizzle>): P
 }
 
 // Get a single project by its ID
-export async function getProjectById(db: ReturnType<typeof initDrizzle>, id: number): Promise<Project | null> {
-  const result = await db.select().from(schema.projects).where(eq(schema.projects.id, id)).get();
+export async function getProjectById(
+  db: ReturnType<typeof initDrizzle>,
+  id: number
+): Promise<Project | null> {
+  const result = await db
+    .select()
+    .from(schema.projects)
+    .where(eq(schema.projects.id, id))
+    .get();
   return result ?? null; // Return null if not found
 }
 
 // Create a new project - Ensure isFeatured and sortOrder are handled
-export async function createProject(db: ReturnType<typeof initDrizzle>, projectData: Omit<NewProject, 'id' | 'createdAt' | 'updatedAt'>): Promise<Project> {
+export async function createProject(
+  db: ReturnType<typeof initDrizzle>,
+  projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">
+): Promise<Project> {
   // Ensure timestamps and defaults are set if not provided
   const dataWithDefaults = {
     ...projectData,
@@ -103,17 +125,25 @@ export async function createProject(db: ReturnType<typeof initDrizzle>, projectD
     createdAt: new Date(),
     updatedAt: new Date(),
   };
-  const result = await db.insert(schema.projects).values(dataWithDefaults).returning().get();
+  const result = await db
+    .insert(schema.projects)
+    .values(dataWithDefaults)
+    .returning()
+    .get();
   return result;
 }
 
 // Update an existing project - Ensure isFeatured and sortOrder can be updated
-export async function updateProject(db: ReturnType<typeof initDrizzle>, id: number, projectData: Partial<Omit<NewProject, 'id' | 'createdAt'>>): Promise<Project | null> {
+export async function updateProject(
+  db: ReturnType<typeof initDrizzle>,
+  id: number,
+  projectData: Partial<Omit<NewProject, "id" | "createdAt">>
+): Promise<Project | null> {
   // Update the 'updatedAt' timestamp
   const dataWithTimestamp = {
     ...projectData,
     // Explicitly handle boolean conversion if needed, depending on form data
-    isFeatured: projectData.isFeatured, 
+    isFeatured: projectData.isFeatured,
     sortOrder: projectData.sortOrder,
     updatedAt: new Date(),
   };
@@ -127,11 +157,16 @@ export async function updateProject(db: ReturnType<typeof initDrizzle>, id: numb
 }
 
 // Delete a project by its ID
-export async function deleteProject(db: ReturnType<typeof initDrizzle>, id: number): Promise<{ success: boolean }> {
-  const result = await db.delete(schema.projects).where(eq(schema.projects.id, id)).run();
-  // D1 returns changes > 0 on successful deletion
-  return { success: result.changes > 0 }; 
+export async function deleteProject(
+  db: ReturnType<typeof initDrizzle>,
+  id: number
+): Promise<{ success: boolean }> {
+  const result = await db
+    .delete(schema.projects)
+    .where(eq(schema.projects.id, id))
+    .run();
+  // D1 returns results array; success if any rows were affected
+  return { success: result.results.length > 0 };
 }
-
 
 // For more patterns, see: https://orm.drizzle.team/docs/querying

@@ -1,15 +1,18 @@
 import React, { useRef } from "react";
-import { useLoaderData, useFetcher } from "react-router";
-import { TextContentForm } from "./TextContentForm";
-import { ImageUploadSection } from "./ImageUploadSection";
-import { HeroSectionEditor } from "./HeroSectionEditor";
-import { AboutSectionEditor } from "./AboutSectionEditor";
-import { ServicesSectionEditor } from "./ServicesSectionEditor";
-import { Container } from "../ui/Container";
-import { SectionIntro } from "../ui/SectionIntro";
-import { FadeIn } from "../ui/FadeIn";
-import { Button } from "../ui/Button";
+import { useFetcher, useLoaderData } from "react-router";
+import { validateErrorResponse } from "../../../database/valibot-validation";
 import type { loader } from "../../routes/admin.index";
+import { Button } from "../ui/Button";
+import { Container } from "../ui/Container";
+import { FadeIn } from "../ui/FadeIn";
+import { SectionIntro } from "../ui/SectionIntro";
+import { AboutSectionEditor } from "./AboutSectionEditor";
+import { ContactSectionEditor } from "./ContactSectionEditor";
+import { HeroSectionEditor } from "./HeroSectionEditor";
+import { ImageUploadSection } from "./ImageUploadSection";
+import SectionSorter from "./SectionSorter";
+import { ServicesSectionEditor } from "./ServicesSectionEditor";
+import { TextContentForm } from "./TextContentForm";
 
 export default function AdminDashboard() {
   // Get initial content from loader
@@ -28,17 +31,43 @@ export default function AdminDashboard() {
     status = { msg: fetcher.data.error, isError: true };
   }
 
+  // Helper to check if content is an error response using valibot
+  const isContentError = (
+    obj: any
+  ): obj is { error: string; status: number } => {
+    try {
+      validateErrorResponse(obj);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  // Access content safely with type guard
+  const safeContent = isContentError(content)
+    ? ({} as Record<string, string>)
+    : (content as Record<string, string>);
+
   // Handler for Hero image upload
   const [heroUploading, setHeroUploading] = React.useState(false);
-  const [heroImageUrl, setHeroImageUrl] = React.useState(content.hero_image_url || "");
+  const [heroImageUrl, setHeroImageUrl] = React.useState(
+    safeContent.hero_image_url || ""
+  );
   const [aboutUploading, setAboutUploading] = React.useState(false);
-  const [aboutImageUrl, setAboutImageUrl] = React.useState(content.about_image_url || "");
-  const [serviceUploading, setServiceUploading] = React.useState([false, false, false, false]);
+  const [aboutImageUrl, setAboutImageUrl] = React.useState(
+    safeContent.about_image_url || ""
+  );
+  const [serviceUploading, setServiceUploading] = React.useState([
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [serviceImageUrls, setServiceImageUrls] = React.useState([
-    content.service_1_image || "",
-    content.service_2_image || "",
-    content.service_3_image || "",
-    content.service_4_image || "",
+    safeContent.service_1_image || "",
+    safeContent.service_2_image || "",
+    safeContent.service_3_image || "",
+    safeContent.service_4_image || "",
   ]);
 
   async function handleHeroImageUpload(file: File) {
@@ -46,7 +75,11 @@ export default function AdminDashboard() {
     const data = new FormData();
     data.append("image", file);
     data.append("key", "hero_image_url");
-    await fetcher.submit(data, { method: "post", action: "/admin/upload", encType: "multipart/form-data" });
+    await fetcher.submit(data, {
+      method: "post",
+      action: "/admin/upload",
+      encType: "multipart/form-data",
+    });
     if (fetcher.data?.url) {
       setHeroImageUrl(fetcher.data.url);
     }
@@ -58,7 +91,11 @@ export default function AdminDashboard() {
     const data = new FormData();
     data.append("image", file);
     data.append("key", "about_image_url");
-    await fetcher.submit(data, { method: "post", action: "/admin/upload", encType: "multipart/form-data" });
+    await fetcher.submit(data, {
+      method: "post",
+      action: "/admin/upload",
+      encType: "multipart/form-data",
+    });
     if (fetcher.data?.url) {
       setAboutImageUrl(fetcher.data.url);
     }
@@ -66,93 +103,164 @@ export default function AdminDashboard() {
   }
 
   async function handleServiceImageUpload(idx: number, file: File) {
-    setServiceUploading(prev => prev.map((v, i) => (i === idx ? true : v)));
+    setServiceUploading((prev) => prev.map((v, i) => (i === idx ? true : v)));
     const data = new FormData();
     data.append("image", file);
     data.append("key", `service_${idx + 1}_image`);
-    await fetcher.submit(data, { method: "post", action: "/admin/upload", encType: "multipart/form-data" });
+    await fetcher.submit(data, {
+      method: "post",
+      action: "/admin/upload",
+      encType: "multipart/form-data",
+    });
     if (fetcher.data?.url) {
-      setServiceImageUrls(prev => prev.map((url, i) => (i === idx ? fetcher.data.url : url)));
+      setServiceImageUrls((prev) =>
+        prev.map((url, i) => (i === idx ? fetcher.data.url : url))
+      );
     }
-    setServiceUploading(prev => prev.map((v, i) => (i === idx ? false : v)));
+    setServiceUploading((prev) => prev.map((v, i) => (i === idx ? false : v)));
   }
+
+  /* ------------------------------------------------- *
+   * Section order comes from key "home_sections_order"
+   * Persist handled inside SectionSorter via fetcher
+   * ------------------------------------------------- */
+  const sectionsOrder = safeContent.home_sections_order as string | undefined;
 
   return (
     <Container>
       <SectionIntro title="Home Editor" className="mb-6" />
+      {/* 🔀 Drag-to-reorder CMS sections */}
+      <SectionSorter orderValue={sectionsOrder} fetcher={fetcher} />
       {status && (
         <FadeIn>
-          <div className={`p-2 mb-4 rounded ${status.isError ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+          <div
+            className={`p-2 mb-4 rounded ${
+              status.isError
+                ? "bg-red-100 text-red-700"
+                : "bg-green-100 text-green-700"
+            }`}
+            role="status"
+            aria-live="polite"
+            tabIndex={0}
+          >
             {status.msg}
           </div>
         </FadeIn>
       )}
-      <HeroSectionEditor
-        fetcher={fetcher}
-        initialContent={content}
-        onImageUpload={handleHeroImageUpload}
-        imageUploading={heroUploading}
-        heroImageUrl={heroImageUrl}
-      />
-      <ServicesSectionEditor
-        fetcher={fetcher}
-        initialContent={content}
-        onImageUpload={handleServiceImageUpload}
-        imageUploading={serviceUploading}
-        serviceImageUrls={serviceImageUrls}
-      />
+      <section aria-label="Hero Section Editor" role="region" tabIndex={0}>
+        <HeroSectionEditor
+          fetcher={fetcher}
+          initialContent={safeContent}
+          onImageUpload={handleHeroImageUpload}
+          imageUploading={heroUploading}
+          heroImageUrl={heroImageUrl}
+        />
+      </section>
+      <section aria-label="Services Section Editor" role="region" tabIndex={0}>
+        <ServicesSectionEditor
+          fetcher={fetcher}
+          initialContent={safeContent}
+          onImageUpload={handleServiceImageUpload}
+          imageUploading={serviceUploading}
+          serviceImageUrls={serviceImageUrls}
+        />
+      </section>
 
-      {/* Home Page Projects Section Editor */}
-      <section className="bg-white rounded-lg shadow p-6 mb-8 border">
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Projects Section (Home Page)</h2>
-        <div className="mb-4">
-          <label htmlFor="projects_intro_title" className="block font-bold text-gray-700 mb-1">Projects Section Title</label>
-          <textarea
-            id="projects_intro_title"
-            name="projects_intro_title"
-            rows={2}
-            defaultValue={content.projects_intro_title || "Recent Projects"}
-            className="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white mb-2"
-            onBlur={e => {
-              const data = new FormData();
-              data.append("projects_intro_title", e.target.value);
-              fetcher.submit(data, { method: "post" });
-            }}
-          />
-          <label htmlFor="projects_intro_text" className="block font-bold text-gray-700 mb-1">Projects Section Intro Text</label>
-          <textarea
-            id="projects_intro_text"
-            name="projects_intro_text"
-            rows={3}
-            defaultValue={content.projects_intro_text || "Take a look at some of our recent work."}
-            className="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-            onBlur={e => {
-              const data = new FormData();
-              data.append("projects_intro_text", e.target.value);
-              fetcher.submit(data, { method: "post" });
-            }}
-          />
-        </div>
-        <div className="mb-4 text-gray-700">
-          <ul className="list-disc list-inside text-gray-600 mb-2">
-            <li>To add, edit, or reorder projects, visit the Projects admin page.</li>
-            <li>To feature a project on the home page, edit the project and enable the <span className="font-semibold">"Featured"</span> option.</li>
-            <li>Project order and details are managed in the Projects admin page.</li>
-          </ul>
-        </div>
-        <div className="mt-4">
-          <Button as="a" href="/admin/projects" className="bg-blue-600 text-white hover:bg-blue-700">Go to Projects Admin</Button>
+      <section aria-label="Recent Projects Editor" role="region" tabIndex={0}>
+        <div className="p-6 bg-white rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-3">Projects Section</h2>
+
+          <div className="grid grid-cols-1 gap-4 mt-4">
+            <div>
+              <label
+                htmlFor="projects_intro_title"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Projects Title
+              </label>
+              <input
+                type="text"
+                name="projects_intro_title"
+                id="projects_intro_title"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                defaultValue={
+                  safeContent.projects_intro_title || "Recent Projects"
+                }
+                onBlur={(e) => {
+                  const data = new FormData();
+                  data.append("projects_intro_title", e.target.value);
+                  fetcher.submit(data, { method: "post" });
+                }}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="projects_intro_text"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Projects Intro Text
+              </label>
+              <textarea
+                name="projects_intro_text"
+                id="projects_intro_text"
+                rows={2}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                defaultValue={
+                  safeContent.projects_intro_text ||
+                  "Take a look at some of our recent work."
+                }
+                onBlur={(e) => {
+                  const data = new FormData();
+                  data.append("projects_intro_text", e.target.value);
+                  fetcher.submit(data, { method: "post" });
+                }}
+              />
+            </div>
+          </div>
+          <div className="mb-4 text-gray-700">
+            <ul className="list-disc list-inside text-gray-600 mb-2">
+              <li>
+                To add, edit, or reorder projects, visit the Projects admin
+                page.
+              </li>
+              <li>
+                To feature a project on the home page, edit the project and
+                enable the <span className="font-semibold">"Featured"</span>{" "}
+                option.
+              </li>
+              <li>
+                Project order and details are managed in the Projects admin
+                page.
+              </li>
+            </ul>
+          </div>
+          <div className="mt-4">
+            <Button
+              as="a"
+              href="/admin/projects"
+              className="bg-blue-600 text-white hover:bg-blue-700"
+              aria-label="Go to Projects Admin"
+            >
+              Go to Projects Admin
+            </Button>
+          </div>
         </div>
       </section>
 
-      <AboutSectionEditor
-        fetcher={fetcher}
-        initialContent={content}
-        onImageUpload={handleAboutImageUpload}
-        imageUploading={aboutUploading}
-        aboutImageUrl={aboutImageUrl}
-      />
+      <section aria-label="About Section Editor" role="region" tabIndex={0}>
+        <AboutSectionEditor
+          fetcher={fetcher}
+          initialContent={safeContent}
+          onImageUpload={handleAboutImageUpload}
+          imageUploading={aboutUploading}
+          aboutImageUrl={aboutImageUrl}
+        />
+      </section>
 
+      <section aria-label="Contact Section Editor" role="region" tabIndex={0}>
+        <ContactSectionEditor fetcher={fetcher} initialContent={safeContent} />
+      </section>
     </Container>
   );
 }

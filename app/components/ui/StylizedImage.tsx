@@ -1,26 +1,26 @@
-import { useId } from 'react'
-import clsx from 'clsx'
+import clsx from "clsx";
+import { useId } from "react";
 
 const shapes = [
   {
     width: 655,
     height: 680,
-    path: 'M50 100 L605 100 L585 580 L30 580 Z',
+    path: "M50 100 L605 100 L585 580 L30 580 Z",
   },
   {
     width: 719,
     height: 680,
-    path: 'M50 100 L669 100 L649 580 L30 580 Z',
+    path: "M50 100 L669 100 L649 580 L30 580 Z",
   },
   {
     width: 719,
     height: 680,
-    path: 'M60 120 L659 120 L639 560 L40 560 Z',
+    path: "M60 120 L659 120 L639 560 L40 560 Z",
   },
-]
+];
 
-type ImageProps = React.ImgHTMLAttributes<HTMLImageElement>
-type ImagePropsWithOptionalAlt = Omit<ImageProps, 'alt'> & { alt?: string }
+type ImageProps = React.ImgHTMLAttributes<HTMLImageElement>;
+type ImagePropsWithOptionalAlt = Omit<ImageProps, "alt"> & { alt?: string };
 
 export function StylizedImage({
   shape = 0,
@@ -28,17 +28,17 @@ export function StylizedImage({
   width: propWidth,
   height: propHeight,
   src,
-  alt = '',
+  alt = "",
   ...props
 }: ImagePropsWithOptionalAlt & { shape?: 0 | 1 | 2 }) {
-  let id = useId()
-  let { width, height, path } = shapes[shape]
+  const id = useId();
+  const { width, height, path } = shapes[shape];
 
   return (
     <div
       className={clsx(
         className,
-        'relative flex aspect-719/680 w-full grayscale',
+        "relative flex aspect-719/680 w-full grayscale"
       )}
     >
       <svg viewBox={`0 0 ${width} ${height}`} fill="none" className="h-full">
@@ -72,5 +72,5 @@ export function StylizedImage({
         </defs>
       </svg>
     </div>
-  )
+  );
 }
