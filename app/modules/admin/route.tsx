@@ -56,7 +56,7 @@ function classNames(
   return classes.filter(Boolean).join(" ");
 }
 
-export default function AdminLayout() {
+export function Component() {
   return (
     <div className="min-h-screen flex bg-gray-50">
       <aside className="flex w-72 flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 py-4 border-r border-gray-200 shadow-md">

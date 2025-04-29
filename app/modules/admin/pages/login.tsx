@@ -52,7 +52,7 @@ export async function action({ request, context }: Route.ActionArgs) {
   return data({ error: "Invalid credentials" }, { status: 401 });
 }
 
-export default function AdminLogin({
+export function Component({
   actionData,
 }: Route.ComponentProps): React.ReactElement {
   // Use React.ReactElement
