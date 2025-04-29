@@ -4,6 +4,7 @@ import type { Route } from "./+types/upload";
 import { updateContent } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { validateContentInsert } from "~/database/valibot-validation";
+import { handleImageUpload } from "~/utils/upload.server"; // Import the helper
 
 export async function action({ request, context }: Route.ActionArgs) {
   const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
@@ -32,20 +33,10 @@ export async function action({ request, context }: Route.ActionArgs) {
         return badRequest("Missing key for database update.");
       }
 
-      const uniqueFilename = `${Date.now()}-${file.name.replace(
-        /[^a-zA-Z0-9._-]/g,
-        "_"
-      )}`;
-      const fileData = await file.arrayBuffer();
+      // Use the helper function for upload
+      const publicUrl = await handleImageUpload(file, key, context); // Pass context directly
 
-      await context.ASSETS_BUCKET.put(uniqueFilename, fileData, {
-        httpMetadata: { contentType: file.type },
-      });
-
-      const publicUrl = context.PUBLIC_R2_URL
-        ? `${context.PUBLIC_R2_URL.replace(/\/?$/, "/")}${uniqueFilename}`
-        : `/assets/${uniqueFilename}`;
-
+      // Validate before updating content DB
       try {
         validateContentInsert({ key, value: publicUrl });
       } catch (e: any) {
