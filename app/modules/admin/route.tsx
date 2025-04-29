@@ -5,18 +5,14 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
-import {
-  NavLink,
-  Outlet,
-  redirect,
-  type LoaderFunctionArgs,
-} from "react-router";
+import { NavLink, Outlet, redirect } from "react-router";
+import type { Route } from "./+types/route";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 
 export async function loader({
   request,
   context,
-}: LoaderFunctionArgs) {
+}: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||
@@ -47,7 +43,7 @@ function classNames(
   return classes.filter(Boolean).join(" ");
 }
 
-export default function AdminLayout(): JSX.Element {
+export default function AdminLayout() {
   return (
     <div className="min-h-screen flex bg-gray-50">
       <aside className="flex w-72 flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 py-4 border-r border-gray-200 shadow-md">
