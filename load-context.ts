@@ -8,7 +8,7 @@ declare namespace Cloudflare {
 		CLOUDFLARE_ACCOUNT_ID: string;
 		CLOUDFLARE_DATABASE_ID: string;
 		main: string;
-		ASSETS_BUCKET: unknown;
+		ASSETS_BUCKET: R2Bucket; // Corrected type
 		DB: D1Database;
 		JWT_SECRET: string; // <-- Add your custom env var here
 	}

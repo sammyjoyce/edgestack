@@ -1,5 +1,4 @@
-import React from "react";
-import React from "react"; // Import React
+import React from "react"; // Remove duplicate React import
 import { Popover } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx"; // Use direct import
@@ -23,7 +22,7 @@ interface DesktopNavProps {
 export default function DesktopNav({
   menuItems,
   scrollToSection,
-}: DesktopNavProps): JSX.Element {
+}: DesktopNavProps): React.JSX.Element { // Changed to React.JSX.Element
   return (
     <>
       {/* Left navigation items */}
@@ -51,7 +50,7 @@ export default function DesktopNav({
                   <Popover.Panel className="-translate-x-1/2 absolute left-1/2 z-10 mt-3 w-screen max-w-min transform px-2">
                     <div className="overflow-hidden rounded-lg bg-gray-900/95 shadow-lg ring-1 ring-gray-800 backdrop-blur-sm">
                       <div className="relative grid gap-6 px-5 py-6 sm:gap-8 sm:p-8">
-                        {item.submenu.map((subItem) => (
+                        {item.submenu?.map((subItem) => ( // Use optional chaining
                           <NavLink
                             key={subItem.name}
                             to={subItem.path}

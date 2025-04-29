@@ -71,8 +71,13 @@ export function ImageUploadSection({
   useEffect(() => {
     fetchers.forEach((fetcher, idx) => {
       if (fetcher.state === "idle") {
-        if (fetcher.data?.success) {
-          fileInputRefs[idx].current?.value = "";
+        // Add type guard for fetcher.data.success
+        if (fetcher.data && "success" in fetcher.data && fetcher.data.success) {
+          // Fix optional chaining assignment
+          const inputRef = fileInputRefs[idx].current;
+          if (inputRef) {
+            inputRef.value = "";
+          }
           setStatusTexts((prev) => {
             const next = [...prev];
             next[idx] = `${imageFields[idx].label} uploaded successfully!`;
