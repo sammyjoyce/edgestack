@@ -1,10 +1,9 @@
 #!/usr/bin/env bun
-/**
- * Tao-of-React Refactor — absolute-import codemod + lint helpers
- *
- * Usage:
- *   bun codemods/update-import-alias.ts "app/**/*.{ts,tsx}"
- */
+//// Tao-of-React Refactor — absolute-import codemod + lint helpers
+// 
+// Usage:
+//   bun codemods/update-import-alias.ts "app/**/\\*.{ts,tsx}"
+//
 
 import { glob } from "bun";
 import { readFile, writeFile } from "node:fs/promises";
