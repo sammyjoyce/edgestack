@@ -1,30 +1,30 @@
-import clsx from 'clsx'
+import clsx from "clsx";
 
-import { Border } from './Border'
-import { FadeIn, FadeInStagger } from './FadeIn'
+import { Border } from "./Border";
+import { FadeIn, FadeInStagger } from "./FadeIn";
 
 export function List({
   children,
   className,
 }: {
-  children: React.ReactNode
-  className?: string
+  children: React.ReactNode;
+  className?: string;
 }) {
   return (
     <FadeInStagger>
-      <ul role="list" className={clsx('text-base text-neutral-600', className)}>
+      <ul role="list" className={clsx("text-base text-neutral-600", className)}>
         {children}
       </ul>
     </FadeInStagger>
-  )
+  );
 }
 
 export function ListItem({
   children,
   title,
 }: {
-  children: React.ReactNode
-  title?: string
+  children: React.ReactNode;
+  title?: string;
 }) {
   return (
     <li className="group mt-10 first:mt-0">
@@ -37,5 +37,5 @@ export function ListItem({
         </Border>
       </FadeIn>
     </li>
-  )
+  );
 }

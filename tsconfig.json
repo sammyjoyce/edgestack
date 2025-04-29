@@ -1,14 +1,15 @@
 {
 	"files": [],
 	"references": [
-	  { "path": "./tsconfig.node.json" },
-	  { "path": "./tsconfig.cloudflare.json" }
+		{ "path": "./tsconfig.node.json" },
+		{ "path": "./tsconfig.cloudflare.json" }
 	],
+	"include": ["app", "database", "db", "workers", "scripts", "types", "public"],
 	"compilerOptions": {
-	  "checkJs": true,
-	  "verbatimModuleSyntax": true,
-	  "skipLibCheck": true,
-	  "strict": true,
-	  "noEmit": true
+		"checkJs": true,
+		"verbatimModuleSyntax": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"noEmit": true
 	}
-  }
+}

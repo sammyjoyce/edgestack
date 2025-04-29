@@ -1,0 +1,24 @@
+{
+	"$schema": "https://unpkg.com/knip@5/schema.json",
+	"entry": [
+		"app/entry.server.tsx",
+		"app/entry.client.tsx",
+		"app/root.tsx",
+		"app/styles/**/*.{css,scss}"
+	],
+	"project": [
+		"app/**/*.{ts,tsx,js,jsx}",
+		"database/**/*.{ts,js}",
+		"scripts/**/*.{ts,js}",
+		"server/**/*.{ts,js}"
+	],
+	"ignore": [
+		"**/*.test.{ts,tsx,js,jsx}",
+		"**/__tests__/**",
+		"**/node_modules/**",
+		"**/build/**",
+		"**/dist/**",
+		"**/*.css.{js,ts}",
+		"**/.react-router/**"
+	]
+}

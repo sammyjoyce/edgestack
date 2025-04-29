@@ -1,55 +1,79 @@
-import { Link, type LinkProps } from 'react-router'
-import clsx from 'clsx'
+import clsx from "clsx";
+import { forwardRef } from "react";
+import type { ForwardedRef, ReactNode } from "react";
+import { Link, type LinkProps } from "react-router";
 
-// Props for react-router Link, omitting className
-type RouterLinkProps = Omit<LinkProps, 'className'> & { to: LinkProps['to'] };
-
-// Props for HTML button, omitting className
-type HtmlButtonProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'className'>;
-
+// Simplified Button props - covers all the different use cases
 type ButtonProps = {
-  invert?: boolean
-  className?: string
-  children?: React.ReactNode
-} & (
-    // Render as react-router Link (requires 'to')
-    RouterLinkProps & { href?: never } |
-    // Render as standard button (cannot have 'to' or 'href')
-    HtmlButtonProps & { to?: never; href?: never }
-  )
+  invert?: boolean;
+  className?: string;
+  children?: ReactNode;
+  // For Link component
+  to?: string;
+  // For anchor element
+  href?: string;
+  // For polymorphic rendering
+  as?: any;
+  // Allow any other props
+  [key: string]: any;
+};
 
-export function Button({
-  invert = false,
-  className,
-  children,
-  ...props
-}: ButtonProps) {
+// Much simpler implementation with clearer rendering logic
+export const Button = forwardRef(function Button(
+  { invert = false, className, children, as, to, href, ...props }: ButtonProps,
+  ref: ForwardedRef<HTMLElement>
+) {
   className = clsx(
     className,
-    'inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition',
+    "inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition",
     invert
-      ? 'bg-white text-neutral-950 hover:bg-neutral-200'
-      : 'bg-neutral-950 text-white hover:bg-neutral-800',
-  )
+      ? "bg-white text-neutral-950 hover:bg-neutral-200"
+      : "bg-neutral-950 text-white hover:bg-neutral-800"
+  );
 
-  let inner = <span className="relative top-px">{children}</span>
+  const inner = <span className="relative top-px">{children}</span>;
 
-  // Check if 'to' prop exists to determine if it's a Link
-  if ('to' in props && props.to !== undefined) {
-    // Explicitly cast props for Link
-    const linkProps = props as RouterLinkProps;
+  // React Router Link (highest priority)
+  if (to !== undefined) {
     return (
-      <Link className={className} {...linkProps}>
+      <Link to={to} className={className} {...props}>
         {inner}
       </Link>
-    )
+    );
   }
 
-  // Explicitly cast props for button
-  const buttonProps = props as HtmlButtonProps;
+  // HTML anchor
+  if (href !== undefined || as === "a") {
+    return (
+      <a
+        ref={ref as ForwardedRef<HTMLAnchorElement>}
+        href={href}
+        className={className}
+        {...props}
+      >
+        {inner}
+      </a>
+    );
+  }
+
+  // Custom component
+  if (as && typeof as !== "string") {
+    const Component = as;
+    return (
+      <Component ref={ref} className={className} {...props}>
+        {inner}
+      </Component>
+    );
+  }
+
+  // Default button
   return (
-    <button className={className} {...buttonProps}>
+    <button
+      ref={ref as ForwardedRef<HTMLButtonElement>}
+      className={className}
+      {...props}
+    >
       {inner}
     </button>
-  )
-}
+  );
+});

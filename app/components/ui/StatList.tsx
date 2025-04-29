@@ -1,11 +1,11 @@
-import { Border } from './Border'
-import { FadeIn, FadeInStagger } from './FadeIn'
+import { Border } from "./Border";
+import { FadeIn, FadeInStagger } from "./FadeIn";
 
 export function StatList({
   children,
   ...props
-}: Omit<React.ComponentPropsWithoutRef<typeof FadeInStagger>, 'children'> & {
-  children: React.ReactNode
+}: Omit<React.ComponentPropsWithoutRef<typeof FadeInStagger>, "children"> & {
+  children: React.ReactNode;
 }) {
   return (
     <FadeInStagger {...props}>
@@ -13,15 +13,15 @@ export function StatList({
         {children}
       </dl>
     </FadeInStagger>
-  )
+  );
 }
 
 export function StatListItem({
   label,
   value,
 }: {
-  label: string
-  value: string
+  label: string;
+  value: string;
 }) {
   return (
     <Border as={FadeIn} position="left" className="flex flex-col-reverse pl-8">
@@ -30,5 +30,5 @@ export function StatListItem({
         {value}
       </dd>
     </Border>
-  )
+  );
 }

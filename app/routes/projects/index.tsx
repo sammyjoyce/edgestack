@@ -12,9 +12,12 @@ export default function ProjectsIndex() {
   const { content } = useOutletContext<ProjectsContext>();
 
   return (
-    <RecentProjects 
-      introTitle={content?.projects_intro_title ?? 'Featured Projects'}
-      introText={content?.projects_intro_text ?? 'Take a look at some of our recent work that demonstrates our expertise and dedication to excellence.'}
+    <RecentProjects
+      introTitle={content?.projects_intro_title ?? "Featured Projects"}
+      introText={
+        content?.projects_intro_text ??
+        "Take a look at some of our recent work that demonstrates our expertise and dedication to excellence."
+      }
     />
   );
 }
