@@ -1,14 +1,38 @@
-function transformer(fileInfo, { jscodeshift: j }) {
+#!/usr/bin/env bun
+/**
+ * Tao-of-React Refactor – import-alias codemod
+ *
+ * Run with:
+ *   bun codemods/update-import-alias.js "app/**/*.{ts,tsx}"
+ */
+
+import { type API, type FileInfo, type Transform } from "jscodeshift";
+
+const ALIAS_MAP: Record<string, string> = {
+  "@components/": "@common/ui/",
+  "../../modules/": "@modules/",
+  "../modules/": "@modules/",
+};
+
+const transformer: Transform = (
+  fileInfo: FileInfo,
+  { jscodeshift: j }: API,
+) => {
   return j(fileInfo.source)
     .find(j.ImportDeclaration)
-    .forEach(path => {
+    .forEach((path) => {
       const src = path.node.source.value;
-      if (typeof src === "string" && src.startsWith("@components/")) {
-        path.node.source.value = src.replace("@components/", "@common/ui/");
+      if (typeof src !== "string") return;
+
+      for (const [from, to] of Object.entries(ALIAS_MAP)) {
+        if (src.startsWith(from)) {
+          path.node.source.value = src.replace(from, to);
+          break;
+        }
       }
     })
     .toSource();
-}
+};
 
-module.exports = transformer;
-module.exports.parser = 'tsx';
+export default transformer;
+export const parser = "tsx";
