@@ -1,7 +1,8 @@
 import React from "react";
+import React from "react"; // Import React
 import { Popover } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import clsx from "@common/utils/clsx";
+import clsx from "clsx"; // Use direct import
 import { NavLink } from "react-router";
 
 interface MenuItem {
