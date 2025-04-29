@@ -10,7 +10,7 @@ export const content = sqliteTable("content", {
 	mediaId: integer("media_id").references(() => media.id), // Optional FK to media
 	sortOrder: integer("sort_order").default(0), // For ordered blocks
 	metadata: text("metadata"), // JSON blob for extras
-	updatedAt: integer("updated_at", { mode: "timestamp" }).default(new Date()), // Last update timestamp
+	updatedAt: integer("updated_at", { mode: "timestamp" }).default(new Date()).$onUpdate(() => new Date()), // Last update timestamp
 });
 
 // Type for content entry
@@ -42,7 +42,7 @@ export const projects = sqliteTable("projects", {
 	isFeatured: integer("is_featured", { mode: "boolean" }).default(false), // Flag for home page display
 	sortOrder: integer("sort_order").default(0), // Order on home page
 	createdAt: integer("created_at", { mode: "timestamp" }).default(new Date()), // Timestamp for creation
-	updatedAt: integer("updated_at", { mode: "timestamp" }).default(new Date()), // Timestamp for last update
+	updatedAt: integer("updated_at", { mode: "timestamp" }).default(new Date()).$onUpdate(() => new Date()), // Timestamp for last update
 });
 
 // Type for project entry
