@@ -19,7 +19,8 @@ export default function ConditionalRichTextRenderer({
   fallbackClassName = "text-base sm:text-lg", // Default fallback style
   richTextClassName, // Optional class for RichTextRenderer container
   fallbackTag: FallbackTag = "p", // Default to <p> tag
-}: ConditionalRichTextRendererProps): React.JSX.Element | null { // Changed to React.JSX.Element
+}: ConditionalRichTextRendererProps): React.JSX.Element | null {
+  // Changed to React.JSX.Element
   if (!text) {
     return null; // Render nothing if text is empty or null/undefined
   }
