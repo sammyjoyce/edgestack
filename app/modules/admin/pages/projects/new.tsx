@@ -1,30 +1,33 @@
-import React from "react";
-import { Form, Link, data, redirect, useActionData } from "react-router-dom";
-import type { ActionFunctionArgs } from "react-router-dom";
-import type { NewProject } from "../../../../database/schema";
-import { Button } from "../../../../components/ui/Button";
-import { FadeIn } from "../../../../components/ui/FadeIn";
-import { createProject } from "../../../../db/index";
-import { getSessionCookie, verify } from "../../../../utils/auth";
+import React, { type JSX } from "react";
+import {
+  data,
+  type ActionFunctionArgs,
+  Form,
+  Link,
+  redirect,
+  useActionData,
+} from "react-router";
 
-// Define CloudflareEnv type based on context usage elsewhere
-interface CloudflareEnv {
-  JWT_SECRET: string;
-  db: any; // Use 'any' for now, or import AppLoadContext if available
-}
+import { Button } from "~/modules/common/components/ui/Button";
+import { FadeIn } from "~/modules/common/components/ui/FadeIn";
+import { createProject } from "~/db";
+import { getSessionCookie, verify } from "~/modules/common/utils/auth";
+import type { NewProject } from "~/database/schema";
+import { validateProjectInsert } from "~/database/valibot-validation";
 
 // Action to handle creating a new project
-export async function action({
-  request,
-  context,
-}: ActionFunctionArgs & { context: CloudflareEnv }) {
+export async function action({ request, context }: ActionFunctionArgs) {
+  const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
+
+  const badRequest = (msg: string) => data({ error: msg }, { status: 400 });
+
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||
     !context.JWT_SECRET ||
     !(await verify(sessionValue, context.JWT_SECRET))
   ) {
-    return data({ error: "Unauthorized" }, { status: 401 });
+    return unauthorized();
   }
 
   try {
@@ -36,7 +39,7 @@ export async function action({
     // TODO: Add image upload handling later if needed
 
     if (typeof title !== "string" || title.trim() === "") {
-      return data({ error: "Title is required." }, { status: 400 });
+      return badRequest("Title is required.");
     }
 
     const newProjectData: NewProject = {
@@ -51,14 +54,10 @@ export async function action({
 
     // Validate newProjectData using Valibot
     try {
-      const { validateProjectInsert } = await import(
-        "@common/validation/valibot"
-      );
       validateProjectInsert({ ...newProjectData });
     } catch (e: any) {
-      return data(
-        { error: `Validation failed for project creation: ${e.message || e}` },
-        { status: 400 }
+      return badRequest(
+        `Validation failed for project creation: ${e.message || e}`
       );
     }
     const createdProject = await createProject(context.db, newProjectData);
@@ -66,13 +65,12 @@ export async function action({
     // Redirect to the project list page after successful creation
     return redirect("/admin/projects");
   } catch (error: any) {
-    console.error("Error creating project:", error);
     return data({ error: "Failed to create project." }, { status: 500 });
   }
 }
 
 // Component to render the "Add New Project" form
-export default function AdminNewProject() {
+export default function AdminNewProject(): JSX.Element {
   const actionData = useActionData<{ error?: string }>();
 
   return (
@@ -154,7 +152,7 @@ export default function AdminNewProject() {
         </div>
 
         {/* TODO: Add image upload field later */}
-        {/* 
+        {/*
         <div>
           <label htmlFor="image" className="block text-sm font-medium text-gray-700">
             Project Image

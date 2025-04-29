@@ -1,80 +1,78 @@
 import React from "react";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import {
+  data,
   Form,
   Link,
-  data,
   redirect,
   useActionData,
   useLoaderData,
   useParams,
-} from "react-router-dom";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router-dom";
-import type { NewProject, Project } from "../../../../database/schema";
-import { Button } from "../../../../components/ui/Button";
-import { FadeIn } from "../../../../components/ui/FadeIn";
-import { getProjectById, updateProject } from "../../../../db/index";
-import { getSessionCookie, verify } from "../../../../utils/auth";
-
-// Define CloudflareEnv type
-interface CloudflareEnv {
-  JWT_SECRET: string;
-  db: any;
-}
+} from "react-router";
+import { Button } from "~/modules/common/components/ui/Button";
+import { FadeIn } from "~/modules/common/components/ui/FadeIn";
+import { validateProjectInsert } from "~/database/valibot-validation";
+import { getProjectById, updateProject } from "~/db";
+import { getSessionCookie, verify } from "~/modules/common/utils/auth";
+import type { NewProject, Project } from "~/database/schema";
 
 // Loader to fetch the project data for editing
-export async function loader({
-  request,
-  params,
-  context,
-}: LoaderFunctionArgs & { context: CloudflareEnv }) {
+export async function loader({ request, params, context }: LoaderFunctionArgs) {
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||
     !context.JWT_SECRET ||
     !(await verify(sessionValue, context.JWT_SECRET))
   ) {
-    return data({ error: "Unauthorized" }, { status: 401 });
+    return data({ error: "Unauthorized", project: undefined }, { status: 401 });
   }
 
   const projectId = params.projectId
     ? Number.parseInt(params.projectId, 10)
     : Number.NaN;
   if (isNaN(projectId)) {
-    return data({ error: "Invalid Project ID" }, { status: 400 });
+    return data(
+      { error: "Invalid Project ID", project: undefined },
+      { status: 400 }
+    );
   }
 
   try {
     const project = await getProjectById(context.db, projectId);
     if (!project) {
-      return data({ error: "Project not found" }, { status: 404 });
+      return data(
+        { error: "Project not found", project: undefined },
+        { status: 404 }
+      );
     }
     return data({ project });
   } catch (error) {
-    console.error("Error fetching project:", error);
-    return data({ error: "Failed to load project data" }, { status: 500 });
+    return data(
+      { error: "Failed to load project data", project: undefined },
+      { status: 500 }
+    );
   }
 }
 
 // Action to handle updating the project
-export async function action({
-  request,
-  params,
-  context,
-}: ActionFunctionArgs & { context: CloudflareEnv }) {
+export async function action({ request, params, context }: ActionFunctionArgs) {
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||
     !context.JWT_SECRET ||
     !(await verify(sessionValue, context.JWT_SECRET))
   ) {
-    return data({ error: "Unauthorized" }, { status: 401 });
+    return data({ error: "Unauthorized", project: undefined }, { status: 401 });
   }
 
   const projectId = params.projectId
     ? Number.parseInt(params.projectId, 10)
     : Number.NaN;
   if (isNaN(projectId)) {
-    return data({ error: "Invalid Project ID" }, { status: 400 });
+    return data(
+      { error: "Invalid Project ID", project: undefined },
+      { status: 400 }
+    );
   }
 
   try {
@@ -119,20 +117,20 @@ export async function action({
     // Fetch the original project to ensure we validate a full object, not a partial
     const originalProject = await getProjectById(context.db, projectId);
     if (!originalProject) {
-      return data({ error: "Project not found for update." }, { status: 404 });
+      return data(
+        { error: "Project not found for update.", project: undefined },
+        { status: 404 }
+      );
     }
     const updatedProjectData: Partial<NewProject> = {
-      title: typeof title === "string" ? title.trim() : originalProject.title,
+      title: title.trim(),
       description:
         typeof description === "string"
           ? description.trim()
           : originalProject.description,
       details:
         typeof details === "string" ? details.trim() : originalProject.details,
-      isFeatured:
-        typeof isFeatured === "boolean"
-          ? isFeatured
-          : originalProject.isFeatured,
+      isFeatured,
       sortOrder:
         typeof sortOrder === "number" ? sortOrder : originalProject.sortOrder,
       ...(imageUrl ? { imageUrl } : { imageUrl: originalProject.imageUrl }),
@@ -150,13 +148,13 @@ export async function action({
     // Validate the full project object using Valibot
     // This is necessary because valibot's insert schema expects all required fields
     try {
-      const { validateProjectInsert } = await import(
-        "@common/validation/valibot"
-      );
       validateProjectInsert(projectInsertObj);
     } catch (e: any) {
       return data(
-        { error: `Validation failed for project update: ${e.message || e}` },
+        {
+          error: `Validation failed for project update: ${e.message || e}`,
+          project: originalProject,
+        },
         { status: 400 }
       );
     }
@@ -177,7 +175,6 @@ export async function action({
     // Redirect back to the project list after successful update
     return redirect("/admin/projects");
   } catch (error: any) {
-    console.error("Error updating project:", error);
     // Need to reload project data for the form if update fails
     const project = await getProjectById(context.db, projectId);
     return data(
@@ -194,7 +191,7 @@ export default function AdminEditProject() {
     project?: Project;
     error?: string;
   }>();
-  const actionData = useActionData<{ error?: string; project?: Project }>(); // Action can return project on error
+  const actionData = useActionData<{ error?: string; project?: Project }>(); // Matches action's possible return shape
   const params = useParams();
 
   // Use project data from actionData if available (e.g., validation error), otherwise use loaderData
