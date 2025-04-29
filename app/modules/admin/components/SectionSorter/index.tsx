@@ -1,19 +1,20 @@
 import {
+  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
+  type DragEndEvent,
 } from "@dnd-kit/core";
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import type { FetcherWithComponents } from "react-router";
 
 type Section = { id: string; label: string };
@@ -37,7 +38,7 @@ const DEFAULT_SECTIONS: Section[] = [
 export default function SectionSorter({
   orderValue,
   fetcher,
-}: SectionSorterProps) {
+}: SectionSorterProps): JSX.Element {
   /* --- Local state ------------------------------------------------------- */
   const [sections, setSections] = useState<Section[]>(() => {
     if (!orderValue) return DEFAULT_SECTIONS;
@@ -46,6 +47,9 @@ export default function SectionSorter({
       .map((id) => DEFAULT_SECTIONS.find((s) => s.id === id))
       .filter(Boolean) as Section[];
   });
+
+  // Live‑region status for screen readers
+  const [statusMsg, setStatusMsg] = useState<string>("");
 
   /* --- Sensors ----------------------------------------------------------- */
   const sensors = useSensors(
@@ -62,14 +66,16 @@ export default function SectionSorter({
   }, [sections, fetcher]);
 
   /* --- Drag end handler -------------------------------------------------- */
-  function handleDragEnd(event: any) {
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
-      const oldIndex = sections.findIndex((s) => s.id === active.id);
-      const newIndex = sections.findIndex((s) => s.id === over.id);
-      setSections(arrayMove(sections, oldIndex, newIndex)); // @dnd-kit helper  [oai_citation:0‡Overview | @dnd-kit – Documentation](https://docs.dndkit.com/presets/sortable/usesortable?utm_source=chatgpt.com)
+      setSections((prev) => {
+        const oldIndex = prev.findIndex((s) => s.id === active.id);
+        const newIndex = prev.findIndex((s) => s.id === over.id);
+        return arrayMove(prev, oldIndex, newIndex);
+      });
     }
-  }
+  }, []);
 
   return (
     <section className="mb-8" aria-labelledby="section-order-heading">
@@ -91,10 +97,9 @@ export default function SectionSorter({
       <div
         role="status"
         aria-live="polite"
-        className="sr-only"
-        id="section-sorter-status"
+        className="text-sm text-gray-600 h-5 mb-2"
       >
-        {/* This will be updated dynamically for screen readers */}
+        {statusMsg}
       </div>
       <DndContext
         sensors={sensors}
@@ -116,6 +121,7 @@ export default function SectionSorter({
                 label={s.label}
                 index={idx}
                 total={sections.length}
+                updateStatus={setStatusMsg}
               />
             ))}
           </ul>
@@ -131,12 +137,14 @@ function SortableItem({
   label,
   index,
   total,
+  updateStatus,
 }: {
   id: string;
   label: string;
   index: number;
   total: number;
-}) {
+  updateStatus: (msg: string) => void;
+}): JSX.Element {
   const {
     setNodeRef,
     attributes,
@@ -154,18 +162,11 @@ function SortableItem({
   // Announce order changes for screen readers
   React.useEffect(() => {
     if (isDragging) {
-      const status = document.getElementById("section-sorter-status");
-      if (status) {
-        status.textContent = `Moving ${label}, position ${
-          index + 1
-        } of ${total}.`;
-      }
+      updateStatus(`Moving ${label}, position ${index + 1} of ${total}.`);
+    } else {
+      updateStatus("");
     }
-    return () => {
-      const status = document.getElementById("section-sorter-status");
-      if (status) status.textContent = "";
-    };
-  }, [isDragging, label, index, total]);
+  }, [isDragging, label, index, total, updateStatus]);
 
   return (
     <li
