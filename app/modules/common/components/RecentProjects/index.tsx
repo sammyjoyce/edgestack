@@ -1,8 +1,5 @@
 import React from "react";
 import { Link } from "react-router";
-import type {Project} from "~/database/schema";
-import React from "react";
-import { Link } from "react-router";
 import type { Project } from "~/database/schema";
 import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
 import { Container } from "~/modules/common/components/ui/Container";

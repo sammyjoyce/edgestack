@@ -39,7 +39,11 @@ export default function AboutUs({
               </FadeIn>
             </div>
             <div className="space-y-4 text-gray-700">
-              {renderedText}
+              <ConditionalRichTextRenderer
+                text={text ?? defaultAboutText}
+                fallbackClassName="text-base sm:text-lg" // Adjust classes as needed
+                fallbackTag="p"
+              />
             </div>
           </div>
           <div className="w-full md:w-1/2">

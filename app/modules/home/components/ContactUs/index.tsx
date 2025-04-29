@@ -1,8 +1,6 @@
 import {
   BuildingOffice2Icon,
   ClockIcon,
-  BuildingOffice2Icon,
-  ClockIcon,
   EnvelopeIcon,
   PhoneIcon,
 } from "@heroicons/react/24/outline";
