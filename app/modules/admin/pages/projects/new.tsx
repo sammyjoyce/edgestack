@@ -59,7 +59,7 @@ export async function action({ request, context }: Route.ActionArgs) {
     return data({ error: "Failed to create project." }, { status: 500 });
   }
 // Remove the action export from here
-// export async function action({ request, context }: Route.ActionArgs) { ... }
+// async function action({ request, context }: Route.ActionArgs) { ... }
 
 // Component to render the "Add New Project" form
 export default function AdminNewProject({
