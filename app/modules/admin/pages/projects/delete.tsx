@@ -1,10 +1,10 @@
-import type { ActionFunctionArgs } from "react-router";
 import { data, redirect } from "react-router";
+import type { Route } from "./+types/delete";
 import { deleteProject } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 
 // Action to handle deleting a project
-export async function action({ request, params, context }: ActionFunctionArgs) {
+export async function action({ request, params, context }: Route.ActionArgs) {
   const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
 
   const badRequest = (msg: string) => data({ error: msg }, { status: 400 });

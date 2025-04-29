@@ -1,5 +1,4 @@
 import React from "react";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import {
   data,
   Form,
@@ -9,6 +8,7 @@ import {
   useLoaderData,
   useParams,
 } from "react-router";
+import type { Route } from "./+types/edit";
 import { Button } from "~/modules/common/components/ui/Button";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { validateProjectInsert } from "~/database/valibot-validation";
@@ -17,7 +17,7 @@ import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import type { NewProject, Project } from "~/database/schema";
 
 // Loader to fetch the project data for editing
-export async function loader({ request, params, context }: LoaderFunctionArgs) {
+export async function loader({ request, params, context }: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||
@@ -55,7 +55,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
 }
 
 // Action to handle updating the project
-export async function action({ request, params, context }: ActionFunctionArgs) {
+export async function action({ request, params, context }: Route.ActionArgs) {
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||

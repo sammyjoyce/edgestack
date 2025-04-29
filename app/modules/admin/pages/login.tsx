@@ -1,10 +1,10 @@
 import {
-  type ActionFunctionArgs,
   data,
   redirect,
   useActionData,
   useSearchParams,
 } from "react-router";
+import type { Route } from "./+types/login";
 import { Button } from "~/modules/common/components/ui/Button";
 
 import {
@@ -14,7 +14,6 @@ import {
   sign,
   verify,
 } from "~/modules/common/utils/auth";
-import type { Route } from "./+types/login";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);
@@ -28,7 +27,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   return data({});
 }
 
-export async function action({ request, context }: ActionFunctionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const form = await request.formData();
   const username = form.get("username");
   const password = form.get("password");
