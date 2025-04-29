@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  data,
-  Form,
-  Link,
-  redirect,
-} from "react-router";
+import { data, Form, Link, redirect } from "react-router";
 import type { Route } from "./+types/edit";
 import { Button } from "~/modules/common/components/ui/Button";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
@@ -92,7 +87,11 @@ export async function action({ request, params, context }: Route.ActionArgs) {
     if (imageFile && imageFile instanceof File && imageFile.size > 0) {
       try {
         // Use project ID or title in the key for context if desired
-        imageUrl = await handleImageUpload(imageFile, `project-${projectId}-image`, context); // Pass context directly
+        imageUrl = await handleImageUpload(
+          imageFile,
+          `project-${projectId}-image`,
+          context
+        ); // Pass context directly
       } catch (uploadError: any) {
         // Handle upload error specifically, maybe return to form with error
         const project = await getProjectById(context.db, projectId);
@@ -177,7 +176,10 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 }
 
 // Component to render the "Edit Project" form
-export default function AdminEditProject({ loaderData, actionData }: Route.ComponentProps): JSX.Element {
+export default function AdminEditProject({
+  loaderData,
+  actionData,
+}: Route.ComponentProps): JSX.Element {
   // Use loader data for initial form values, action data for errors
   const { project, error: loaderError } = loaderData;
   const { project: actionProject, error: actionError } = actionData ?? {};
@@ -216,7 +218,9 @@ export default function AdminEditProject({ loaderData, actionData }: Route.Compo
 
   return (
     <FadeIn>
-      <h1 className="text-2xl font-semibold text-gray-900 mb-8"> {/* Use gray-900, increased margin */}
+      <h1 className="text-2xl font-semibold text-gray-900 mb-8">
+        {" "}
+        {/* Use gray-900, increased margin */}
         Edit Project: {currentProject.title}
       </h1>
 
@@ -229,7 +233,13 @@ export default function AdminEditProject({ loaderData, actionData }: Route.Compo
         </div>
       )}
 
-      <Form method="post" encType="multipart/form-data" className="bg-white shadow-sm border border-gray-200 rounded-lg p-6 space-y-6"> {/* Added encType, adjusted shadow/border, increased spacing */}
+      <Form
+        method="post"
+        encType="multipart/form-data"
+        className="bg-white shadow-sm border border-gray-200 rounded-lg p-6 space-y-6"
+      >
+        {" "}
+        {/* Added encType, adjusted shadow/border, increased spacing */}
         <div>
           <label
             htmlFor="title"
@@ -246,7 +256,6 @@ export default function AdminEditProject({ loaderData, actionData }: Route.Compo
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
           />
         </div>
-
         <div>
           <label
             htmlFor="description"
@@ -262,7 +271,6 @@ export default function AdminEditProject({ loaderData, actionData }: Route.Compo
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
           />
         </div>
-
         <div>
           <label
             htmlFor="details"
@@ -278,8 +286,9 @@ export default function AdminEditProject({ loaderData, actionData }: Route.Compo
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
           />
         </div>
-
-        <div className="flex items-center gap-2"> {/* Added gap */}
+        <div className="flex items-center gap-2">
+          {" "}
+          {/* Added gap */}
           <input
             type="checkbox"
             name="isFeatured"
@@ -295,11 +304,14 @@ export default function AdminEditProject({ loaderData, actionData }: Route.Compo
             Feature on Home Page
           </label>
         </div>
-
         {/* Display current image if available */}
         {currentProject.imageUrl && (
-          <div className="mt-2"> {/* Reduced top margin */}
-            <label className="block text-sm font-medium text-gray-700 mb-1"> {/* Added margin */}
+          <div className="mt-2">
+            {" "}
+            {/* Reduced top margin */}
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {" "}
+              {/* Added margin */}
               Current Image
             </label>
             <img
@@ -324,7 +336,6 @@ export default function AdminEditProject({ loaderData, actionData }: Route.Compo
             className="block w-full text-sm text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" /* Adjusted file input style */
           />
         </div>
-
         <div>
           <label
             htmlFor="sortOrder"
@@ -341,8 +352,9 @@ export default function AdminEditProject({ loaderData, actionData }: Route.Compo
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
           />
         </div>
-
-        <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200"> {/* Increased top padding, added border */}
+        <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+          {" "}
+          {/* Increased top padding, added border */}
           <Button
             as={Link}
             to="/admin/projects"
@@ -350,7 +362,12 @@ export default function AdminEditProject({ loaderData, actionData }: Route.Compo
           >
             Cancel
           </Button>
-          <Button type="submit" className="bg-blue-600 text-white hover:bg-blue-700"> {/* Explicit primary button style */}
+          <Button
+            type="submit"
+            className="bg-blue-600 text-white hover:bg-blue-700"
+          >
+            {" "}
+            {/* Explicit primary button style */}
             Save Changes
           </Button>
         </div>

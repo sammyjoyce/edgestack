@@ -57,17 +57,22 @@ export default function RichTextField({
       <LexicalComposer initialConfig={initialConfig}>
         {/* Formatting Toolbar for bold, italic, headings, lists, links, etc. */}
         <LexicalToolbar />
-        <div className="relative"> {/* Wrapper for placeholder positioning */}
+        <div className="relative">
+          {" "}
+          {/* Wrapper for placeholder positioning */}
           <RichTextPlugin
             contentEditable={
               <ContentEditable
-                className={`prose prose-sm max-w-none min-h-[8rem] border border-gray-300 rounded-b-md rounded-tr-md p-3 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white ${ /* Adjusted prose size, border, focus, bg */
+                className={`prose prose-sm max-w-none min-h-[8rem] border border-gray-300 rounded-b-md rounded-tr-md p-3 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white ${
+                  /* Adjusted prose size, border, focus, bg */
                   disabled ? "opacity-50 bg-gray-50" : ""
                 }`}
               />
             }
             placeholder={
-              <p className="text-sm text-gray-400 absolute top-3 left-3 pointer-events-none"> {/* Placeholder styling */}
+              <p className="text-sm text-gray-400 absolute top-3 left-3 pointer-events-none">
+                {" "}
+                {/* Placeholder styling */}
                 Start typing…
               </p>
             }

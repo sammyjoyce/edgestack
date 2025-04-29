@@ -28,9 +28,7 @@ import { ContactSectionEditor } from "~/modules/admin/components/ContactSectionE
 import type { action } from "~/modules/admin/pages";
 
 // Helper to check if content is an error response using valibot
-const isContentError = (
-  obj: any
-): obj is { error: string; status: number } => {
+const isContentError = (obj: any): obj is { error: string; status: number } => {
   try {
     validateErrorResponse(obj);
     return true;
@@ -57,7 +55,6 @@ export default function AdminDashboard(): JSX.Element {
     }
     return null;
   }, [fetcher.state, fetcher.data]);
-
 
   // Access content safely with type guard
   const safeContent = isContentError(content)
@@ -134,14 +131,18 @@ export default function AdminDashboard(): JSX.Element {
   const sectionsOrder = safeContent.home_sections_order as string | undefined;
 
   return (
-    <Container className="space-y-10"> {/* Add vertical spacing between sections */}
-      <SectionIntro title="Home Page Editor" className="mb-8" /> {/* Adjusted margin */}
+    <Container className="space-y-10">
+      {" "}
+      {/* Add vertical spacing between sections */}
+      <SectionIntro title="Home Page Editor" className="mb-8" />{" "}
+      {/* Adjusted margin */}
       {/* 🔀 Drag-to-reorder CMS sections */}
       <SectionSorter orderValue={sectionsOrder} fetcher={fetcher} />
       {status && (
         <FadeIn>
           <div
-            className={`p-3 mb-6 rounded text-sm border ${ /* Adjusted padding/margin/size/border */
+            className={`p-3 mb-6 rounded text-sm border ${
+              /* Adjusted padding/margin/size/border */
               status.isError
                 ? "bg-red-50 text-red-700 border-red-200"
                 : "bg-green-50 text-green-700 border-green-200"
@@ -172,12 +173,17 @@ export default function AdminDashboard(): JSX.Element {
           serviceImageUrls={serviceImageUrls}
         />
       </section>
-
       <section aria-label="Recent Projects Editor" role="region" tabIndex={0}>
-        <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200"> {/* Adjusted shadow/border */}
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Projects Section</h2> {/* Adjusted size/color/margin */}
-
-          <div className="grid grid-cols-1 gap-6 mt-4"> {/* Increased gap */}
+        <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+          {" "}
+          {/* Adjusted shadow/border */}
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            Projects Section
+          </h2>{" "}
+          {/* Adjusted size/color/margin */}
+          <div className="grid grid-cols-1 gap-6 mt-4">
+            {" "}
+            {/* Increased gap */}
             <div>
               <label
                 htmlFor="projects_intro_title"
@@ -200,7 +206,6 @@ export default function AdminDashboard(): JSX.Element {
                 }}
               />
             </div>
-
             <div>
               <label
                 htmlFor="projects_intro_text"
@@ -225,21 +230,34 @@ export default function AdminDashboard(): JSX.Element {
               />
             </div>
           </div>
-          <div className="mt-4 text-sm text-gray-600 space-y-1"> {/* Adjusted margin/size/spacing */}
-            <p><strong>Note:</strong></p>
-            <ul className="list-disc list-inside space-y-1"> {/* Added spacing */}
+          <div className="mt-4 text-sm text-gray-600 space-y-1">
+            {" "}
+            {/* Adjusted margin/size/spacing */}
+            <p>
+              <strong>Note:</strong>
+            </p>
+            <ul className="list-disc list-inside space-y-1">
+              {" "}
+              {/* Added spacing */}
               <li>
-                To add, edit, or reorder projects, visit the Projects admin page.
+                To add, edit, or reorder projects, visit the Projects admin
+                page.
               </li>
               <li>
-                To feature a project on the home page, edit the project and enable the <span className="font-semibold text-gray-700">"Featured"</span> option.
+                To feature a project on the home page, edit the project and
+                enable the{" "}
+                <span className="font-semibold text-gray-700">"Featured"</span>{" "}
+                option.
               </li>
               <li>
-                Project display order and details are managed in the Projects admin page.
+                Project display order and details are managed in the Projects
+                admin page.
               </li>
             </ul>
           </div>
-          <div className="mt-6"> {/* Increased margin */}
+          <div className="mt-6">
+            {" "}
+            {/* Increased margin */}
             <Button
               as={Link} /* Use Link component */
               to="/admin/projects" /* Use 'to' prop */
@@ -251,7 +269,6 @@ export default function AdminDashboard(): JSX.Element {
           </div>
         </div>
       </section>
-
       <section aria-label="About Section Editor" role="region" tabIndex={0}>
         <AboutSectionEditor
           fetcher={fetcher}
@@ -261,7 +278,6 @@ export default function AdminDashboard(): JSX.Element {
           aboutImageUrl={aboutImageUrl}
         />
       </section>
-
       <section aria-label="Contact Section Editor" role="region" tabIndex={0}>
         <ContactSectionEditor fetcher={fetcher} initialContent={safeContent} />
       </section>

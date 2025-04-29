@@ -99,13 +99,19 @@ export function ServicesSectionEditor({
   }, [imageUploading, statusTexts]);
 
   return (
-    <div className="overflow-hidden bg-white sm:rounded-lg shadow-sm border border-gray-200"> {/* Use white bg, adjusted shadow/border */}
+    <div className="overflow-hidden bg-white sm:rounded-lg shadow-sm border border-gray-200">
+      {" "}
+      {/* Use white bg, adjusted shadow/border */}
       <div className="px-4 py-5 sm:p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6"> {/* Use semibold, increased margin */}
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">
+          {" "}
+          {/* Use semibold, increased margin */}
           Services Section
         </h2>
         <div className="flex flex-col gap-8">
-          <div className="space-y-1.5"> {/* Use space-y for consistent spacing */}
+          <div className="space-y-1.5">
+            {" "}
+            {/* Use space-y for consistent spacing */}
             <label
               htmlFor="services_intro_title"
               className="block text-sm font-medium text-gray-700" /* Standard label */
@@ -140,7 +146,9 @@ export function ServicesSectionEditor({
               key={field.label}
               className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-200 pt-6 mt-6" /* Adjusted border/padding/margin */
             >
-              <div className="flex flex-col gap-y-1.5"> {/* Reduced gap */}
+              <div className="flex flex-col gap-y-1.5">
+                {" "}
+                {/* Reduced gap */}
                 <label
                   htmlFor={field.titleKey}
                   className="block text-sm font-medium text-gray-700" /* Standard label */
@@ -170,16 +178,21 @@ export function ServicesSectionEditor({
                   onBlur={handleBlur}
                 />
               </div>
-              <div className="flex flex-col items-center justify-start pt-1"> {/* Align top */}
+              <div className="flex flex-col items-center justify-start pt-1">
+                {" "}
+                {/* Align top */}
                 <label
                   className="block text-sm font-medium text-gray-700 mb-1 self-start" /* Standard label, align left */
                   htmlFor={`service-image-upload-${idx}`}
                 >
                   {field.label} Image
                 </label>
-                 <p className="text-xs text-gray-500 mb-2 self-start"> {/* Help text */}
-                    Upload or drag and drop an image for the {field.label.toLowerCase()}.
-                  </p>
+                <p className="text-xs text-gray-500 mb-2 self-start">
+                  {" "}
+                  {/* Help text */}
+                  Upload or drag and drop an image for the{" "}
+                  {field.label.toLowerCase()}.
+                </p>
                 <div
                   className="text-sm text-gray-600 mb-2 h-5 self-start" /* Align left */
                   role="status"

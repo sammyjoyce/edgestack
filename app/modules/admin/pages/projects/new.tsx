@@ -64,11 +64,14 @@ export async function action({ request, context }: Route.ActionArgs) {
 }
 
 // Component to render the "Add New Project" form
-export default function AdminNewProject({ actionData }: Route.ComponentProps): JSX.Element {
-
+export default function AdminNewProject({
+  actionData,
+}: Route.ComponentProps): JSX.Element {
   return (
     <FadeIn>
-      <h1 className="text-2xl font-semibold text-gray-900 mb-8"> {/* Use gray-900, increased margin */}
+      <h1 className="text-2xl font-semibold text-gray-900 mb-8">
+        {" "}
+        {/* Use gray-900, increased margin */}
         Add New Project
       </h1>
 
@@ -81,7 +84,12 @@ export default function AdminNewProject({ actionData }: Route.ComponentProps): J
         </div>
       )}
 
-      <Form method="post" className="bg-white shadow-sm border border-gray-200 rounded-lg p-6 space-y-6"> {/* Adjusted shadow/border, increased spacing */}
+      <Form
+        method="post"
+        className="bg-white shadow-sm border border-gray-200 rounded-lg p-6 space-y-6"
+      >
+        {" "}
+        {/* Adjusted shadow/border, increased spacing */}
         <div>
           <label
             htmlFor="title"
@@ -97,7 +105,6 @@ export default function AdminNewProject({ actionData }: Route.ComponentProps): J
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
           />
         </div>
-
         <div>
           <label
             htmlFor="description"
@@ -112,7 +119,6 @@ export default function AdminNewProject({ actionData }: Route.ComponentProps): J
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
           />
         </div>
-
         <div>
           <label
             htmlFor="details"
@@ -127,8 +133,9 @@ export default function AdminNewProject({ actionData }: Route.ComponentProps): J
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
           />
         </div>
-
-        <div className="flex items-center gap-2"> {/* Added gap */}
+        <div className="flex items-center gap-2">
+          {" "}
+          {/* Added gap */}
           <input
             type="checkbox"
             name="isFeatured"
@@ -143,10 +150,10 @@ export default function AdminNewProject({ actionData }: Route.ComponentProps): J
             Feature on Home Page
           </label>
         </div>
-
         {/* TODO: Add image upload field later */}
-
-        <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200"> {/* Increased top padding, added border */}
+        <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+          {" "}
+          {/* Increased top padding, added border */}
           <Button
             as={Link}
             to="/admin/projects"
@@ -154,7 +161,12 @@ export default function AdminNewProject({ actionData }: Route.ComponentProps): J
           >
             Cancel
           </Button>
-          <Button type="submit" className="bg-blue-600 text-white hover:bg-blue-700"> {/* Explicit primary button style */}
+          <Button
+            type="submit"
+            className="bg-blue-600 text-white hover:bg-blue-700"
+          >
+            {" "}
+            {/* Explicit primary button style */}
             Create Project
           </Button>
         </div>

@@ -105,7 +105,11 @@ export function TextContentForm({
     handleSave,
     handleUndo,
     isSubmitting, // Use submitting state from hook
-  } = useTextContentForm({ initialContent, fetcher, textFieldsConfig: textFields }); // Pass config to hook
+  } = useTextContentForm({
+    initialContent,
+    fetcher,
+    textFieldsConfig: textFields,
+  }); // Pass config to hook
 
   return (
     <form
