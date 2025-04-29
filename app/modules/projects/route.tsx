@@ -1,7 +1,8 @@
 import { Outlet } from "react-router";
 
 import { schema } from "~/database/schema";
-import { getAllContent } from "~/db";
+import { getAllContent, getAllProjects } from "~/db";
+import type { Project } from "~/database/schema";
 import Footer from "~/modules/common/components/Footer";
 import Header from "~/modules/common/components/Header";
 import type { Route } from "./+types/route";
@@ -21,10 +22,14 @@ export const meta: Route.MetaFunction = () => {
 export async function loader({ context }: Route.LoaderArgs) {
   try {
     const content = await getAllContent(context.db);
-    return { content };
+    const projects = await getAllProjects(context.db);
+    return { content, projects };
   } catch (error) {
-    console.error("Failed to fetch content from D1:", error);
-    return { content: {} as Record<string, string> };
+    console.error("Failed to fetch content or projects:", error);
+    return {
+      content: {} as Record<string, string>,
+      projects: [] as Project[],
+    };
   }
 }
 
@@ -48,7 +53,7 @@ export default function Projects({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* Outlet renders the child route */}
-      <Outlet context={{ content }} />
+      <Outlet context={{ content, projects }} />
 
       <Footer />
     </div>
