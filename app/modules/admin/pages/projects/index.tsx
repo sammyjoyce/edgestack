@@ -36,7 +36,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   }
 }
 
-export default function AdminProjectsIndex(): JSX.Element {
+export default function AdminProjectsIndex(_props: Route.ComponentProps): JSX.Element {
   const { projects, error } = useLoaderData<typeof loader>();
 
   return (

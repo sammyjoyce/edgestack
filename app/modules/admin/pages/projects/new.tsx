@@ -64,7 +64,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 }
 
 // Component to render the "Add New Project" form
-export default function AdminNewProject(): JSX.Element {
+export default function AdminNewProject(_props: Route.ComponentProps): JSX.Element {
   const actionData = useActionData<typeof action>();
 
   return (

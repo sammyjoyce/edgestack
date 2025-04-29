@@ -14,7 +14,7 @@ export async function loader({}: Route.LoaderArgs) {
   });
 }
 
-export default function Logout(): JSX.Element {
+export default function Logout(_props: Route.ComponentProps): JSX.Element {
   // This should only render if the loader is not redirecting (e.g., in dev or error)
   return (
     <main

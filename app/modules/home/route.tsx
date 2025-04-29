@@ -38,7 +38,7 @@ export async function loader({ context }: Route.LoaderArgs) {
   }
 }
 
-export default function Home() {
+export default function Home(_props: Route.ComponentProps): JSX.Element {
   const { content, projects } = useLoaderData<typeof loader>(); // Destructure projects
 
   // Section mapping

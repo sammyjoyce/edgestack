@@ -46,6 +46,6 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 
 // This route is action-only, so it doesn't need to render anything.
 // Returning null is standard practice for action-only routes without UI.
-export default function AdminDeleteProject() {
+export default function AdminDeleteProject(_props: Route.ComponentProps): null {
   return null;
 }

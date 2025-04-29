@@ -50,7 +50,7 @@ export async function action({ request, context }: Route.ActionArgs) {
   return data({ error: "Invalid credentials" }, { status: 401 });
 }
 
-export default function AdminLogin() {
+export default function AdminLogin(_props: Route.ComponentProps): JSX.Element {
   const actionData = useActionData<typeof action>();
   const [searchParams] = useSearchParams();
   const loggedOut = searchParams.get("loggedOut") === "1";
