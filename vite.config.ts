@@ -1,3 +1,4 @@
+import path from "node:path"; // Import path module
 import { reactRouter } from "@react-router/dev/vite";
 import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
@@ -6,6 +7,11 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { getLoadContext } from "./load-context";
 
 export default defineConfig(({ isSsrBuild }) => ({
+	resolve: { // Add resolve configuration
+		alias: {
+			"~": path.resolve(__dirname, "./app"),
+		},
+	},
 	build: {
 		rollupOptions: isSsrBuild
 			? {
