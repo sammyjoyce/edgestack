@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx from "@common/utils/clsx";
 import { forwardRef } from "react";
 import type { ForwardedRef, ReactNode } from "react";
 import { Link, type LinkProps } from "react-router";

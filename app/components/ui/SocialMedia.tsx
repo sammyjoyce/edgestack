@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx from "@common/utils/clsx";
 // Removed Link import from 'next/link'
 
 function FacebookIcon(props: React.ComponentPropsWithoutRef<"svg">) {

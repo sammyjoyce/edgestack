@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx from "@common/utils/clsx";
 import {
   motion,
   useMotionTemplate,

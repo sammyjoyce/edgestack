@@ -1,6 +1,6 @@
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { FORMAT_TEXT_COMMAND } from "lexical";
-import type { TextFormatType } from "lexical";
+import { FORMAT_TEXT_COMMAND } from "@common/utils/lexical";
+import type { TextFormatType } from "@common/utils/lexical";
 import { useCallback } from "react";
 
 const TOOLBAR_BUTTONS: {

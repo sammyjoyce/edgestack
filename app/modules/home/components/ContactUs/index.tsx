@@ -4,7 +4,7 @@ import {
   EnvelopeIcon,
   PhoneIcon,
 } from "@heroicons/react/24/outline";
-import { motion } from "framer-motion";
+import { motion } from "@common/ui/animation";
 import React from "react";
 import RichTextRenderer from "./RichTextRenderer";
 

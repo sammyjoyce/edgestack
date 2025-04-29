@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx from "@common/utils/clsx";
 
 import { Border } from "./Border"; // Assuming path alias is correct
 

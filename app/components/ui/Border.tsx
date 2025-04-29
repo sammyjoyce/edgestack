@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx from "@common/utils/clsx";
 
 type BorderProps<T extends React.ElementType> = {
   as?: T;

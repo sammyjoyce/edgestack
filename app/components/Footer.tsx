@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "@common/ui/animation";
 import type React from "react";
 
 const navigation = [
