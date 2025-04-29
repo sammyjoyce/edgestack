@@ -5,8 +5,9 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-// Heading support can be added via custom commands or plugins if needed.
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { LinkNode } from "@lexical/link"; // Import LinkNode
+import { ListItemNode, ListNode } from "@lexical/list"; // Import list nodes
 import type { EditorState } from "lexical";
 
 import React, { useRef, useCallback, useMemo } from "react";
@@ -38,6 +39,7 @@ export default function RichTextField({
     () => ({
       namespace: name,
       onError: console.error,
+      nodes: [ListNode, ListItemNode, LinkNode], // Register the nodes
       editorState() {
         if (initialJSON) {
           return (editor: any) => editor.parseEditorState(initialJSON as any);
