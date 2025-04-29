@@ -3,6 +3,7 @@ import {
   data,
   type LoaderFunctionArgs,
   Link,
++  Form,
   useLoaderData,
 } from "react-router";
 
@@ -91,13 +92,14 @@ export default function AdminProjectsIndex(): JSX.Element {
                       Edit
                     </Button>
                     {/* Delete button will likely need a form/fetcher */}
-                    <Button
-                      as={Link}
-                      to={`${project.id}/delete`}
-                      className="text-sm bg-red-600 hover:bg-red-700"
-                    >
-                      Delete
-                    </Button>
+                    <Form method="post" action={`${project.id}/delete`} replace>
+                      <Button
+                        type="submit"
+                        className="text-sm bg-red-600 hover:bg-red-700"
+                      >
+                        Delete
+                      </Button>
+                    </Form>
                   </div>
                 </div>
               </li>
