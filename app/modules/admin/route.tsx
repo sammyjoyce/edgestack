@@ -11,11 +11,8 @@ import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);
-  if (
-    !sessionValue ||
-    !context.JWT_SECRET ||
-    !(await verify(sessionValue, context.JWT_SECRET))
-  ) {
+  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
     return redirect("/admin/login");
   }
   return null;

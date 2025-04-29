@@ -14,11 +14,8 @@ export async function action({ request, params, context }: Route.ActionArgs) {
   }
 
   const sessionValue = getSessionCookie(request);
-  if (
-    !sessionValue ||
-    !context.JWT_SECRET ||
-    !(await verify(sessionValue, context.JWT_SECRET))
-  ) {
+  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
     return unauthorized();
   }
 

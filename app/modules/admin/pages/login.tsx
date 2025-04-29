@@ -28,12 +28,15 @@ export async function action({ request, context }: Route.ActionArgs) {
   const form = await request.formData();
   const username = form.get("username");
   const password = form.get("password");
-  const env = context.cloudflare?.env ?? {};
-  if (
-    username === env.ADMIN_USERNAME &&
-    password === env.ADMIN_PASSWORD &&
-    env.JWT_SECRET
-  ) {
+  const env = context.cloudflare?.env;
+
+  // Ensure environment variables are present
+  if (!env?.ADMIN_USERNAME || !env?.ADMIN_PASSWORD || !env?.JWT_SECRET) {
+    console.error("Admin credentials or JWT secret not configured in environment");
+    return data({ error: "Server configuration error" }, { status: 500 });
+  }
+
+  if (username === env.ADMIN_USERNAME && password === env.ADMIN_PASSWORD) {
     const sessionValue = await sign(
       username + ":" + Date.now(),
       env.JWT_SECRET
