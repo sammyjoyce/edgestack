@@ -1,12 +1,11 @@
-import { data, redirect } from "react-router";
 import {
   type ActionFunctionArgs,
-  type LoaderFunctionArgs,
+  data,
+  redirect,
   useActionData,
   useSearchParams,
 } from "react-router";
-import { Button } from "../../../components/ui/Button";
-import type { Route } from "./+types/admin.login";
+import { Button } from "~/modules/common/components/ui/Button";
 
 import {
   COOKIE_MAX_AGE,
@@ -14,7 +13,8 @@ import {
   getSessionCookie,
   sign,
   verify,
-} from "../../../utils/auth";
+} from "~/modules/common/utils/auth";
+import type { Route } from "./+types/login";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);
