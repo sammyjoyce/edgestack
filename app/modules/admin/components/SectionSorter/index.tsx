@@ -174,7 +174,7 @@ function SortableItem({
       {...attributes}
       {...listeners}
       style={style}
-      className={`flex items-center justify-between rounded border bg-white px-4 py-2 shadow-sm cursor-grab focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+      className={`flex items-center justify-between rounded border bg-white px-4 py-2 shadow-sm cursor-grab focus:outline-hidden focus:ring-2 focus:ring-indigo-500 ${
         isDragging ? "opacity-50" : ""
       }`}
       tabIndex={0}
