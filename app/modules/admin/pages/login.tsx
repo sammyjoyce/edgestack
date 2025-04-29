@@ -1,8 +1,7 @@
 import { data, redirect, useSearchParams } from "react-router";
 import type { Route } from "./+types/login";
 import React from "react"; // Import React
-import { data, redirect, useSearchParams } from "react-router";
-import type { Route } from "./+types/login";
+// Removed duplicate imports
 import { Button } from "~/modules/common/components/ui/Button";
 
 import {

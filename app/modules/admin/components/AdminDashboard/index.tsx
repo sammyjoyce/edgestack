@@ -4,8 +4,8 @@ import {
   useFetcher,
   useLoaderData,
   Link, // Import Link
-  useFetcher,
-  useLoaderData,
+  useFetcher, // Remove duplicate
+  useLoaderData, // Remove duplicate
 } from "react-router";
 
 // Types
