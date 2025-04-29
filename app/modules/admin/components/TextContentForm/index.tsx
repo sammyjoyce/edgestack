@@ -277,7 +277,7 @@ export function TextContentForm({
         <div className="flex gap-2 mt-4">
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-hidden focus:ring-2 focus:ring-blue-400"
             aria-label="Save changes"
           >
             Save
@@ -285,7 +285,7 @@ export function TextContentForm({
           <button
             type="button"
             onClick={handleUndo}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 focus:outline-hidden focus:ring-2 focus:ring-blue-400"
             aria-label="Undo changes"
           >
             Undo
