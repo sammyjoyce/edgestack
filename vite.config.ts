@@ -7,11 +7,6 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { getLoadContext } from "./load-context";
 
 export default defineConfig(({ isSsrBuild }) => ({
-	resolve: { // Add resolve configuration
-		alias: {
-			"~": path.resolve(__dirname, "./app"),
-		},
-	},
 	build: {
 		rollupOptions: isSsrBuild
 			? {
