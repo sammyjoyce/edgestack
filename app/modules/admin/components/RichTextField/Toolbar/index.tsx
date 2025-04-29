@@ -1,8 +1,13 @@
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
-import {$getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND, type TextFormatType} from "lexical";
+import {
+  $getSelection,
+  $isRangeSelection,
+  FORMAT_TEXT_COMMAND,
+  type TextFormatType,
+} from "lexical";
 import clsx from "clsx";
-import React, {type JSX, useCallback, useEffect, useState} from "react";
+import React, { type JSX, useCallback, useEffect, useState } from "react";
 
 interface ToolbarButton {
   label: string;
@@ -19,7 +24,9 @@ const TOOLBAR_BUTTONS: ToolbarButton[] = [
 export default function LexicalToolbar(): JSX.Element {
   const [editor] = useLexicalComposerContext();
 
-  const [active, setActive] = useState<Partial<Record<TextFormatType, boolean>>>({
+  const [active, setActive] = useState<
+    Partial<Record<TextFormatType, boolean>>
+  >({
     bold: false,
     italic: false,
     underline: false,
@@ -54,7 +61,9 @@ export default function LexicalToolbar(): JSX.Element {
 
   // Styled toolbar for rich text formatting
   return (
-    <div className="flex gap-1 bg-gray-50 border border-b-0 border-gray-300 rounded-t-md px-2 py-1"> {/* Adjusted bg, border, gap, padding */}
+    <div className="flex gap-1 bg-gray-50 border border-b-0 border-gray-300 rounded-t-md px-2 py-1">
+      {" "}
+      {/* Adjusted bg, border, gap, padding */}
       {TOOLBAR_BUTTONS.map((btn: ToolbarButton) => (
         <button
           key={btn.arg}
@@ -62,7 +71,7 @@ export default function LexicalToolbar(): JSX.Element {
           aria-label={btn.label}
           aria-pressed={active[btn.arg] ?? false}
           className={clsx(
-            "px-2 py-0.5 rounded border text-xs focus:outline-none transition-colors", /* Adjusted padding/size */
+            "px-2 py-0.5 rounded border text-xs focus:outline-none transition-colors" /* Adjusted padding/size */,
             active[btn.arg]
               ? "bg-blue-600 text-white border-blue-600" /* Adjusted colors */
               : "border-transparent text-gray-600 hover:bg-gray-200 focus:ring-1 focus:ring-blue-500" /* Adjusted colors/focus */

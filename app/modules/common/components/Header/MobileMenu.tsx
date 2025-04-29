@@ -69,7 +69,9 @@ export default function MobileMenu({
                     to={item.path}
                     className="-mx-3 block rounded-full px-5 py-2 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
                     onClick={(e) =>
-                      item.isRouteLink ? onClose() : scrollToSection(e, item.path)
+                      item.isRouteLink
+                        ? onClose()
+                        : scrollToSection(e, item.path)
                     }
                   >
                     {item.name}

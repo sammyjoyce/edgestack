@@ -15,7 +15,9 @@ export async function handleImageUpload(
 ): Promise<string> {
   // Ensure the R2 bucket binding exists in the environment context
   if (!context.cloudflare?.env?.ASSETS_BUCKET) {
-    console.error("R2 bucket (ASSETS_BUCKET) is not configured in context.cloudflare.env.");
+    console.error(
+      "R2 bucket (ASSETS_BUCKET) is not configured in context.cloudflare.env."
+    );
     throw new Error("R2 bucket (ASSETS_BUCKET) not configured.");
   }
   // Basic file validation
@@ -40,7 +42,9 @@ export async function handleImageUpload(
     // Construct the public URL
     const publicUrlBase = context.cloudflare.env.PUBLIC_R2_URL;
     if (!publicUrlBase) {
-      console.warn("PUBLIC_R2_URL environment variable not set. Using relative path as fallback.");
+      console.warn(
+        "PUBLIC_R2_URL environment variable not set. Using relative path as fallback."
+      );
       // Provide a fallback URL structure if the public URL base is not configured
       return `/assets/${uniqueFilename}`; // Example fallback using a relative path
     }
@@ -48,10 +52,11 @@ export async function handleImageUpload(
     // Ensure the base URL has a trailing slash before appending the filename
     const publicUrl = `${publicUrlBase.replace(/\/?$/, "/")}${uniqueFilename}`;
     return publicUrl;
-
   } catch (error: any) {
     console.error(`R2 upload failed for key '${key}':`, error);
     // Throw a more specific error for easier debugging
-    throw new Error(`Failed to upload image to R2. ${error.message || "Unknown error"}`);
+    throw new Error(
+      `Failed to upload image to R2. ${error.message || "Unknown error"}`
+    );
   }
 }

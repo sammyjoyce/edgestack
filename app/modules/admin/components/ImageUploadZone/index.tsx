@@ -38,10 +38,13 @@ export default function ImageUploadZone({
     });
 
   return (
-    <section className={className + " w-full flex flex-col items-center"}> {/* Removed margin */}
+    <section className={className + " w-full flex flex-col items-center"}>
+      {" "}
+      {/* Removed margin */}
       <div
         {...getRootProps()}
-        className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition w-full max-w-xs min-h-[8rem] bg-gray-50 hover:bg-gray-100 cursor-pointer ${ /* Reduced min-height, added hover */
+        className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition w-full max-w-xs min-h-[8rem] bg-gray-50 hover:bg-gray-100 cursor-pointer ${
+          /* Reduced min-height, added hover */
           isDragReject
             ? "border-red-400 bg-red-50" /* Adjusted colors */
             : isDragActive
@@ -51,7 +54,9 @@ export default function ImageUploadZone({
         aria-label="Image upload drop zone"
       >
         <input ref={fileInputRef} {...getInputProps()} />
-        <p className="text-sm text-center text-gray-600"> {/* Adjusted color */ }
+        <p className="text-sm text-center text-gray-600">
+          {" "}
+          {/* Adjusted color */}
           {uploading
             ? "Uploading..."
             : isDragActive

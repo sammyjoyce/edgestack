@@ -1,6 +1,6 @@
 import React from "react";
 // Define props interface
-import {Button} from "~/modules/common/components/ui/Button";
+import { Button } from "~/modules/common/components/ui/Button";
 
 interface HeroProps {
   title: string;

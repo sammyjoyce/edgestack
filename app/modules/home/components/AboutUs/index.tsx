@@ -1,12 +1,10 @@
-
-
 import React from "react";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer"; // Import the new component
 
 interface AboutProps {
   title?: string;
-  text?: string;        // JSON‑encoded rich text or plain text
+  text?: string; // JSON‑encoded rich text or plain text
   imageUrl?: string;
   altText?: string;
 }

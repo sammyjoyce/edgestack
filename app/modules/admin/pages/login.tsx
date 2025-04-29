@@ -1,8 +1,4 @@
-import {
-  data,
-  redirect,
-  useSearchParams,
-} from "react-router";
+import { data, redirect, useSearchParams } from "react-router";
 import type { Route } from "./+types/login";
 import { Button } from "~/modules/common/components/ui/Button";
 
@@ -49,7 +45,9 @@ export async function action({ request, context }: Route.ActionArgs) {
   return data({ error: "Invalid credentials" }, { status: 401 });
 }
 
-export default function AdminLogin({ actionData }: Route.ComponentProps): JSX.Element {
+export default function AdminLogin({
+  actionData,
+}: Route.ComponentProps): JSX.Element {
   const [searchParams] = useSearchParams();
   const loggedOut = searchParams.get("loggedOut") === "1";
   return (
@@ -105,7 +103,9 @@ export default function AdminLogin({ actionData }: Route.ComponentProps): JSX.El
             aria-describedby="username-help"
             className="block w-full rounded-md border-gray-300 shadow-sm px-3 py-2 text-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500" /* Standardized input */
           />
-          <span id="username-help" className="mt-1 text-xs text-gray-500 block"> {/* Added margin, block display */}
+          <span id="username-help" className="mt-1 text-xs text-gray-500 block">
+            {" "}
+            {/* Added margin, block display */}
             Enter your admin username.
           </span>
         </div>
@@ -124,7 +124,9 @@ export default function AdminLogin({ actionData }: Route.ComponentProps): JSX.El
             aria-describedby="password-help"
             className="block w-full rounded-md border-gray-300 shadow-sm px-3 py-2 text-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500" /* Standardized input */
           />
-          <span id="password-help" className="mt-1 text-xs text-gray-500 block"> {/* Added margin, block display */}
+          <span id="password-help" className="mt-1 text-xs text-gray-500 block">
+            {" "}
+            {/* Added margin, block display */}
             Enter your admin password. This field is case-sensitive.
           </span>
         </div>

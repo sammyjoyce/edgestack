@@ -9,7 +9,8 @@ import * as schema from "../../database/schema";
 // Retrieves all content as an object keyed by 'key'
 export async function getAllContent(
   db: DrizzleD1Database<typeof schema>
-): Promise<Record<string, string>> { // Add return type
+): Promise<Record<string, string>> {
+  // Add return type
   const results = await db
     .select()
     .from(schema.content)
@@ -36,7 +37,8 @@ export async function updateContent(
     string,
     string | (Partial<Omit<NewContent, "key">> & { value: string })
   >
-): Promise<D1Result<unknown>[]> { // Use D1Result<unknown>[] as return type
+): Promise<D1Result<unknown>[]> {
+  // Use D1Result<unknown>[] as return type
   const batch = Object.entries(updates).map(([key, raw]) => {
     const data = typeof raw === "string" ? ({ value: raw } as const) : raw;
 
@@ -83,7 +85,8 @@ export async function getFeaturedProjects(
 export async function getProjectById(
   db: DrizzleD1Database<typeof schema>,
   id: number
-): Promise<Project | undefined> { // D1 .get() returns T | undefined
+): Promise<Project | undefined> {
+  // D1 .get() returns T | undefined
   const result = await db
     .select()
     .from(schema.projects)
@@ -118,7 +121,8 @@ export async function updateProject(
   db: DrizzleD1Database<typeof schema>,
   id: number,
   projectData: Partial<Omit<NewProject, "id" | "createdAt">>
-): Promise<Project | undefined> { // D1 .get() returns T | undefined
+): Promise<Project | undefined> {
+  // D1 .get() returns T | undefined
   // Update the 'updatedAt' timestamp
   const dataWithTimestamp = {
     ...projectData,
@@ -140,7 +144,8 @@ export async function updateProject(
 export async function deleteProject(
   db: DrizzleD1Database<typeof schema>,
   id: number
-): Promise<{ success: boolean; meta?: unknown }> { // D1 run() returns D1Result
+): Promise<{ success: boolean; meta?: unknown }> {
+  // D1 run() returns D1Result
   const result = await db
     .delete(schema.projects)
     .where(eq(schema.projects.id, id))
