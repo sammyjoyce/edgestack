@@ -176,9 +176,9 @@ export default function AdminEditProject({
 }: Route.ComponentProps): React.ReactElement {
   // Use React.ReactElement
   // Use loader data for initial form values, action data for errors
-  // Use optional chaining for loaderError as it might not exist on the loaderData type union
   const { project } = loaderData ?? {};
-  const loaderError = loaderData?.error;
+  // Safely access loaderError by checking if 'error' property exists in loaderData
+  const loaderError = loaderData && 'error' in loaderData ? loaderData.error : undefined;
   const { project: actionProject, error: actionError } = actionData ?? {};
 
   // Use project data from actionData if available (e.g., validation error), otherwise use loaderData
