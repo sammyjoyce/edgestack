@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import React from "react";
 import {
   data,
   type LoaderFunctionArgs,
@@ -13,7 +13,7 @@ import { getAllProjects } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import type { Project } from "~/database/schema";
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const unauthorized = () =>
     data({ projects: [], error: "Unauthorized" }, { status: 401 });
 

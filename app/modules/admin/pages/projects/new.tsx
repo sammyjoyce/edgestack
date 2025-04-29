@@ -1,12 +1,6 @@
-import React, { type JSX } from "react";
-import {
-  data,
-  type ActionFunctionArgs,
-  Form,
-  Link,
-  redirect,
-  useActionData,
-} from "react-router";
+import React from "react";
+import { data, Form, Link, redirect, useActionData } from "react-router";
+import type { Route } from "./+types/new";
 
 import { Button } from "~/modules/common/components/ui/Button";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
@@ -16,7 +10,7 @@ import type { NewProject } from "~/database/schema";
 import { validateProjectInsert } from "~/database/valibot-validation";
 
 // Action to handle creating a new project
-export async function action({ request, context }: ActionFunctionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
 
   const badRequest = (msg: string) => data({ error: msg }, { status: 400 });
