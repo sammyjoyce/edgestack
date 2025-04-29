@@ -96,8 +96,8 @@ function thirdPartyWarnings(file: string, code: string): Warning[] {
   let m: RegExpExecArray | null;
   while ((m = rx.exec(code))) {
     const pkg = m[1];
-    if (pkg === "react") {
-      continue; // ignore React itself
+    if (pkg === "react" || pkg.startsWith("react-router")) {
+      continue; // ignore React and react-router packages
     }
     warnings.push({
       file,
