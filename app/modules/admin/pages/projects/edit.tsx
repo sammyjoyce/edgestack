@@ -4,9 +4,6 @@ import {
   Form,
   Link,
   redirect,
-  useActionData,
-  useLoaderData,
-  useParams,
 } from "react-router";
 import type { Route } from "./+types/edit";
 import { Button } from "~/modules/common/components/ui/Button";
@@ -185,15 +182,14 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 }
 
 // Component to render the "Edit Project" form
-export default function AdminEditProject(_props: Route.ComponentProps): JSX.Element {
+export default function AdminEditProject({ loaderData, actionData }: Route.ComponentProps): JSX.Element {
   // Use loader data for initial form values, action data for errors
-  const { project, error: loaderError } = useLoaderData<typeof loader>();
-  const actionData = useActionData<typeof action>(); // Matches action's possible return shape
-  const params = useParams();
+  const { project, error: loaderError } = loaderData;
+  const { project: actionProject, error: actionError } = actionData ?? {};
 
   // Use project data from actionData if available (e.g., validation error), otherwise use loaderData
-  const currentProject = actionData?.project || project;
-  const currentError = actionData?.error || loaderError;
+  const currentProject = actionProject || project;
+  const currentError = actionError || loaderError;
 
   if (!currentProject && !currentError) {
     return <p>Loading project data...</p>; // Or a spinner

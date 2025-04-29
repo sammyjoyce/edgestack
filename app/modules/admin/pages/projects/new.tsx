@@ -1,5 +1,5 @@
 import React from "react";
-import { data, Form, Link, redirect, useActionData } from "react-router";
+import { data, Form, Link, redirect } from "react-router";
 import type { Route } from "./+types/new";
 
 import { Button } from "~/modules/common/components/ui/Button";
@@ -64,8 +64,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 }
 
 // Component to render the "Add New Project" form
-export default function AdminNewProject(_props: Route.ComponentProps): JSX.Element {
-  const actionData = useActionData<typeof action>();
+export default function AdminNewProject({ actionData }: Route.ComponentProps): JSX.Element {
 
   return (
     <FadeIn>

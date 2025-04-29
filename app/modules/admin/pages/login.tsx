@@ -1,7 +1,6 @@
 import {
   data,
   redirect,
-  useActionData,
   useSearchParams,
 } from "react-router";
 import type { Route } from "./+types/login";
@@ -50,8 +49,7 @@ export async function action({ request, context }: Route.ActionArgs) {
   return data({ error: "Invalid credentials" }, { status: 401 });
 }
 
-export default function AdminLogin(_props: Route.ComponentProps): JSX.Element {
-  const actionData = useActionData<typeof action>();
+export default function AdminLogin({ actionData }: Route.ComponentProps): JSX.Element {
   const [searchParams] = useSearchParams();
   const loggedOut = searchParams.get("loggedOut") === "1";
   return (
