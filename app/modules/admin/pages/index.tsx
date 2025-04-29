@@ -1,44 +1,45 @@
-import React from "react";
+import React, { type JSX } from "react";
+import {
+  data,
+  type LoaderFunctionArgs,
+  type ActionFunctionArgs,
+} from "react-router";
 
-/**
- * Admin Index Page (CMS UI)
- * This file will render the React version of the admin dashboard, replacing the static HTML.
- * You can further modularize this into components if needed.
- */
 import AdminDashboard from "../components/AdminDashboard";
 
-import { getAllContent, updateContent } from "../../../db/index";
-import { getSessionCookie, verify } from "../../../utils/auth";
-import type { Route } from "./+types/admin.index";
+import { getAllContent, updateContent } from "~/db";
+import { getSessionCookie, verify } from "~/modules/common/utils/auth";
+import { validateContentInsert } from "~/database/valibot-validation";
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
+  const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
+
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||
-    !(context.cloudflare.env as any).JWT_SECRET ||
-    !(await verify(sessionValue, (context.cloudflare.env as any).JWT_SECRET))
+    !context.JWT_SECRET ||
+    !(await verify(sessionValue, context.JWT_SECRET))
   ) {
-    return { error: "Unauthorized", status: 401 };
+    return unauthorized();
   }
+
   const items = await getAllContent(context.db as any);
-  return items;
+  return data(items);
 }
 
-export async function action({
-  request,
-  context,
-}: {
-  request: Request;
-  context: any;
-}) {
-  console.log("admin.index.tsx action invoked", request.method, request.url);
+export async function action({ request, context }: ActionFunctionArgs) {
+  const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
+
+  const badRequest = (msg: string) =>
+    data({ success: false, error: msg }, { status: 400 });
+
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||
-    !(context.cloudflare.env as any).JWT_SECRET ||
-    !(await verify(sessionValue, (context.cloudflare.env as any).JWT_SECRET))
+    !context.JWT_SECRET ||
+    !(await verify(sessionValue, context.JWT_SECRET))
   ) {
-    return { error: "Unauthorized", status: 401 };
+    return unauthorized();
   }
   if (request.method === "POST") {
     try {
@@ -52,45 +53,34 @@ export async function action({
             if (!key || !value) throw new Error("Empty key or value");
             // Validate as a content insert
             // Import validateContentInsert from database/valibot-validation
-            const { validateContentInsert } = await import(
-              "@common/validation/valibot"
-            );
+
             validateContentInsert({ key, value });
             updates[key] = value;
           } catch (e: any) {
-            return {
-              success: false,
-              error: `Validation failed for key '${key}': ${e.message || e}`,
-            };
+            return badRequest(
+              `Validation failed for key '${key}': ${e.message || e}`
+            );
           }
         }
       }
       if (Object.keys(updates).length === 0) {
-        throw new Error("Invalid content update payload");
+        return badRequest("Invalid content update payload.");
       }
       await updateContent(context.db as any, updates);
-      return { success: true };
+      return data({ success: true });
     } catch (error: any) {
-      return {
-        success: false,
-        error: "Error processing content update.",
-        status: 500,
-      };
+      return data(
+        { success: false, error: "Error processing content update." },
+        { status: 500 }
+      );
     }
   }
-  return { error: "Invalid method", status: 405 };
+  return data({ error: "Invalid method" }, { status: 405 });
 }
 
-export default function AdminIndex() {
+export default function AdminIndex(): JSX.Element {
   return (
     <main id="admin-dashboard-main" role="main" aria-label="Admin Dashboard">
-      {/* Global feedback region for accessibility */}
-      <div
-        id="admin-dashboard-status"
-        role="status"
-        aria-live="polite"
-        className="sr-only"
-      ></div>
       <AdminDashboard />
     </main>
   );
