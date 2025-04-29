@@ -9,11 +9,11 @@ import React from "react"; // Import React
 import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer"; // Import the new component
 
 import { useLoaderData } from "react-router";
-import { loader as homeLoader } from "../../route";
 
 export default function ContactUs() {
   // Use content from loader context if available
-  const { content = {} } = useLoaderData<typeof homeLoader>();
+  // The type should be inferred correctly by useLoaderData here
+  const { content = {} } = useLoaderData();
   const {
     contact_headline: headline = "Ready to Start Your Project?",
     contact_intro:
