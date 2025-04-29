@@ -45,7 +45,7 @@ export async function action({ request }: Route.ActionArgs) {
   return data({ message: "Placeholder action processed submission." });
 }
 
-export default function AdminProjectsIndex({
+export function Component({
   loaderData,
 }: Route.ComponentProps): React.ReactElement {
   // Use React.ReactElement

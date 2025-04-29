@@ -119,7 +119,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 }
 
 
-export default function AdminIndex(_props: Route.ComponentProps): JSX.Element {
+export function Component(_props: Route.ComponentProps): JSX.Element {
   return (
     <main id="admin-dashboard-main" role="main" aria-label="Admin Dashboard">
       <AdminDashboard /> {/* <<< HERE */}
