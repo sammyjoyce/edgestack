@@ -1,8 +1,8 @@
 
 
-import React, { useMemo } from "react";
+import React from "react";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
-import RichTextRenderer from "~/modules/common/components/RichTextRenderer";
+import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer"; // Import the new component
 
 interface AboutProps {
   title?: string;
@@ -17,21 +17,8 @@ export default function AboutUs({
   imageUrl,
   altText,
 }: AboutProps): JSX.Element {
-  const renderedText = useMemo(() => {
-    if (!text) {
-      return (
-        <p className="text-base sm:text-lg">
-          {`At Lush Constructions, we're driven by a passion for building more than just structures – we craft homes, communities, and memories that last a lifetime. With a relentless focus on quality, transparency, and trust, we're dedicated to turning your vision into a breathtaking reality. As proud members of Master Builders NSW, we uphold the highest standards in the industry, ensuring every project is delivered with precision, care, and a commitment to excellence. Whether you're dreaming of a grand renovation, a thoughtful extension, or a brand-new build, our team of experts is here to guide you every step of the way.`}
-        </p>
-      );
-    }
-    try {
-      JSON.parse(text); // validate JSON string
-      return <RichTextRenderer json={text} />;
-    } catch {
-      return <p className="text-base sm:text-lg">{text}</p>;
-    }
-  }, [text]);
+  const defaultAboutText = `At Lush Constructions, we're driven by a passion for building more than just structures – we craft homes, communities, and memories that last a lifetime. With a relentless focus on quality, transparency, and trust, we're dedicated to turning your vision into a breathtaking reality. As proud members of Master Builders NSW, we uphold the highest standards in the industry, ensuring every project is delivered with precision, care, and a commitment to excellence. Whether you're dreaming of a grand renovation, a thoughtful extension, or a brand-new build, our team of experts is here to guide you every step of the way.`;
+
   return (
     <section className="bg-white py-12 sm:py-20 md:py-28" id="about">
       <div className="mx-auto max-w-7xl px-4 lg:px-6">

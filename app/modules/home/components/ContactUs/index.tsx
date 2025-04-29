@@ -1,12 +1,14 @@
 import {
   BuildingOffice2Icon,
   ClockIcon,
+  BuildingOffice2Icon,
+  ClockIcon,
   EnvelopeIcon,
   PhoneIcon,
 } from "@heroicons/react/24/outline";
 import { motion } from "@common/ui/animation";
-import React, { useMemo } from "react";
-import RichTextRenderer from "./RichTextRenderer";
+import React from "react";
+import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer"; // Import the new component
 
 import { useLoaderData } from "react-router";
 import { loader as homeLoader } from "../../route";
@@ -27,19 +29,6 @@ export default function ContactUs() {
     contact_instagram: instagram = "https://www.instagram.com/lushconstructions",
   } = content;
 
-  const renderedIntro = useMemo(() => {
-    try {
-      if (intro) {
-        JSON.parse(intro); // validate JSON string
-        return <RichTextRenderer json={intro} />;
-      }
-    } catch {/* fall through */}
-    return (
-      <p className="mt-6 text-[15px] text-gray-300 leading-normal">
-        {intro}
-      </p>
-    );
-  }, [intro]);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -69,7 +58,11 @@ export default function ContactUs() {
           <p className="bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 bg-clip-text font-medium text-4xl text-transparent leading-tight tracking-[-1.43px] [text-wrap:balance]">
             {headline}
           </p>
-          {renderedIntro}
+          <ConditionalRichTextRenderer
+            text={intro}
+            fallbackClassName="mt-6 text-[15px] text-gray-300 leading-normal"
+            // richTextClassName="prose prose-invert ..." // Optional styling for rich text
+          />
 
           <dl className="mt-10 space-y-4 text-[15px] text-gray-300 leading-normal">
             <div className="flex items-center gap-x-4">
