@@ -7,7 +7,7 @@ import {
 import { Outlet } from "react-router";
 import { redirect } from "react-router";
 import { NavLink } from "react-router-dom";
-import { getSessionCookie, verify } from "../utils/auth";
+import { getSessionCookie, verify } from "../../utils/auth";
 
 export async function loader({
   request,
