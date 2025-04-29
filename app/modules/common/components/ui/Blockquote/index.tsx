@@ -9,7 +9,7 @@ interface SimpleImageProps {
   src: string;
   alt?: string;
   // Add other relevant img attributes if necessary, like width, height, loading, etc.
-  sizes?: string; // Keep sizes if used
+  // sizes?: string; // Removed sizes as it's not standard for <img> like next/image
   className?: string;
 }
 
@@ -39,10 +39,7 @@ function BlockquoteWithImage({
         <img
           alt={image.alt ?? ""}
           src={image.src}
-          sizes={
-            image.sizes ??
-            "(min-width: 1024px) 17.625rem, (min-width: 768px) 16rem, (min-width: 640px) 40vw, 3rem"
-          } // Keep sizes or adjust as needed
+          // sizes removed
           className={
             image.className ??
             "h-12 w-12 object-cover grayscale sm:aspect-7/9 sm:h-auto sm:w-full"
