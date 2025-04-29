@@ -1,15 +1,10 @@
 import React from "react";
 import { useOutletContext } from "react-router";
-import RecentProjects from "@common/ui/RecentProjects";
-
-// Define the type for the context passed from the parent route
-type ProjectsContext = {
-  content: { [key: string]: string } | undefined;
-};
+import RecentProjects from "~/modules/common/components/RecentProjects";
 
 export default function ProjectsIndex() {
   // Get the content data from the parent route
-  const { content } = useOutletContext<ProjectsContext>();
+  const { content } = useOutletContext();
 
   return (
     <RecentProjects
@@ -18,6 +13,7 @@ export default function ProjectsIndex() {
         content?.projects_intro_text ??
         "Take a look at some of our recent work that demonstrates our expertise and dedication to excellence."
       }
+      projects={[]}
     />
   );
 }

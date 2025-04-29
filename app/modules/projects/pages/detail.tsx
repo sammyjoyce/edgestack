@@ -1,49 +1,43 @@
 import React from "react";
-import {
-  Link,
-  data,
-  useLoaderData,
-  useOutletContext,
-  useParams,
-} from "react-router-dom"; // Import Link, useLoaderData, data
-import type { LoaderFunctionArgs } from "react-router-dom"; // Import LoaderFunctionArgs
-import type { Project } from "../../../database/schema"; // Import Project type
-import { FadeIn } from "../../../components/ui/FadeIn"; // Import FadeIn
-import { getProjectById } from "../../../db/index"; // Import DB function
+import type { LoaderFunctionArgs } from "react-router"; // Import LoaderFunctionArgs
+import { data, Link, useLoaderData, useOutletContext } from "react-router"; // Import Link, useLoaderData, data
+import { getProjectById } from "~/db";
+
+import { FadeIn } from "~/modules/common/components/ui/FadeIn";
+import type { Project } from "~/database/schema"; // Import FadeIn
 
 // Define the type for the context passed from the parent route
 type ProjectsContext = {
   content: { [key: string]: string } | undefined;
 };
 
-// Define CloudflareEnv type
-interface CloudflareEnv {
-  db: any;
-}
-
 // Loader to fetch the specific project by ID
-export async function loader({
-  params,
-  context,
-}: LoaderFunctionArgs & { context: CloudflareEnv }) {
+export async function loader({ params, context }: LoaderFunctionArgs) {
   const projectId = params.projectId
     ? Number.parseInt(params.projectId, 10)
     : Number.NaN;
+
   if (isNaN(projectId)) {
-    // Use data helper to return error response
-    return data({ error: "Invalid Project ID" }, { status: 400 });
+    return data(
+      { project: null, error: "Invalid Project ID" },
+      { status: 400 }
+    );
   }
 
   try {
     const project = await getProjectById(context.db, projectId);
     if (!project) {
-      return data({ error: "Project not found" }, { status: 404 });
+      return data(
+        { project: null, error: "Project not found" },
+        { status: 404 }
+      );
     }
-    // Return project data and potentially related content if needed
-    return data({ project });
-  } catch (error) {
-    console.error("Error fetching project details:", error);
-    return data({ error: "Failed to load project details" }, { status: 500 });
+    return data({ project, error: undefined });
+  } catch {
+    return data(
+      { project: null, error: "Failed to load project details" },
+      { status: 500 }
+    );
   }
 }
 
@@ -53,10 +47,7 @@ export default function ProjectDetail() {
   const content = outletContext?.content; // Handle potential undefined context
 
   // Get project data and error from the loader
-  const { project, error } = useLoaderData<{
-    project?: Project;
-    error?: string;
-  }>();
+  const { project, error } = useLoaderData<typeof loader>();
 
   // Handle loader errors
   if (error && !project) {
