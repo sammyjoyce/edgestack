@@ -1,7 +1,10 @@
-import { redirect } from "react-router";
-import { COOKIE_NAME } from "../../../utils/auth";
+import React, { type JSX } from "react";
+import { redirect, type LoaderFunctionArgs } from "react-router";
 
-export async function loader() {
+import { COOKIE_NAME } from "~/modules/common/utils/auth";
+import { Button } from "~/modules/common/components/ui/Button";
+
+export async function loader({}: LoaderFunctionArgs) {
   // Clear the cookie
   return redirect("/admin/login", {
     headers: {
@@ -10,10 +13,7 @@ export async function loader() {
   });
 }
 
-import { Button } from "../../../components/ui/Button";
-
-// Accessible logout page
-export default function Logout() {
+export default function Logout(): JSX.Element {
   // This should only render if the loader is not redirecting (e.g., in dev or error)
   return (
     <main
