@@ -3,7 +3,6 @@ import {
   data,
   Link,
   Form,
-  useLoaderData,
 } from "react-router";
 import type { Route } from "./+types/index";
 
@@ -36,8 +35,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   }
 }
 
-export default function AdminProjectsIndex(_props: Route.ComponentProps): JSX.Element {
-  const { projects, error } = useLoaderData<typeof loader>();
+export default function AdminProjectsIndex({ loaderData }: Route.ComponentProps): JSX.Element {
+  const { projects, error } = loaderData;
 
   return (
     <FadeIn>

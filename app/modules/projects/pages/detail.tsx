@@ -1,6 +1,6 @@
 import React from "react";
 import type { Route } from "./+types/detail";
-import { data, Link, useLoaderData, useOutletContext } from "react-router";
+import { data, Link, useOutletContext } from "react-router";
 import { getProjectById } from "~/db";
 
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
@@ -41,13 +41,13 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   }
 }
 
-export default function ProjectDetail(_props: Route.ComponentProps) {
+export default function ProjectDetail({ loaderData }: Route.ComponentProps) {
   // Get the content data from the parent route (optional, could be used for general text)
   const outletContext = useOutletContext<ProjectsContext>();
   const content = outletContext?.content; // Handle potential undefined context
 
   // Get project data and error from the loader
-  const { project, error } = useLoaderData<typeof loader>();
+  const { project, error } = loaderData;
 
   // Handle loader errors
   if (error && !project) {

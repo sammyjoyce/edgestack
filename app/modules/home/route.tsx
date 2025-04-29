@@ -1,4 +1,4 @@
-import { data, useLoaderData } from "react-router"; // data helper is typically in the node adapter
+import { data } from "react-router"; // data helper is typically in the node adapter
 
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
@@ -38,8 +38,8 @@ export async function loader({ context }: Route.LoaderArgs) {
   }
 }
 
-export default function Home(_props: Route.ComponentProps): JSX.Element {
-  const { content, projects } = useLoaderData<typeof loader>(); // Destructure projects
+export default function Home({ loaderData }: Route.ComponentProps): JSX.Element {
+  const { content, projects } = loaderData; // Destructure projects
 
   // Section mapping
   const sectionBlocks: Record<string, JSX.Element> = {
