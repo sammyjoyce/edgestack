@@ -131,7 +131,7 @@ export function ServicesSectionEditor({
               id="services_intro_text"
               rows={4}
               defaultValue={initialContent.services_intro_text || ""}
-              className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50 w-full"
+              className="border rounded p-2 focus:outline-hidden focus:ring-2 focus:ring-blue-400 bg-gray-50 w-full"
               onBlur={handleBlur}
             />
           </div>

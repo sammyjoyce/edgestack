@@ -30,7 +30,7 @@ function Header(): JSX.Element {
   const navLinkClass = useCallback(
     ({ isActive }: { isActive: boolean }) =>
       clsx(
-        "relative px-5 py-2 rounded-full font-semibold text-base tracking-tight transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/60",
+        "relative px-5 py-2 rounded-full font-semibold text-base tracking-tight transition-all duration-300 ease-in-out focus:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/60",
         isActive
           ? "text-black bg-white/90 shadow-md"
           : "text-gray-900 hover:text-black hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out after:absolute after:left-5 after:right-5 after:bottom-1 after:h-0.5 after:bg-black/70 after:scale-x-0 after:origin-left"
@@ -107,7 +107,7 @@ function Header(): JSX.Element {
                 <NavLink
                   key={item.name}
                   to={item.path}
-                  className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
+                  className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
                   onClick={(e) =>
                     item.isRouteLink ? null : scrollToSection(e, item.path)
                   }
@@ -149,7 +149,7 @@ function Header(): JSX.Element {
                 <NavLink
                   key={item.name}
                   to={item.path}
-                  className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
+                  className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
                   onClick={(e) =>
                     item.isRouteLink ? null : scrollToSection(e, item.path)
                   }
