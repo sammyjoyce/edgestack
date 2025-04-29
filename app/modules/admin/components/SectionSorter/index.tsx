@@ -38,7 +38,8 @@ const DEFAULT_SECTIONS: Section[] = [
 export default function SectionSorter({
   orderValue,
   fetcher,
-}: SectionSorterProps): React.ReactElement { // Use React.ReactElement
+}: SectionSorterProps): React.ReactElement {
+  // Use React.ReactElement
   /* --- Local state ------------------------------------------------------- */
   const [sections, setSections] = useState<Section[]>(() => {
     if (!orderValue) return DEFAULT_SECTIONS;
@@ -146,7 +147,8 @@ function SortableItem({
   index: number;
   total: number;
   updateStatus: (msg: string) => void;
-}): React.ReactElement { // Use React.ReactElement
+}): React.ReactElement {
+  // Use React.ReactElement
   const {
     setNodeRef,
     attributes,

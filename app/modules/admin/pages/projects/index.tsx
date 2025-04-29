@@ -33,7 +33,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
 export default function AdminProjectsIndex({
   loaderData,
-}: Route.ComponentProps): React.ReactElement { // Use React.ReactElement
+}: Route.ComponentProps): React.ReactElement {
+  // Use React.ReactElement
   const { projects, error } = loaderData;
 
   return (

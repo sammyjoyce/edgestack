@@ -18,7 +18,8 @@ export function HeroSectionEditor({
   onImageUpload,
   imageUploading,
   heroImageUrl,
-}: HeroSectionEditorProps): React.ReactElement { // Use React.ReactElement
+}: HeroSectionEditorProps): React.ReactElement {
+  // Use React.ReactElement
   const [uploadStatus, setUploadStatus] = React.useState<string | null>(null);
 
   const handleBlur = React.useCallback(

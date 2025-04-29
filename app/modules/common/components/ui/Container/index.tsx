@@ -1,7 +1,8 @@
 import clsx from "clsx"; // Use direct import
 import React from "react"; // Import React
 
-type ContainerProps<T extends React.ElementType = "div"> = { // Add default type
+type ContainerProps<T extends React.ElementType = "div"> = {
+  // Add default type
   as?: T;
   className?: string;
   children: React.ReactNode;

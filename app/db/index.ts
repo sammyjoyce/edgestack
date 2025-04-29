@@ -37,7 +37,8 @@ export async function updateContent(
     string,
     string | (Partial<Omit<NewContent, "key">> & { value: string })
   >
-): Promise<any[]> { // Use Promise<any[]> as a more general type for batch results
+): Promise<any[]> {
+  // Use Promise<any[]> as a more general type for batch results
   // Use D1Result<unknown>[] as return type
   const batch = Object.entries(updates).map(([key, raw]) => {
     const data = typeof raw === "string" ? ({ value: raw } as const) : raw;

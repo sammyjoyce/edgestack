@@ -53,7 +53,8 @@ export function ServicesSectionEditor({
   onImageUpload,
   imageUploading,
   serviceImageUrls,
-}: ServicesSectionEditorProps): React.ReactElement { // Use React.ReactElement
+}: ServicesSectionEditorProps): React.ReactElement {
+  // Use React.ReactElement
   const [statusTexts, setStatusTexts] = useState<string[]>(
     Array(serviceFields.length).fill("")
   );

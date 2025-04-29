@@ -50,7 +50,8 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 export default function AdminLogin({
   actionData,
-}: Route.ComponentProps): React.ReactElement { // Use React.ReactElement
+}: Route.ComponentProps): React.ReactElement {
+  // Use React.ReactElement
   const [searchParams] = useSearchParams();
   const loggedOut = searchParams.get("loggedOut") === "1";
   return (

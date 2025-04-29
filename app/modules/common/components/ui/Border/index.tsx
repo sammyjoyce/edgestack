@@ -1,7 +1,8 @@
 import clsx from "clsx"; // Use direct import
 import React from "react"; // Import React
 
-type BorderProps<T extends React.ElementType = "div"> = { // Add default type
+type BorderProps<T extends React.ElementType = "div"> = {
+  // Add default type
   as?: T;
   className?: string;
   position?: "top" | "left";
