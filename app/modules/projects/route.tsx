@@ -34,7 +34,7 @@ export async function loader({ context }: Route.LoaderArgs) {
 }
 
 export default function Projects({ loaderData }: Route.ComponentProps) {
-  const { content } = loaderData;
+  const { content, projects } = loaderData; // Destructure projects here
 
   return (
     <div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">

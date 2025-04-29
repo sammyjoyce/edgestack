@@ -1,7 +1,7 @@
 import React from "react";
 import RichTextRenderer from "~/modules/common/components/RichTextRenderer";
 
-import type React from "react"; // Import React namespace for JSX types
+// Removed duplicate React import
 
 interface ConditionalRichTextRendererProps {
   text: string | undefined | null;
