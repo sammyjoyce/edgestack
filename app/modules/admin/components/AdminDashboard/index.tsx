@@ -40,22 +40,13 @@ export default function AdminDashboard(): React.JSX.Element {
   // Changed to React.JSX.Element
   // Get initial content from loader
   const content = useLoaderData<typeof loader>();
-  const fetcher = useFetcher<typeof action>();
-
-  // Status message handling based on fetcher
-  const status = React.useMemo(() => {
-    if (fetcher.state === "submitting") {
-      return { msg: "Saving...", isError: false };
-    }
-    // Add type guards for fetcher.data properties
-    if (fetcher.data && "success" in fetcher.data && fetcher.data.success) {
-      return { msg: "Saved successfully!", isError: false };
-    }
-    if (fetcher.data && "error" in fetcher.data && fetcher.data.error) {
-      return { msg: fetcher.data.error, isError: true };
-    }
-    return null;
-  }, [fetcher.state, fetcher.data]);
+  // one fetcher per interactive block
+  const sorterFetcher = useFetcher<typeof action>();
+  const heroFetcher = useFetcher<typeof action>();
+  const servicesFetcher = useFetcher<typeof action>();
+  const aboutFetcher = useFetcher<typeof action>();
+  const contactFetcher = useFetcher<typeof action>();
+  const projectsFetcher = useFetcher<typeof action>(); // Added for projects section inputs
 
   // Access content safely with type guard, handle null case
   const safeContent =
@@ -84,41 +75,55 @@ export default function AdminDashboard(): React.JSX.Element {
 
   const uploadImage = React.useCallback(
     async (
+      fetcherInstance: ReturnType<typeof useFetcher>,
       key: string,
       file: File,
       setUploading: (v: boolean) => void,
       setUrl: (url: string) => void
     ) => {
       setUploading(true);
-      const data = new FormData();
-      data.append("image", file);
-      data.append("key", key);
-      await fetcher.submit(data, {
+      const fd = new FormData();
+      fd.append("image", file);
+      fd.append("key", key);
+      await fetcherInstance.submit(fd, {
         method: "post",
-        action: "/admin/upload",
+        action: "/admin/upload", // Keep targeting the dedicated upload action
         encType: "multipart/form-data",
       });
-      // Add type guard for fetcher.data.url
+      // Use the specific fetcher instance's data
       if (
-        fetcher.data &&
-        "url" in fetcher.data &&
-        typeof fetcher.data.url === "string"
+        fetcherInstance.data &&
+        "url" in fetcherInstance.data &&
+        typeof fetcherInstance.data.url === "string"
       ) {
-        setUrl(fetcher.data.url);
+        setUrl(fetcherInstance.data.url);
       }
       setUploading(false);
     },
-    [fetcher]
+    [] // No dependency on fetcher needed here anymore
   );
 
   const handleHeroImageUpload = (file: File) =>
-    uploadImage("hero_image_url", file, setHeroUploading, setHeroImageUrl);
+    uploadImage(
+      heroFetcher,
+      "hero_image_url",
+      file,
+      setHeroUploading,
+      setHeroImageUrl
+    );
 
   const handleAboutImageUpload = (file: File) =>
-    uploadImage("about_image_url", file, setAboutUploading, setAboutImageUrl);
+    uploadImage(
+      aboutFetcher,
+      "about_image_url",
+      file,
+      setAboutUploading,
+      setAboutImageUrl
+    );
 
   const handleServiceImageUpload = (idx: number, file: File) =>
     uploadImage(
+      servicesFetcher, // Use servicesFetcher for service images
       `service_${idx + 1}_image`,
       file,
       (v) =>
@@ -146,28 +151,12 @@ export default function AdminDashboard(): React.JSX.Element {
       {/* 🔀 Drag-to-reorder CMS sections */}
       <SectionSorter // <<< HERE
         orderValue={sectionsOrder}
-        fetcher={fetcher as FetcherWithComponents<any>}
+        fetcher={sorterFetcher as FetcherWithComponents<any>} // Use sorterFetcher
       />
-      {status && (
-        <FadeIn>
-          <div
-            className={`p-3 mb-6 rounded text-sm border ${
-              /* Adjusted padding/margin/size/border */
-              status.isError
-                ? "bg-red-50 text-red-700 border-red-200"
-                : "bg-green-50 text-green-700 border-green-200"
-            }`}
-            role="status"
-            aria-live="polite"
-            tabIndex={0}
-          >
-            {status.msg}
-          </div>
-        </FadeIn>
-      )}
+      {/* Removed the global status block */}
       <section aria-label="Hero Section Editor" role="region" tabIndex={0}>
         <HeroSectionEditor
-          fetcher={fetcher as FetcherWithComponents<any>}
+          fetcher={heroFetcher as FetcherWithComponents<any>} // Use heroFetcher
           initialContent={safeContent}
           onImageUpload={handleHeroImageUpload}
           imageUploading={heroUploading}
@@ -176,7 +165,7 @@ export default function AdminDashboard(): React.JSX.Element {
       </section>
       <section aria-label="Services Section Editor" role="region" tabIndex={0}>
         <ServicesSectionEditor
-          fetcher={fetcher as FetcherWithComponents<any>}
+          fetcher={servicesFetcher as FetcherWithComponents<any>} // Use servicesFetcher
           initialContent={safeContent}
           onImageUpload={handleServiceImageUpload}
           imageUploading={serviceUploading}
@@ -212,7 +201,8 @@ export default function AdminDashboard(): React.JSX.Element {
                 onBlur={(e) => {
                   const data = new FormData();
                   data.append("projects_intro_title", e.target.value);
-                  fetcher.submit(data, { method: "post" });
+                  // Use projectsFetcher for project intro fields
+                  projectsFetcher.submit(data, { method: "post" });
                 }}
               />
             </div>
@@ -235,7 +225,8 @@ export default function AdminDashboard(): React.JSX.Element {
                 onBlur={(e) => {
                   const data = new FormData();
                   data.append("projects_intro_text", e.target.value);
-                  fetcher.submit(data, { method: "post" });
+                  // Use projectsFetcher for project intro fields
+                  projectsFetcher.submit(data, { method: "post" });
                 }}
               />
             </div>
@@ -281,7 +272,7 @@ export default function AdminDashboard(): React.JSX.Element {
       </section>
       <section aria-label="About Section Editor" role="region" tabIndex={0}>
         <AboutSectionEditor
-          fetcher={fetcher as FetcherWithComponents<any>}
+          fetcher={aboutFetcher as FetcherWithComponents<any>} // Use aboutFetcher
           initialContent={safeContent}
           onImageUpload={handleAboutImageUpload}
           imageUploading={aboutUploading}
@@ -290,7 +281,7 @@ export default function AdminDashboard(): React.JSX.Element {
       </section>
       <section aria-label="Contact Section Editor" role="region" tabIndex={0}>
         <ContactSectionEditor
-          fetcher={fetcher as FetcherWithComponents<any>}
+          fetcher={contactFetcher as FetcherWithComponents<any>} // Use contactFetcher
           initialContent={safeContent}
         />
       </section>
