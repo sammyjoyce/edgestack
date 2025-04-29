@@ -40,7 +40,7 @@ export async function handleImageUpload(
     });
 
     // Construct the public URL
-    const publicUrlBase = context.cloudflare.env.PUBLIC_R2_URL; // Access directly, assuming it's defined in Env
+    const publicUrlBase = (context.cloudflare.env as any)?.PUBLIC_R2_URL as string | undefined; // Use 'as any' for PUBLIC_R2_URL
     if (!publicUrlBase) {
       console.warn(
         "PUBLIC_R2_URL environment variable not set. Using relative path as fallback."
