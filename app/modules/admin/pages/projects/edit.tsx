@@ -43,6 +43,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     );
   }
 // No action defined here - handled by parent route /admin/projects
+// The action logic previously here is now in app/modules/admin/pages/projects/index.tsx
 
 // Component to render the "Edit Project" form
 export function Component({
@@ -251,124 +252,11 @@ export function Component({
     </FadeIn>
   );
 }
-    ? Number.parseInt(params.projectId, 10)
-    : Number.NaN;
-  if (isNaN(projectId)) {
-    return data(
-      { error: "Invalid Project ID", project: undefined },
-      { status: 400 }
-    );
-  }
 
-  try {
-    const formData = await request.formData();
-    const title = formData.get("title");
-    const description = formData.get("description");
-    const details = formData.get("details");
-    const isFeatured = formData.get("isFeatured") === "true"; // Convert checkbox value
-    const sortOrderRaw = formData.get("sortOrder");
-    let sortOrder: number | undefined = undefined;
-    if (typeof sortOrderRaw === "string" && sortOrderRaw.trim() !== "") {
-      sortOrder = Number.parseInt(sortOrderRaw, 10);
-      if (isNaN(sortOrder)) sortOrder = undefined;
-    }
-
-    // Use the helper function for upload if a file exists
-    let imageUrl: string | undefined = undefined;
-    const imageFile = formData.get("image");
-    if (imageFile && imageFile instanceof File && imageFile.size > 0) {
-      try {
-        // Use project ID or title in the key for context if desired
-        imageUrl = await handleImageUpload(
-          imageFile,
-          `project-${projectId}-image`,
-          context
-        ); // Pass context directly
-      } catch (uploadError: any) {
-        // Handle upload error specifically, maybe return to form with error
-        const project = await getProjectById(context.db, projectId);
-        return data({ error: uploadError.message, project }, { status: 500 });
-      }
-    }
-
-    if (typeof title !== "string" || title.trim() === "") {
-      // Need to reload project data for the form if validation fails
-      const project = await getProjectById(context.db, projectId);
-      return data({ error: "Title is required.", project }, { status: 400 });
-    }
-
-    // Fetch the original project to ensure we validate a full object, not a partial
-    const originalProject = await getProjectById(context.db, projectId);
-    if (!originalProject) {
-      return data(
-        { error: "Project not found for update.", project: undefined },
-        { status: 404 }
-      );
-    }
-    const updatedProjectData: Partial<NewProject> = {
-      title: title.trim(),
-      description:
-        typeof description === "string"
-          ? description.trim()
-          : originalProject.description,
-      details:
-        typeof details === "string" ? details.trim() : originalProject.details,
-      isFeatured,
-      sortOrder:
-        typeof sortOrder === "number" ? sortOrder : originalProject.sortOrder,
-      ...(imageUrl ? { imageUrl } : { imageUrl: originalProject.imageUrl }),
-    };
-
-    // Merge with original to create a fully populated object for validation
-    const fullProjectForValidation = {
-      ...originalProject,
-      ...updatedProjectData,
-    };
-    // Remove fields not in insert schema (id, createdAt, updatedAt)
-    const { id, createdAt, updatedAt, ...projectInsertObj } =
-      fullProjectForValidation;
-
-    // Validate the full project object using Valibot
-    // This is necessary because valibot's insert schema expects all required fields
-    try {
-      validateProjectInsert(projectInsertObj);
-    } catch (e: any) {
-      return data(
-        {
-          error: `Validation failed for project update: ${e.message || e}`,
-          project: originalProject,
-        },
-        { status: 400 }
-      );
-    }
-    const updatedProject = await updateProject(
-      context.db,
-      projectId,
-      updatedProjectData
-    );
-
-    if (!updatedProject) {
-      const project = await getProjectById(context.db, projectId);
-      return data(
-        { error: "Failed to update project.", project },
-        { status: 500 }
-      );
-    }
-
-    // Redirect back to the project list after successful update
-    return redirect("/admin/projects");
-  } catch (error: any) {
-    // Need to reload project data for the form if update fails
-    const project = await getProjectById(context.db, projectId);
-    return data(
-      { error: "Failed to update project.", project },
-      { status: 500 }
-    );
-  }
-}
+// The action logic previously defined here is now handled by the parent route /admin/projects
 
 // Component to render the "Edit Project" form
-export default function AdminEditProject({
+export function Component({ // Ensure it's Component export
   loaderData,
   actionData,
 }: Route.ComponentProps): React.ReactElement {

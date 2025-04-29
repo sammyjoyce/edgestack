@@ -4,7 +4,7 @@ import { deleteProject } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 
 // No action defined here - handled by parent route /admin/projects
-// export async function action({ request, params, context }: Route.ActionArgs) { ... }
+// The action logic previously here is now in app/modules/admin/pages/projects/index.tsx
 
 // This route is action-only, so it doesn't need to render anything.
 // Returning null is standard practice for action-only routes without UI.

@@ -9,56 +9,8 @@ import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import type { NewProject } from "~/database/schema";
 import { validateProjectInsert } from "~/database/valibot-validation";
 
-// Action to handle creating a new project
-export async function action({ request, context }: Route.ActionArgs) {
-  const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
-
-  const badRequest = (msg: string) => data({ error: msg }, { status: 400 });
-
-  const sessionValue = getSessionCookie(request);
-  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
-  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-    return unauthorized();
-  }
-
-  try {
-    const formData = await request.formData();
-    const title = formData.get("title");
-    const description = formData.get("description");
-    const details = formData.get("details");
-    const isFeatured = formData.get("isFeatured") === "true"; // Convert checkbox value to boolean
-    // TODO: Add image upload handling later if needed
-
-    if (typeof title !== "string" || title.trim() === "") {
-      return badRequest("Title is required.");
-    }
-
-    const newProjectData: NewProject = {
-      title: title.trim(),
-      description:
-        typeof description === "string" ? description.trim() : undefined,
-      details: typeof details === "string" ? details.trim() : undefined,
-      isFeatured: isFeatured, // Add isFeatured flag
-      // imageUrl will be handled separately, perhaps in the edit step
-      // sortOrder will be handled in the list view
-    };
-
-    // Validate newProjectData using Valibot
-    try {
-      validateProjectInsert({ ...newProjectData });
-    } catch (e: any) {
-      return badRequest(
-        `Validation failed for project creation: ${e.message || e}`
-      );
-    }
-    const createdProject = await createProject(context.db, newProjectData);
-
-    // Redirect to the project list page after successful creation
-    return redirect("/admin/projects");
-  } catch (error: any) {
-    return data({ error: "Failed to create project." }, { status: 500 });
-  }
 // No action defined here - handled by parent route /admin/projects
+// The action logic previously here is now in app/modules/admin/pages/projects/index.tsx
 
 // Component to render the "Add New Project" form
 export function Component({
