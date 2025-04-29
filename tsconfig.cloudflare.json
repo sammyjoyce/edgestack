@@ -12,6 +12,8 @@
 	],
 	"compilerOptions": {
 		"composite": true,
+		"declaration": true, // Add declaration
+		"declarationMap": true, // Add declarationMap
 		"strict": true,
 		"lib": ["DOM", "DOM.Iterable", "ES2022"],
 		"types": ["@cloudflare/workers-types", "node", "vite/client"],
