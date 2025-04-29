@@ -28,19 +28,6 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   }
 }
 
-// Add a placeholder action to catch unexpected submissions
-export async function action({ request }: Route.ActionArgs) {
-  console.log("Submission received by /admin/projects action:");
-  try {
-    const formData = await request.formData();
-    console.log("Form Data:", Object.fromEntries(formData));
-  } catch (e) {
-    console.error("Error reading form data:", e);
-  }
-  // Return null or a simple response; adjust as needed for debugging
-  return null;
-}
-
 export default function AdminProjectsIndex({
   loaderData,
 }: Route.ComponentProps): React.ReactElement {
