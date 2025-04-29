@@ -36,7 +36,8 @@ const isContentError = (obj: any): obj is { error: string; status: number } => {
   }
 };
 
-export default function AdminDashboard(): React.JSX.Element { // Changed to React.JSX.Element
+export default function AdminDashboard(): React.JSX.Element {
+  // Changed to React.JSX.Element
   // Get initial content from loader
   const content = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
@@ -57,9 +58,10 @@ export default function AdminDashboard(): React.JSX.Element { // Changed to Reac
   }, [fetcher.state, fetcher.data]);
 
   // Access content safely with type guard, handle null case
-  const safeContent = !content || isContentError(content)
-    ? ({} as Record<string, string>)
-    : (content as Record<string, string>);
+  const safeContent =
+    !content || isContentError(content)
+      ? ({} as Record<string, string>)
+      : (content as Record<string, string>);
 
   // Handler for Hero image upload
   const [heroUploading, setHeroUploading] = React.useState(false);
@@ -97,7 +99,11 @@ export default function AdminDashboard(): React.JSX.Element { // Changed to Reac
         encType: "multipart/form-data",
       });
       // Add type guard for fetcher.data.url
-      if (fetcher.data && "url" in fetcher.data && typeof fetcher.data.url === 'string') {
+      if (
+        fetcher.data &&
+        "url" in fetcher.data &&
+        typeof fetcher.data.url === "string"
+      ) {
         setUrl(fetcher.data.url);
       }
       setUploading(false);
@@ -138,7 +144,10 @@ export default function AdminDashboard(): React.JSX.Element { // Changed to Reac
       <SectionIntro title="Home Page Editor" className="mb-8" />{" "}
       {/* Adjusted margin */}
       {/* 🔀 Drag-to-reorder CMS sections */}
-      <SectionSorter orderValue={sectionsOrder} fetcher={fetcher as FetcherWithComponents<any>} />
+      <SectionSorter
+        orderValue={sectionsOrder}
+        fetcher={fetcher as FetcherWithComponents<any>}
+      />
       {status && (
         <FadeIn>
           <div
@@ -280,7 +289,10 @@ export default function AdminDashboard(): React.JSX.Element { // Changed to Reac
         />
       </section>
       <section aria-label="Contact Section Editor" role="region" tabIndex={0}>
-        <ContactSectionEditor fetcher={fetcher as FetcherWithComponents<any>} initialContent={safeContent} />
+        <ContactSectionEditor
+          fetcher={fetcher as FetcherWithComponents<any>}
+          initialContent={safeContent}
+        />
       </section>
     </Container>
   );

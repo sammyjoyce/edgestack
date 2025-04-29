@@ -22,7 +22,8 @@ interface DesktopNavProps {
 export default function DesktopNav({
   menuItems,
   scrollToSection,
-}: DesktopNavProps): React.JSX.Element { // Changed to React.JSX.Element
+}: DesktopNavProps): React.JSX.Element {
+  // Changed to React.JSX.Element
   return (
     <>
       {/* Left navigation items */}
@@ -50,20 +51,24 @@ export default function DesktopNav({
                   <Popover.Panel className="-translate-x-1/2 absolute left-1/2 z-10 mt-3 w-screen max-w-min transform px-2">
                     <div className="overflow-hidden rounded-lg bg-gray-900/95 shadow-lg ring-1 ring-gray-800 backdrop-blur-sm">
                       <div className="relative grid gap-6 px-5 py-6 sm:gap-8 sm:p-8">
-                        {item.submenu?.map((subItem) => ( // Use optional chaining
-                          <NavLink
-                            key={subItem.name}
-                            to={subItem.path}
-                            className="-m-3 flex items-start rounded-lg p-3 hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-800/50"
-                            onClick={(e) => scrollToSection(e, subItem.path)}
-                          >
-                            <div className="ml-4">
-                              <p className="font-medium text-gray-300 text-sm hover:text-gray-100">
-                                {subItem.name}
-                              </p>
-                            </div>
-                          </NavLink>
-                        ))}
+                        {item.submenu?.map(
+                          (
+                            subItem // Use optional chaining
+                          ) => (
+                            <NavLink
+                              key={subItem.name}
+                              to={subItem.path}
+                              className="-m-3 flex items-start rounded-lg p-3 hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-800/50"
+                              onClick={(e) => scrollToSection(e, subItem.path)}
+                            >
+                              <div className="ml-4">
+                                <p className="font-medium text-gray-300 text-sm hover:text-gray-100">
+                                  {subItem.name}
+                                </p>
+                              </div>
+                            </NavLink>
+                          )
+                        )}
                       </div>
                     </div>
                   </Popover.Panel>

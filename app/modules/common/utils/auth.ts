@@ -30,7 +30,9 @@ async function getKey(secret: string): Promise<CryptoKey> {
 }
 
 function bytesToHex(buf: ArrayBuffer): string {
-  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  return [...new Uint8Array(buf)]
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 /** Sign a session payload (`value`) with the given `secret`. */
@@ -41,7 +43,10 @@ export async function sign(value: string, secret: string): Promise<string> {
 }
 
 /** Verify a signed cookie string and return the original value if valid, else `false`. */
-export async function verify(signed: string, secret: string): Promise<string | false> {
+export async function verify(
+  signed: string,
+  secret: string
+): Promise<string | false> {
   const idx = signed.lastIndexOf(".");
   if (idx === -1) return false;
 

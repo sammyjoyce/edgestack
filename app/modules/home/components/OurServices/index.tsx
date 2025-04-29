@@ -3,7 +3,7 @@ import ConditionalRichTextRenderer from "~/modules/common/components/Conditional
 import { Container } from "~/modules/common/components/ui/Container";
 import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
 import { Button } from "~/modules/common/components/ui/Button";
-import {FadeIn, FadeInStagger} from "~/modules/common/components/ui/FadeIn";
+import { FadeIn, FadeInStagger } from "~/modules/common/components/ui/FadeIn";
 
 // Define props interface
 interface ServiceItem {
@@ -58,10 +58,7 @@ export default function OurServices({
       <Container>
         <section className="mt-12 mb-6 sm:mt-16 sm:mb-8 lg:mt-20 lg:mb-10">
           {/* Use props for intro title and text, with defaults */}
-          <SectionIntro
-            centered
-            title={introTitle}
-          >
+          <SectionIntro centered title={introTitle}>
             <ConditionalRichTextRenderer
               text={introText || defaultIntroText}
               fallbackTag="p"

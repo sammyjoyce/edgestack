@@ -19,7 +19,8 @@ export function AboutSectionEditor({
   onImageUpload,
   imageUploading: isUploading, // Renamed destructured prop
   aboutImageUrl,
-}: AboutSectionEditorProps): React.JSX.Element { // Changed to React.JSX.Element
+}: AboutSectionEditorProps): React.JSX.Element {
+  // Changed to React.JSX.Element
   const [uploadStatus, setUploadStatus] = useState<string | null>(null);
 
   const handleBlur = React.useCallback(
@@ -44,7 +45,8 @@ export function AboutSectionEditor({
 
   // Update status message when upload completes
   useEffect(() => {
-    if (!isUploading && uploadStatus === "Uploading About Image...") { // Use renamed prop
+    if (!isUploading && uploadStatus === "Uploading About Image...") {
+      // Use renamed prop
       setUploadStatus("About Image uploaded successfully!");
     }
   }, [isUploading, uploadStatus]); // Use renamed prop in dependency array
