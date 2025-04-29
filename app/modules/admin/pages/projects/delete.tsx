@@ -3,11 +3,14 @@ import type { Route } from "./+types/delete";
 import { deleteProject } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 
-// Action to handle deleting a project
-export async function action({ request, params, context }: Route.ActionArgs) {
-  const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
+// No action defined here - handled by parent route /admin/projects
+// export async function action({ request, params, context }: Route.ActionArgs) { ... }
 
-  const badRequest = (msg: string) => data({ error: msg }, { status: 400 });
+// This route is action-only, so it doesn't need to render anything.
+// Returning null is standard practice for action-only routes without UI.
+export function Component(_props: Route.ComponentProps): null {
+  return null;
+}
 
   if (request.method !== "POST" && request.method !== "DELETE") {
     return badRequest("Invalid method");
