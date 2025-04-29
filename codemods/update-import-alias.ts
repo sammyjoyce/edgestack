@@ -95,9 +95,13 @@ function thirdPartyWarnings(file: string, code: string): Warning[] {
   const rx = /import\s+.*?\s+from\s+["'`]([^\.@][^"'`]+)["'`]/g;
   let m: RegExpExecArray | null;
   while ((m = rx.exec(code))) {
+    const pkg = m[1];
+    if (pkg === "react") {
+      continue; // ignore React itself
+    }
     warnings.push({
       file,
-      message: `3rd-party package "${m[1]}" should be wrapped by adapter under @common/ui/`,
+      message: `3rd-party package "${pkg}" should be wrapped by adapter under @common/{ui/utils/hooks/etc}`,
     });
   }
   return warnings;
