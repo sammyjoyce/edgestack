@@ -28,6 +28,23 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   }
 }
 
+// Add a placeholder action to catch unexpected submissions
+export async function action({ request }: Route.ActionArgs) {
+  console.log(">>> Submission received by /admin/projects action <<<");
+  try {
+    const formData = await request.formData();
+    const dataEntries = Object.fromEntries(formData);
+    console.log("Form Data:", dataEntries);
+    // Log referrer if available
+    const referrer = request.headers.get('referer');
+    console.log("Referrer:", referrer);
+  } catch (e) {
+    console.error("Error reading form data:", e);
+  }
+  // Return a simple JSON response to stop the error and confirm processing
+  return data({ message: "Placeholder action processed submission." });
+}
+
 export default function AdminProjectsIndex({
   loaderData,
 }: Route.ComponentProps): React.ReactElement {
