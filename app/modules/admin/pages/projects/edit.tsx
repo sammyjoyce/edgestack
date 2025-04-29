@@ -185,7 +185,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 }
 
 // Component to render the "Edit Project" form
-export default function AdminEditProject() {
+export default function AdminEditProject(_props: Route.ComponentProps): JSX.Element {
   // Use loader data for initial form values, action data for errors
   const { project, error: loaderError } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>(); // Matches action's possible return shape

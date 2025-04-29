@@ -3,6 +3,7 @@ import { data } from "react-router";
 import type { Route } from "./+types/index";
 
 import AdminDashboard from "../components/AdminDashboard";
+import type { Route } from "./+types/index";
 
 import { getAllContent, updateContent } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
@@ -75,7 +76,7 @@ export async function action({ request, context }: Route.ActionArgs) {
   return data({ error: "Invalid method" }, { status: 405 });
 }
 
-export default function AdminIndex(): JSX.Element {
+export default function AdminIndex(_props: Route.ComponentProps): JSX.Element {
   return (
     <main id="admin-dashboard-main" role="main" aria-label="Admin Dashboard">
       <AdminDashboard />
