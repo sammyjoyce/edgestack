@@ -71,7 +71,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
 // Component to render the "Add New Project" form
 export default function AdminNewProject(): JSX.Element {
-  const actionData = useActionData<{ error?: string }>();
+  const actionData = useActionData<typeof action>();
 
   return (
     <FadeIn>
