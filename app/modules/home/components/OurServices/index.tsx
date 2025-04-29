@@ -1,8 +1,8 @@
-import React, {type JSX, useMemo} from "react";
-import RichTextRenderer from "~/modules/common/components/RichTextRenderer";
-import {Container} from "~/modules/common/components/ui/Container";
-import {SectionIntro} from "~/modules/common/components/ui/SectionIntro";
-import {Button} from "~/modules/common/components/ui/Button";
+import React, { type JSX } from "react";
+import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer"; // Import the new component
+import { Container } from "~/modules/common/components/ui/Container";
+import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
+import { Button } from "~/modules/common/components/ui/Button";
 import {FadeIn, FadeInStagger} from "~/modules/common/components/ui/FadeIn";
 
 // Define props interface
@@ -47,21 +47,10 @@ export default function OurServices({
   introText,
   servicesData,
 }: OurServicesProps): JSX.Element {
-  const renderedIntro = useMemo(() => {
-    if (!introText) {
-      return (
-        <p>Qualified &amp; Professional Building Services from Start&nbsp;to&nbsp;Finish</p>
-      );
-    }
-    try {
-      JSON.parse(introText); // validate JSON
-      return <RichTextRenderer json={introText} />;
-    } catch {
-      return <p>{introText}</p>;
-    }
-  }, [introText]);
-
+  const defaultIntroText =
+    "Qualified & Professional Building Services from Start to Finish";
   const services = servicesData ?? defaultServices;
+
   return (
     <div className="relative bg-white py-16 sm:py-24" id="services">
       <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-gray-50" />
@@ -73,7 +62,10 @@ export default function OurServices({
             centered
             title={introTitle}
           >
-            {renderedIntro}
+            <ConditionalRichTextRenderer
+              text={introText || defaultIntroText}
+              fallbackTag="p"
+            />
             <div className="mt-6 flex justify-center">
               <Button to="#contact">Get Started</Button>
             </div>
