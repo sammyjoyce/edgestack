@@ -1,7 +1,7 @@
 import { type MetaFunction, Outlet, useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 
-import { schema } from "../../database/schema";
+import { schema } from "../../../database/schema";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import type { Route } from ".react-router/types/app/routes/+types/projects";
