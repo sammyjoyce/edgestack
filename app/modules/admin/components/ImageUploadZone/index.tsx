@@ -1,6 +1,5 @@
-import type React from "react";
-import { useCallback } from "react";
-import { useDropzone } from "@common/ui/hooks/useDropzone";
+import React, { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 
 interface ImageUploadZoneProps {
   onDrop: (files: File[]) => void;
@@ -20,7 +19,7 @@ export default function ImageUploadZone({
   label = "Upload Image",
   className = "",
   fileInputRef,
-}: ImageUploadZoneProps) {
+}: ImageUploadZoneProps): JSX.Element {
   const handleDrop = useCallback(
     (accepted: File[]) => {
       if (!disabled && accepted.length > 0) {
@@ -30,18 +29,13 @@ export default function ImageUploadZone({
     [onDrop, disabled]
   );
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragReject,
-    acceptedFiles,
-  } = useDropzone({
-    accept: { "image/*": [] },
-    maxFiles: 1,
-    onDrop: handleDrop,
-    disabled,
-  });
+  const { getRootProps, getInputProps, isDragActive, isDragReject } =
+    useDropzone({
+      accept: { "image/*": [] },
+      maxFiles: 1,
+      onDrop: handleDrop,
+      disabled,
+    });
 
   return (
     <section className={className + " my-2 w-full flex flex-col items-center"}>
@@ -68,7 +62,7 @@ export default function ImageUploadZone({
       {imageUrl && (
         <img
           src={imageUrl}
-          alt="Preview"
+          alt={`Preview of ${label}`}
           className="rounded border mt-2 max-w-full w-48 h-auto object-cover bg-gray-100"
         />
       )}

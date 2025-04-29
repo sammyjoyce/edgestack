@@ -1,11 +1,11 @@
-import type React from "react";
+import React from "react";
 import type { FetcherWithComponents } from "react-router";
-import { Button } from "@common/ui/ui/Button";
-import { FadeIn } from "@common/ui/ui/FadeIn";
-import ImageUploadZone from "./ImageUploadZone";
+
+import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
+import type { action } from "~/modules/admin/pages";
 
 interface HeroSectionEditorProps {
-  fetcher: FetcherWithComponents<any>;
+  fetcher: FetcherWithComponents<typeof action>;
   initialContent: Record<string, string>;
   onImageUpload: (file: File) => void;
   imageUploading: boolean;
@@ -18,23 +18,34 @@ export function HeroSectionEditor({
   onImageUpload,
   imageUploading,
   heroImageUrl,
-}: HeroSectionEditorProps) {
-  // Dropzone replaces file input
+}: HeroSectionEditorProps): JSX.Element {
+  const [uploadStatus, setUploadStatus] = React.useState<string | null>(null);
 
-  // Handler for auto-save on blur
-  function handleBlur(e: React.FocusEvent<HTMLTextAreaElement>) {
-    const { name, value } = e.target;
-    const data = new FormData();
-    data.append(name, value);
-    fetcher.submit(data, { method: "post" });
-  }
+  const handleBlur = React.useCallback(
+    (e: React.FocusEvent<HTMLTextAreaElement>) => {
+      const { name, value } = e.currentTarget;
+      const data = new FormData();
+      data.append(name, value);
+      fetcher.submit(data, { method: "post" });
+    },
+    [fetcher]
+  );
 
-  // Dropzone handles file selection and calls onImageUpload
-  const handleDrop = (files: File[]) => {
-    if (files && files[0]) {
-      onImageUpload(files[0]);
+  const handleDrop = React.useCallback(
+    (files: File[]) => {
+      const [file] = files;
+      if (!file) return;
+      onImageUpload(file);
+      setUploadStatus("Uploading Hero Image…");
+    },
+    [onImageUpload]
+  );
+
+  React.useEffect(() => {
+    if (!imageUploading && uploadStatus === "Uploading Hero Image…") {
+      setUploadStatus("Hero Image uploaded successfully!");
     }
-  };
+  }, [imageUploading, uploadStatus]);
 
   return (
     <div className="overflow-hidden bg-gray-50 sm:rounded-lg mb-8">
@@ -82,16 +93,12 @@ export function HeroSectionEditor({
               id="hero-image-upload-status"
               role="status"
               aria-live="polite"
-              className="sr-only"
-            ></div>
+              className="text-sm text-gray-600 mb-2 h-5"
+            >
+              {uploadStatus}
+            </div>
             <ImageUploadZone
-              onDrop={(files) => {
-                handleDrop(files);
-                const status = document.getElementById(
-                  "hero-image-upload-status"
-                );
-                if (status) status.textContent = `Uploading Hero Image...`;
-              }}
+              onDrop={handleDrop}
               disabled={imageUploading}
               uploading={imageUploading}
               imageUrl={heroImageUrl}

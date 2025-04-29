@@ -7,9 +7,10 @@ import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 // Heading support can be added via custom commands or plugins if needed.
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import type { EditorState } from "@common/utils/lexical";
-import { useRef } from "react";
-import LexicalToolbar from "./LexicalToolbar";
+import type { EditorState } from "lexical";
+
+import React, { useRef, useCallback, useMemo } from "react";
+import LexicalToolbar from "app/modules/admin/components/RichTextField/Toolbar";
 
 interface Props {
   name: string; // form field key e.g. "about_text"
@@ -17,19 +18,33 @@ interface Props {
   disabled?: boolean;
 }
 
-export default function RichTextField({ name, initialJSON, disabled }: Props) {
+export default function RichTextField({
+  name,
+  initialJSON,
+  disabled,
+}: Props): JSX.Element {
   /* hidden input so <fetcher.Form> sees the JSON string */
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const initialConfig = {
-    namespace: name,
-    onError: console.error,
-    editorState() {
-      if (initialJSON) {
-        return (editor: any) => editor.parseEditorState(initialJSON as any); // deserialise
-      }
-    },
-  };
+  const handleChange = useCallback((state: EditorState) => {
+    /* serialise after every edit */
+    if (inputRef.current) {
+      inputRef.current.value = JSON.stringify(state.toJSON());
+    }
+  }, []);
+
+  const initialConfig = useMemo(
+    () => ({
+      namespace: name,
+      onError: console.error,
+      editorState() {
+        if (initialJSON) {
+          return (editor: any) => editor.parseEditorState(initialJSON as any);
+        }
+      },
+    }),
+    [name, initialJSON]
+  );
 
   return (
     <>
@@ -56,13 +71,7 @@ export default function RichTextField({ name, initialJSON, disabled }: Props) {
         <HistoryPlugin />
         <ListPlugin />
         <LinkPlugin />
-        {/* Heading support can be added here with a custom plugin if needed */}
-        <OnChangePlugin
-          onChange={(state: EditorState) => {
-            /* serialise after every edit */
-            inputRef.current!.value = JSON.stringify(state.toJSON());
-          }}
-        />
+        <OnChangePlugin onChange={handleChange} />
       </LexicalComposer>
     </>
   );
