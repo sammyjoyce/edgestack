@@ -21,7 +21,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     return unauthorized();
   }
 
-  const items = await getAllContent(context.db as any);
+  const items = await getAllContent(context.db);
   return data(items);
 }
 

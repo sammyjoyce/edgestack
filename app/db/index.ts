@@ -1,10 +1,11 @@
-import { asc, desc, drizzle, eq } from "@common/db/drizzle";
+import { asc, desc, eq } from "@common/db/drizzle"; // Assuming drizzle export is handled here
+import type { DrizzleD1Database } from "drizzle-orm/d1";
 import type { NewContent, NewProject, Project } from "../../database/schema"; // Import asc for ordering // Import Project types
 import * as schema from "../../database/schema";
 
 // Utility functions for working with content
 // Retrieves all content as an object keyed by 'key'
-export async function getAllContent(db: ReturnType<typeof initDrizzle>) {
+export async function getAllContent(db: DrizzleD1Database<typeof schema>) {
   const results = await db
     .select()
     .from(schema.content)
@@ -26,7 +27,7 @@ export async function getAllContent(db: ReturnType<typeof initDrizzle>) {
 //   { key2: { value: "value", page: "home", section: "hero", type: "text", mediaId: 3 } }
 // so admin UIs can gradually move to the richer payload.
 export async function updateContent(
-  db: ReturnType<typeof initDrizzle>,
+  db: DrizzleD1Database<typeof schema>,
   updates: Record<
     string,
     string | (Partial<Omit<NewContent, "key">> & { value: string })
@@ -51,7 +52,7 @@ export async function updateContent(
 
 // Get all projects, ordered by creation date descending
 export async function getAllProjects(
-  db: ReturnType<typeof initDrizzle>
+  db: DrizzleD1Database<typeof schema>
 ): Promise<Project[]> {
   // Order by sortOrder ascending, then createdAt descending as a fallback
   return db
@@ -63,7 +64,7 @@ export async function getAllProjects(
 
 // Get only featured projects, ordered by sortOrder
 export async function getFeaturedProjects(
-  db: ReturnType<typeof initDrizzle>
+  db: DrizzleD1Database<typeof schema>
 ): Promise<Project[]> {
   return db
     .select()
@@ -75,7 +76,7 @@ export async function getFeaturedProjects(
 
 // Get a single project by its ID
 export async function getProjectById(
-  db: ReturnType<typeof initDrizzle>,
+  db: DrizzleD1Database<typeof schema>,
   id: number
 ): Promise<Project | null> {
   const result = await db
@@ -88,7 +89,7 @@ export async function getProjectById(
 
 // Create a new project - Ensure isFeatured and sortOrder are handled
 export async function createProject(
-  db: ReturnType<typeof initDrizzle>,
+  db: DrizzleD1Database<typeof schema>,
   projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">
 ): Promise<Project> {
   // Ensure timestamps and defaults are set if not provided
@@ -109,7 +110,7 @@ export async function createProject(
 
 // Update an existing project - Ensure isFeatured and sortOrder can be updated
 export async function updateProject(
-  db: ReturnType<typeof initDrizzle>,
+  db: DrizzleD1Database<typeof schema>,
   id: number,
   projectData: Partial<Omit<NewProject, "id" | "createdAt">>
 ): Promise<Project | null> {
@@ -132,7 +133,7 @@ export async function updateProject(
 
 // Delete a project by its ID
 export async function deleteProject(
-  db: ReturnType<typeof initDrizzle>,
+  db: DrizzleD1Database<typeof schema>,
   id: number
 ): Promise<{ success: boolean }> {
   const result = await db
