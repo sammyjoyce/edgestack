@@ -4,7 +4,7 @@ import {
   useMotionTemplate,
   useScroll,
   useTransform,
-} from "framer-motion";
+} from "@common/ui/animation";
 import { useRef } from "react";
 import type React from "react";
 
