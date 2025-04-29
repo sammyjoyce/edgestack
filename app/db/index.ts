@@ -45,7 +45,8 @@ export async function updateContent(
         set: { ...data, updatedAt: new Date() },
       });
   });
-  return Promise.all(batch);
+  // Use db.batch() for potentially better performance with D1
+  return db.batch(batch);
 }
 
 // --- Project CRUD Functions ---
