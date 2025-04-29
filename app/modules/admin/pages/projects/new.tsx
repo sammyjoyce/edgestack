@@ -62,7 +62,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 // async function action({ request, context }: Route.ActionArgs) { ... }
 
 // Component to render the "Add New Project" form
-export function Component({
+/* export */ function Component({ // Temporarily remove export for diagnosis
   actionData, // Keep actionData prop for potential errors returned by the centralized action
 }: Route.ComponentProps): React.ReactElement {
   // Use React.ReactElement
