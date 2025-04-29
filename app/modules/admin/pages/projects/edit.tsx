@@ -43,10 +43,10 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     );
   }
 // Remove the action export from here
-// export async function action({ request, params, context }: Route.ActionArgs) { ... }
+// async function action({ request, params, context }: Route.ActionArgs) { ... }
 
 // Component to render the "Edit Project" form
-export default function AdminEditProject({
+export function Component({
   loaderData,
   actionData, // Keep actionData prop for potential errors returned by the centralized action
 }: Route.ComponentProps): React.ReactElement {
