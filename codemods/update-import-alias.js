@@ -31,5 +31,5 @@ const transformer = (fileInfo, { jscodeshift: j }) => {
     .toSource();
 };
 
-export default transformer;
-export const parser = "tsx";
+module.exports = transformer;
+module.exports.parser = "tsx";
