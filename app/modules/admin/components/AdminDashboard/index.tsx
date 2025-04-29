@@ -272,7 +272,7 @@ export default function AdminDashboard(): React.JSX.Element { // Changed to Reac
       </section>
       <section aria-label="About Section Editor" role="region" tabIndex={0}>
         <AboutSectionEditor
-          fetcher={fetcher}
+          fetcher={fetcher as FetcherWithComponents<any>} {/* Cast fetcher type */}
           initialContent={safeContent}
           onImageUpload={handleAboutImageUpload}
           imageUploading={aboutUploading}
