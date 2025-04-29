@@ -53,7 +53,6 @@ export default function ContactUs() {
           />
         </div>
       </div>
-
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
           <h2 className="sr-only">Contact us</h2>
