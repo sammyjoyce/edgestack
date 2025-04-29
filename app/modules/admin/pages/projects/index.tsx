@@ -1,11 +1,11 @@
 import React from "react";
 import {
   data,
-  type LoaderFunctionArgs,
   Link,
-+  Form,
+  Form,
   useLoaderData,
 } from "react-router";
+import type { Route } from "./+types/index";
 
 import { Button } from "~/modules/common/components/ui/Button";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
