@@ -5,7 +5,7 @@
 //   bun codemods/update-import-alias.ts "app/**/\\*.{ts,tsx}"
 //
 
-import { glob } from "bun";
+import { Glob } from "bun";
 import { readFile, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { existsSync } from "node:fs";
@@ -131,7 +131,12 @@ async function main() {
 
   const aliasMap = { ...FALLBACK_ALIAS, ...loadTsconfigAliases() };
   const files = new Set<string>();
-  patterns.forEach((p) => glob(p).forEach((f) => files.add(f)));
+  patterns.forEach((p) => {
+    const g = new Glob(p);
+    for (const f of g.scanSync(".")) {
+      files.add(f);
+    }
+  });
 
   for (const file of files) {
     const original = await readFile(file, "utf8");
