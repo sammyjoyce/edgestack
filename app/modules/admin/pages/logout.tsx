@@ -23,18 +23,18 @@ export default function Logout(_props: Route.ComponentProps): JSX.Element {
       aria-label="Logout Page"
     >
       <div
-        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm flex flex-col gap-6 items-center"
+        className="bg-white p-8 rounded-lg shadow-md border border-gray-200 w-full max-w-sm flex flex-col gap-4 items-center" /* Adjusted shadow/border/gap */
         role="region"
         aria-labelledby="logout-heading"
       >
         <h2
-          className="text-2xl font-bold text-center text-gray-800"
+          className="text-2xl font-semibold text-center text-gray-900" /* Use semibold, gray-900 */
           id="logout-heading"
         >
           Logged Out
         </h2>
         <div
-          className="rounded bg-green-100 text-green-700 px-3 py-2 text-center mb-2"
+          className="rounded border border-green-200 bg-green-50 text-green-700 px-3 py-2 text-center text-sm w-full" /* Adjusted style, full width */
           role="status"
           aria-live="polite"
         >
@@ -42,7 +42,7 @@ export default function Logout(_props: Route.ComponentProps): JSX.Element {
         </div>
         <Button
           href="/admin/login"
-          className="mt-2 w-full text-center"
+          className="mt-4 w-full justify-center bg-blue-600 text-white hover:bg-blue-700" /* Added margin, full width, explicit style */
           aria-label="Return to Login Page"
         >
           Return to Login

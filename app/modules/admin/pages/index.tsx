@@ -3,7 +3,7 @@ import { data } from "react-router";
 import type { Route } from "./+types/index";
 
 import AdminDashboard from "../components/AdminDashboard";
-import type { Route } from "./+types/index";
+// Removed duplicate import: import type { Route } from "./+types/index";
 
 import { getAllContent, updateContent } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";

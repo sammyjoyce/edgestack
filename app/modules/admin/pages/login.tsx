@@ -56,12 +56,12 @@ export default function AdminLogin({ actionData }: Route.ComponentProps): JSX.El
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <form
         method="post"
-        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm flex flex-col gap-6"
+        className="bg-white p-8 rounded-lg shadow-md border border-gray-200 w-full max-w-sm flex flex-col gap-4" /* Adjusted shadow/border/gap */
         aria-label="Admin Login Form"
         role="form"
       >
         <h2
-          className="text-2xl font-bold text-center text-gray-800"
+          className="text-2xl font-semibold text-center text-gray-900 mb-2" /* Use semibold, gray-900, added margin */
           id="admin-login-heading"
         >
           Admin Login
@@ -74,7 +74,7 @@ export default function AdminLogin({ actionData }: Route.ComponentProps): JSX.El
         ></div>
         {loggedOut && (
           <div
-            className="rounded bg-green-100 text-green-700 px-3 py-2 text-center mb-2"
+            className="rounded border border-green-200 bg-green-50 text-green-700 px-3 py-2 text-center text-sm" /* Adjusted style */
             role="alert"
             aria-live="polite"
           >
@@ -83,48 +83,54 @@ export default function AdminLogin({ actionData }: Route.ComponentProps): JSX.El
         )}
         {actionData?.error && (
           <div
-            className="rounded bg-red-100 text-red-700 px-3 py-2 text-center mb-2"
+            className="rounded border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-center text-sm" /* Adjusted style */
             role="alert"
             aria-live="assertive"
           >
             {actionData.error}
           </div>
         )}
-        <label htmlFor="username" className="sr-only">
-          Username
-        </label>
-        <input
-          id="username"
-          name="username"
-          type="text"
-          required
-          placeholder="Username"
-          aria-label="Username"
-          aria-describedby="username-help"
-          className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-        />
-        <span id="username-help" className="text-xs text-gray-500">
-          Enter your admin username.
-        </span>
-        <label htmlFor="password" className="sr-only">
-          Password
-        </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          required
-          placeholder="Password"
-          aria-label="Password"
-          aria-describedby="password-help"
-          className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-        />
-        <span id="password-help" className="text-xs text-gray-500">
-          Enter your admin password. This field is case-sensitive.
-        </span>
+        {/* Group input and help text */}
+        <div>
+          <label htmlFor="username" className="sr-only">
+            Username
+          </label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            required
+            placeholder="Username"
+            aria-label="Username"
+            aria-describedby="username-help"
+            className="block w-full rounded-md border-gray-300 shadow-sm px-3 py-2 text-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500" /* Standardized input */
+          />
+          <span id="username-help" className="mt-1 text-xs text-gray-500 block"> {/* Added margin, block display */}
+            Enter your admin username.
+          </span>
+        </div>
+        {/* Group input and help text */}
+        <div>
+          <label htmlFor="password" className="sr-only">
+            Password
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            placeholder="Password"
+            aria-label="Password"
+            aria-describedby="password-help"
+            className="block w-full rounded-md border-gray-300 shadow-sm px-3 py-2 text-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500" /* Standardized input */
+          />
+          <span id="password-help" className="mt-1 text-xs text-gray-500 block"> {/* Added margin, block display */}
+            Enter your admin password. This field is case-sensitive.
+          </span>
+        </div>
         <Button
           type="submit"
-          className="mt-2"
+          className="mt-4 w-full justify-center bg-blue-600 text-white hover:bg-blue-700" /* Added margin, full width, explicit style */
           aria-label="Login to Admin Dashboard"
         >
           Login
