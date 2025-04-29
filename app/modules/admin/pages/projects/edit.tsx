@@ -187,10 +187,7 @@ export async function action({ request, params, context }: ActionFunctionArgs) {
 // Component to render the "Edit Project" form
 export default function AdminEditProject() {
   // Use loader data for initial form values, action data for errors
-  const { project, error: loaderError } = useLoaderData<{
-    project?: Project;
-    error?: string;
-  }>();
+  const { project, error: loaderError } = useLoaderData<typeof loader>();
   const actionData = useActionData<{ error?: string; project?: Project }>(); // Matches action's possible return shape
   const params = useParams();
 
