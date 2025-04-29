@@ -12,11 +12,8 @@ import { handleImageUpload } from "~/utils/upload.server"; // Import the helper
 // Loader to fetch the project data for editing
 export async function loader({ request, params, context }: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);
-  if (
-    !sessionValue ||
-    !context.JWT_SECRET ||
-    !(await verify(sessionValue, context.JWT_SECRET))
-  ) {
+  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
     return data({ error: "Unauthorized", project: undefined }, { status: 401 });
   }
 
@@ -50,11 +47,8 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
 // Action to handle updating the project
 export async function action({ request, params, context }: Route.ActionArgs) {
   const sessionValue = getSessionCookie(request);
-  if (
-    !sessionValue ||
-    !context.JWT_SECRET ||
-    !(await verify(sessionValue, context.JWT_SECRET))
-  ) {
+  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
     return data({ error: "Unauthorized", project: undefined }, { status: 401 });
   }
 
@@ -182,7 +176,9 @@ export default function AdminEditProject({
 }: Route.ComponentProps): React.ReactElement {
   // Use React.ReactElement
   // Use loader data for initial form values, action data for errors
-  const { project, error: loaderError } = loaderData;
+  // Use optional chaining for loaderError as it might not exist on the loaderData type union
+  const { project } = loaderData ?? {};
+  const loaderError = loaderData?.error;
   const { project: actionProject, error: actionError } = actionData ?? {};
 
   // Use project data from actionData if available (e.g., validation error), otherwise use loaderData

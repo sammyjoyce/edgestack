@@ -13,11 +13,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     data({ projects: [], error: "Unauthorized" }, { status: 401 });
 
   const sessionValue = getSessionCookie(request);
-  if (
-    !sessionValue ||
-    !context.JWT_SECRET ||
-    !(await verify(sessionValue, context.JWT_SECRET))
-  ) {
+  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
     return unauthorized();
   }
   try {
