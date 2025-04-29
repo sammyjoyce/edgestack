@@ -24,7 +24,10 @@ export const media = sqliteTable("media", {
 	alt: text("alt"), // Accessible alt-text
 	width: integer("width"), // px (optional)
 	height: integer("height"), // px (optional)
-	createdAt: integer("created_at", { mode: "timestamp" }).default(new Date()),
+	// Use sql('CURRENT_TIMESTAMP') for default insertion time in SQLite
+	createdAt: integer("created_at", { mode: "timestamp" }).default(
+		sql`(CURRENT_TIMESTAMP)`
+	),
 });
 
 export type Media = typeof media.$inferSelect;
@@ -34,15 +37,21 @@ export type NewMedia = typeof media.$inferInsert;
 export const projects = sqliteTable("projects", {
 	id: integer("id").primaryKey({ autoIncrement: true }), // Auto-incrementing integer ID
 	title: text("title").notNull(),
-	description: text("description"),
+	description: text("description"), // Can be plain text or JSON string for rich text
 	details: text("details"), // Optional field for location, duration, budget etc.
 	imageUrl: text("image_url"), // Optional image URL
 	slug: text("slug").unique(), // Pretty URL
-	published: integer("published", { mode: "boolean" }).default(true),
-	isFeatured: integer("is_featured", { mode: "boolean" }).default(false), // Flag for home page display
+	published: integer("published", { mode: "boolean" }).default(true), // 0 = false, 1 = true
+	isFeatured: integer("is_featured", { mode: "boolean" }).default(false), // Flag for home page display. 0 = false, 1 = true
 	sortOrder: integer("sort_order").default(0).notNull(), // Order on home page
-	createdAt: integer("created_at", { mode: "timestamp" }).default(new Date()), // Timestamp for creation
-	updatedAt: integer("updated_at", { mode: "timestamp" }).default(new Date()).$onUpdate(() => new Date()), // Timestamp for last update
+	// Use sql('CURRENT_TIMESTAMP') for default insertion time in SQLite
+	createdAt: integer("created_at", { mode: "timestamp" }).default(
+		sql`(CURRENT_TIMESTAMP)`
+	),
+	// $onUpdate is a Drizzle runtime feature, does not set DB trigger
+	updatedAt: integer("updated_at", { mode: "timestamp" })
+		.default(sql`(CURRENT_TIMESTAMP)`)
+		.$onUpdate(() => new Date()), // Timestamp for last update
 });
 
 // Type for project entry

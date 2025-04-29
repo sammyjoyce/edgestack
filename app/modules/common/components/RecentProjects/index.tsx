@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router";
 import type {Project} from "~/database/schema";
-import {SectionIntro} from "~/modules/common/components/ui/SectionIntro";
-import {Container} from "~/modules/common/components/ui/Container";
-import {FadeIn, FadeInStagger} from "~/modules/common/components/ui/FadeIn";
-import {clsx} from "clsx";
-import RichTextRenderer from "~/modules/common/components/RichTextRenderer"; // Import Link
-
+import React from "react";
+import { Link } from "react-router";
+import type { Project } from "~/database/schema";
+import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
+import { Container } from "~/modules/common/components/ui/Container";
+import { FadeIn, FadeInStagger } from "~/modules/common/components/ui/FadeIn";
+import { clsx } from "clsx";
+import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer"; // Import the new component
 
 // Define props interface
 interface RecentProjectsProps {
@@ -65,27 +67,11 @@ export default function RecentProjects({
                     <h3 className="mb-4 font-serif text-2xl text-black leading-snug md:mb-6 md:text-3xl">
                       {project.title}
                     </h3>
-                    {(() => {
-                      try {
-                        if (project.description) {
-                          JSON.parse(project.description);
-                          return (
-                            <RichTextRenderer json={project.description} />
-                          );
-                        }
-                      } catch {
-                        return (
-                          <p className="mb-4 text-base text-gray-700 md:mb-6 md:text-lg">
-                            {project.description}
-                          </p>
-                        );
-                      }
-                      return (
-                        <p className="mb-4 text-base text-gray-700 md:mb-6 md:text-lg">
-                          No description available.
-                        </p>
-                      );
-                    })()}
+                    <ConditionalRichTextRenderer
+                      text={project.description}
+                      fallbackClassName="mb-4 text-base text-gray-700 md:mb-6 md:text-lg"
+                      fallbackTag="p"
+                    />
                     {/* Use Link instead of a - Ensure project.id is correct type */}
                     <Link
                       to={`/projects/${project.id}`} // ID is now number
