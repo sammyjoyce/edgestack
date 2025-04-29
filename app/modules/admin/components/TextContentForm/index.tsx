@@ -261,7 +261,7 @@ export function TextContentForm({
               onBlur={handleBlur}
               onChange={handleChange}
               tabIndex={0}
-              className={`border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white ${
+              className={`border rounded p-2 focus:outline-hidden focus:ring-2 focus:ring-blue-400 bg-white ${
                 errors[key] ? "border-red-500" : ""
               }`}
             />
