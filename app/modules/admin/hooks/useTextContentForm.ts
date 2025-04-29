@@ -168,12 +168,11 @@ export function useTextContentForm({
       if (fetcher.data && "success" in fetcher.data && fetcher.data.success) {
         // If auto-save was successful, fields state is already updated
         // If manual save was successful, fields state was updated in handleSave
-        setFeedback(fetcher.data.message ?? "Saved successfully!");
         setErrors({}); // Clear errors on success
-      } else if (fetcher.data?.error) {
+      } else if (fetcher.data && "error" in fetcher.data) {
         setFeedback(fetcher.data.error);
         // Optionally parse and display field-level errors if backend provides them
-        // setErrors({ ... });
+        // setErrors({ ... }); // Example: if backend returns { errors: { field: 'message' } }
 
         // If manual save failed, revert pendingFields back to the last saved state (fields)
         if (!autoSave) {
