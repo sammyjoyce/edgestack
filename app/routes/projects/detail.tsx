@@ -8,8 +8,8 @@ import {
 } from "react-router-dom"; // Import Link, useLoaderData, data
 import type { LoaderFunctionArgs } from "react-router-dom"; // Import LoaderFunctionArgs
 import type { Project } from "../../../database/schema"; // Import Project type
-import { FadeIn } from "../../components/ui/FadeIn"; // Import FadeIn
-import { getProjectById } from "../../db/index"; // Import DB function
+import { FadeIn } from "../../../components/ui/FadeIn"; // Import FadeIn
+import { getProjectById } from "../../../db/index"; // Import DB function
 
 // Define the type for the context passed from the parent route
 type ProjectsContext = {
