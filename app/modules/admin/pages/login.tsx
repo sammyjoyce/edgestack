@@ -12,13 +12,12 @@ import {
   verify,
 } from "~/modules/common/utils/auth";
 
+// Env type is available globally via worker-configuration.d.ts
+
 export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);
-  if (
-    sessionValue &&
-    (context.cloudflare.env as any).JWT_SECRET &&
-    (await verify(sessionValue, (context.cloudflare.env as any).JWT_SECRET))
-  ) {
+  const env = context.cloudflare.env as Env; // Type assertion
+  if (sessionValue && env.JWT_SECRET && (await verify(sessionValue, env.JWT_SECRET))) {
     return redirect("/admin");
   }
   return data({});
@@ -28,29 +27,21 @@ export async function action({ request, context }: Route.ActionArgs) {
   const form = await request.formData();
   const username = form.get("username");
   const password = form.get("password");
-  const cloudflareEnv = context.cloudflare?.env; // Use a more specific name
+  const env = context.cloudflare.env as Env; // Type assertion
 
-  // Ensure cloudflare context and environment variables are present
-  if (
-    !cloudflareEnv ||
-    !cloudflareEnv.ADMIN_USERNAME ||
-    !cloudflareEnv.ADMIN_PASSWORD ||
-    !cloudflareEnv.JWT_SECRET
-  ) {
+  // Ensure environment variables are present
+  if (!env.ADMIN_USERNAME || !env.ADMIN_PASSWORD || !env.JWT_SECRET) {
     console.error(
-      "Admin credentials or JWT secret not configured in Cloudflare environment"
+      "Admin credentials or JWT secret not configured in environment"
     );
     return data({ error: "Server configuration error" }, { status: 500 });
   }
 
-  // Access properties directly now that we know cloudflareEnv exists
-  if (
-    username === cloudflareEnv.ADMIN_USERNAME &&
-    password === cloudflareEnv.ADMIN_PASSWORD
-  ) {
+  // Access properties directly using the typed env
+  if (username === env.ADMIN_USERNAME && password === env.ADMIN_PASSWORD) {
     const sessionValue = await sign(
       username + ":" + Date.now(),
-      cloudflareEnv.JWT_SECRET
+      env.JWT_SECRET
     );
     return redirect("/admin", {
       headers: {

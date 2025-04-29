@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useFetcher } from "react-router";
+import { useFetcher, type FetcherWithComponents } from "react-router"; // Import FetcherWithComponents
 import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
+import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
 import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
 import { Button } from "~/modules/common/components/ui/Button";
 import { GrayscaleTransitionImage } from "~/modules/common/components/ui/GrayscaleTransitionImage";
@@ -32,15 +33,16 @@ export function ImageUploadSection({
     Array(imageFields.length).fill("")
   );
 
-  // One fetcher per field
-  const fetchers = imageFields.map(() => useFetcher());
+  // One fetcher per field, now typed
+  const fetchers = imageFields.map(() => useFetcher<AdminActionResponse>());
   // Create refs for each file input
   const fileInputRefs = imageFields.map(() => useRef<HTMLInputElement>(null));
 
+  // Type the fetcher argument
   const makeDropHandler = useCallback(
     (
         idx: number,
-        fetcher: ReturnType<typeof useFetcher>,
+        fetcher: FetcherWithComponents<AdminActionResponse>,
         key: string,
         label: string
       ) =>
@@ -71,10 +73,9 @@ export function ImageUploadSection({
   // Effect to clear file input on successful upload
   useEffect(() => {
     fetchers.forEach((fetcher, idx) => {
-      if (fetcher.state === "idle") {
-        // Add type guard for fetcher.data.success
-        if (fetcher.data && "success" in fetcher.data && fetcher.data.success) {
-          // Fix optional chaining assignment
+      if (fetcher.state === "idle" && fetcher.data) {
+        // Check fetcher.data structure based on AdminActionResponse
+        if ("success" in fetcher.data && fetcher.data.success) {
           const inputRef = fileInputRefs[idx].current;
           if (inputRef) {
             inputRef.value = "";
@@ -84,10 +85,10 @@ export function ImageUploadSection({
             next[idx] = `${imageFields[idx].label} uploaded successfully!`;
             return next;
           });
-        } else if (fetcher.data?.error) {
+        } else if ("error" in fetcher.data) {
           setStatusTexts((prev) => {
             const next = [...prev];
-            next[idx] = fetcher.data.error;
+            next[idx] = fetcher.data.error; // fetcher.data.error is string
             return next;
           });
         }
@@ -138,10 +139,12 @@ export function ImageUploadSection({
                   uploading={fetcher.state === "submitting"}
                   imageUrl={fetcher.data?.url || initialContent[key] || ""}
                   label={label}
+                  className="w-full" // Ensure zone takes width
                 />
                 <input type="hidden" name="key" value={key} />
-                <Button
-                  type="submit"
+                {/* Remove the redundant submit button, rely on dropzone click/drop */}
+                {/* <Button
+                  type="submit" // This button doesn't actually submit the file from the dropzone input
                   aria-label={`Upload ${label}`}
                   onClick={() =>
                     setStatusTexts((prev) => {
@@ -153,10 +156,10 @@ export function ImageUploadSection({
                 >
                   {fetcher.state === "submitting"
                     ? `Uploading...`
-                    : `Upload ${label}`}
-                </Button>
+                    : `Upload ${label}` // Button removed
+                </Button> */}
                 <div
-                  className="text-sm text-gray-600 h-5"
+                  className="text-sm text-gray-600 h-5 mt-2" // Add margin top
                   role="status"
                   aria-live="polite"
                 >
@@ -166,10 +169,10 @@ export function ImageUploadSection({
                   id={`${key}_preview`}
                   src={fetcher.data?.url || initialContent[key] || ""}
                   alt={`${label} Preview`}
-                  className="rounded border mt-2 max-w-full w-48 h-auto object-cover bg-gray-100"
+                  className="rounded border border-gray-200 mt-2 max-w-full w-48 h-auto object-cover bg-gray-100" // Added border color
                 />
-                {fetcher.data?.error && (
-                  <div className="text-red-600 mt-2" role="alert">
+                {fetcher.data && "error" in fetcher.data && (
+                  <div className="text-red-600 mt-2 text-xs" role="alert"> {/* Smaller text */}
                     {fetcher.data.error}
                   </div>
                 )}

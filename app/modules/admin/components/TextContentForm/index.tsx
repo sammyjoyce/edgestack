@@ -1,6 +1,7 @@
 import React, { useRef } from "react"; // Keep only useRef
 import type { FetcherWithComponents } from "react-router";
 import { useTextContentForm } from "~/modules/admin/hooks/useTextContentForm"; // Import the hook
+import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
 
 // Config array for text fields with help text
 const textFields = [
@@ -67,7 +68,7 @@ const textFields = [
 ];
 
 interface TextContentFormProps {
-  fetcher: FetcherWithComponents<any>;
+  fetcher: FetcherWithComponents<AdminActionResponse>; // Use specific type
   initialContent: Record<string, string>;
   formRef?: React.RefObject<HTMLFormElement>;
 }

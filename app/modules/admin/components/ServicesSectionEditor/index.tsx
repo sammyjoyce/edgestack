@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import type { FetcherWithComponents } from "react-router";
 import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
+import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
 
 interface ServiceField {
   titleKey: string;
@@ -10,7 +11,7 @@ interface ServiceField {
 }
 
 interface ServicesSectionEditorProps {
-  fetcher: FetcherWithComponents<any>;
+  fetcher: FetcherWithComponents<AdminActionResponse>; // Use specific type
   initialContent: Record<string, string>;
   onImageUpload: (idx: number, file: File) => void;
   imageUploading: boolean[];
