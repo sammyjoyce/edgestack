@@ -1,6 +1,6 @@
-import type React from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import type { FetcherWithComponents } from "react-router";
-import ImageUploadZone from "./ImageUploadZone";
+import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
 
 interface ServiceField {
   titleKey: string;
@@ -44,28 +44,59 @@ const serviceFields: ServiceField[] = [
   },
 ];
 
+// ------------------------------------------------------------------------
+// Component
+// ------------------------------------------------------------------------
 export function ServicesSectionEditor({
   fetcher,
   initialContent,
   onImageUpload,
   imageUploading,
   serviceImageUrls,
-}: ServicesSectionEditorProps) {
-  // Dropzone replaces file input for each service
+}: ServicesSectionEditorProps): JSX.Element {
+  const [statusTexts, setStatusTexts] = useState<string[]>(
+    Array(serviceFields.length).fill("")
+  );
 
-  function handleBlur(e: React.FocusEvent<HTMLTextAreaElement>) {
-    const { name, value } = e.target;
-    const data = new FormData();
-    data.append(name, value);
-    fetcher.submit(data, { method: "post" });
-  }
+  const handleBlur = useCallback(
+    (e: React.FocusEvent<HTMLTextAreaElement>) => {
+      const { name, value } = e.currentTarget;
+      const data = new FormData();
+      data.append(name, value);
+      fetcher.submit(data, { method: "post" });
+    },
+    [fetcher]
+  );
 
-  // Dropzone handles file selection and calls onImageUpload
-  const handleDrop = (idx: number) => (files: File[]) => {
-    if (files && files[0]) {
-      onImageUpload(idx, files[0]);
-    }
-  };
+  const handleDrop = useCallback(
+    (idx: number) => (files: File[]) => {
+      const [file] = files;
+      if (!file) return;
+
+      onImageUpload(idx, file);
+      setStatusTexts((prev) => {
+        const next = [...prev];
+        next[idx] = `Uploading ${serviceFields[idx].label} Image…`;
+        return next;
+      });
+    },
+    [onImageUpload]
+  );
+
+  // Update status once upload completes
+  useEffect(() => {
+    imageUploading.forEach((uploading, idx) => {
+      if (!uploading && statusTexts[idx].startsWith("Uploading")) {
+        setStatusTexts((prev) => {
+          const next = [...prev];
+          next[
+            idx
+          ] = `${serviceFields[idx].label} Image uploaded successfully!`;
+          return next;
+        });
+      }
+    });
+  }, [imageUploading, statusTexts]);
 
   return (
     <div className="overflow-hidden bg-gray-50 sm:rounded-lg mb-8">
@@ -86,7 +117,7 @@ export function ServicesSectionEditor({
               id="services_intro_title"
               rows={2}
               defaultValue={initialContent.services_intro_title || ""}
-              className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 mb-2 w-full"
+              className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 mb-2"
               onBlur={handleBlur}
             />
             <label
@@ -151,20 +182,14 @@ export function ServicesSectionEditor({
                   </span>
                 </label>
                 <div
-                  id={`service-image-upload-status-${idx}`}
+                  className="text-sm text-gray-600 h-5"
                   role="status"
                   aria-live="polite"
-                  className="sr-only"
-                ></div>
+                >
+                  {statusTexts[idx]}
+                </div>
                 <ImageUploadZone
-                  onDrop={(files) => {
-                    handleDrop(idx)(files);
-                    const status = document.getElementById(
-                      `service-image-upload-status-${idx}`
-                    );
-                    if (status)
-                      status.textContent = `Uploading ${field.label} Image...`;
-                  }}
+                  onDrop={handleDrop(idx)}
                   disabled={imageUploading[idx]}
                   uploading={imageUploading[idx]}
                   imageUrl={serviceImageUrls[idx]}

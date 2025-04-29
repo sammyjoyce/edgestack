@@ -1,9 +1,11 @@
-import type React from "react";
+import React from "react";
 import type { FetcherWithComponents } from "react-router";
-import RichTextField from "./RichTextField";
+
+import RichTextField from "~/modules/admin/components/RichTextField";
+import type { action } from "~/modules/admin/pages";
 
 interface ContactSectionEditorProps {
-  fetcher: FetcherWithComponents<any>;
+  fetcher: FetcherWithComponents<typeof action>;
   initialContent: Record<string, string>;
 }
 
@@ -63,15 +65,16 @@ const contactFields = [
 export function ContactSectionEditor({
   fetcher,
   initialContent,
-}: ContactSectionEditorProps) {
-  function handleBlur(
-    e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) {
-    const { name, value } = e.target;
-    const data = new FormData();
-    data.append(name, value);
-    fetcher.submit(data, { method: "post" });
-  }
+}: ContactSectionEditorProps): JSX.Element {
+  const handleBlur = React.useCallback(
+    (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.currentTarget;
+      const data = new FormData();
+      data.append(name, value);
+      fetcher.submit(data, { method: "post" });
+    },
+    [fetcher]
+  );
 
   return (
     <section className="bg-white rounded-lg shadow p-6 mb-8 border">
@@ -86,11 +89,11 @@ export function ContactSectionEditor({
             </label>
             {rows > 1 && key === "contact_intro" ? (
               // Rich text editor for contact_intro using Lexical
-              (<RichTextField
+              <RichTextField
                 name={key}
                 initialJSON={initialContent[key]}
                 disabled={fetcher.state === "submitting"}
-              />)
+              />
             ) : rows > 1 ? (
               <textarea
                 name={key}
