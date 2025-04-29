@@ -53,6 +53,7 @@ export default function Projects({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* Outlet renders the child route */}
+      {/* Pass projects to Outlet context */}
       <Outlet context={{ content, projects }} />
 
       <Footer />
