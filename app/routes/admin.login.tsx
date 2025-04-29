@@ -5,7 +5,7 @@ import {
   useActionData,
   useSearchParams,
 } from "react-router";
-import { Button } from "../components/ui/Button";
+import { Button } from "../../../components/ui/Button";
 import type { Route } from "./+types/admin.login";
 
 import {
@@ -14,7 +14,7 @@ import {
   getSessionCookie,
   sign,
   verify,
-} from "../utils/auth";
+} from "../../../utils/auth";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);

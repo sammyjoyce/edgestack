@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { validateErrorResponse } from "../../../database/valibot-validation";
-import type { loader } from "../../routes/admin.index";
-import { Button } from "../ui/Button";
-import { Container } from "../ui/Container";
-import { FadeIn } from "../ui/FadeIn";
-import { SectionIntro } from "../ui/SectionIntro";
+import type { loader } from "../pages/index";
+import { Button } from "../../../components/ui/Button";
+import { Container } from "../../../components/ui/Container";
+import { FadeIn } from "../../../components/ui/FadeIn";
+import { SectionIntro } from "../../../components/ui/SectionIntro";
 import { AboutSectionEditor } from "./AboutSectionEditor";
 import { ContactSectionEditor } from "./ContactSectionEditor";
 import { HeroSectionEditor } from "./HeroSectionEditor";

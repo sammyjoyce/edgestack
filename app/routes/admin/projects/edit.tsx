@@ -10,10 +10,10 @@ import {
 } from "react-router-dom";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router-dom";
 import type { NewProject, Project } from "../../../../database/schema";
-import { Button } from "../../../components/ui/Button";
-import { FadeIn } from "../../../components/ui/FadeIn";
-import { getProjectById, updateProject } from "../../../db/index";
-import { getSessionCookie, verify } from "../../../utils/auth";
+import { Button } from "../../../../components/ui/Button";
+import { FadeIn } from "../../../../components/ui/FadeIn";
+import { getProjectById, updateProject } from "../../../../db/index";
+import { getSessionCookie, verify } from "../../../../utils/auth";
 
 // Define CloudflareEnv type
 interface CloudflareEnv {
@@ -151,7 +151,7 @@ export async function action({
     // This is necessary because valibot's insert schema expects all required fields
     try {
       const { validateProjectInsert } = await import(
-        "../../../database/valibot-validation"
+        "../../../../database/valibot-validation"
       );
       validateProjectInsert(projectInsertObj);
     } catch (e: any) {

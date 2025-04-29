@@ -3,10 +3,10 @@ import { data } from "react-router"; // Assuming 'data' is the correct helper
 import type { LoaderFunctionArgs } from "react-router";
 import { Link, useLoaderData } from "react-router-dom";
 import type { Project } from "../../../../database/schema";
-import { Button } from "../../../components/ui/Button";
-import { FadeIn } from "../../../components/ui/FadeIn";
-import { getAllProjects } from "../../../db/index";
-import { getSessionCookie, verify } from "../../../utils/auth";
+import { Button } from "../../../../components/ui/Button";
+import { FadeIn } from "../../../../components/ui/FadeIn";
+import { getAllProjects } from "../../../../db/index";
+import { getSessionCookie, verify } from "../../../../utils/auth";
 
 // Define CloudflareEnv type based on context usage elsewhere
 interface CloudflareEnv {

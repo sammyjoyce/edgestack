@@ -2,10 +2,10 @@ import React from "react";
 import { Form, Link, data, redirect, useActionData } from "react-router-dom";
 import type { ActionFunctionArgs } from "react-router-dom";
 import type { NewProject } from "../../../../database/schema";
-import { Button } from "../../../components/ui/Button";
-import { FadeIn } from "../../../components/ui/FadeIn";
-import { createProject } from "../../../db/index";
-import { getSessionCookie, verify } from "../../../utils/auth";
+import { Button } from "../../../../components/ui/Button";
+import { FadeIn } from "../../../../components/ui/FadeIn";
+import { createProject } from "../../../../db/index";
+import { getSessionCookie, verify } from "../../../../utils/auth";
 
 // Define CloudflareEnv type based on context usage elsewhere
 interface CloudflareEnv {
@@ -52,7 +52,7 @@ export async function action({
     // Validate newProjectData using Valibot
     try {
       const { validateProjectInsert } = await import(
-        "../../../database/valibot-validation"
+        "../../../../database/valibot-validation"
       );
       validateProjectInsert({ ...newProjectData });
     } catch (e: any) {

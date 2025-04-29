@@ -1,7 +1,7 @@
 import { data, redirect } from "react-router-dom";
 import type { ActionFunctionArgs } from "react-router-dom";
-import { deleteProject } from "../../../db/index";
-import { getSessionCookie, verify } from "../../../utils/auth";
+import { deleteProject } from "../../../../db/index";
+import { getSessionCookie, verify } from "../../../../utils/auth";
 
 // Define CloudflareEnv type
 interface CloudflareEnv {

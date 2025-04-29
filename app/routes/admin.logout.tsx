@@ -1,5 +1,5 @@
 import { redirect } from "react-router";
-import { COOKIE_NAME } from "../utils/auth";
+import { COOKIE_NAME } from "../../../utils/auth";
 
 export async function loader() {
   // Clear the cookie
@@ -10,7 +10,7 @@ export async function loader() {
   });
 }
 
-import { Button } from "../components/ui/Button";
+import { Button } from "../../../components/ui/Button";
 
 // Accessible logout page
 export default function Logout() {

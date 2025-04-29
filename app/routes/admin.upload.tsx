@@ -1,7 +1,7 @@
 import { data } from "react-router"; // Use data helper instead of json
 import type { ActionFunctionArgs } from "react-router";
-import { updateContent } from "../db/index"; // Import database update function
-import { getSessionCookie, verify } from "../utils/auth";
+import { updateContent } from "../../../db/index"; // Import database update function
+import { getSessionCookie, verify } from "../../../utils/auth";
 
 interface CloudflareEnv {
   ASSETS_BUCKET: R2Bucket;
@@ -75,7 +75,7 @@ export async function action({
       // Validate key and publicUrl using Valibot
       try {
         const { validateContentInsert, validateMediaInsert } = await import(
-          "../../database/valibot-validation"
+          "../../../database/valibot-validation"
         );
         validateContentInsert({ key, value: publicUrl });
         // If you want to also store in media table, validate media object as well
