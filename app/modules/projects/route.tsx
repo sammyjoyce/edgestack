@@ -1,10 +1,10 @@
-import { type MetaFunction, Outlet, useLoaderData } from "react-router";
-import type { LoaderFunctionArgs } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 
-import { schema } from "../../../database/schema";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
-import type { Route } from ".react-router/types/app/routes/+types/projects";
+import { schema } from "~/database/schema";
+import { getAllContent } from "~/db";
+import Footer from "~/modules/common/components/Footer";
+import Header from "~/modules/common/components/Header";
+import type { Route } from "./+types/route";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -19,29 +19,12 @@ export const meta: Route.MetaFunction = () => {
 // Loader to fetch dynamic content from D1
 // The loader should return the data type, React Router handles the Response wrapping
 export async function loader({ context }: Route.LoaderArgs) {
-  let contentMap: { [key: string]: string } = {};
-
   try {
-    // Query the content table
-    const results = await context.db
-      .select({ key: schema.content.key, value: schema.content.value })
-      .from(schema.content);
-
-    if (results) {
-      contentMap = (results as Array<{ key: string; value: string }>).reduce(
-        (acc: { [key: string]: string }, { key, value }) => {
-          acc[key] = value;
-          return acc;
-        },
-        {}
-      );
-    }
-    // Return the plain data object directly
-    return { content: contentMap };
+    const content = await getAllContent(context.db);
+    return { content };
   } catch (error) {
     console.error("Failed to fetch content from D1:", error);
-    // Return the plain data object directly
-    return { content: {} };
+    return { content: {} as Record<string, string> };
   }
 }
 
