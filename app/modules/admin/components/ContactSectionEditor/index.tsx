@@ -77,14 +77,14 @@ export function ContactSectionEditor({
   );
 
   return (
-    <section className="bg-white rounded-lg shadow p-6 mb-8 border">
-      <h2 className="text-xl font-bold text-gray-900 mb-2">
+    <section className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"> {/* Adjusted shadow/border/padding */}
+      <h2 className="text-xl font-semibold text-gray-900 mb-6"> {/* Use semibold, increased margin */}
         Contact Section (Home Page)
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4"> {/* Adjusted gap */}
         {contactFields.map(({ key, label, rows, placeholder }) => (
-          <div className="flex flex-col gap-1" key={key}>
-            <label htmlFor={key} className="font-bold text-gray-700">
+          <div className="flex flex-col gap-y-1" key={key}> {/* Adjusted gap */}
+            <label htmlFor={key} className="block text-sm font-medium text-gray-700"> {/* Standard label */}
               {label}
             </label>
             {rows > 1 && key === "contact_intro" ? (
@@ -101,7 +101,7 @@ export function ContactSectionEditor({
                 rows={rows}
                 defaultValue={initialContent[key] || ""}
                 placeholder={placeholder}
-                className="border rounded p-2 focus:outline-hidden focus:ring-2 focus:ring-blue-400 bg-white"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Standard input */
                 onBlur={handleBlur}
               />
             ) : (
@@ -111,7 +111,7 @@ export function ContactSectionEditor({
                 id={key}
                 defaultValue={initialContent[key] || ""}
                 placeholder={placeholder}
-                className="border rounded p-2 focus:outline-hidden focus:ring-2 focus:ring-blue-400 bg-white"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Standard input */
                 onBlur={handleBlur}
               />
             )}

@@ -42,14 +42,14 @@ export function AboutSectionEditor({
   );
 
   return (
-    <div className="overflow-hidden bg-gray-50 sm:rounded-lg mb-8">
+    <div className="overflow-hidden bg-white sm:rounded-lg shadow-sm border border-gray-200"> {/* Use white bg, adjusted shadow/border */}
       <div className="px-4 py-5 sm:p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">About Section</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">About Section</h2> {/* Use semibold, increased margin */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-y-1.5"> {/* Reduced gap */}
             <label
               htmlFor="about_title"
-              className="font-semibold text-gray-700"
+              className="block text-sm font-medium text-gray-700" /* Standard label */
             >
               About Title
             </label>
@@ -58,10 +58,10 @@ export function AboutSectionEditor({
               id="about_title"
               rows={2}
               defaultValue={initialContent.about_title || ""}
-              className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Standard input */
               onBlur={handleBlur}
             />
-            <label htmlFor="about_text" className="font-semibold text-gray-700">
+            <label htmlFor="about_text" className="block text-sm font-medium text-gray-700 mt-3"> {/* Standard label, added margin */}
               About Text
             </label>
             {/* Rich text editor for about_text using Lexical */}
@@ -71,28 +71,31 @@ export function AboutSectionEditor({
               disabled={fetcher.state === "submitting"}
             />
           </div>
-          <div className="flex flex-col gap-2 items-center justify-center">
+          <div className="flex flex-col items-center justify-start pt-1"> {/* Align top */}
             <label
-              className="font-semibold text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 mb-1 self-start" /* Standard label, align left */
               htmlFor="about-image-upload"
             >
               About Image
-              <span className="ml-1 text-xs text-gray-500" role="tooltip">
-                Upload or drag and drop an image for the about section.
-              </span>
             </label>
+             <p className="text-xs text-gray-500 mb-2 self-start"> {/* Help text */}
+                Upload or drag and drop an image for the about section.
+              </p>
             <div
               id="about-image-upload-status"
               role="status"
               aria-live="polite"
-              className="sr-only"
-            ></div>
+              className="text-sm text-gray-600 mb-2 h-5 self-start" /* Align left */
+            >
+              {/* Status message will be inserted here by JS */}
+            </div>
             <ImageUploadZone
               onDrop={handleDrop}
               disabled={imageUploading}
               uploading={imageUploading}
               imageUrl={aboutImageUrl}
               label="About Image"
+              className="mt-1" /* Added margin */
             />
           </div>
         </div>
