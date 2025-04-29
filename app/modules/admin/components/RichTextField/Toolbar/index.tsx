@@ -54,7 +54,7 @@ export default function LexicalToolbar(): JSX.Element {
 
   // Styled toolbar for rich text formatting
   return (
-    <div className="flex gap-2 bg-white border shadow-sm rounded-md px-2 py-1 mb-2">
+    <div className="flex gap-1 bg-gray-50 border border-b-0 border-gray-300 rounded-t-md px-2 py-1"> {/* Adjusted bg, border, gap, padding */}
       {TOOLBAR_BUTTONS.map((btn: ToolbarButton) => (
         <button
           key={btn.arg}
@@ -62,10 +62,10 @@ export default function LexicalToolbar(): JSX.Element {
           aria-label={btn.label}
           aria-pressed={active[btn.arg] ?? false}
           className={clsx(
-            "px-2 py-1 rounded border text-sm focus:outline-hidden transition-colors",
+            "px-2 py-0.5 rounded border text-xs focus:outline-none transition-colors", /* Adjusted padding/size */
             active[btn.arg]
-              ? "bg-indigo-600 text-white border-indigo-600"
-              : "border-gray-200 text-gray-700 hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500"
+              ? "bg-blue-600 text-white border-blue-600" /* Adjusted colors */
+              : "border-transparent text-gray-600 hover:bg-gray-200 focus:ring-1 focus:ring-blue-500" /* Adjusted colors/focus */
           )}
           onMouseDown={(e) => {
             e.preventDefault();

@@ -78,26 +78,23 @@ export default function SectionSorter({
   }, []);
 
   return (
-    <section className="mb-8" aria-labelledby="section-order-heading">
+    <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-200" aria-labelledby="section-order-heading"> {/* Added container style */}
       <h2
         id="section-order-heading"
-        className="text-xl font-bold text-gray-900 mb-2"
+        className="text-xl font-semibold text-gray-900 mb-2" /* Use semibold */
       >
-        Section Order
+        Home Page Section Order
       </h2>
       <p
         id="section-sorter-instructions"
-        className="text-sm text-gray-600 mb-2"
-        aria-live="polite"
+        className="text-sm text-gray-600 mb-4" /* Increased margin */
       >
-        Use the arrow keys or drag and drop to reorder sections. Press Space or
-        Enter to pick up and drop a section. Current order will be saved
-        automatically.
+        Drag and drop to reorder sections. Changes are saved automatically.
       </p>
       <div
         role="status"
         aria-live="polite"
-        className="text-sm text-gray-600 h-5 mb-2"
+        className="text-sm text-gray-600 h-5 mb-4" /* Increased margin */
       >
         {statusMsg}
       </div>
@@ -174,8 +171,8 @@ function SortableItem({
       {...attributes}
       {...listeners}
       style={style}
-      className={`flex items-center justify-between rounded border bg-white px-4 py-2 shadow-sm cursor-grab focus:outline-hidden focus:ring-2 focus:ring-indigo-500 ${
-        isDragging ? "opacity-50" : ""
+      className={`flex items-center justify-between rounded border border-gray-200 bg-white px-4 py-2 shadow-sm cursor-grab focus:outline-none focus:ring-2 focus:ring-blue-500 ${ /* Adjusted border/focus */
+        isDragging ? "opacity-50 ring-2 ring-blue-500" : "" /* Style when dragging */
       }`}
       tabIndex={0}
       aria-label={`Section ${label}, position ${

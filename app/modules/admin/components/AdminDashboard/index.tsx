@@ -134,17 +134,17 @@ export default function AdminDashboard(): JSX.Element {
   const sectionsOrder = safeContent.home_sections_order as string | undefined;
 
   return (
-    <Container>
-      <SectionIntro title="Home Editor" className="mb-6" />
+    <Container className="space-y-10"> {/* Add vertical spacing between sections */}
+      <SectionIntro title="Home Page Editor" className="mb-8" /> {/* Adjusted margin */}
       {/* 🔀 Drag-to-reorder CMS sections */}
       <SectionSorter orderValue={sectionsOrder} fetcher={fetcher} />
       {status && (
         <FadeIn>
           <div
-            className={`p-2 mb-4 rounded ${
+            className={`p-3 mb-6 rounded text-sm border ${ /* Adjusted padding/margin/size/border */
               status.isError
-                ? "bg-red-100 text-red-700"
-                : "bg-green-100 text-green-700"
+                ? "bg-red-50 text-red-700 border-red-200"
+                : "bg-green-50 text-green-700 border-green-200"
             }`}
             role="status"
             aria-live="polite"
@@ -174,22 +174,22 @@ export default function AdminDashboard(): JSX.Element {
       </section>
 
       <section aria-label="Recent Projects Editor" role="region" tabIndex={0}>
-        <div className="p-6 bg-white rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-3">Projects Section</h2>
+        <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200"> {/* Adjusted shadow/border */}
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Projects Section</h2> {/* Adjusted size/color/margin */}
 
-          <div className="grid grid-cols-1 gap-4 mt-4">
+          <div className="grid grid-cols-1 gap-6 mt-4"> {/* Increased gap */}
             <div>
               <label
                 htmlFor="projects_intro_title"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-1" /* Added margin */
               >
-                Projects Title
+                Projects Intro Title
               </label>
               <input
                 type="text"
                 name="projects_intro_title"
                 id="projects_intro_title"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
                 defaultValue={
                   safeContent.projects_intro_title || "Recent Projects"
                 }
@@ -204,15 +204,15 @@ export default function AdminDashboard(): JSX.Element {
             <div>
               <label
                 htmlFor="projects_intro_text"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-1" /* Added margin */
               >
                 Projects Intro Text
               </label>
               <textarea
                 name="projects_intro_text"
                 id="projects_intro_text"
-                rows={2}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                rows={3} /* Increased rows */
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
                 defaultValue={
                   safeContent.projects_intro_text ||
                   "Take a look at some of our recent work."
@@ -225,28 +225,25 @@ export default function AdminDashboard(): JSX.Element {
               />
             </div>
           </div>
-          <div className="mb-4 text-gray-700">
-            <ul className="list-disc list-inside text-gray-600 mb-2">
+          <div className="mt-4 text-sm text-gray-600 space-y-1"> {/* Adjusted margin/size/spacing */}
+            <p><strong>Note:</strong></p>
+            <ul className="list-disc list-inside space-y-1"> {/* Added spacing */}
               <li>
-                To add, edit, or reorder projects, visit the Projects admin
-                page.
+                To add, edit, or reorder projects, visit the Projects admin page.
               </li>
               <li>
-                To feature a project on the home page, edit the project and
-                enable the <span className="font-semibold">"Featured"</span>{" "}
-                option.
+                To feature a project on the home page, edit the project and enable the <span className="font-semibold text-gray-700">"Featured"</span> option.
               </li>
               <li>
-                Project order and details are managed in the Projects admin
-                page.
+                Project display order and details are managed in the Projects admin page.
               </li>
             </ul>
           </div>
-          <div className="mt-4">
+          <div className="mt-6"> {/* Increased margin */}
             <Button
-              as="a"
-              href="/admin/projects"
-              className="bg-blue-600 text-white hover:bg-blue-700"
+              as={Link} /* Use Link component */
+              to="/admin/projects" /* Use 'to' prop */
+              className="bg-blue-600 text-white hover:bg-blue-700 text-sm" /* Explicit style, text-sm */
               aria-label="Go to Projects Admin"
             >
               Go to Projects Admin
