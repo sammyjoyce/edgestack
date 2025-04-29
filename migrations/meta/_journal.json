@@ -1,20 +1,41 @@
 {
-	"version": "7",
-	"dialect": "sqlite",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "6",
-			"when": 1744788229567,
-			"tag": "0000_wide_baron_strucker",
-			"breakpoints": true
-		},
-		{
-			"idx": 1,
-			"version": "6",
-			"when": 1745855251312,
-			"tag": "0001_round_monster_badoon",
-			"breakpoints": true
-		}
-	]
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1744788229567,
+      "tag": "0000_wide_baron_strucker",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1745855251312,
+      "tag": "0001_round_monster_badoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1745934234807,
+      "tag": "0002_sudden_khan",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1745934443652,
+      "tag": "0003_large_odin",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1745934681311,
+      "tag": "0004_nebulous_mentallo",
+      "breakpoints": true
+    }
+  ]
 }
