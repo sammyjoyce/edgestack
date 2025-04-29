@@ -1,11 +1,11 @@
-import type { ActionFunctionArgs } from "react-router";
 import { data } from "react-router";
+import type { Route } from "./+types/upload";
 
 import { updateContent } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { validateContentInsert } from "~/database/valibot-validation";
 
-export async function action({ request, context }: ActionFunctionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
 
   const badRequest = (msg: string) =>

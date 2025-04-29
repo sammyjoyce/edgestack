@@ -1,10 +1,11 @@
 import React, { type JSX } from "react";
-import { redirect, type LoaderFunctionArgs } from "react-router";
+import { redirect } from "react-router";
+import type { Route } from "./+types/logout";
 
 import { COOKIE_NAME } from "~/modules/common/utils/auth";
 import { Button } from "~/modules/common/components/ui/Button";
 
-export async function loader({}: LoaderFunctionArgs) {
+export async function loader({}: Route.LoaderArgs) {
   // Clear the cookie
   return redirect("/admin/login", {
     headers: {

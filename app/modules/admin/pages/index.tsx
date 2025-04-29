@@ -1,9 +1,6 @@
 import React, { type JSX } from "react";
-import {
-  data,
-  type LoaderFunctionArgs,
-  type ActionFunctionArgs,
-} from "react-router";
+import { data } from "react-router";
+import type { Route } from "./+types/index";
 
 import AdminDashboard from "../components/AdminDashboard";
 
@@ -11,7 +8,7 @@ import { getAllContent, updateContent } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { validateContentInsert } from "~/database/valibot-validation";
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
 
   const sessionValue = getSessionCookie(request);
@@ -27,7 +24,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return data(items);
 }
 
-export async function action({ request, context }: ActionFunctionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
 
   const badRequest = (msg: string) =>
