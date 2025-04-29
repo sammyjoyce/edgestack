@@ -64,7 +64,7 @@ export async function action({ request, context }: Route.ActionArgs) {
       if (Object.keys(updates).length === 0) {
         return badRequest("Invalid content update payload.");
       }
-      await updateContent(context.db as any, updates);
+      await updateContent(context.db, updates); // Remove 'as any'
       return data({ success: true });
     } catch (error: any) {
       return data(

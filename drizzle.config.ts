@@ -3,7 +3,7 @@ import "dotenv/config";
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
-	schema: "./database/schema.ts",
+	schema: "./app/database/schema.ts", // Correct path to schema
 	out: "./migrations",
 	dialect: "sqlite",
 	driver: "d1-http",
