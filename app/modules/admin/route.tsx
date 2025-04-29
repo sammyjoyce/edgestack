@@ -4,41 +4,50 @@ import {
   FolderIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import { Outlet } from "react-router";
-import { redirect } from "react-router";
-import { NavLink } from "react-router-dom";
-import { getSessionCookie, verify } from "../../utils/auth";
+import React from "react";
+import {
+  NavLink,
+  Outlet,
+  redirect,
+  type LoaderFunctionArgs,
+} from "react-router";
+import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 
 export async function loader({
   request,
   context,
-}: {
-  request: Request;
-  context: any;
-}) {
+}: LoaderFunctionArgs) {
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||
-    !(context.cloudflare.env as any).JWT_SECRET ||
-    !(await verify(sessionValue, (context.cloudflare.env as any).JWT_SECRET))
+    !context.JWT_SECRET ||
+    !(await verify(sessionValue, context.JWT_SECRET))
   ) {
     return redirect("/admin/login");
   }
   return null;
 }
 
-const navigation = [
+interface NavItem {
+  name: string;
+  href: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
+
+const navigation: NavItem[] = [
   { name: "Dashboard", href: "/admin", icon: HomeIcon },
   { name: "Projects", href: "/admin/projects", icon: FolderIcon },
   { name: "Live Site", href: "/", icon: DocumentDuplicateIcon },
   { name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
 
-function classNames(...classes: (string | boolean | undefined)[]) {
+function classNames(
+  ...classes: Array<string | boolean | null | undefined>
+): string {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function AdminLayout() {
+export default function AdminLayout(): JSX.Element {
   return (
     <div className="min-h-screen flex bg-gray-50">
       <aside className="flex w-72 flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 py-4 border-r border-gray-200 shadow-md">
