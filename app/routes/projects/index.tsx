@@ -1,6 +1,6 @@
 import React from "react";
 import { useOutletContext } from "react-router";
-import RecentProjects from "../../components/RecentProjects";
+import RecentProjects from "../../../components/RecentProjects";
 
 // Define the type for the context passed from the parent route
 type ProjectsContext = {

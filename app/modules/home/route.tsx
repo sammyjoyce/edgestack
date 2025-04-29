@@ -2,7 +2,7 @@ import { data, useLoaderData } from "react-router"; // data helper is typically 
 import { schema } from "../../database/schema";
 import type { Route } from ".react-router/types/app/routes/+types/home";
 
-import type { Project } from "../../database/schema"; // Import Project type
+import type { Project } from "../../../database/schema"; // Import Project type
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import Footer from "../../components/Footer";
