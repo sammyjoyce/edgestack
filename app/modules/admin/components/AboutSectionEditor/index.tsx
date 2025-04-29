@@ -1,4 +1,4 @@
-import React, { type JSX } from "react";
+import React, { type JSX, useState, useEffect } from "react";
 import type { FetcherWithComponents } from "react-router";
 
 import RichTextField from "~/modules/admin/components/RichTextField";
@@ -17,9 +17,10 @@ export function AboutSectionEditor({
   fetcher,
   initialContent,
   onImageUpload,
-  imageUploading,
   aboutImageUrl,
 }: AboutSectionEditorProps): JSX.Element {
+  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
+
   const handleBlur = React.useCallback(
     (e: React.FocusEvent<HTMLTextAreaElement>) => {
       const { name, value } = e.currentTarget;
@@ -35,11 +36,17 @@ export function AboutSectionEditor({
       const [file] = files;
       if (!file) return;
       onImageUpload(file);
-      const status = document.getElementById("about-image-upload-status");
-      if (status) status.textContent = "Uploading About Image...";
+      setUploadStatus("Uploading About Image...");
     },
     [onImageUpload]
   );
+
+  // Update status message when upload completes
+  useEffect(() => {
+    if (!imageUploading && uploadStatus === "Uploading About Image...") {
+      setUploadStatus("About Image uploaded successfully!");
+    }
+  }, [imageUploading, uploadStatus]);
 
   return (
     <div className="overflow-hidden bg-white sm:rounded-lg shadow-sm border border-gray-200"> {/* Use white bg, adjusted shadow/border */}
@@ -87,7 +94,7 @@ export function AboutSectionEditor({
               aria-live="polite"
               className="text-sm text-gray-600 mb-2 h-5 self-start" /* Align left */
             >
-              {/* Status message will be inserted here by JS */}
+              {uploadStatus}
             </div>
             <ImageUploadZone
               onDrop={handleDrop}

@@ -1,11 +1,5 @@
-import React, {
-  useRef,
-  useState,
-  useCallback,
-  useRef,
-} from "react"; // Keep only useRef
+import React, { useRef } from "react"; // Keep only useRef
 import type { FetcherWithComponents } from "react-router";
-// Remove unused imports: useState, useCallback, useEffect, validateContentInsert
 import { useTextContentForm } from "~/modules/admin/hooks/useTextContentForm"; // Import the hook
 
 // Config array for text fields with help text
@@ -77,15 +71,6 @@ interface TextContentFormProps {
   initialContent: Record<string, string>;
   formRef?: React.RefObject<HTMLFormElement>;
 }
-
-const validateField = (key: string, value: string): string | null => {
-  try {
-    validateContentInsert({ key, value });
-    return null;
-  } catch (err: any) {
-    return err.message || "Validation failed";
-  }
-};
 
 // Simple accessible tooltip component
 function Tooltip({ id, children }: { id: string; children: React.ReactNode }) {
@@ -180,7 +165,7 @@ export function TextContentForm({
               rows={rows}
               aria-label={label}
               aria-describedby={`help-${key}`}
-              value={autoSave ? fields[key] ?? "" : pendingFields[key] ?? ""}
+              value={fields[key] ?? ""} // Use fields directly from hook
               onBlur={handleBlur}
               onChange={handleChange}
               tabIndex={0}
