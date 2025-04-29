@@ -1,4 +1,4 @@
-import { isbot } from "isbot";
+import { isbot } from "@common/utils/isbot";
 import { renderToReadableStream } from "react-dom/server";
 import type { AppLoadContext, EntryContext } from "react-router";
 import { ServerRouter } from "react-router";

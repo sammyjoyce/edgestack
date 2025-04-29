@@ -1,5 +1,5 @@
-import { asc, desc, eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/d1";
+import { asc, desc, eq } from "@common/db/drizzle";
+import { drizzle } from "@common/db/drizzle";
 import type { NewContent } from "../../database/schema"; // Import asc for ordering
 import * as schema from "../../database/schema";
 import type { NewProject, Project } from "../../database/schema"; // Import Project types

@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx from "@common/utils/clsx";
 
 import { Container } from "./Container";
 import { FadeIn } from "./FadeIn";

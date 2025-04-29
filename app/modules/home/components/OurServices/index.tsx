@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "@common/ui/animation";
 import RichTextRenderer from "./RichTextRenderer";
 import { Button } from "./ui/Button";
 import { Container } from "./ui/Container";

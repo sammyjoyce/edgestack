@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx from "@common/utils/clsx";
 import React from "react";
 import { Link } from "react-router-dom"; // Import Link
 import type { Project } from "../../database/schema"; // Import Project type

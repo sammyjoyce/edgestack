@@ -1,6 +1,6 @@
 import type React from "react";
 import { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
+import { useDropzone } from "@common/ui/hooks/useDropzone";
 
 interface ImageUploadZoneProps {
   onDrop: (files: File[]) => void;

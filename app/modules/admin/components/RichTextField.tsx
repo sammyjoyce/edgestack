@@ -7,7 +7,7 @@ import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 // Heading support can be added via custom commands or plugins if needed.
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import type { EditorState } from "lexical";
+import type { EditorState } from "@common/utils/lexical";
 import { useRef } from "react";
 import LexicalToolbar from "./LexicalToolbar";
 
