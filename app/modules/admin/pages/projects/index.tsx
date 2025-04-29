@@ -1,46 +1,42 @@
-import React from "react";
-import { data } from "react-router"; // Assuming 'data' is the correct helper
-import type { LoaderFunctionArgs } from "react-router";
-import { Link, useLoaderData } from "react-router-dom";
-import type { Project } from "../../../../database/schema";
-import { Button } from "../../../../components/ui/Button";
-import { FadeIn } from "../../../../components/ui/FadeIn";
-import { getAllProjects } from "../../../../db/index";
-import { getSessionCookie, verify } from "../../../../utils/auth";
+import React, { type JSX } from "react";
+import {
+  data,
+  type LoaderFunctionArgs,
+  Link,
+  useLoaderData,
+} from "react-router";
 
-// Define CloudflareEnv type based on context usage elsewhere
-interface CloudflareEnv {
-  JWT_SECRET: string;
-  db: any; // Use 'any' for now, or import AppLoadContext if available
-}
+import { Button } from "~/modules/common/components/ui/Button";
+import { FadeIn } from "~/modules/common/components/ui/FadeIn";
+import { getAllProjects } from "~/db";
+import { getSessionCookie, verify } from "~/modules/common/utils/auth";
+import type { Project } from "~/database/schema";
 
-// Loader to fetch all projects
-export async function loader({
-  request,
-  context,
-}: LoaderFunctionArgs & { context: CloudflareEnv }) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
+  const unauthorized = () =>
+    data({ projects: [], error: "Unauthorized" }, { status: 401 });
+
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||
     !context.JWT_SECRET ||
     !(await verify(sessionValue, context.JWT_SECRET))
   ) {
-    throw new Response("Unauthorized", { status: 401 });
+    return unauthorized();
   }
   try {
     const projects = await getAllProjects(context.db);
-    return { projects };
+    return data({ projects, error: undefined });
   } catch (error) {
-    console.error("Error fetching projects:", error);
-    return { projects: [], error: "Failed to load projects" };
+    return data(
+      { projects: [], error: "Failed to load projects" },
+      { status: 500 }
+    );
   }
 }
 
-export default function AdminProjectsIndex() {
-  const { projects, error } = useLoaderData<{
-    projects: Project[];
-    error?: string;
-  }>();
+export default function AdminProjectsIndex(): JSX.Element {
+  const { projects, error } = useLoaderData<typeof loader>();
 
   return (
     <FadeIn>
@@ -69,7 +65,7 @@ export default function AdminProjectsIndex() {
       ) : (
         <div className="bg-white shadow overflow-hidden rounded-md">
           <ul role="list" className="divide-y divide-gray-200">
-            {projects.map((project) => (
+            {projects.map((project: Project) => (
               <li
                 key={project.id}
                 className="px-4 py-4 sm:px-6 hover:bg-gray-50"
