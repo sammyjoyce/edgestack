@@ -63,7 +63,8 @@ export default function SectionSorter({
     const value = sections.map((s) => s.id).join(",");
     const data = new FormData();
     data.append("home_sections_order", value); // <<< HERE
-    fetcher.submit(data, { method: "post" });
+    // Explicitly target the admin index route action
+    fetcher.submit(data, { method: "post", action: "/admin" });
   }, [sections, fetcher]);
 
   /* --- Drag end handler -------------------------------------------------- */
