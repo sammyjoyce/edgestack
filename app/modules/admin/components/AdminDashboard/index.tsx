@@ -144,7 +144,7 @@ export default function AdminDashboard(): React.JSX.Element {
       <SectionIntro title="Home Page Editor" className="mb-8" />{" "}
       {/* Adjusted margin */}
       {/* 🔀 Drag-to-reorder CMS sections */}
-      <SectionSorter
+      <SectionSorter // <<< HERE
         orderValue={sectionsOrder}
         fetcher={fetcher as FetcherWithComponents<any>}
       />

@@ -62,7 +62,7 @@ export default function SectionSorter({
   useEffect(() => {
     const value = sections.map((s) => s.id).join(",");
     const data = new FormData();
-    data.append("home_sections_order", value);
+    data.append("home_sections_order", value); // <<< HERE
     fetcher.submit(data, { method: "post" });
   }, [sections, fetcher]);
 
