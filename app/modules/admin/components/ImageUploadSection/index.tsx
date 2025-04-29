@@ -1,12 +1,19 @@
-import type React from "react";
-import { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useFetcher } from "react-router";
-import { Button } from "../../../components/ui/Button";
-import { Container } from "../../../components/ui/Container";
-import { FadeIn } from "../../../components/ui/FadeIn";
-import { GrayscaleTransitionImage } from "../ui/GrayscaleTransitionImage";
-import { SectionIntro } from "../../../components/ui/SectionIntro";
-import ImageUploadZone from "./ImageUploadZone";
+import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
+import { FadeIn } from "~/modules/common/components/ui/FadeIn";
+import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
+import { Button } from "~/modules/common/components/ui/Button";
+import { GrayscaleTransitionImage } from "~/modules/common/components/ui/GrayscaleTransitionImage";
+
+const imageFields = [
+  { key: "hero_image_url", label: "Hero Image" },
+  { key: "about_image_url", label: "About Image" },
+  { key: "service_1_image", label: "Service 1 Image" },
+  { key: "service_2_image", label: "Service 2 Image" },
+  { key: "service_3_image", label: "Service 3 Image" },
+  { key: "service_4_image", label: "Service 4 Image" },
+];
 
 interface ImageUploadSectionProps {
   initialContent: Record<string, string>;
@@ -20,33 +27,66 @@ export function ImageUploadSection({
   const localRef = useRef<HTMLDivElement>(null);
   const ref = sectionRef || localRef;
 
-  // Config array for image fields
-  const imageFields = [
-    { key: "hero_image_url", label: "Hero Image" },
-    { key: "about_image_url", label: "About Image" },
-    { key: "service_1_image", label: "Service 1 Image" },
-    { key: "service_2_image", label: "Service 2 Image" },
-    { key: "service_3_image", label: "Service 3 Image" },
-    { key: "service_4_image", label: "Service 4 Image" },
-  ];
+  // Status text for each upload (mirrors imageFields order)
+  const [statusTexts, setStatusTexts] = useState<string[]>(
+    Array(imageFields.length).fill("")
+  );
 
   // One fetcher per field
   const fetchers = imageFields.map(() => useFetcher());
   // Create refs for each file input
   const fileInputRefs = imageFields.map(() => useRef<HTMLInputElement>(null));
 
+  const makeDropHandler = useCallback(
+    (
+      idx: number,
+      fetcher: ReturnType<typeof useFetcher>,
+      key: string,
+      label: string
+    ) => (files: File[]) => {
+      const [file] = files;
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("key", key);
+
+      fetcher.submit(formData, {
+        method: "post",
+        action: "/admin/upload",
+        encType: "multipart/form-data",
+      });
+
+      setStatusTexts((prev) => {
+        const next = [...prev];
+        next[idx] = `Uploading ${label}…`;
+        return next;
+      });
+    },
+    []
+  );
+
   // Effect to clear file input on successful upload
   useEffect(() => {
     fetchers.forEach((fetcher, idx) => {
-      if (fetcher.state === "idle" && fetcher.data?.success) {
-        const inputRef = fileInputRefs[idx];
-        if (inputRef.current) {
-          inputRef.current.value = "";
+      if (fetcher.state === "idle") {
+        if (fetcher.data?.success) {
+          fileInputRefs[idx].current?.value = "";
+          setStatusTexts((prev) => {
+            const next = [...prev];
+            next[idx] = `${imageFields[idx].label} uploaded successfully!`;
+            return next;
+          });
+        } else if (fetcher.data?.error) {
+          setStatusTexts((prev) => {
+            const next = [...prev];
+            next[idx] = fetcher.data.error;
+            return next;
+          });
         }
       }
     });
-    // Depend on fetcher states and data to re-run the effect
-  }, [fetchers, fileInputRefs]);
+  }, [fetchers]);
 
   return (
     <section
@@ -56,12 +96,6 @@ export function ImageUploadSection({
       aria-labelledby="image-uploads-heading"
     >
       <SectionIntro title="Image Uploads" className="mb-4" />
-      <div
-        id="image-upload-status"
-        role="status"
-        aria-live="polite"
-        className="sr-only"
-      ></div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {imageFields.map(({ key, label }, idx) => {
           const fetcher = fetchers[idx];
@@ -92,33 +126,7 @@ export function ImageUploadSection({
                   fileInputRef={
                     fileInputRefs[idx] as React.RefObject<HTMLInputElement>
                   }
-                  onDrop={(files: File[]) => {
-                    if (files && files[0]) {
-                      const dataTransfer = new DataTransfer();
-                      dataTransfer.items.add(files[0]);
-                      const event = {
-                        target: { files: dataTransfer.files, name: "image" },
-                      };
-                      fetcher.submit(
-                        (() => {
-                          const formData = new FormData();
-                          formData.append("image", files[0]);
-                          formData.append("key", key);
-                          return formData;
-                        })(),
-                        {
-                          method: "post",
-                          action: "/admin/upload",
-                          encType: "multipart/form-data",
-                        }
-                      );
-                      // Announce status for screen readers
-                      const status = document.getElementById(
-                        "image-upload-status"
-                      );
-                      if (status) status.textContent = `Uploading ${label}...`;
-                    }
-                  }}
+                  onDrop={makeDropHandler(idx, fetcher, key, label)}
                   disabled={fetcher.state === "submitting"}
                   uploading={fetcher.state === "submitting"}
                   imageUrl={fetcher.data?.url || initialContent[key] || ""}
@@ -128,17 +136,25 @@ export function ImageUploadSection({
                 <Button
                   type="submit"
                   aria-label={`Upload ${label}`}
-                  onClick={() => {
-                    const status = document.getElementById(
-                      "image-upload-status"
-                    );
-                    if (status) status.textContent = `Uploading ${label}...`;
-                  }}
+                  onClick={() =>
+                    setStatusTexts((prev) => {
+                      const next = [...prev];
+                      next[idx] = `Uploading ${label}…`;
+                      return next;
+                    })
+                  }
                 >
                   {fetcher.state === "submitting"
                     ? `Uploading...`
                     : `Upload ${label}`}
                 </Button>
+                <div
+                  className="text-sm text-gray-600 h-5"
+                  role="status"
+                  aria-live="polite"
+                >
+                  {statusTexts[idx]}
+                </div>
                 <GrayscaleTransitionImage
                   id={`${key}_preview`}
                   src={fetcher.data?.url || initialContent[key] || ""}

@@ -1,5 +1,5 @@
-import { motion } from "@common/ui/animation";
-import type React from "react";
+import {motion} from "framer-motion";
+import React, { useMemo } from "react";
 
 const navigation = [
   {
@@ -53,7 +53,8 @@ const navigation = [
 
 const socialLinks = navigation[0].social;
 
-export default function Footer() {
+export default function Footer(): JSX.Element {
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
   return (
     <motion.footer
       initial={{ opacity: 0 }}
@@ -174,7 +175,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 border-gray-800 border-t pt-8 md:flex md:items-center md:justify-between">
           <p className="text-[11px] text-gray-400 leading-none">
-            &copy; {new Date().getFullYear()} Lush Constructions. All rights
+            &copy; {currentYear} Lush Constructions. All rights
             reserved.
             <br />
             NSW Builder License: 4632530
