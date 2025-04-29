@@ -9,10 +9,7 @@ import { NavLink, Outlet, redirect } from "react-router";
 import type { Route } from "./+types/route";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 
-export async function loader({
-  request,
-  context,
-}: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);
   if (
     !sessionValue ||

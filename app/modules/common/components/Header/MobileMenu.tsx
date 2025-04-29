@@ -27,7 +27,8 @@ export default function MobileMenu({
   onClose,
   menuItems,
   scrollToSection,
-}: MobileMenuProps): React.JSX.Element { // Changed to React.JSX.Element
+}: MobileMenuProps): React.JSX.Element {
+  // Changed to React.JSX.Element
   return (
     <Dialog as="div" className="lg:hidden" open={isOpen} onClose={onClose}>
       <AnimatePresence>
