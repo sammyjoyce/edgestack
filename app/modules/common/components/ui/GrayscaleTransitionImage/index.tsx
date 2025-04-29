@@ -5,8 +5,8 @@ import {
   useScroll,
   useTransform,
 } from "@common/ui/animation";
-import { useRef } from "react";
 import type React from "react";
+import { useRef } from "react";
 
 const MotionImage = motion.img;
 

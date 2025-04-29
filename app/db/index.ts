@@ -1,8 +1,6 @@
-import { asc, desc, eq } from "@common/db/drizzle";
-import { drizzle } from "@common/db/drizzle";
-import type { NewContent } from "../../database/schema"; // Import asc for ordering
+import { asc, desc, drizzle, eq } from "@common/db/drizzle";
+import type { NewContent, NewProject, Project } from "../../database/schema"; // Import asc for ordering // Import Project types
 import * as schema from "../../database/schema";
-import type { NewProject, Project } from "../../database/schema"; // Import Project types
 
 // See: https://orm.drizzle.team/docs (Drizzle ORM official docs)
 // Initialize Drizzle ORM with D1 database (Cloudflare D1 dialect)

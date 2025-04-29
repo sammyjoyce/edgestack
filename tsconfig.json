@@ -6,18 +6,11 @@
 	],
 	
 	"compilerOptions": {
+		"allowJs": true,
 		"checkJs": true,
 		"verbatimModuleSyntax": true,
 		"skipLibCheck": true,
 		"strict": true,
-		"noEmit": true,
-		"baseUrl": ".",
-		"paths": {
-			"@modules/*": ["app/modules/*"],
-			"@db/*": ["app/db/*"],
-			"@utils/*": ["app/utils/*"],
-			"@common/*": ["app/common/*"],
-			"@common/ui/*": ["app/common/ui/*"]
-		}
+		"noEmit": true
 	}
 }

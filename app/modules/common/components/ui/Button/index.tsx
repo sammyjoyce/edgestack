@@ -1,7 +1,7 @@
 import clsx from "@common/utils/clsx";
-import { forwardRef } from "react";
 import type { ForwardedRef, ReactNode } from "react";
-import { Link, type LinkProps } from "react-router";
+import { forwardRef } from "react";
+import { Link } from "react-router";
 
 // Simplified Button props - covers all the different use cases
 type ButtonProps = {

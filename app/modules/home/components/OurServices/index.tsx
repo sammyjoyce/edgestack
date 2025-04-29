@@ -1,9 +1,9 @@
-import { motion } from "@common/ui/animation";
-import RichTextRenderer from "./RichTextRenderer";
-import { Button } from "./ui/Button";
-import { Container } from "./ui/Container";
-import { FadeIn, FadeInStagger } from "./ui/FadeIn";
-import { SectionIntro } from "./ui/SectionIntro";
+import React, {type JSX, useMemo} from "react";
+import RichTextRenderer from "~/modules/common/components/RichTextRenderer";
+import {Container} from "~/modules/common/components/ui/Container";
+import {SectionIntro} from "~/modules/common/components/ui/SectionIntro";
+import {Button} from "~/modules/common/components/ui/Button";
+import {FadeIn, FadeInStagger} from "~/modules/common/components/ui/FadeIn";
 
 // Define props interface
 interface ServiceItem {
@@ -43,10 +43,25 @@ const defaultServices: ServiceItem[] = [
 ];
 
 export default function OurServices({
-  introTitle,
+  introTitle = "Renovation and Extension Specialists",
   introText,
   servicesData,
-}: OurServicesProps) {
+}: OurServicesProps): JSX.Element {
+  const renderedIntro = useMemo(() => {
+    if (!introText) {
+      return (
+        <p>Qualified &amp; Professional Building Services from Start&nbsp;to&nbsp;Finish</p>
+      );
+    }
+    try {
+      JSON.parse(introText); // validate JSON
+      return <RichTextRenderer json={introText} />;
+    } catch {
+      return <p>{introText}</p>;
+    }
+  }, [introText]);
+
+  const services = servicesData ?? defaultServices;
   return (
     <div className="relative bg-white py-16 sm:py-24" id="services">
       <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-gray-50" />
@@ -56,26 +71,9 @@ export default function OurServices({
           {/* Use props for intro title and text, with defaults */}
           <SectionIntro
             centered
-            title={introTitle ?? "Renovation and Extension Specialists"}
+            title={introTitle}
           >
-            {(() => {
-              try {
-                if (introText) {
-                  // Try to parse as JSON and render as rich text
-                  JSON.parse(introText);
-                  return <RichTextRenderer json={introText} />;
-                }
-              } catch {
-                // Fallback to plain text
-                return <p>{introText}</p>;
-              }
-              return (
-                <p>
-                  Qualified & Professional Building Services from Start to
-                  Finish
-                </p>
-              );
-            })()}
+            {renderedIntro}
             <div className="mt-6 flex justify-center">
               <Button to="#contact">Get Started</Button>
             </div>
@@ -85,7 +83,7 @@ export default function OurServices({
         <FadeInStagger faster>
           <div className="grid grid-cols-1 gap-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
             {/* Map over the provided services array or fallback to default */}
-            {(servicesData ?? defaultServices).map((service) => (
+            {services.map((service) => (
               <FadeIn key={service.title}>
                 <div className="group relative overflow-hidden rounded-lg">
                   {/* Service Image */}

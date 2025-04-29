@@ -1,11 +1,12 @@
-import clsx from "@common/utils/clsx";
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link
-import type { Project } from "../../database/schema"; // Import Project type
-import RichTextRenderer from "./RichTextRenderer";
-import { Container } from "./ui/Container";
-import { FadeIn, FadeInStagger } from "./ui/FadeIn";
-import { SectionIntro } from "./ui/SectionIntro";
+import { Link } from "react-router";
+import type {Project} from "~/database/schema";
+import {SectionIntro} from "~/modules/common/components/ui/SectionIntro";
+import {Container} from "~/modules/common/components/ui/Container";
+import {FadeIn, FadeInStagger} from "~/modules/common/components/ui/FadeIn";
+import {clsx} from "clsx";
+import RichTextRenderer from "~/modules/common/components/RichTextRenderer"; // Import Link
+
 
 // Define props interface
 interface RecentProjectsProps {
@@ -17,7 +18,7 @@ interface RecentProjectsProps {
 export default function RecentProjects({
   introTitle,
   introText,
-  projects = [], // Default to empty array if projects prop is not provided
+  projects = [],
 }: RecentProjectsProps) {
   // No longer use hardcoded data
 
