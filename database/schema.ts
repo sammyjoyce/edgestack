@@ -8,7 +8,7 @@ export const content = sqliteTable("content", {
 	type: text("type").notNull().default("text"), // Content type (text, image, markdown, etc.)
 	value: text("value").notNull(), // Content value
 	mediaId: integer("media_id").references(() => media.id), // Optional FK to media
-	sortOrder: integer("sort_order").default(0), // For ordered blocks
+	sortOrder: integer("sort_order").default(0).notNull(), // For ordered blocks
 	metadata: text("metadata"), // JSON blob for extras
 	updatedAt: integer("updated_at", { mode: "timestamp" }).default(new Date()).$onUpdate(() => new Date()), // Last update timestamp
 });
@@ -40,7 +40,7 @@ export const projects = sqliteTable("projects", {
 	slug: text("slug").unique(), // Pretty URL
 	published: integer("published", { mode: "boolean" }).default(true),
 	isFeatured: integer("is_featured", { mode: "boolean" }).default(false), // Flag for home page display
-	sortOrder: integer("sort_order").default(0), // Order on home page
+	sortOrder: integer("sort_order").default(0).notNull(), // Order on home page
 	createdAt: integer("created_at", { mode: "timestamp" }).default(new Date()), // Timestamp for creation
 	updatedAt: integer("updated_at", { mode: "timestamp" }).default(new Date()).$onUpdate(() => new Date()), // Timestamp for last update
 });
