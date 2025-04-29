@@ -2,13 +2,6 @@ import { asc, desc, drizzle, eq } from "@common/db/drizzle";
 import type { NewContent, NewProject, Project } from "../../database/schema"; // Import asc for ordering // Import Project types
 import * as schema from "../../database/schema";
 
-// See: https://orm.drizzle.team/docs (Drizzle ORM official docs)
-// Initialize Drizzle ORM with D1 database (Cloudflare D1 dialect)
-// Explicitly type return to include $client property (Drizzle D1)
-export function initDrizzle(d1: D1Database): ReturnType<typeof drizzle> {
-  return drizzle(d1, { schema });
-}
-
 // Utility functions for working with content
 // Retrieves all content as an object keyed by 'key'
 export async function getAllContent(db: ReturnType<typeof initDrizzle>) {
@@ -25,18 +18,6 @@ export async function getAllContent(db: ReturnType<typeof initDrizzle>) {
     acc[key] = value;
     return acc;
   }, {} as Record<string, string>);
-}
-
-// Get a single content item by key
-async function getSingleContent(
-  db: ReturnType<typeof initDrizzle>,
-  key: string
-) {
-  return db
-    .select()
-    .from(schema.content)
-    .where(eq(schema.content.key, key))
-    .get();
 }
 
 // Update or insert content values (upsert)
@@ -64,11 +45,6 @@ export async function updateContent(
       });
   });
   return Promise.all(batch);
-}
-
-// Delete content by key
-async function deleteContent(db: ReturnType<typeof initDrizzle>, key: string) {
-  return db.delete(schema.content).where(eq(schema.content.key, key)).run();
 }
 
 // --- Project CRUD Functions ---
@@ -163,8 +139,8 @@ export async function deleteProject(
     .delete(schema.projects)
     .where(eq(schema.projects.id, id))
     .run();
-  // D1 returns results array; success if any rows were affected
-  return { success: result.results.length > 0 };
+  // D1 run() result includes a success boolean
+  return { success: result.success };
 }
 
 // For more patterns, see: https://orm.drizzle.team/docs/querying
