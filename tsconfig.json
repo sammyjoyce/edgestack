@@ -14,10 +14,10 @@
 		"baseUrl": ".",
 		"paths": {
 			"@modules/*": ["app/modules/*"],
-			"@components/*": ["app/components/*"],
 			"@db/*": ["app/db/*"],
 			"@utils/*": ["app/utils/*"],
-			"@common/*": ["app/common/*"]
+			"@common/*": ["app/common/*"],
+			"@common/ui/*": ["app/common/ui/*"]
 		}
 	}
 }
