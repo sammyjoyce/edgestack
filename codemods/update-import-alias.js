@@ -6,18 +6,15 @@
  *   bun codemods/update-import-alias.js "app/**/*.{ts,tsx}"
  */
 
-import { type API, type FileInfo, type Transform } from "jscodeshift";
 
-const ALIAS_MAP: Record<string, string> = {
+/** @type {Record<string, string>} */
+const ALIAS_MAP = {
   "@components/": "@common/ui/",
   "../../modules/": "@modules/",
   "../modules/": "@modules/",
 };
 
-const transformer: Transform = (
-  fileInfo: FileInfo,
-  { jscodeshift: j }: API,
-) => {
+const transformer = (fileInfo, { jscodeshift: j }) => {
   return j(fileInfo.source)
     .find(j.ImportDeclaration)
     .forEach((path) => {
