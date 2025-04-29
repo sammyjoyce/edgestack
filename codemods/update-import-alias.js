@@ -1,3 +1,4 @@
+module.exports.parser = 'tsx';
 /**
  * Rewrite all imports from `@components/...` → `@common/ui/...`
  */
