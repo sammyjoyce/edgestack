@@ -1,4 +1,4 @@
-module.exports.parser = 'tsx';
+module.exports.parser = require('recast/parsers/typescript');
 /**
  * Rewrite all imports from `@components/...` → `@common/ui/...`
  */
