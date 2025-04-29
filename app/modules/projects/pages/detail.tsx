@@ -1,6 +1,6 @@
 import React from "react";
-import type { LoaderFunctionArgs } from "react-router"; // Import LoaderFunctionArgs
-import { data, Link, useLoaderData, useOutletContext } from "react-router"; // Import Link, useLoaderData, data
+import type { Route } from "./+types/detail";
+import { data, Link, useLoaderData, useOutletContext } from "react-router";
 import { getProjectById } from "~/db";
 
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
@@ -12,7 +12,7 @@ type ProjectsContext = {
 };
 
 // Loader to fetch the specific project by ID
-export async function loader({ params, context }: LoaderFunctionArgs) {
+export async function loader({ params, context }: Route.LoaderArgs) {
   const projectId = params.projectId
     ? Number.parseInt(params.projectId, 10)
     : Number.NaN;
@@ -41,7 +41,7 @@ export async function loader({ params, context }: LoaderFunctionArgs) {
   }
 }
 
-export default function ProjectDetail() {
+export default function ProjectDetail(_props: Route.ComponentProps) {
   // Get the content data from the parent route (optional, could be used for general text)
   const outletContext = useOutletContext<ProjectsContext>();
   const content = outletContext?.content; // Handle potential undefined context

@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData } from "react-router";
+import { Outlet } from "react-router";
 
 import { schema } from "~/database/schema";
 import { getAllContent } from "~/db";
@@ -28,9 +28,8 @@ export async function loader({ context }: Route.LoaderArgs) {
   }
 }
 
-export default function Projects() {
-  // Use the generated Route type for loader data
-  const { content } = useLoaderData<typeof loader>();
+export default function Projects({ loaderData }: Route.ComponentProps) {
+  const { content } = loaderData;
 
   return (
     <div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
