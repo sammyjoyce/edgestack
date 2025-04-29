@@ -90,6 +90,8 @@ export default function Footer(): JSX.Element {
                 <a
                   key={item.name}
                   href={item.href}
+                  target="_blank" // Add target blank for external links
+                  rel="noopener noreferrer" // Add rel for security
                   className="rounded-full p-1.5 text-gray-400 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
                 >
                   <span className="sr-only">{item.name}</span>
@@ -149,7 +151,7 @@ export default function Footer(): JSX.Element {
                 <ul className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
                   <li>
                     <a
-                      href="tel:0404289437"
+                      href="tel:0404289437" // Use tel: prefix
                       className="-mx-2 rounded px-2 py-1 text-[13px] text-gray-300 leading-tight transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
                     >
                       0404 289 437
@@ -157,7 +159,7 @@ export default function Footer(): JSX.Element {
                   </li>
                   <li className="max-w-[200px] sm:max-w-full">
                     <a
-                      href="mailto:info@lushconstructions.com.au"
+                      href="mailto:info@lushconstructions.com.au" // Use mailto: prefix
                       className="-mx-2 block overflow-hidden text-ellipsis rounded px-2 py-1 text-[13px] text-gray-300 leading-tight transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
                     >
                       info@lushconstructions.com.au
