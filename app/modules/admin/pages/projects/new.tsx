@@ -58,11 +58,10 @@ export async function action({ request, context }: Route.ActionArgs) {
   } catch (error: any) {
     return data({ error: "Failed to create project." }, { status: 500 });
   }
-// Remove the action export from here
-// async function action({ request, context }: Route.ActionArgs) { ... }
+// No action defined here - handled by parent route /admin/projects
 
 // Component to render the "Add New Project" form
-/* export */ function Component({ // Temporarily remove export for diagnosis
+export function Component({
   actionData, // Keep actionData prop for potential errors returned by the centralized action
 }: Route.ComponentProps): React.ReactElement {
   // Use React.ReactElement
