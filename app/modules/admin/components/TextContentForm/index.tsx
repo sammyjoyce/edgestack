@@ -109,7 +109,7 @@ export function TextContentForm({
       // Valibot validation before submit
       try {
         const { validateContentInsert } = await import(
-          "../../../database/valibot-validation"
+          "@common/validation/valibot"
         );
         validateContentInsert({ key: name, value });
         const data = new FormData();
@@ -149,7 +149,7 @@ export function TextContentForm({
     for (const [key, value] of Object.entries(pendingFields)) {
       try {
         const { validateContentInsert } = await import(
-          "../../../database/valibot-validation"
+          "@common/validation/valibot"
         );
         validateContentInsert({ key, value });
       } catch (err: any) {

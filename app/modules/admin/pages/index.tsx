@@ -53,7 +53,7 @@ export async function action({
             // Validate as a content insert
             // Import validateContentInsert from database/valibot-validation
             const { validateContentInsert } = await import(
-              "../../../database/valibot-validation"
+              "@common/validation/valibot"
             );
             validateContentInsert({ key, value });
             updates[key] = value;

@@ -52,7 +52,7 @@ export async function action({
     // Validate newProjectData using Valibot
     try {
       const { validateProjectInsert } = await import(
-        "../../../../database/valibot-validation"
+        "@common/validation/valibot"
       );
       validateProjectInsert({ ...newProjectData });
     } catch (e: any) {
