@@ -9,11 +9,11 @@ import React, { useMemo } from "react";
 import RichTextRenderer from "./RichTextRenderer";
 
 import { useLoaderData } from "react-router";
+import { loader as homeLoader } from "../../route";
 
 export default function ContactUs() {
   // Use content from loader context if available
-  const content = useLoaderData<any>()?.content || {};
-
+  const { content = {} } = useLoaderData<typeof homeLoader>();
   const {
     contact_headline: headline = "Ready to Start Your Project?",
     contact_intro: intro = "From concept to completion, we're here to help bring your vision to life. Our expert team specializes in turning your ideas into stunning reality.",
@@ -25,7 +25,7 @@ export default function ContactUs() {
     contact_acn: acn = "141 565 746",
     contact_license: license = "4632530",
     contact_instagram: instagram = "https://www.instagram.com/lushconstructions",
-  } = content as Record<string, string>;
+  } = content;
 
   const renderedIntro = useMemo(() => {
     try {
