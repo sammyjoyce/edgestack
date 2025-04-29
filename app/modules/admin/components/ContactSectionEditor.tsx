@@ -86,11 +86,11 @@ export function ContactSectionEditor({
             </label>
             {rows > 1 && key === "contact_intro" ? (
               // Rich text editor for contact_intro using Lexical
-              <RichTextField
+              (<RichTextField
                 name={key}
                 initialJSON={initialContent[key]}
                 disabled={fetcher.state === "submitting"}
-              />
+              />)
             ) : rows > 1 ? (
               <textarea
                 name={key}
