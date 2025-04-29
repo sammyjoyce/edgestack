@@ -58,11 +58,12 @@ export async function action({ request, context }: Route.ActionArgs) {
   } catch (error: any) {
     return data({ error: "Failed to create project." }, { status: 500 });
   }
-}
+// Remove the action export from here
+// export async function action({ request, context }: Route.ActionArgs) { ... }
 
 // Component to render the "Add New Project" form
 export default function AdminNewProject({
-  actionData,
+  actionData, // Keep actionData prop for potential errors returned by the centralized action
 }: Route.ComponentProps): React.ReactElement {
   // Use React.ReactElement
   return (
@@ -82,10 +83,13 @@ export default function AdminNewProject({
         </div>
       )}
 
+      {/* Update form to target the centralized action with intent */}
       <Form
         method="post"
+        action="/admin/projects" // Target the projects index route
         className="bg-white shadow-sm border border-gray-200 rounded-lg p-6 space-y-6"
       >
+        <input type="hidden" name="intent" value="createProject" />
         {" "}
         {/* Adjusted shadow/border, increased spacing */}
         <div>

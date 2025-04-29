@@ -32,7 +32,8 @@ export async function action({ request }: Route.ActionArgs) {
     console.error("Layout Action - Error reading form data:", e);
   }
   // Return a simple response to stop the error
-  return data({ message: "Layout placeholder action processed submission." });
+  // Remove the placeholder action entirely
+  // return data({ message: "Layout placeholder action processed submission." });
 }
 
 

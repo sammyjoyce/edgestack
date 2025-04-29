@@ -72,9 +72,10 @@ export function useTextContentForm({
         const err = validateField(name, value);
         if (!err) {
           const data = new FormData();
+          data.append("intent", "updateTextContent"); // Add intent
           data.append(name, value);
           isSubmittingRef.current = true; // Set submitting flag
-          fetcher.submit(data, { method: "post" });
+          fetcher.submit(data, { method: "post", action: "/admin" }); // Target /admin
           setFeedback(`Saving '${labelForKey(name)}'...`); // Use label for feedback
           setErrors((prev) => {
             const next = { ...prev };
@@ -137,12 +138,13 @@ export function useTextContentForm({
       }
 
       const data = new FormData();
+      data.append("intent", "updateTextContent"); // Add intent
       Object.entries(pendingFields).forEach(([key, value]) =>
         data.append(key, value)
       );
 
       isSubmittingRef.current = true; // Set submitting flag
-      fetcher.submit(data, { method: "post" });
+      fetcher.submit(data, { method: "post", action: "/admin" }); // Target /admin
       setFeedback("Saving changes...");
       // Update the 'saved' fields state after successful manual save intention
       setFields(pendingFields);

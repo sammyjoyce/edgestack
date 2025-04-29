@@ -119,7 +119,10 @@ export default function AdminProjectsIndex({
                     >
                       Edit
                     </Button>
-                    <Form method="post" action={`${project.id}/delete`} replace>
+                    {/* Update delete form to target index action with intent */}
+                    <Form method="post" action="/admin/projects" replace>
+                      <input type="hidden" name="intent" value="deleteProject" />
+                      <input type="hidden" name="projectId" value={project.id} />
                       <Button
                         type="submit"
                         className="text-xs px-3 py-1 bg-red-600 text-white hover:bg-red-700" /* Smaller button */
