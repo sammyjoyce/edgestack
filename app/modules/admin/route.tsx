@@ -81,9 +81,6 @@ export default function AdminLayout() {
                         aria-hidden="true"
                         className="size-5 shrink-0" // Slightly smaller icon
                       />
-                    >
-                      <item.icon
-                        aria-hidden="true"
                       {item.name}
                     </NavLink>
                   </li>

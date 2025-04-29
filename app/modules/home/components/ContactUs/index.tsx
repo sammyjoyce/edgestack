@@ -80,14 +80,7 @@ export default function ContactUs() {
                   aria-hidden="true"
                 />
               </dt>
-              <dd>
-                {address.split("\n").map((line: string, idx: number) => (
-                  <React.Fragment key={idx}>
-                    {line}
-                    <br />
-                  </React.Fragment>
-                ))}
-              </dd>
+              <dd className="whitespace-pre-line">{address}</dd>
             </div>
             <div className="flex items-center gap-x-4">
               <dt className="flex-none">
@@ -131,14 +124,7 @@ export default function ContactUs() {
                   aria-hidden="true"
                 />
               </dt>
-              <dd>
-                {hours.split("\n").map((line: string, idx: number) => (
-                  <React.Fragment key={idx}>
-                    {line}
-                    <br />
-                  </React.Fragment>
-                ))}
-              </dd>
+              <dd className="whitespace-pre-line">{hours}</dd>
             </div>
           </dl>
 
