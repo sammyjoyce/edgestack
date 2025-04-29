@@ -45,6 +45,13 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
 // No action defined here - handled by parent route /admin/projects
 // The action logic previously here is now in app/modules/admin/pages/projects/index.tsx
 
+// Add dummy action for build diagnosis
+export async function action() {
+  // This action does nothing and is only here to satisfy the build process.
+  // Actual form submissions are handled by the parent route's action.
+  return null;
+}
+
 // Component to render the "Edit Project" form
 export function Component({
   loaderData,
