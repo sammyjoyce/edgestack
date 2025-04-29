@@ -28,19 +28,29 @@ export async function action({ request, context }: Route.ActionArgs) {
   const form = await request.formData();
   const username = form.get("username");
   const password = form.get("password");
-  const env = context.cloudflare?.env;
+  const cloudflareEnv = context.cloudflare?.env; // Use a more specific name
 
-  // Ensure environment and required properties exist
-  if (!env || !env.ADMIN_USERNAME || !env.ADMIN_PASSWORD || !env.JWT_SECRET) {
-    console.error("Admin credentials or JWT secret not configured in environment");
+  // Ensure cloudflare context and environment variables are present
+  if (
+    !cloudflareEnv ||
+    !cloudflareEnv.ADMIN_USERNAME ||
+    !cloudflareEnv.ADMIN_PASSWORD ||
+    !cloudflareEnv.JWT_SECRET
+  ) {
+    console.error(
+      "Admin credentials or JWT secret not configured in Cloudflare environment"
+    );
     return data({ error: "Server configuration error" }, { status: 500 });
   }
 
-  // Now that we've checked env exists, we can access properties directly
-  if (username === env.ADMIN_USERNAME && password === env.ADMIN_PASSWORD) {
+  // Access properties directly now that we know cloudflareEnv exists
+  if (
+    username === cloudflareEnv.ADMIN_USERNAME &&
+    password === cloudflareEnv.ADMIN_PASSWORD
+  ) {
     const sessionValue = await sign(
       username + ":" + Date.now(),
-      env.JWT_SECRET // env.JWT_SECRET is safe here due to the check above
+      cloudflareEnv.JWT_SECRET
     );
     return redirect("/admin", {
       headers: {
