@@ -8,7 +8,7 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { LinkNode } from "@lexical/link"; // Import LinkNode
 import { ListItemNode, ListNode } from "@lexical/list"; // Import list nodes
-import type { EditorState } from "lexical";
+import type { EditorState, LexicalEditor, SerializedEditorState } from "lexical"; // Import LexicalEditor and SerializedEditorState
 
 import React, { useRef, useCallback, useMemo } from "react";
 import LexicalToolbar from "app/modules/admin/components/RichTextField/Toolbar";
@@ -40,11 +40,13 @@ export default function RichTextField({
       namespace: name,
       onError: console.error,
       nodes: [ListNode, ListItemNode, LinkNode], // Register the nodes
-      editorState() {
-        if (initialJSON) {
-          return (editor: any) => editor.parseEditorState(initialJSON as any);
-        }
-      },
+      editorState: initialJSON
+        ? (editor: LexicalEditor) => {
+            // Use string directly if it's a string, otherwise null/undefined is fine
+            const state = editor.parseEditorState(initialJSON);
+            editor.setEditorState(state);
+          }
+        : undefined, // Let Lexical handle default empty state
     }),
     [name, initialJSON]
   );

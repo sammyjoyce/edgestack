@@ -10,6 +10,13 @@ import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { validateContentInsert, validateErrorResponse } from "~/database/valibot-validation"; // Import validateErrorResponse
 import { handleImageUpload } from "~/utils/upload.server"; // Import image upload helper
 
+// Define a type for the possible responses from the centralized action
+export type AdminActionResponse =
+  | { success: true; url?: string; key?: string; message?: string } // Success (image upload, reorder, text update)
+  | { success: false; error: string } // Specific error (bad request, validation)
+  | { error: string }; // General error (unauthorized, invalid method, server error)
+
+
 export async function loader({ request, context }: Route.LoaderArgs) {
   const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
 

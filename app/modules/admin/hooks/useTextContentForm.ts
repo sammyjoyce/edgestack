@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { validateContentInsert } from "~/database/valibot-validation";
+import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
 
 // Helper function for validation (can be kept here or imported)
 const validateField = (key: string, value: string): string | null => {
@@ -29,7 +30,7 @@ interface TextFieldConfig {
 
 interface UseTextContentFormArgs {
   initialContent: Record<string, string>;
-  fetcher: FetcherWithComponents<any>;
+  fetcher: FetcherWithComponents<AdminActionResponse>; // Use specific type
   textFieldsConfig: TextFieldConfig[]; // Pass the config to the hook
 }
 
@@ -163,10 +164,11 @@ export function useTextContentForm({
   useEffect(() => {
     if (fetcher.state === "idle") {
       isSubmittingRef.current = false; // Reset submitting flag when idle
-      if (fetcher.data?.success) {
+      // Check fetcher.data structure based on AdminActionResponse
+      if (fetcher.data && "success" in fetcher.data && fetcher.data.success) {
         // If auto-save was successful, fields state is already updated
         // If manual save was successful, fields state was updated in handleSave
-        setFeedback("Saved successfully!");
+        setFeedback(fetcher.data.message ?? "Saved successfully!");
         setErrors({}); // Clear errors on success
       } else if (fetcher.data?.error) {
         setFeedback(fetcher.data.error);

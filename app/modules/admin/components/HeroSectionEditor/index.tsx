@@ -2,10 +2,10 @@ import React from "react";
 import type { FetcherWithComponents } from "react-router";
 
 import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
-import type { action } from "~/modules/admin/pages";
+import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
 
 interface HeroSectionEditorProps {
-  fetcher: FetcherWithComponents<typeof action>;
+  fetcher: FetcherWithComponents<AdminActionResponse>; // Use specific type
   initialContent: Record<string, string>;
   onImageUpload: (file: File) => void;
   imageUploading: boolean;
