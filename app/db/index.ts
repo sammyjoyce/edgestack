@@ -1,9 +1,9 @@
 import { asc, desc, eq } from "@common/db/drizzle"; // Assuming drizzle export is handled here
-import type { DrizzleD1Database } from "drizzle-orm/d1";
+import type { DrizzleD1Database, D1Result } from "drizzle-orm/d1"; // Import D1Result
 import type { NewContent, NewProject, Project } from "../../database/schema"; // Import asc for ordering // Import Project types
 import * as schema from "../../database/schema";
 
-import type { Content, NewContent, Project, NewProject } from "../../database/schema"; // Import types
+// Remove duplicate import: import type { Content, NewContent, Project, NewProject } from "../../database/schema";
 
 // Utility functions for working with content
 // Retrieves all content as an object keyed by 'key'
@@ -34,9 +34,9 @@ export async function updateContent(
   db: DrizzleD1Database<typeof schema>,
   updates: Record<
     string,
-    string | (Partial<Omit<NewContent, "key">> & { value: string }) // Keep this complex type or simplify if possible
+    string | (Partial<Omit<NewContent, "key">> & { value: string })
   >
-): Promise<any> { // Consider a more specific return type if D1 batch provides one
+): Promise<D1Result<unknown>[]> { // Use D1Result<unknown>[] as return type
   const batch = Object.entries(updates).map(([key, raw]) => {
     const data = typeof raw === "string" ? ({ value: raw } as const) : raw;
 
@@ -46,7 +46,7 @@ export async function updateContent(
       .values(insertValue)
       .onConflictDoUpdate({
         target: schema.content.key,
-        set: { ...data, updatedAt: new Date() },
+        set: { ...data, updatedAt: new Date() }, // D1 doesn't support Date directly, will be converted
       });
   });
   // Use db.batch() for potentially better performance with D1

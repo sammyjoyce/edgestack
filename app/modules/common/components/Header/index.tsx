@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from "react";
-import { Dialog, DialogPanel, Popover } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import clsx from "@common/utils/clsx";
-import { AnimatePresence, motion } from "@common/ui/animation";
+// Remove Dialog, DialogPanel, Popover, ChevronDownIcon, XMarkIcon imports
+import { Bars3Icon } from "@heroicons/react/24/outline";
+// Remove clsx, AnimatePresence, motion imports (moved to MobileMenu)
 import { NavLink } from "react-router";
 import { Button } from "./ui/Button";
+import MobileMenu from "./MobileMenu"; // Import MobileMenu
+import DesktopNav from "./DesktopNav"; // Import DesktopNav
 
 const menuItems = [
   { name: "Home", path: "#hero" },
@@ -27,17 +27,7 @@ const menuItems = [
 function Header(): JSX.Element {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navLinkClass = useCallback(
-    ({ isActive }: { isActive: boolean }) =>
-      clsx(
-        "relative px-5 py-2 rounded-full font-semibold text-base tracking-tight transition-all duration-300 ease-in-out focus:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/60",
-        isActive
-          ? "text-black bg-white/90 shadow-md"
-          : "text-gray-900 hover:text-black hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 after:transition-transform after:duration-300 after:ease-in-out after:absolute after:left-5 after:right-5 after:bottom-1 after:h-0.5 after:bg-black/70 after:scale-x-0 after:origin-left"
-      ),
-    []
-  );
-
+  // Keep scrollToSection logic here as it's used by both navs
   const scrollToSection = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
       event.preventDefault();
@@ -56,67 +46,8 @@ function Header(): JSX.Element {
         <div className="relative flex items-center justify-between py-2">
           <div className="absolute inset-x-0 bottom-0 h-px bg-gray-800" />
 
-          {/* Left navigation items */}
-          <div className="hidden lg:flex lg:items-center lg:gap-x-6">
-            {menuItems.slice(0, 2).map((item) =>
-              item.submenu ? (
-                <Popover key={item.name} className="relative">
-                  {({ open }) => (
-                    <>
-                      <Popover.Button
-                        className={clsx(
-                          "flex items-center gap-x-1 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:text-gray-100",
-                          open && "text-gray-100"
-                        )}
-                      >
-                        {item.name}
-                        <ChevronDownIcon
-                          className={clsx(
-                            "h-5 w-5 flex-none text-gray-400 transition-transform duration-300",
-                            open && "rotate-180 text-gray-100"
-                          )}
-                          aria-hidden="true"
-                        />
-                      </Popover.Button>
-                      <Popover.Panel className="-translate-x-1/2 absolute left-1/2 z-10 mt-3 w-screen max-w-min transform px-2">
-                        <div className="overflow-hidden rounded-lg bg-gray-900/95 shadow-lg ring-1 ring-gray-800 backdrop-blur-sm">
-                          <div className="relative grid gap-6 px-5 py-6 sm:gap-8 sm:p-8">
-                            {item.submenu.map((subItem) => (
-                              <NavLink
-                                key={subItem.name}
-                                to={subItem.path}
-                                className="-m-3 flex items-start rounded-lg p-3 hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-800/50"
-                                onClick={(e) =>
-                                  scrollToSection(e, subItem.path)
-                                }
-                              >
-                                <div className="ml-4">
-                                  <p className="font-medium text-gray-300 text-sm hover:text-gray-100">
-                                    {subItem.name}
-                                  </p>
-                                </div>
-                              </NavLink>
-                            ))}
-                          </div>
-                        </div>
-                      </Popover.Panel>
-                    </>
-                  )}
-                </Popover>
-              ) : (
-                <NavLink
-                  key={item.name}
-                  to={item.path}
-                  className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-                  onClick={(e) =>
-                    item.isRouteLink ? null : scrollToSection(e, item.path)
-                  }
-                >
-                  {item.name}
-                </NavLink>
-              )
-            )}
-          </div>
+          {/* Render DesktopNav */}
+          <DesktopNav menuItems={menuItems} scrollToSection={scrollToSection} />
 
           {/* Mobile menu button (left) */}
           <div className="flex lg:hidden">
@@ -143,23 +74,7 @@ function Header(): JSX.Element {
 
           {/* Right navigation items and CTA */}
           <div className="flex items-center">
-            {/* Desktop right nav items */}
-            <div className="hidden lg:flex lg:items-center lg:gap-x-6">
-              {menuItems.slice(2).map((item) => (
-                <NavLink
-                  key={item.name}
-                  to={item.path}
-                  className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-                  onClick={(e) =>
-                    item.isRouteLink ? null : scrollToSection(e, item.path)
-                  }
-                >
-                  {item.name}
-                </NavLink>
-              ))}
-            </div>
-
-            {/* CTA Button (using Button component) */}
+            {/* CTA Button (using Button component) - Kept in Header */}
             <Button
               to="tel:0404289437"
               className="group ml-4 flex items-center gap-2 px-3 py-2 sm:ml-8 sm:px-4 sm:py-2 lg:ml-6 min-[80rem]:flex text-sm font-semibold bg-white text-neutral-950 hover:bg-neutral-200 rounded-full shadow-md transition-all duration-300"
