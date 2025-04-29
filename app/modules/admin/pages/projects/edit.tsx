@@ -179,7 +179,8 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 export default function AdminEditProject({
   loaderData,
   actionData,
-}: Route.ComponentProps): React.ReactElement { // Use React.ReactElement
+}: Route.ComponentProps): React.ReactElement {
+  // Use React.ReactElement
   // Use loader data for initial form values, action data for errors
   const { project, error: loaderError } = loaderData;
   const { project: actionProject, error: actionError } = actionData ?? {};

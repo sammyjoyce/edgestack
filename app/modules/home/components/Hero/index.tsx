@@ -14,7 +14,8 @@ export default function Hero({
   subtitle,
   imageUrl,
   altText = "Modern home extension background",
-}: HeroProps): React.ReactElement { // Use React.ReactElement
+}: HeroProps): React.ReactElement {
+  // Use React.ReactElement
   const backgroundUrl = imageUrl ?? "/assets/rozelle.jpg";
 
   return (

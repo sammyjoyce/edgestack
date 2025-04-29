@@ -66,7 +66,8 @@ export async function action({ request, context }: Route.ActionArgs) {
 // Component to render the "Add New Project" form
 export default function AdminNewProject({
   actionData,
-}: Route.ComponentProps): React.ReactElement { // Use React.ReactElement
+}: Route.ComponentProps): React.ReactElement {
+  // Use React.ReactElement
   return (
     <FadeIn>
       <h1 className="text-2xl font-semibold text-gray-900 mb-8">

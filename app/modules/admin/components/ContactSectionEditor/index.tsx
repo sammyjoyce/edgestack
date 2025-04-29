@@ -65,7 +65,8 @@ const contactFields = [
 export function ContactSectionEditor({
   fetcher,
   initialContent,
-}: ContactSectionEditorProps): React.ReactElement { // Use React.ReactElement
+}: ContactSectionEditorProps): React.ReactElement {
+  // Use React.ReactElement
   const handleBlur = React.useCallback(
     (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.currentTarget;

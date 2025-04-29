@@ -89,7 +89,8 @@ export function TextContentForm({
   fetcher,
   initialContent,
   formRef,
-}: TextContentFormProps): React.ReactElement { // Use React.ReactElement
+}: TextContentFormProps): React.ReactElement {
+  // Use React.ReactElement
   const localFormRef = useRef<HTMLFormElement>(null);
   const ref = formRef || localFormRef;
 
