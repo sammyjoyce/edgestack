@@ -1,12 +1,12 @@
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
-  index("routes/home.tsx"),
-  route("projects", "routes/projects.tsx", [
+  index("modules/home/route.tsx"),
+  route("projects", "modules/projects/route.tsx", [
     index("routes/projects/index.tsx"),
     route(":projectId", "routes/projects/detail.tsx"),
   ]),
-  route("admin", "routes/admin.tsx", [
+  route("admin", "modules/admin/route.tsx", [
     index("routes/admin.index.tsx"), // Dashboard (Text Content & Image Uploads)
     route("upload", "routes/admin.upload.tsx"), // Image upload action
     route("projects", "routes/admin/projects/index.tsx", [
