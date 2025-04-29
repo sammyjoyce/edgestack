@@ -1,16 +1,16 @@
 import { data, useLoaderData } from "react-router"; // data helper is typically in the node adapter
-import { schema } from "../../database/schema";
-import type { Route } from ".react-router/types/app/routes/+types/home";
 
-import type { Project } from "../../../database/schema"; // Import Project type
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+import Footer from "~/modules/common/components/Footer";
+import Header from "~/modules/common/components/Header";
 import Hero from "./components/Hero";
 import OurServices from "./components/OurServices";
-import RecentProjects from "../../components/RecentProjects";
-import { getFeaturedProjects } from "../../db/index"; // Import the new function
+import RecentProjects from "~/modules/common/components/RecentProjects";
+import { getFeaturedProjects } from "~/db"; // Import the new function
+import { getAllContent } from "~/db";
+import type { Route } from "./+types/route";
+import type { JSX } from "react";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -22,39 +22,20 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-// Update loader to fetch dynamic content and featured projects from D1
 export async function loader({ context }: Route.LoaderArgs) {
-  let contentMap: Record<string, string> = {};
-  let featuredProjects: Project[] = []; // Initialize featuredProjects array
-
   try {
-    // Query the content table
-    const contentResults = await context.db
-      .select({ key: schema.content.key, value: schema.content.value })
-      .from(schema.content);
-
-    if (contentResults) {
-      contentMap = (
-        contentResults as Array<{ key: string; value: string }>
-      ).reduce((acc: Record<string, string>, { key, value }) => {
-        acc[key] = value;
-        return acc;
-      }, {});
-    }
-
-    // Fetch featured projects using the new DB function
-    featuredProjects = await getFeaturedProjects(context.db);
+    const [content, projects] = await Promise.all([
+      getAllContent(context.db),
+      getFeaturedProjects(context.db),
+    ]);
+    return data({ content, projects });
   } catch (error) {
     console.error("Error fetching data from D1:", error);
-    // Return empty data in case of error to prevent crashes
-    contentMap = {};
-    featuredProjects = [];
+    return data(
+      { content: {} as Record<string, string>, projects: [] },
+      { status: 500 }
+    );
   }
-
-  return {
-    content: contentMap,
-    projects: featuredProjects, // Add projects to loader data
-  };
 }
 
 export default function Home() {
