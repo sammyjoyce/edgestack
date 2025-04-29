@@ -3,14 +3,14 @@ import { schema } from "../../database/schema";
 import type { Route } from ".react-router/types/app/routes/+types/home";
 
 import type { Project } from "../../database/schema"; // Import Project type
-import AboutUs from "../components/About";
-import ContactUs from "../components/ContactUs";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import Hero from "../components/Hero";
-import OurServices from "../components/OurServices";
-import RecentProjects from "../components/RecentProjects";
-import { getFeaturedProjects } from "../db/index"; // Import the new function
+import AboutUs from "../../components/About";
+import ContactUs from "../../components/ContactUs";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import Hero from "../../components/Hero";
+import OurServices from "../../components/OurServices";
+import RecentProjects from "../../components/RecentProjects";
+import { getFeaturedProjects } from "../../db/index"; // Import the new function
 
 export const meta: Route.MetaFunction = () => {
   return [
