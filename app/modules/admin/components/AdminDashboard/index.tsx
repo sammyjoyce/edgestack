@@ -4,8 +4,6 @@ import {
   useFetcher,
   useLoaderData,
   Link, // Import Link
-  useFetcher, // Remove duplicate
-  useLoaderData, // Remove duplicate
 } from "react-router";
 
 // Types
@@ -38,7 +36,7 @@ const isContentError = (obj: any): obj is { error: string; status: number } => {
   }
 };
 
-export default function AdminDashboard(): JSX.Element {
+export default function AdminDashboard(): React.JSX.Element { // Changed to React.JSX.Element
   // Get initial content from loader
   const content = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
@@ -48,17 +46,18 @@ export default function AdminDashboard(): JSX.Element {
     if (fetcher.state === "submitting") {
       return { msg: "Saving...", isError: false };
     }
-    if (fetcher.data?.success) {
+    // Add type guards for fetcher.data properties
+    if (fetcher.data && "success" in fetcher.data && fetcher.data.success) {
       return { msg: "Saved successfully!", isError: false };
     }
-    if (fetcher.data?.error) {
+    if (fetcher.data && "error" in fetcher.data && fetcher.data.error) {
       return { msg: fetcher.data.error, isError: true };
     }
     return null;
   }, [fetcher.state, fetcher.data]);
 
-  // Access content safely with type guard
-  const safeContent = isContentError(content)
+  // Access content safely with type guard, handle null case
+  const safeContent = !content || isContentError(content)
     ? ({} as Record<string, string>)
     : (content as Record<string, string>);
 
@@ -97,7 +96,8 @@ export default function AdminDashboard(): JSX.Element {
         action: "/admin/upload",
         encType: "multipart/form-data",
       });
-      if (fetcher.data?.url) {
+      // Add type guard for fetcher.data.url
+      if (fetcher.data && "url" in fetcher.data && typeof fetcher.data.url === 'string') {
         setUrl(fetcher.data.url);
       }
       setUploading(false);
@@ -138,7 +138,7 @@ export default function AdminDashboard(): JSX.Element {
       <SectionIntro title="Home Page Editor" className="mb-8" />{" "}
       {/* Adjusted margin */}
       {/* 🔀 Drag-to-reorder CMS sections */}
-      <SectionSorter orderValue={sectionsOrder} fetcher={fetcher} />
+      <SectionSorter orderValue={sectionsOrder} fetcher={fetcher as FetcherWithComponents<any>} /> {/* Cast fetcher type */}
       {status && (
         <FadeIn>
           <div
@@ -158,7 +158,7 @@ export default function AdminDashboard(): JSX.Element {
       )}
       <section aria-label="Hero Section Editor" role="region" tabIndex={0}>
         <HeroSectionEditor
-          fetcher={fetcher}
+          fetcher={fetcher as FetcherWithComponents<any>} {/* Cast fetcher type */}
           initialContent={safeContent}
           onImageUpload={handleHeroImageUpload}
           imageUploading={heroUploading}
@@ -167,7 +167,7 @@ export default function AdminDashboard(): JSX.Element {
       </section>
       <section aria-label="Services Section Editor" role="region" tabIndex={0}>
         <ServicesSectionEditor
-          fetcher={fetcher}
+          fetcher={fetcher as FetcherWithComponents<any>} {/* Cast fetcher type */}
           initialContent={safeContent}
           onImageUpload={handleServiceImageUpload}
           imageUploading={serviceUploading}
@@ -280,7 +280,7 @@ export default function AdminDashboard(): JSX.Element {
         />
       </section>
       <section aria-label="Contact Section Editor" role="region" tabIndex={0}>
-        <ContactSectionEditor fetcher={fetcher} initialContent={safeContent} />
+        <ContactSectionEditor fetcher={fetcher as FetcherWithComponents<any>} initialContent={safeContent} /> {/* Cast fetcher type */}
       </section>
     </Container>
   );

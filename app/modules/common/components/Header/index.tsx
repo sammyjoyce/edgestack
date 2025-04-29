@@ -24,7 +24,7 @@ const menuItems = [
   { name: "Contact Us", path: "#contact" },
 ];
 
-function Header(): JSX.Element {
+function Header(): React.JSX.Element { // Changed to React.JSX.Element
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Keep scrollToSection logic here as it's used by both navs

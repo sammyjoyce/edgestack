@@ -1,11 +1,13 @@
 import React from "react";
 import RichTextRenderer from "~/modules/common/components/RichTextRenderer";
 
+import type React from "react"; // Import React namespace for JSX types
+
 interface ConditionalRichTextRendererProps {
   text: string | undefined | null;
   fallbackClassName?: string;
   richTextClassName?: string;
-  fallbackTag?: keyof JSX.IntrinsicElements;
+  fallbackTag?: keyof React.JSX.IntrinsicElements; // Changed to React.JSX
 }
 
 /**
@@ -17,7 +19,7 @@ export default function ConditionalRichTextRenderer({
   fallbackClassName = "text-base sm:text-lg", // Default fallback style
   richTextClassName, // Optional class for RichTextRenderer container
   fallbackTag: FallbackTag = "p", // Default to <p> tag
-}: ConditionalRichTextRendererProps): JSX.Element | null {
+}: ConditionalRichTextRendererProps): React.JSX.Element | null { // Changed to React.JSX.Element
   if (!text) {
     return null; // Render nothing if text is empty or null/undefined
   }

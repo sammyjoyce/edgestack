@@ -43,10 +43,10 @@ export function AboutSectionEditor({
 
   // Update status message when upload completes
   useEffect(() => {
-    if (!imageUploading && uploadStatus === "Uploading About Image...") {
+    if (!isUploading && uploadStatus === "Uploading About Image...") { // Use renamed prop
       setUploadStatus("About Image uploaded successfully!");
     }
-  }, [imageUploading, uploadStatus]);
+  }, [isUploading, uploadStatus]); // Use renamed prop in dependency array
 
   return (
     <div className="overflow-hidden bg-white sm:rounded-lg shadow-sm border border-gray-200">
@@ -114,8 +114,8 @@ export function AboutSectionEditor({
             </div>
             <ImageUploadZone
               onDrop={handleDrop}
-              disabled={imageUploading}
-              uploading={imageUploading}
+              disabled={isUploading} // Use renamed prop
+              uploading={isUploading} // Use renamed prop
               imageUrl={aboutImageUrl}
               label="About Image"
               className="mt-1" /* Added margin */
