@@ -1,4 +1,4 @@
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import React, { useMemo } from "react";
 
 const navigation = [
@@ -177,8 +177,7 @@ export default function Footer(): JSX.Element {
         </div>
         <div className="mt-8 border-gray-800 border-t pt-8 md:flex md:items-center md:justify-between">
           <p className="text-[11px] text-gray-400 leading-none">
-            &copy; {currentYear} Lush Constructions. All rights
-            reserved.
+            &copy; {currentYear} Lush Constructions. All rights reserved.
             <br />
             NSW Builder License: 4632530
           </p>

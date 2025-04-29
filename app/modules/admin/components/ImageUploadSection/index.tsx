@@ -39,30 +39,31 @@ export function ImageUploadSection({
 
   const makeDropHandler = useCallback(
     (
-      idx: number,
-      fetcher: ReturnType<typeof useFetcher>,
-      key: string,
-      label: string
-    ) => (files: File[]) => {
-      const [file] = files;
-      if (!file) return;
+        idx: number,
+        fetcher: ReturnType<typeof useFetcher>,
+        key: string,
+        label: string
+      ) =>
+      (files: File[]) => {
+        const [file] = files;
+        if (!file) return;
 
-      const formData = new FormData();
-      formData.append("image", file);
-      formData.append("key", key);
+        const formData = new FormData();
+        formData.append("image", file);
+        formData.append("key", key);
 
-      fetcher.submit(formData, {
-        method: "post",
-        action: "/admin/upload",
-        encType: "multipart/form-data",
-      });
+        fetcher.submit(formData, {
+          method: "post",
+          action: "/admin/upload",
+          encType: "multipart/form-data",
+        });
 
-      setStatusTexts((prev) => {
-        const next = [...prev];
-        next[idx] = `Uploading ${label}…`;
-        return next;
-      });
-    },
+        setStatusTexts((prev) => {
+          const next = [...prev];
+          next[idx] = `Uploading ${label}…`;
+          return next;
+        });
+      },
     []
   );
 
