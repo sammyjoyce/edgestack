@@ -54,10 +54,11 @@ export default function AdminLayout() {
             className="h-8 w-auto mx-auto"
           />
         </div>
-        <div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wider text-gray-500">
-          Admin
+        {/* Standardize admin label */}
+        <div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
+          Admin Menu
         </div>
-        <hr className="border-gray-800 mb-2" />
+        <hr className="border-gray-700 mb-2" />
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
             <li>
@@ -70,16 +71,19 @@ export default function AdminLayout() {
                       className={({ isActive }) =>
                         classNames(
                           isActive
-                            ? "bg-gray-800 text-white"
-                            : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                          "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
+                            ? "bg-gray-700 text-white" // Slightly lighter active bg
+                            : "text-gray-400 hover:bg-gray-700 hover:text-white",
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-medium" // Use text-sm and font-medium
                         )
                       }
                     >
                       <item.icon
                         aria-hidden="true"
-                        className="size-6 shrink-0"
+                        className="size-5 shrink-0" // Slightly smaller icon
                       />
+                    >
+                      <item.icon
+                        aria-hidden="true"
                       {item.name}
                     </NavLink>
                   </li>

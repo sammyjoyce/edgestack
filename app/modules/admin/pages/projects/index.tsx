@@ -40,18 +40,18 @@ export default function AdminProjectsIndex({ loaderData }: Route.ComponentProps)
 
   return (
     <FadeIn>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">
+      <div className="flex justify-between items-center mb-8"> {/* Increased bottom margin */}
+        <h1 className="text-2xl font-semibold text-gray-900"> {/* Use text-gray-900 */}
           Manage Projects
         </h1>
-        <Button as={Link} to="new">
+        <Button as={Link} to="new" className="text-sm"> {/* Ensure button text size */}
           Add New Project
         </Button>
       </div>
 
       {error && (
         <div
-          className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
+          className="p-4 mb-6 text-sm text-red-700 rounded-lg bg-red-100 border border-red-200" /* Adjusted colors/spacing */
           role="alert"
         >
           {error}
@@ -59,42 +59,41 @@ export default function AdminProjectsIndex({ loaderData }: Route.ComponentProps)
       )}
 
       {projects.length === 0 && !error ? (
-        <p className="text-gray-500">
+        <p className="text-base text-gray-600"> {/* Use text-base and gray-600 */}
           No projects found. Add your first project!
         </p>
       ) : (
-        <div className="bg-white shadow overflow-hidden rounded-md">
+        <div className="bg-white shadow-sm border border-gray-200 overflow-hidden rounded-lg"> {/* Adjusted shadow/border */}
           <ul role="list" className="divide-y divide-gray-200">
             {projects.map((project: Project) => (
               <li
                 key={project.id}
-                className="px-4 py-4 sm:px-6 hover:bg-gray-50"
+                className="px-6 py-5 hover:bg-gray-50 transition-colors duration-150" /* Increased padding */
               >
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-4"> {/* Added gap */}
                   <div className="flex-1 min-w-0">
                     <Link
                       to={`${project.id}/edit`}
-                      className="text-lg font-medium text-blue-600 truncate hover:underline"
+                      className="text-base font-semibold text-blue-600 truncate hover:underline" /* Use text-base font-semibold */
                     >
                       {project.title}
                     </Link>
-                    <p className="text-sm text-gray-500 truncate mt-1">
+                    <p className="text-sm text-gray-600 truncate mt-1"> {/* Use gray-600 */}
                       {project.description || "No description"}
                     </p>
                   </div>
-                  <div className="ml-4 flex-shrink-0 flex space-x-2">
+                  <div className="ml-4 flex-shrink-0 flex items-center space-x-3"> {/* Increased space */}
                     <Button
                       as={Link}
                       to={`${project.id}/edit`}
-                      className="text-sm"
+                      className="text-xs px-3 py-1" /* Smaller button */
                     >
                       Edit
                     </Button>
-                    {/* Delete button will likely need a form/fetcher */}
                     <Form method="post" action={`${project.id}/delete`} replace>
                       <Button
                         type="submit"
-                        className="text-sm bg-red-600 hover:bg-red-700"
+                        className="text-xs px-3 py-1 bg-red-600 text-white hover:bg-red-700" /* Smaller button */
                       >
                         Delete
                       </Button>
