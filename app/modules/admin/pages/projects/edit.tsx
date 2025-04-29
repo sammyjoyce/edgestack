@@ -12,6 +12,7 @@ import { validateProjectInsert } from "~/database/valibot-validation";
 import { getProjectById, updateProject } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import type { NewProject, Project } from "~/database/schema";
+import { handleImageUpload } from "~/utils/upload.server"; // Import the helper
 
 // Loader to fetch the project data for editing
 export async function loader({ request, params, context }: Route.LoaderArgs) {
@@ -85,23 +86,17 @@ export async function action({ request, params, context }: Route.ActionArgs) {
       if (isNaN(sortOrder)) sortOrder = undefined;
     }
 
-    // Handle image upload
+    // Use the helper function for upload if a file exists
     let imageUrl: string | undefined = undefined;
     const imageFile = formData.get("image");
     if (imageFile && imageFile instanceof File && imageFile.size > 0) {
-      // Reuse /admin/upload logic inline (could be extracted)
-      const uniqueFilename = `${Date.now()}-${imageFile.name.replace(
-        /[^a-zA-Z0-9._-]/g,
-        "_"
-      )}`;
-      const fileData = await imageFile.arrayBuffer();
-      if (context.ASSETS_BUCKET) {
-        await context.ASSETS_BUCKET.put(uniqueFilename, fileData, {
-          httpMetadata: { contentType: imageFile.type },
-        });
-        imageUrl = context.PUBLIC_R2_URL
-          ? `${context.PUBLIC_R2_URL.replace(/\/?$/, "/")}${uniqueFilename}`
-          : `/assets/${uniqueFilename}`;
+      try {
+        // Use project ID or title in the key for context if desired
+        imageUrl = await handleImageUpload(imageFile, `project-${projectId}-image`, context); // Pass context directly
+      } catch (uploadError: any) {
+        // Handle upload error specifically, maybe return to form with error
+        const project = await getProjectById(context.db, projectId);
+        return data({ error: uploadError.message, project }, { status: 500 });
       }
     }
 
