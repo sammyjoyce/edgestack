@@ -1,7 +1,7 @@
 import type React from "react";
 import type { FetcherWithComponents } from "react-router";
-import { Button } from "../ui/Button";
-import { FadeIn } from "../ui/FadeIn";
+import { Button } from "../../../components/ui/Button";
+import { FadeIn } from "../../../components/ui/FadeIn";
 import ImageUploadZone from "./ImageUploadZone";
 
 interface HeroSectionEditorProps {

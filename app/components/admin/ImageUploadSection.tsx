@@ -1,11 +1,11 @@
 import type React from "react";
 import { useEffect, useRef } from "react";
 import { useFetcher } from "react-router";
-import { Button } from "../ui/Button";
-import { Container } from "../ui/Container";
-import { FadeIn } from "../ui/FadeIn";
+import { Button } from "../../../components/ui/Button";
+import { Container } from "../../../components/ui/Container";
+import { FadeIn } from "../../../components/ui/FadeIn";
 import { GrayscaleTransitionImage } from "../ui/GrayscaleTransitionImage";
-import { SectionIntro } from "../ui/SectionIntro";
+import { SectionIntro } from "../../../components/ui/SectionIntro";
 import ImageUploadZone from "./ImageUploadZone";
 
 interface ImageUploadSectionProps {

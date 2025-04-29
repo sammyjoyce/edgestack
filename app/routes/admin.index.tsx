@@ -5,10 +5,10 @@ import React from "react";
  * This file will render the React version of the admin dashboard, replacing the static HTML.
  * You can further modularize this into components if needed.
  */
-import AdminDashboard from "../components/admin/AdminDashboard";
+import AdminDashboard from "../components/AdminDashboard";
 
-import { getAllContent, updateContent } from "../db/index";
-import { getSessionCookie, verify } from "../utils/auth";
+import { getAllContent, updateContent } from "../../../db/index";
+import { getSessionCookie, verify } from "../../../utils/auth";
 import type { Route } from "./+types/admin.index";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
@@ -53,7 +53,7 @@ export async function action({
             // Validate as a content insert
             // Import validateContentInsert from database/valibot-validation
             const { validateContentInsert } = await import(
-              "../../database/valibot-validation"
+              "../../../database/valibot-validation"
             );
             validateContentInsert({ key, value });
             updates[key] = value;
