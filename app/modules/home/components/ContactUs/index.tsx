@@ -4,8 +4,8 @@ import {
   EnvelopeIcon,
   PhoneIcon,
 } from "@heroicons/react/24/outline";
-import { motion } from "@common/ui/animation";
-import React from "react";
+import { motion } from "framer-motion"; // Use direct import
+import React from "react"; // Import React
 import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer"; // Import the new component
 
 import { useLoaderData } from "react-router";

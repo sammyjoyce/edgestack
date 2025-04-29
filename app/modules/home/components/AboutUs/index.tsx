@@ -14,7 +14,7 @@ export default function AboutUs({
   text,
   imageUrl,
   altText,
-}: AboutProps): JSX.Element {
+}: AboutProps): React.ReactElement { // Use React.ReactElement
   const defaultAboutText = `At Lush Constructions, we're driven by a passion for building more than just structures – we craft homes, communities, and memories that last a lifetime. With a relentless focus on quality, transparency, and trust, we're dedicated to turning your vision into a breathtaking reality. As proud members of Master Builders NSW, we uphold the highest standards in the industry, ensuring every project is delivered with precision, care, and a commitment to excellence. Whether you're dreaming of a grand renovation, a thoughtful extension, or a brand-new build, our team of experts is here to guide you every step of the way.`;
 
   return (

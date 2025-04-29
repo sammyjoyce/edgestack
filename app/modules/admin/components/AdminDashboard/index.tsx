@@ -1,8 +1,9 @@
-import React from "react";
-
-// Router
+import React from "react"; // Ensure React is imported for JSX
 import {
   type FetcherWithComponents,
+  useFetcher,
+  useLoaderData,
+  Link, // Import Link
   useFetcher,
   useLoaderData,
 } from "react-router";

@@ -1,7 +1,8 @@
-import clsx from "@common/utils/clsx";
+import clsx from "clsx"; // Use direct import
+import React from "react"; // Import React
 
-import { Border } from "./Border";
-import { FadeIn, FadeInStagger } from "./FadeIn";
+import { Border } from "~/modules/common/components/ui/Border"; // Corrected path
+import { FadeIn, FadeInStagger } from "~/modules/common/components/ui/FadeIn"; // Corrected path
 
 export function GridList({
   children,

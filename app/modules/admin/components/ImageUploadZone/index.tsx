@@ -19,7 +19,7 @@ export default function ImageUploadZone({
   label = "Upload Image",
   className = "",
   fileInputRef,
-}: ImageUploadZoneProps): JSX.Element {
+}: ImageUploadZoneProps): React.ReactElement { // Use React.ReactElement
   const handleDrop = useCallback(
     (accepted: File[]) => {
       if (!disabled && accepted.length > 0) {

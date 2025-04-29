@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react"; // Import React hooks
 // Remove Dialog, DialogPanel, Popover, ChevronDownIcon, XMarkIcon imports
 import { Bars3Icon } from "@heroicons/react/24/outline";
 // Remove clsx, AnimatePresence, motion imports (moved to MobileMenu)
 import { NavLink } from "react-router";
-import { Button } from "./ui/Button";
+import { Button } from "~/modules/common/components/ui/Button"; // Corrected path
 import MobileMenu from "./MobileMenu"; // Import MobileMenu
 import DesktopNav from "./DesktopNav"; // Import DesktopNav
 

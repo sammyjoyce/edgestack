@@ -1,7 +1,8 @@
-import clsx from "@common/utils/clsx";
+import clsx from "clsx"; // Use direct import
+import React from "react"; // Import React
 
-import { Container } from "./Container";
-import { FadeIn } from "./FadeIn";
+import { Container } from "~/modules/common/components/ui/Container"; // Corrected path
+import { FadeIn } from "~/modules/common/components/ui/FadeIn"; // Corrected path
 
 export function SectionIntro({
   title,

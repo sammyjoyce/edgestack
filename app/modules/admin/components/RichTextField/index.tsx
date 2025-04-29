@@ -22,7 +22,7 @@ export default function RichTextField({
   name,
   initialJSON,
   disabled,
-}: Props): JSX.Element {
+}: Props): React.ReactElement { // Use React.ReactElement
   /* hidden input so <fetcher.Form> sees the JSON string */
   const inputRef = useRef<HTMLInputElement>(null);
 

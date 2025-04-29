@@ -1,5 +1,5 @@
-import { motion } from "@common/ui/animation";
-import { useEffect, useId, useRef, useState } from "react";
+import { motion } from "framer-motion"; // Use direct import
+import React, { useEffect, useId, useRef, useState } from "react"; // Import React
 
 function Block({
   x,
