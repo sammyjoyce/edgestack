@@ -1,47 +1,63 @@
-import React, { useRef } from "react";
-import { useFetcher, useLoaderData } from "react-router";
-import { validateErrorResponse } from "../../../database/valibot-validation";
-import type { loader } from "../pages/index";
-import { Button } from "@common/ui/ui/Button";
-import { Container } from "@common/ui/ui/Container";
-import { FadeIn } from "@common/ui/ui/FadeIn";
-import { SectionIntro } from "@common/ui/ui/SectionIntro";
-import { AboutSectionEditor } from "./AboutSectionEditor";
-import { ContactSectionEditor } from "./ContactSectionEditor";
-import { HeroSectionEditor } from "./HeroSectionEditor";
-import { ImageUploadSection } from "./ImageUploadSection";
-import SectionSorter from "./SectionSorter";
-import { ServicesSectionEditor } from "./ServicesSectionEditor";
-import { TextContentForm } from "./TextContentForm";
+import React from "react";
 
-export default function AdminDashboard() {
+// Router
+import {
+  type FetcherWithComponents,
+  useFetcher,
+  useLoaderData,
+} from "react-router";
+
+// Types
+import type { loader } from "~/modules/admin/route";
+
+// Validation
+import { validateErrorResponse } from "~/database/valibot-validation";
+
+// UI primitives
+import { Container } from "~/modules/common/components/ui/Container";
+import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
+import { FadeIn } from "~/modules/common/components/ui/FadeIn";
+import { Button } from "~/modules/common/components/ui/Button";
+
+// Admin components
+import SectionSorter from "~/modules/admin/components/SectionSorter";
+import { HeroSectionEditor } from "~/modules/admin/components/HeroSectionEditor";
+import { ServicesSectionEditor } from "~/modules/admin/components/ServicesSectionEditor";
+import { AboutSectionEditor } from "~/modules/admin/components/AboutSectionEditor";
+import { ContactSectionEditor } from "~/modules/admin/components/ContactSectionEditor";
+import type { action } from "~/modules/admin/pages";
+
+// Helper to check if content is an error response using valibot
+const isContentError = (
+  obj: any
+): obj is { error: string; status: number } => {
+  try {
+    validateErrorResponse(obj);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export default function AdminDashboard(): JSX.Element {
   // Get initial content from loader
   const content = useLoaderData<typeof loader>();
-  const fetcher = useFetcher();
-  const textFormRef = useRef<HTMLFormElement>(null);
-  const imageSectionRef = useRef<HTMLDivElement>(null);
+  const fetcher = useFetcher<typeof action>();
 
   // Status message handling based on fetcher
-  let status: { msg: string; isError: boolean } | null = null;
-  if (fetcher.state === "submitting") {
-    status = { msg: "Saving...", isError: false };
-  } else if (fetcher.data?.success) {
-    status = { msg: "Saved successfully!", isError: false };
-  } else if (fetcher.data?.error) {
-    status = { msg: fetcher.data.error, isError: true };
-  }
-
-  // Helper to check if content is an error response using valibot
-  const isContentError = (
-    obj: any
-  ): obj is { error: string; status: number } => {
-    try {
-      validateErrorResponse(obj);
-      return true;
-    } catch {
-      return false;
+  const status = React.useMemo(() => {
+    if (fetcher.state === "submitting") {
+      return { msg: "Saving...", isError: false };
     }
-  };
+    if (fetcher.data?.success) {
+      return { msg: "Saved successfully!", isError: false };
+    }
+    if (fetcher.data?.error) {
+      return { msg: fetcher.data.error, isError: true };
+    }
+    return null;
+  }, [fetcher.state, fetcher.data]);
+
 
   // Access content safely with type guard
   const safeContent = isContentError(content)
@@ -57,12 +73,9 @@ export default function AdminDashboard() {
   const [aboutImageUrl, setAboutImageUrl] = React.useState(
     safeContent.about_image_url || ""
   );
-  const [serviceUploading, setServiceUploading] = React.useState([
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [serviceUploading, setServiceUploading] = React.useState<boolean[]>(
+    Array(4).fill(false)
+  );
   const [serviceImageUrls, setServiceImageUrls] = React.useState([
     safeContent.service_1_image || "",
     safeContent.service_2_image || "",
@@ -70,55 +83,49 @@ export default function AdminDashboard() {
     safeContent.service_4_image || "",
   ]);
 
-  async function handleHeroImageUpload(file: File) {
-    setHeroUploading(true);
-    const data = new FormData();
-    data.append("image", file);
-    data.append("key", "hero_image_url");
-    await fetcher.submit(data, {
-      method: "post",
-      action: "/admin/upload",
-      encType: "multipart/form-data",
-    });
-    if (fetcher.data?.url) {
-      setHeroImageUrl(fetcher.data.url);
-    }
-    setHeroUploading(false);
-  }
+  const uploadImage = React.useCallback(
+    async (
+      key: string,
+      file: File,
+      setUploading: (v: boolean) => void,
+      setUrl: (url: string) => void
+    ) => {
+      setUploading(true);
+      const data = new FormData();
+      data.append("image", file);
+      data.append("key", key);
+      await fetcher.submit(data, {
+        method: "post",
+        action: "/admin/upload",
+        encType: "multipart/form-data",
+      });
+      if (fetcher.data?.url) {
+        setUrl(fetcher.data.url);
+      }
+      setUploading(false);
+    },
+    [fetcher]
+  );
 
-  async function handleAboutImageUpload(file: File) {
-    setAboutUploading(true);
-    const data = new FormData();
-    data.append("image", file);
-    data.append("key", "about_image_url");
-    await fetcher.submit(data, {
-      method: "post",
-      action: "/admin/upload",
-      encType: "multipart/form-data",
-    });
-    if (fetcher.data?.url) {
-      setAboutImageUrl(fetcher.data.url);
-    }
-    setAboutUploading(false);
-  }
+  const handleHeroImageUpload = (file: File) =>
+    uploadImage("hero_image_url", file, setHeroUploading, setHeroImageUrl);
 
-  async function handleServiceImageUpload(idx: number, file: File) {
-    setServiceUploading((prev) => prev.map((v, i) => (i === idx ? true : v)));
-    const data = new FormData();
-    data.append("image", file);
-    data.append("key", `service_${idx + 1}_image`);
-    await fetcher.submit(data, {
-      method: "post",
-      action: "/admin/upload",
-      encType: "multipart/form-data",
-    });
-    if (fetcher.data?.url) {
-      setServiceImageUrls((prev) =>
-        prev.map((url, i) => (i === idx ? fetcher.data.url : url))
-      );
-    }
-    setServiceUploading((prev) => prev.map((v, i) => (i === idx ? false : v)));
-  }
+  const handleAboutImageUpload = (file: File) =>
+    uploadImage("about_image_url", file, setAboutUploading, setAboutImageUrl);
+
+  const handleServiceImageUpload = (idx: number, file: File) =>
+    uploadImage(
+      `service_${idx + 1}_image`,
+      file,
+      (v) =>
+        setServiceUploading((prev) =>
+          prev.map((val, i) => (i === idx ? v : val))
+        ),
+      (url) =>
+        setServiceImageUrls((prev) =>
+          prev.map((val, i) => (i === idx ? url : val))
+        )
+    );
 
   /* ------------------------------------------------- *
    * Section order comes from key "home_sections_order"

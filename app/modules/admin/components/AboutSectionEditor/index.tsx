@@ -1,10 +1,12 @@
-import type React from "react";
+import React, { type JSX } from "react";
 import type { FetcherWithComponents } from "react-router";
-import ImageUploadZone from "./ImageUploadZone";
-import RichTextField from "./RichTextField";
+
+import RichTextField from "~/modules/admin/components/RichTextField";
+import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
+import type { action } from "~/modules/admin/pages";
 
 interface AboutSectionEditorProps {
-  fetcher: FetcherWithComponents<any>;
+  fetcher: FetcherWithComponents<typeof action>;
   initialContent: Record<string, string>;
   onImageUpload: (file: File) => void;
   imageUploading: boolean;
@@ -17,22 +19,27 @@ export function AboutSectionEditor({
   onImageUpload,
   imageUploading,
   aboutImageUrl,
-}: AboutSectionEditorProps) {
-  // Dropzone replaces file input
+}: AboutSectionEditorProps): JSX.Element {
+  const handleBlur = React.useCallback(
+    (e: React.FocusEvent<HTMLTextAreaElement>) => {
+      const { name, value } = e.currentTarget;
+      const data = new FormData();
+      data.append(name, value);
+      fetcher.submit(data, { method: "post" });
+    },
+    [fetcher]
+  );
 
-  function handleBlur(e: React.FocusEvent<HTMLTextAreaElement>) {
-    const { name, value } = e.target;
-    const data = new FormData();
-    data.append(name, value);
-    fetcher.submit(data, { method: "post" });
-  }
-
-  // Dropzone handles file selection and calls onImageUpload
-  const handleDrop = (files: File[]) => {
-    if (files && files[0]) {
-      onImageUpload(files[0]);
-    }
-  };
+  const handleDrop = React.useCallback(
+    (files: File[]) => {
+      const [file] = files;
+      if (!file) return;
+      onImageUpload(file);
+      const status = document.getElementById("about-image-upload-status");
+      if (status) status.textContent = "Uploading About Image...";
+    },
+    [onImageUpload]
+  );
 
   return (
     <div className="overflow-hidden bg-gray-50 sm:rounded-lg mb-8">
@@ -81,13 +88,7 @@ export function AboutSectionEditor({
               className="sr-only"
             ></div>
             <ImageUploadZone
-              onDrop={(files) => {
-                handleDrop(files);
-                const status = document.getElementById(
-                  "about-image-upload-status"
-                );
-                if (status) status.textContent = `Uploading About Image...`;
-              }}
+              onDrop={handleDrop}
               disabled={imageUploading}
               uploading={imageUploading}
               imageUrl={aboutImageUrl}
