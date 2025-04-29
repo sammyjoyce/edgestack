@@ -1,8 +1,4 @@
-module.exports.parser = require('recast/parsers/typescript');
-/**
- * Rewrite all imports from `@components/...` → `@common/ui/...`
- */
-module.exports = function(fileInfo, { jscodeshift: j }) {
+function transformer(fileInfo, { jscodeshift: j }) {
   return j(fileInfo.source)
     .find(j.ImportDeclaration)
     .forEach(path => {
@@ -12,4 +8,7 @@ module.exports = function(fileInfo, { jscodeshift: j }) {
       }
     })
     .toSource();
-};
+}
+
+module.exports = transformer;
+module.exports.parser = 'tsx';
