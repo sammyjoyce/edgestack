@@ -75,7 +75,7 @@ export async function action({
       // Validate key and publicUrl using Valibot
       try {
         const { validateContentInsert, validateMediaInsert } = await import(
-          "../../../database/valibot-validation"
+          "@common/validation/valibot"
         );
         validateContentInsert({ key, value: publicUrl });
         // If you want to also store in media table, validate media object as well

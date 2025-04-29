@@ -151,7 +151,7 @@ export async function action({
     // This is necessary because valibot's insert schema expects all required fields
     try {
       const { validateProjectInsert } = await import(
-        "../../../../database/valibot-validation"
+        "@common/validation/valibot"
       );
       validateProjectInsert(projectInsertObj);
     } catch (e: any) {
