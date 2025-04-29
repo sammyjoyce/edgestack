@@ -1,5 +1,90 @@
-import React, { useRef, useState } from "react";
+import React, {
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
 import type { FetcherWithComponents } from "react-router";
+import { validateContentInsert } from "~/database/valibot-validation";
+
+// Config array for text fields with help text
+const textFields = [
+  {
+    key: "hero_title",
+    label: "Hero Title",
+    rows: 2,
+    help: "Main heading for the hero section.",
+  },
+  {
+    key: "hero_subtitle",
+    label: "Hero Subtitle",
+    rows: 3,
+    help: "Subtitle or tagline for the hero.",
+  },
+  {
+    key: "about_title",
+    label: "About Title",
+    rows: 2,
+    help: "Heading for the about section.",
+  },
+  {
+    key: "about_text",
+    label: "About Text",
+    rows: 5,
+    help: "Description for the about section.",
+  },
+  {
+    key: "services_intro_title",
+    label: "Services Intro Title",
+    rows: 2,
+    help: "Heading for the services intro.",
+  },
+  {
+    key: "services_intro_text",
+    label: "Services Intro Text",
+    rows: 4,
+    help: "Description for the services intro.",
+  },
+  {
+    key: "service_1_title",
+    label: "Service 1 Title",
+    rows: 2,
+    help: "Title for the first service.",
+  },
+  {
+    key: "service_1_text",
+    label: "Service 1 Text",
+    rows: 3,
+    help: "Description for the first service.",
+  },
+  {
+    key: "service_2_title",
+    label: "Service 2 Title",
+    rows: 2,
+    help: "Title for the second service.",
+  },
+  {
+    key: "service_2_text",
+    label: "Service 2 Text",
+    rows: 3,
+    help: "Description for the second service.",
+  },
+];
+
+interface TextContentFormProps {
+  fetcher: FetcherWithComponents<any>;
+  initialContent: Record<string, string>;
+  formRef?: React.RefObject<HTMLFormElement>;
+}
+
+const validateField = (key: string, value: string): string | null => {
+  try {
+    validateContentInsert({ key, value });
+    return null;
+  } catch (err: any) {
+    return err.message || "Validation failed";
+  }
+};
 
 // Simple accessible tooltip component
 function Tooltip({ id, children }: { id: string; children: React.ReactNode }) {
@@ -14,17 +99,11 @@ function Tooltip({ id, children }: { id: string; children: React.ReactNode }) {
   );
 }
 
-interface TextContentFormProps {
-  fetcher: FetcherWithComponents<any>;
-  initialContent: Record<string, string>;
-  formRef?: React.RefObject<HTMLFormElement>;
-}
-
 export function TextContentForm({
   fetcher,
   initialContent,
   formRef,
-}: TextContentFormProps) {
+}: TextContentFormProps): JSX.Element {
   const localFormRef = useRef<HTMLFormElement>(null);
   const ref = formRef || localFormRef;
 
@@ -37,108 +116,43 @@ export function TextContentForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [feedback, setFeedback] = useState<string | null>(null);
 
-  // Config array for text fields with help text
-  const textFields = [
-    {
-      key: "hero_title",
-      label: "Hero Title",
-      rows: 2,
-      help: "Main heading for the hero section.",
-    },
-    {
-      key: "hero_subtitle",
-      label: "Hero Subtitle",
-      rows: 3,
-      help: "Subtitle or tagline for the hero.",
-    },
-    {
-      key: "about_title",
-      label: "About Title",
-      rows: 2,
-      help: "Heading for the about section.",
-    },
-    {
-      key: "about_text",
-      label: "About Text",
-      rows: 5,
-      help: "Description for the about section.",
-    },
-    {
-      key: "services_intro_title",
-      label: "Services Intro Title",
-      rows: 2,
-      help: "Heading for the services intro.",
-    },
-    {
-      key: "services_intro_text",
-      label: "Services Intro Text",
-      rows: 4,
-      help: "Description for the services intro.",
-    },
-    {
-      key: "service_1_title",
-      label: "Service 1 Title",
-      rows: 2,
-      help: "Title for the first service.",
-    },
-    {
-      key: "service_1_text",
-      label: "Service 1 Text",
-      rows: 3,
-      help: "Description for the first service.",
-    },
-    {
-      key: "service_2_title",
-      label: "Service 2 Title",
-      rows: 2,
-      help: "Title for the second service.",
-    },
-    {
-      key: "service_2_text",
-      label: "Service 2 Text",
-      rows: 3,
-      help: "Description for the second service.",
-    },
-    // Add more fields as needed
-  ];
-
   // Handler for auto-save on blur
-  async function handleBlur(e: React.FocusEvent<HTMLTextAreaElement>) {
-    const { name, value } = e.target;
-    if (autoSave) {
-      // Valibot validation before submit
-      try {
-        const { validateContentInsert } = await import(
-          "@common/validation/valibot"
-        );
-        validateContentInsert({ key: name, value });
-        const data = new FormData();
-        data.append(name, value);
-        fetcher.submit(data, { method: "post" });
-        setFeedback(`Saving '${name}'...`);
-        setErrors((prev) => {
-          const copy = { ...prev };
-          delete copy[name];
-          return copy;
-        });
-      } catch (err: any) {
-        setErrors((prev) => ({
-          ...prev,
-          [name]: err.message || "Validation failed",
-        }));
-        setFeedback(`Validation failed for '${name}': ${err.message || err}`);
-        return;
+  const handleBlur = useCallback(
+    async (e: React.FocusEvent<HTMLTextAreaElement>) => {
+      const { name, value } = e.currentTarget;
+
+      if (autoSave) {
+        const err = validateField(name, value);
+        if (!err) {
+          const data = new FormData();
+          data.append(name, value);
+          fetcher.submit(data, { method: "post" });
+
+          setFeedback(`Saving '${name}'…`);
+          setErrors((prev) => {
+            const next = { ...prev };
+            delete next[name];
+            return next;
+          });
+        } else {
+          setErrors((prev) => ({ ...prev, [name]: err }));
+          setFeedback(`Validation failed for '${name}': ${err}`);
+        }
+      } else {
+        setPendingFields((prev) => ({ ...prev, [name]: value }));
       }
-    } else {
-      setPendingFields((prev) => ({ ...prev, [name]: value }));
-    }
-  }
+    },
+    [autoSave, fetcher]
+  );
 
   // Handler for manual input change
-  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    const { name, value } = e.target;
-    setPendingFields((prev) => ({ ...prev, [name]: value }));
-  }
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const { name, value } = e.currentTarget;
+      setPendingFields((prev) => ({ ...prev, [name]: value }));
+    },
+    []
+  );
 
   // Manual save
   async function handleSave(e: React.FormEvent) {
@@ -147,13 +161,9 @@ export function TextContentForm({
     let hasError = false;
     const newErrors: Record<string, string> = {};
     for (const [key, value] of Object.entries(pendingFields)) {
-      try {
-        const { validateContentInsert } = await import(
-          "@common/validation/valibot"
-        );
-        validateContentInsert({ key, value });
-      } catch (err: any) {
-        newErrors[key] = err.message || "Validation failed";
+      const err = validateField(key, value);
+      if (err) {
+        newErrors[key] = err;
         hasError = true;
       }
     }
@@ -178,7 +188,7 @@ export function TextContentForm({
   }
 
   // Listen for fetcher feedback
-  React.useEffect(() => {
+  useEffect(() => {
     if (fetcher.data?.success) {
       setFeedback("Saved successfully!");
       setErrors({});
