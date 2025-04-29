@@ -1,4 +1,5 @@
-import clsx from "@common/utils/clsx";
+import clsx from "clsx"; // Use direct import
+import React from "react"; // Import React
 
 export function TagList({
   children,

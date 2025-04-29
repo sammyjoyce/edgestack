@@ -1,10 +1,10 @@
-import clsx from "@common/utils/clsx";
+import clsx from "clsx"; // Use direct import
 import {
   motion,
   useMotionTemplate,
   useScroll,
   useTransform,
-} from "@common/ui/animation";
+} from "framer-motion"; // Use direct import
 import type React from "react";
 import { useRef } from "react";
 

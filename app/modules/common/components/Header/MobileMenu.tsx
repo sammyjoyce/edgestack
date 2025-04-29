@@ -1,9 +1,9 @@
 import React from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { AnimatePresence, motion } from "@common/ui/animation";
+import { AnimatePresence, motion } from "framer-motion"; // Use direct import
 import { NavLink } from "react-router";
-import { Button } from "~/modules/common/components/ui/Button";
+import { Button } from "~/modules/common/components/ui/Button"; // Corrected path
 
 interface MenuItem {
   name: string;

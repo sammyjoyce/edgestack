@@ -1,5 +1,5 @@
-import clsx from "@common/utils/clsx";
-import { useId } from "react";
+import clsx from "clsx"; // Use direct import
+import React, { useId } from "react"; // Import React
 
 const shapes = [
   {
