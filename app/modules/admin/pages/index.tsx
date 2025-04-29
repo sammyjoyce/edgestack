@@ -7,7 +7,8 @@ import AdminDashboard from "../components/AdminDashboard";
 
 import { getAllContent, updateContent } from "~/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
-import { validateContentInsert } from "~/database/valibot-validation";
+import { validateContentInsert, validateErrorResponse } from "~/database/valibot-validation"; // Import validateErrorResponse
+import { handleImageUpload } from "~/utils/upload.server"; // Import image upload helper
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
@@ -22,53 +23,94 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   return data(items);
 }
 
+// Centralized action for the admin dashboard
 export async function action({ request, context }: Route.ActionArgs) {
   const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
+  const badRequest = (msg: string) => data({ success: false, error: msg }, { status: 400 });
+  const serverError = (msg: string) => data({ success: false, error: msg }, { status: 500 });
 
-  const badRequest = (msg: string) =>
-    data({ success: false, error: msg }, { status: 400 });
-
+  // Auth check
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
   if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
     return unauthorized();
   }
-  if (request.method === "POST") {
-    try {
-      const formData = await request.formData();
-      const updates: Record<string, string> = {};
-      for (const [key, value] of formData.entries()) {
-        if (typeof value === "string") {
-          // Validate using Valibot schema
-          try {
-            // Only validate if key/value is not empty
-            if (!key || !value) throw new Error("Empty key or value");
-            // Validate as a content insert
-            // Import validateContentInsert from database/valibot-validation
 
-            validateContentInsert({ key, value });
-            updates[key] = value;
-          } catch (e: any) {
-            return badRequest(
-              `Validation failed for key '${key}': ${e.message || e}`
-            );
-          }
-        }
-      }
-      if (Object.keys(updates).length === 0) {
-        return badRequest("Invalid content update payload.");
-      }
-      await updateContent(context.db, updates); // Remove 'as any'
-      return data({ success: true });
-    } catch (error: any) {
-      return data(
-        { success: false, error: "Error processing content update." },
-        { status: 500 }
-      );
-    }
+  if (request.method !== "POST") {
+    return data({ error: "Invalid method" }, { status: 405 });
   }
-  return data({ error: "Invalid method" }, { status: 405 });
+
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  try {
+    switch (intent) {
+      case "uploadImage": {
+        const file = formData.get("image");
+        const key = formData.get("key");
+
+        if (!file || !(file instanceof File)) return badRequest("No file uploaded.");
+        if (!key || typeof key !== "string") return badRequest("Missing image key.");
+
+        const publicUrl = await handleImageUpload(file, key, context);
+        validateContentInsert({ key, value: publicUrl }); // Validate before DB update
+        await updateContent(context.db, { [key]: publicUrl });
+        return data({ success: true, url: publicUrl, key: key });
+      }
+
+      case "reorderSections": {
+        const orderValue = formData.get("home_sections_order");
+        if (typeof orderValue !== "string") return badRequest("Invalid section order.");
+        validateContentInsert({ key: "home_sections_order", value: orderValue });
+        await updateContent(context.db, { home_sections_order: orderValue });
+        return data({ success: true });
+      }
+
+      case "updateTextContent":
+      default: { // Default to text content update
+        const updates: Record<string, string> = {};
+        let validationError: string | null = null;
+
+        for (const [key, value] of formData.entries()) {
+           if (key === 'intent') continue; // Skip the intent field itself
+           if (typeof value === "string") {
+             try {
+               // Allow empty strings, but validate if not empty
+               if (value.trim() !== "") {
+                 validateContentInsert({ key, value });
+               }
+               updates[key] = value;
+             } catch (e: any) {
+               validationError = `Validation failed for '${key}': ${e.message || e}`;
+               break; // Stop on first validation error
+             }
+           }
+        }
+
+        if (validationError) {
+          return badRequest(validationError);
+        }
+
+        if (Object.keys(updates).length === 0) {
+          // Allow submitting empty fields if needed, otherwise return badRequest
+           return data({ success: true, message: "No text content changed." });
+          // return badRequest("No text content provided for update.");
+        }
+
+        await updateContent(context.db, updates);
+        return data({ success: true });
+      }
+    }
+  } catch (error: any) {
+     console.error("Admin Action Error:", error);
+     // Check if it's a validation error from Valibot and return 400
+     if (error.issues) {
+       return badRequest(`Validation Error: ${error.message}`);
+     }
+     return serverError("An unexpected error occurred.");
+  }
 }
+
 
 export default function AdminIndex(_props: Route.ComponentProps): JSX.Element {
   return (

@@ -49,12 +49,13 @@ export function ImageUploadSection({
         if (!file) return;
 
         const formData = new FormData();
+        formData.append("intent", "uploadImage"); // Add intent
         formData.append("image", file);
         formData.append("key", key);
 
         fetcher.submit(formData, {
           method: "post",
-          action: "/admin/upload",
+          action: "/admin", // Target /admin
           encType: "multipart/form-data",
         });
 

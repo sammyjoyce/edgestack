@@ -60,12 +60,21 @@ export default function SectionSorter({
 
   /* --- Persist order after every change ---------------------------------- */
   useEffect(() => {
-    const value = sections.map((s) => s.id).join(",");
+    // Prevent initial submission on mount if order hasn't changed
+    const initialOrder = orderValue || DEFAULT_SECTIONS.map(s => s.id).join(",");
+    const currentOrder = sections.map((s) => s.id).join(",");
+
+    if(initialOrder === currentOrder && fetcher.state === 'idle' && !fetcher.data) {
+       // Don't submit if order is the same as initial and fetcher is idle without prior data
+       return;
+    }
+
     const data = new FormData();
-    data.append("home_sections_order", value); // <<< HERE
-    // Explicitly target the admin index route action
-    fetcher.submit(data, { method: "post", action: "/admin" });
-  }, [sections, fetcher]);
+    data.append("intent", "reorderSections"); // Add intent
+    data.append("home_sections_order", currentOrder);
+    // Submit to the current route (which is /admin)
+    fetcher.submit(data, { method: "post" });
+  }, [sections, fetcher, orderValue]); // Add orderValue to dependencies
 
   /* --- Drag end handler -------------------------------------------------- */
   const handleDragEnd = useCallback((event: DragEndEvent) => {

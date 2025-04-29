@@ -42,12 +42,16 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
       { status: 500 }
     );
   }
-}
+// Remove the action export from here
+// export async function action({ request, params, context }: Route.ActionArgs) { ... }
 
-// Action to handle updating the project
-export async function action({ request, params, context }: Route.ActionArgs) {
-  const sessionValue = getSessionCookie(request);
-  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+// Component to render the "Edit Project" form
+export default function AdminEditProject({
+  loaderData,
+  actionData, // Keep actionData prop for potential errors returned by the centralized action
+}: Route.ComponentProps): React.ReactElement {
+  // Use React.ReactElement
+  // Use loader data for initial form values, action data for errors
   if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
     return data({ error: "Unauthorized", project: undefined }, { status: 401 });
   }
@@ -230,11 +234,15 @@ export default function AdminEditProject({
         </div>
       )}
 
+      {/* Update form to target the centralized action with intent */}
       <Form
         method="post"
+        action="/admin/projects" // Target the projects index route
         encType="multipart/form-data"
         className="bg-white shadow-sm border border-gray-200 rounded-lg p-6 space-y-6"
       >
+        <input type="hidden" name="intent" value="updateProject" />
+        <input type="hidden" name="projectId" value={currentProject.id} />
         {" "}
         {/* Added encType, adjusted shadow/border, increased spacing */}
         <div>
