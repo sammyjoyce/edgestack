@@ -3,11 +3,11 @@ import { data, Link, useLoaderData } from "react-router";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
-import type { Route } from "../+types/route"; // Use general projects route type
 // Import generated types
 import type {
+  Route, // Use generated Route type
   LoaderData,
-  Params,
+  Params, // Params is automatically part of Route.LoaderArgs
 } from "../../../.react-router/types/app/modules/projects/routes/[projectId]";
 import { type TypedResponse } from "react-router"; // Import TypedResponse
 
@@ -15,13 +15,13 @@ import { type TypedResponse } from "react-router"; // Import TypedResponse
 export async function loader({
   params,
   context,
-}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use generated Route.LoaderArgs
   // params is already typed
   const projectId = Number(params.projectId);
 
-  if (isNaN(projectId)) {
+    // Ensure shape matches LoaderData
     return data(
-      { project: null, error: "Invalid Project ID" },
+      { project: null, error: "Invalid Project ID" } satisfies LoaderData,
       { status: 400 }
     );
   }
@@ -29,23 +29,29 @@ export async function loader({
   try {
     const project = await getProjectById(context.db, projectId);
     if (!project) {
+      // Ensure shape matches LoaderData
       return data(
-        { project: null, error: "Project not found" },
+        { project: null, error: "Project not found" } satisfies LoaderData,
         { status: 404 }
       );
     }
-    return data({ project, error: undefined });
+    // Ensure shape matches LoaderData
+    return data({ project, error: undefined } satisfies LoaderData);
   } catch {
+    // Ensure shape matches LoaderData
     return data(
-      { project: null, error: "Failed to load project details" },
+      {
+        project: null,
+        error: "Failed to load project details",
+      } satisfies LoaderData,
       { status: 500 }
     );
   }
 }
 
 export function ProjectDetailRoute() {
-  // Get project data and error from the loader using generated type
-  const { project, error } = useLoaderData() as LoaderData;
+  // Get project data and error from the loader using generated type generic
+  const { project, error } = useLoaderData<LoaderData>();
 
   // Handle loader errors
   if (error) { // Check for error first

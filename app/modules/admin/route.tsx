@@ -5,36 +5,25 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
-import { NavLink, Outlet, redirect } from "react-router";
-import type { Route } from "./+types/route";
+import { NavLink, Outlet, redirect, type Response } from "react-router"; // Import Response
+// Import generated types
+import type { Route } from "../../.react-router/types/app/modules/admin/route";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { data, useFetcher } from "react-router"; // Import useFetcher and data
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({
+  request,
+  context,
+}: Route.LoaderArgs): Promise<Response | null> { // Use generated Route.LoaderArgs, return Response | null
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
   if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-    return redirect("/admin/login");
+    return redirect("/admin/login"); // Use typed path
   }
   return null;
 }
 
-// Add a placeholder action to catch unexpected submissions to the layout route
-export async function action({ request }: Route.ActionArgs) {
-  console.log(">>> Submission received by /admin LAYOUT action <<<");
-  try {
-    const formData = await request.formData();
-    const dataEntries = Object.fromEntries(formData);
-    console.log("Layout Action - Form Data:", dataEntries);
-    const referrer = request.headers.get("referer");
-    console.log("Layout Action - Referrer:", referrer);
-  } catch (e) {
-    console.error("Layout Action - Error reading form data:", e);
-  }
-  // Return a simple response to stop the error
-  // Remove the placeholder action entirely
-  // return data({ message: "Layout placeholder action processed submission." });
-}
+// Remove placeholder action
 
 interface NavItem {
   name: string;
@@ -78,7 +67,7 @@ export function Component() {
                 {navigation.map((item) => (
                   <li key={item.name}>
                     <NavLink
-                      to={item.href}
+                      to={item.href} // Use typed path directly
                       end={item.href === "/admin"}
                       className={({ isActive }) =>
                         classNames(

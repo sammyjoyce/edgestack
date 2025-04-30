@@ -6,25 +6,26 @@ import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "app/modules/common/db";
 import { validateProjectInsert } from "~/database/valibot-validation";
 import type { Project } from "~/database/schema";
-import type { Route } from "~/modules/admin/+types/route"; // Keep existing Route type
 import { handleImageUpload } from "~/utils/upload.server";
 // Import generated types for this specific route
 import type {
+  Route, // Use generated Route type
   LoaderData,
   ActionData,
-  Params,
+  Params, // Params is automatically part of Route.LoaderArgs/ActionArgs
 } from "../../../../../.react-router/types/app/modules/admin/routes/projects/[projectId]/edit";
+import { type TypedResponse, type Response } from "react-router"; // Import Response
 
 export async function loader({
   params,
   context,
-}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use generated Route.LoaderArgs
   // params is already typed via Route.LoaderArgs if generator ran correctly
   const projectId = Number(params.projectId); // Access typed param
 
-  if (isNaN(projectId)) {
+    // Ensure shape matches LoaderData
     return data(
-      { project: null, error: "Invalid Project ID" },
+      { project: null, error: "Invalid Project ID" } satisfies LoaderData,
       { status: 400 }
     );
   }
@@ -32,16 +33,19 @@ export async function loader({
   try {
     const project = await getProjectById(context.db, projectId);
     if (!project) {
+      // Ensure shape matches LoaderData
       return data(
-        { project: null, error: "Project not found" },
+        { project: null, error: "Project not found" } satisfies LoaderData,
         { status: 404 }
       );
     }
-    return data({ project, error: undefined });
+    // Ensure shape matches LoaderData
+    return data({ project, error: undefined } satisfies LoaderData);
   } catch (error) {
     console.error("Error fetching project:", error);
+    // Ensure shape matches LoaderData
     return data(
-      { project: null, error: "Failed to load project" },
+      { project: null, error: "Failed to load project" } satisfies LoaderData,
       { status: 500 }
     );
   }
@@ -51,13 +55,13 @@ export async function action({
   request,
   params,
   context,
-}: Route.ActionArgs): Promise<TypedResponse<ActionData>> { // Use TypedResponse and ActionData
+}: Route.ActionArgs): Promise<TypedResponse<ActionData> | Response> { // Use generated Route.ActionArgs, add Response
   // params is already typed via Route.ActionArgs
   const projectId = Number(params.projectId); // Access typed param
 
-  if (isNaN(projectId)) {
+    // Ensure shape matches ActionData
     return data(
-      { success: false, error: "Invalid Project ID" },
+      { success: false, error: "Invalid Project ID" } satisfies ActionData,
       { status: 400 }
     );
   }
@@ -79,9 +83,12 @@ export async function action({
     if (imageFile && imageFile.size > 0) {
       // Access bucket from context
       const env = context.cloudflare?.env;
-      if (!env) {
+        // Ensure shape matches ActionData
         return data(
-          { success: false, error: "Environment not available" },
+          {
+            success: false,
+            error: "Environment not available",
+          } satisfies ActionData,
           { status: 500 }
         );
       }
@@ -101,23 +108,25 @@ export async function action({
         if (uploadResult && typeof uploadResult === "string") {
           imageUrl = uploadResult;
         } else {
+          // Ensure shape matches ActionData
           return data(
-            { success: false, error: "Failed to upload image" },
+            { success: false, error: "Failed to upload image" } satisfies ActionData,
             { status: 400 }
           );
         }
       } catch (error) {
         console.error("Image upload error:", error);
+        // Ensure shape matches ActionData
         return data(
-          { success: false, error: "Failed to upload image" },
+          { success: false, error: "Failed to upload image" } satisfies ActionData,
           { status: 400 }
         );
       }
     }
 
-    if (!title) {
+      // Ensure shape matches ActionData
       return data(
-        { success: false, error: "Title is required" },
+        { success: false, error: "Title is required" } satisfies ActionData,
         { status: 400 }
       );
     }
@@ -133,16 +142,16 @@ export async function action({
     };
 
     // Use valibot validation
-    try {
       validateProjectInsert(projectData);
       // If validation passes (doesn't throw), continue
     } catch (error) {
       // If validation fails, it throws an error
+      // Ensure shape matches ActionData
       return data(
         {
           success: false,
           error: error instanceof Error ? error.message : "Validation failed",
-        },
+        } satisfies ActionData,
         { status: 400 }
       );
     }
@@ -151,19 +160,20 @@ export async function action({
     await updateProject(context.db, projectId, projectData);
 
     // Redirect to projects list after successful update using typed path
-    return redirect("/admin/projects");
+    return redirect("/admin/projects"); // Use typed path
   } catch (error) {
     console.error("Error updating project:", error);
+    // Ensure shape matches ActionData
     return data(
-      { success: false, error: "Failed to update project" },
+      { success: false, error: "Failed to update project" } satisfies ActionData,
       { status: 500 }
     );
   }
 }
 
 export function Component() {
-  // Use generated LoaderData type
-  const { project, error } = useLoaderData() as LoaderData;
+  // Use generated LoaderData type with hook generic
+  const { project, error } = useLoaderData<LoaderData>();
 
   if (error || !project) {
     return (

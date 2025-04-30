@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { validateContentInsert } from "~/database/valibot-validation";
-import type { AdminActionResponse } from "~/modules/admin/+types/actions"; // Import the centralized action response type
+// Import generated ActionData type for the /admin route
+import type { ActionData as AdminIndexActionData } from "../../../.react-router/types/app/modules/admin/routes/index";
 
 // Helper function for validation (can be kept here or imported)
 const validateField = (key: string, value: string): string | null => {
@@ -30,7 +31,7 @@ interface TextFieldConfig {
 
 interface UseTextContentFormArgs {
   initialContent: Record<string, string>;
-  fetcher: FetcherWithComponents<AdminActionResponse>; // Use specific type
+  fetcher: FetcherWithComponents<AdminIndexActionData>; // Use generated type
   textFieldsConfig: TextFieldConfig[]; // Pass the config to the hook
 }
 
@@ -76,7 +77,8 @@ export function useTextContentForm({
           data.append("intent", "updateTextContent"); // Add intent
           data.append(name, value);
           isSubmittingRef.current = true; // Set submitting flag
-          fetcher.submit(data, { method: "post", action: "/admin" }); // Target /admin
+          // Use typed path for action
+          fetcher.submit(data, { method: "post", action: "/admin" });
           setFeedback(`Saving '${labelForKey(name)}'...`); // Use label for feedback
           setErrors((prev) => {
             const next = { ...prev };
@@ -145,7 +147,8 @@ export function useTextContentForm({
       );
 
       isSubmittingRef.current = true; // Set submitting flag
-      fetcher.submit(data, { method: "post", action: "/admin" }); // Target /admin
+      // Use typed path for action
+      fetcher.submit(data, { method: "post", action: "/admin" });
       setFeedback("Saving changes...");
       // Update the 'saved' fields state after successful manual save intention
       setFields(pendingFields);

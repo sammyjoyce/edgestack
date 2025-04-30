@@ -4,13 +4,15 @@ import Header from "~/modules/common/components/Header";
 import { ProjectsErrorBoundary } from "../components/ProjectsErrorBoundary";
 import { getAllContent, getAllProjects } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
-import type { Route } from "~/modules/projects/+types/route";
-// Import generated type
-import type { LoaderData } from "../../../.react-router/types/app/modules/projects/routes/_layout";
+// Import generated types
+import type {
+  Route, // Use generated Route type
+  LoaderData,
+} from "../../../.react-router/types/app/modules/projects/routes/_layout";
 
 export async function loader({
   context,
-}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use generated Route.LoaderArgs
   try {
     const content = await getAllContent(context.db);
     const projects = await getAllProjects(context.db);
@@ -20,8 +22,9 @@ export async function loader({
     console.error("Failed to fetch content or projects:", error);
     // Ensure error response shape matches LoaderData
     const errorData: LoaderData = {
-      content: {} as Record<string, string>,
-      projects: [] as Project[],
+      content: {},
+      projects: [],
+      error: "Failed to load projects layout data", // Add error field if defined in LoaderData
     };
     return data(errorData, { status: 500 });
   }

@@ -5,11 +5,22 @@ import { AdminErrorBoundary } from "../../components/AdminErrorBoundary";
 import { getAllProjects } from "app/modules/common/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import type { Project } from "~/database/schema";
-import type { Route } from "../../+types/route";
+// Import generated types
+import type {
+  Route, // Use generated Route type
+  LoaderData,
+} from "../../../../.react-router/types/app/modules/admin/routes/projects/_layout";
+import { type TypedResponse } from "react-router"; // Import TypedResponse
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({
+  request,
+  context,
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use generated Route.LoaderArgs and TypedResponse
   const unauthorized = () =>
-    data({ projects: [], error: "Unauthorized" }, { status: 401 });
+    // Ensure shape matches LoaderData
+    data({ projects: [], error: "Unauthorized" } satisfies LoaderData, {
+      status: 401,
+    });
 
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -17,12 +28,13 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     return unauthorized();
   }
 
-  try {
     const projects = await getAllProjects(context.db);
-    return data({ projects, error: undefined });
+    // Ensure shape matches LoaderData
+    return data({ projects, error: undefined } satisfies LoaderData);
   } catch (error) {
+    // Ensure shape matches LoaderData
     return data(
-      { projects: [], error: "Failed to load projects" },
+      { projects: [], error: "Failed to load projects" } satisfies LoaderData,
       { status: 500 }
     );
   }

@@ -16,7 +16,8 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import React, { useEffect, useState, useCallback } from "react";
 import type { FetcherWithComponents } from "react-router";
-import type { AdminActionResponse } from "~/modules/admin/+types/actions"; // Import the centralized action response type
+// Import generated ActionData type for the /admin route
+import type { ActionData as AdminIndexActionData } from "../../../../.react-router/types/app/modules/admin/routes/index";
 
 type Section = { id: string; label: string };
 
@@ -24,7 +25,7 @@ interface SectionSorterProps {
   /** Persisted comma-separated order string, e.g. `"hero,services,about,contact"` */
   orderValue: string | undefined;
   /** Fetcher from AdminDashboard – we reuse it to save after each drag */
-  fetcher: FetcherWithComponents<AdminActionResponse>; // Use specific type
+  fetcher: FetcherWithComponents<AdminIndexActionData>; // Use generated type
 }
 
 /** Default order if no value persisted */

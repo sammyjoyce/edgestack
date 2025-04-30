@@ -4,12 +4,13 @@ import ContactUs from "../components/ContactUs";
 import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
 import RecentProjects from "~/modules/common/components/RecentProjects";
-import type { Route } from "~/modules/home/+types/route";
 import type { JSX } from "react";
 // Import the LoaderData type from the parent layout
 import type { LoaderData as HomeLayoutLoaderData } from "../../../.react-router/types/app/modules/home/routes/_layout";
+// Import generated Route type for meta function
+import type { Route } from "../../../.react-router/types/app/modules/home/routes/index";
 
-export const meta: Route.MetaFunction = () => {
+export const meta: Route.MetaFunction = () => { // Use generated Route.MetaFunction
   return [
     { title: "Lush Constructions" },
     {

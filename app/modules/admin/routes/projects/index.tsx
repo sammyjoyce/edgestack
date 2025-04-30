@@ -18,15 +18,19 @@ export async function action({
   const intent = formData.get("intent") as string;
 
   // Ensure the user is authenticated (redundant with layout loader but good practice)
+  // Ensure shape matches ActionData
   const unauthorized = () =>
-    data({ success: false, error: "Unauthorized" }, { status: 401 });
+    data({ success: false, error: "Unauthorized" } satisfies ActionData, {
+      status: 401,
+    });
 
   // Handle delete project intent
   if (intent === "deleteProject") {
     const projectId = formData.get("projectId") as string;
     if (!projectId) {
+      // Ensure shape matches ActionData
       return data(
-        { success: false, error: "Missing project ID" },
+        { success: false, error: "Missing project ID" } satisfies ActionData,
         { status: 400 }
       );
     }
@@ -34,22 +38,24 @@ export async function action({
     try {
       // Implement project deletion logic here
       console.log(`Deleting project ${projectId}`);
-      return data({ success: true, projectId });
+      // Ensure shape matches ActionData
+      return data({ success: true, projectId } satisfies ActionData);
     } catch (error) {
       console.error("Failed to delete project:", error);
+      // Ensure shape matches ActionData
       return data(
-        { success: false, error: "Failed to delete project" },
+        { success: false, error: "Failed to delete project" } satisfies ActionData,
         { status: 500 }
       );
-    }
-  }
-
-  return data({ success: false, error: "Unknown intent" }, { status: 400 });
+  // Ensure shape matches ActionData
+  return data({ success: false, error: "Unknown intent" } satisfies ActionData, {
+    status: 400,
+  });
 }
 
 export function ProjectsIndexRoute() {
-  // Use generated LoaderData type
-  const { projects, error } = useLoaderData() as LoaderData;
+  // Use generated LoaderData type with hook generic
+  const { projects, error } = useLoaderData<LoaderData>();
 
   return (
     <div>

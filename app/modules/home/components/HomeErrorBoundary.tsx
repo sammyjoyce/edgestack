@@ -23,7 +23,7 @@ export function HomeErrorBoundary() {
         <p className="text-gray-600 mb-6">{message}</p>
         <div className="flex flex-col gap-4">
           <Link
-            to="/" // Root path is typed
+            to="/" // Use typed path
             className="px-4 py-2 bg-blue-600 text-white rounded-md text-center hover:bg-blue-700 transition-colors"
           >
             Return to Home Page

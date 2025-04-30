@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { Form, redirect, data } from "react-router";
+import { Form, redirect, data, type TypedResponse, type Response } from "react-router"; // Import Response, TypedResponse
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
-import type { Route } from "~/modules/admin/+types/route";
+// Import generated types
+import type {
+  Route,
+  ActionData,
+} from "../../../.react-router/types/app/modules/admin/routes/login";
 import { sign, COOKIE_NAME, COOKIE_MAX_AGE } from "~/modules/common/utils/auth";
 
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action({
+  request,
+  context,
+}: Route.ActionArgs): Promise<TypedResponse<ActionData> | Response> { // Use TypedResponse/ActionData or Response
   const formData = await request.formData();
   const username = formData.get("username") as string;
   const password = formData.get("password") as string;
@@ -34,7 +41,7 @@ export async function action({ request, context }: Route.ActionArgs) {
     const token = await sign(username, jwtSecret);
 
     // Create response with typed redirect
-    const response = redirect("/admin"); // Root admin path is typed
+    const response = redirect("/admin"); // Use typed path
 
     // Set secure cookie with the token
     response.headers.set(
@@ -45,8 +52,12 @@ export async function action({ request, context }: Route.ActionArgs) {
     return response;
   }
 
+  // Ensure shape matches ActionData
   return data(
-    { success: false, error: "Invalid username or password" },
+    {
+      success: false,
+      error: "Invalid username or password",
+    } satisfies ActionData,
     { status: 401 }
   );
 }
