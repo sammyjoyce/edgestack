@@ -1,7 +1,7 @@
 import React, { type JSX } from "react";
-import { data, type TypedResponse, useLoaderData } from "react-router"; // Import useLoaderData
-// Import generated types for this specific route
-import type { Route } from "../../../.react-router/types/app/modules/admin/routes/index";
+import { useLoaderData } from "react-router";
+// Import generated types from proper path
+import type { Route } from "./+types/index";
 
 import AdminDashboard from "../components/AdminDashboard";
 
@@ -10,42 +10,46 @@ import { getAllContent, updateContent } from "app/modules/common/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { validateContentInsert } from "~/database/valibot-validation";
 
-// Loader to get dashboard content - Use inferred return type
-export async function loader({ request, context }: Route.LoaderArgs) {
+// Loader to get dashboard content - use the generated LoaderArgs type
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
   // Auth check (could rely on layout loader, but explicit check is safer)
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
   if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
     // Note: Layout loader should ideally handle the redirect,
     // but returning an error here provides feedback if layout fails.
-    return data({ error: "Unauthorized" }, { status: 401 });
+    return { error: "Unauthorized" };
   }
 
   try {
     const items = await getAllContent(context.db);
-    // Use data helper
-    return data({ content: items });
+    // Return directly without data helper
+    return { content: items };
   } catch (error) {
     console.error("Admin Loader Error:", error);
-    // Use data helper for error response
-    return data(
-      {
-        content: {},
-        error: "Failed to load dashboard content",
-      },
-      { status: 500 }
-    );
+    // Return error information directly
+    return {
+      content: {},
+      error: "Failed to load dashboard content"
+    };
   }
 }
 
-// Centralized action for the admin dashboard (excluding image uploads) - Use inferred return type
-export async function action({ request, context }: Route.ActionArgs) {
-  const unauthorized = () =>
-    data({ success: false, error: "Unauthorized" }, { status: 401 });
-  const badRequest = (msg: string) =>
-    data({ success: false, error: msg }, { status: 400 });
-  const serverError = (msg: string) =>
-    data({ success: false, error: msg }, { status: 500 });
+// Centralized action for the admin dashboard (excluding image uploads)
+export const action = async ({ request, context }: Route.ActionArgs) => {
+  // Helper functions to return appropriate responses without using data()
+  const unauthorized = () => ({
+    success: false, 
+    error: "Unauthorized"
+  });
+  const badRequest = (msg: string) => ({
+    success: false, 
+    error: msg
+  });
+  const serverError = (msg: string) => ({
+    success: false, 
+    error: msg
+  });
 
   // Auth check
   const sessionValue = getSessionCookie(request);
@@ -55,7 +59,7 @@ export async function action({ request, context }: Route.ActionArgs) {
   }
 
   if (request.method !== "POST") {
-    return data({ error: "Invalid method" }, { status: 405 });
+    return { error: "Invalid method" };
   }
 
   const formData = await request.formData();
@@ -81,11 +85,11 @@ export async function action({ request, context }: Route.ActionArgs) {
         }
 
         await updateContent(context.db, { home_sections_order: orderValue });
-        // Use data helper
-        return data({
+        // Return success directly without data helper
+        return {
           success: true,
-          message: "Section order saved.",
-        });
+          message: "Section order saved."
+        };
       }
 
       case "updateTextContent":
@@ -125,11 +129,11 @@ export async function action({ request, context }: Route.ActionArgs) {
           intent === "updateTextContent"
         ) {
           // If intent was explicitly updateTextContent but no fields changed
-          // Use data helper
-          return data({
+          // Return success directly without data helper
+          return {
             success: true,
-            message: "No text content changed.",
-          });
+            message: "No text content changed."
+          };
         }
 
         await updateContent(context.db, updates);
@@ -139,8 +143,8 @@ export async function action({ request, context }: Route.ActionArgs) {
           updatedKeys.length === 1
             ? `Saved changes for '${updatedKeys[0]}'.`
             : "Text content saved.";
-        // Use data helper
-        return data({ success: true, message });
+        // Return success directly without data helper
+        return { success: true, message };
       }
     }
   } catch (error: any) {
@@ -159,7 +163,9 @@ export async function action({ request, context }: Route.ActionArgs) {
 }
 
 // The component now simply renders the AdminDashboard
-export function Component(): JSX.Element {
+export function AdminIndexRoute(): JSX.Element {
+  // Use useLoaderData with the loader function's return type
+  const loaderData = useLoaderData<typeof loader>();
   return (
     <main id="admin-dashboard-main" role="main" aria-label="Admin Dashboard">
       <AdminDashboard />{" "}

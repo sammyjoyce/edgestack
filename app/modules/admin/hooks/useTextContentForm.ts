@@ -1,8 +1,13 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { validateContentInsert } from "~/database/valibot-validation";
-// Import the specific action type
-import type { action as adminIndexAction } from "~/modules/admin/routes/index";
+
+// Define the expected shape of action response data explicitly
+type ActionResponseData = {
+  success?: boolean;
+  error?: string;
+  message?: string;
+};
 
 // Helper function for validation (can be kept here or imported)
 const validateField = (key: string, value: string): string | null => {
@@ -31,7 +36,7 @@ interface TextFieldConfig {
 
 interface UseTextContentFormArgs {
   initialContent: Record<string, string>;
-  fetcher: FetcherWithComponents<typeof adminIndexAction>; // Use inferred type
+  fetcher: FetcherWithComponents<ActionResponseData>; // Use explicit response type
   textFieldsConfig: TextFieldConfig[]; // Pass the config to the hook
 }
 
@@ -167,19 +172,23 @@ export function useTextContentForm({
   useEffect(() => {
     if (fetcher.state === "idle") {
       isSubmittingRef.current = false; // Reset submitting flag when idle
-      // Check fetcher.data structure based on AdminActionResponse
-      if (fetcher.data && "success" in fetcher.data && fetcher.data.success) {
-        // If auto-save was successful, fields state is already updated
-        // If manual save was successful, fields state was updated in handleSave
-        setErrors({}); // Clear errors on success
-      } else if (fetcher.data && "error" in fetcher.data) {
-        setFeedback(fetcher.data.error);
-        // Optionally parse and display field-level errors if backend provides them
-        // setErrors({ ... }); // Example: if backend returns { errors: { field: 'message' } }
-
-        // If manual save failed, revert pendingFields back to the last saved state (fields)
-        if (!autoSave) {
-          setPendingFields(fields);
+      
+      // Safely handle fetcher data with proper type narrowing
+      const data = fetcher.data as ActionResponseData | undefined;
+      
+      if (data) {
+        if (data.success) {
+          // If auto-save was successful, fields state is already updated
+          // If manual save was successful, fields state was updated in handleSave
+          setErrors({}); // Clear errors on success
+        } else if (data.error) {
+          // Safely use error which is now properly typed as string
+          setFeedback(data.error);
+          
+          // If manual save failed, revert pendingFields back to the last saved state (fields)
+          if (!autoSave) {
+            setPendingFields(fields);
+          }
         }
       }
     }

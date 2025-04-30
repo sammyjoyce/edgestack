@@ -1,41 +1,41 @@
 import React from "react";
-import { data, Link, useLoaderData, type TypedResponse } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
-// Import generated types
-import type { Route } from "../../../.react-router/types/app/modules/projects/routes/[projectId]";
-import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer"; // Import renderer
+import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer";
+// Import generated Route type
+import type { Route } from "./+types/[projectId]";
 
-// Loader to fetch the specific project by ID - Use inferred return type
-export async function loader({ params, context }: Route.LoaderArgs) {
+// Loader using the generated type for params and context
+export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const projectId = Number(params.projectId);
 
   if (isNaN(projectId)) {
-    // Use data helper
-    return data({ project: null, error: "Invalid Project ID" }, { status: 400 });
+    // Return directly without the data helper
+    return { project: null, error: "Invalid Project ID" };
   }
 
   try {
     const project = await getProjectById(context.db, projectId);
     if (!project) {
-      // Use data helper
-      return data({ project: null, error: "Project not found" }, { status: 404 });
+      // Return directly without the data helper
+      return { project: null, error: "Project not found" };
     }
-    // Use data helper
-    return data({ project });
+    // Return directly without the data helper
+    return { project };
   } catch (error: any) {
     console.error("Error loading project details:", error);
-    // Use data helper for error
-    return data(
-      { project: null, error: error.message || "Failed to load project details" },
-      { status: 500 }
-    );
+    // Return error data directly
+    return {
+      project: null,
+      error: error.message || "Failed to load project details"
+    };
   }
 }
 
 export function ProjectDetailRoute() {
-  // Use type inference for useLoaderData
+  // Use type inference with the loader function
   const { project, error } = useLoaderData<typeof loader>();
 
   // Handle loader errors

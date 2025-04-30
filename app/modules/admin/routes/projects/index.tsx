@@ -1,22 +1,28 @@
 import React from "react";
-import { data, Link, Form, useLoaderData } from "react-router";
+import { Link, Form, useLoaderData } from "react-router";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 import { Button } from "~/modules/common/components/ui/Button";
 import type { Project } from "~/database/schema";
-// Import generated types for this specific route
-import type {
-  Route, // Use generated Route type
-  LoaderData,
-  ActionData,
-} from "../../../../.react-router/types/app/modules/admin/routes/projects/index";
-import { type TypedResponse } from "react-router"; // Import TypedResponse
+// Define return types for loader and action
+type ProjectsLoaderData = {
+  projects: Project[];
+  error?: string;
+};
+
+type ProjectsActionData = {
+  success: boolean;
+  error?: string;
+  projectId?: number;
+};
 import { deleteProject, getAllProjects } from "~/modules/common/db"; // Import DB functions
 import { getSessionCookie, verify } from "~/modules/common/utils/auth"; // Import auth utils
 
-// Loader to fetch all projects - Use inferred return type
-export async function loader({ request, context }: Route.LoaderArgs) {
+// Loader to fetch all projects - Return plain objects for type safety
+export async function loader({ request, context }: LoaderFunctionArgs) {
   // Auth check (redundant with layout loader but good practice)
-  const unauthorized = () =>
-    data({ projects: [], error: "Unauthorized" }, { status: 401 });
+  const unauthorized = () => {
+    return { projects: [], error: "Unauthorized" } as const;
+  };
 
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -26,23 +32,22 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   try {
     const projects = await getAllProjects(context.db);
-    // Use data helper
-    return data({ projects });
+    return { projects } as const;
   } catch (error) {
     console.error("Failed to load projects:", error);
-    // Use data helper for error
-    return data({ projects: [], error: "Failed to load projects" }, { status: 500 });
+    return { projects: [], error: "Failed to load projects" } as const;
   }
 }
 
-// Action to handle project management - Use inferred return type
-export async function action({ request, context }: Route.ActionArgs) {
+// Action to handle project management - Return plain objects for type safety
+export async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
   const intent = formData.get("intent") as string;
 
   // Auth check
-  const unauthorized = () =>
-    data({ success: false, error: "Unauthorized" }, { status: 401 });
+  const unauthorized = () => {
+    return { success: false, error: "Unauthorized" } as const;
+  };
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
   if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -53,35 +58,34 @@ export async function action({ request, context }: Route.ActionArgs) {
   if (intent === "deleteProject") {
     const projectIdStr = formData.get("projectId") as string;
     if (!projectIdStr) {
-      // Use data helper
-      return data({ success: false, error: "Missing project ID" }, { status: 400 });
+      return { success: false, error: "Missing project ID" } as const;
     }
     const projectId = Number(projectIdStr);
     if (isNaN(projectId)) {
-      return data({ success: false, error: "Invalid project ID" }, { status: 400 });
+      return { success: false, error: "Invalid project ID" } as const;
     }
 
     try {
       await deleteProject(context.db, projectId);
-      // Use data helper
-      return data({ success: true, projectId });
+      return { success: true, projectId } as const;
     } catch (error: any) {
       console.error("Failed to delete project:", error);
-      // Use data helper for error
-      return data(
-        { success: false, error: error.message || "Failed to delete project" },
-        { status: 500 }
-      );
+      return { 
+        success: false, 
+        error: error.message || "Failed to delete project" 
+      } as const;
     }
   }
 
-  // Use data helper for unknown intent
-  return data({ success: false, error: "Unknown intent" }, { status: 400 });
+  // Handle unknown intent
+  return { success: false, error: "Unknown intent" } as const;
 }
 
 export function ProjectsIndexRoute() {
-  // Use type inference for useLoaderData
-  const { projects, error } = useLoaderData<typeof loader>();
+  // Use type inference with explicit error handling
+  const loaderData = useLoaderData<typeof loader>();
+  const projects = loaderData.projects;
+  const error = 'error' in loaderData ? loaderData.error : undefined;
 
   return (
     <div>
@@ -118,8 +122,7 @@ export function ProjectsIndexRoute() {
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <Link
-                      to="/admin/projects/:projectId/edit"
-                      params={{ projectId: String(project.id) }}
+                      to={`/admin/projects/${project.id}/edit`}
                       className="text-base font-semibold text-blue-600 truncate hover:underline"
                     >
                       {project.title}
@@ -131,8 +134,7 @@ export function ProjectsIndexRoute() {
                   <div className="ml-4 flex-shrink-0 flex items-center space-x-3">
                     <Button
                       as={Link}
-                      to="/admin/projects/:projectId/edit"
-                      params={{ projectId: String(project.id) }}
+                      to={`/admin/projects/${project.id}/edit`}
                       className="text-xs px-3 py-1"
                     >
                       Edit

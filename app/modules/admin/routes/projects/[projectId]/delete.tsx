@@ -1,55 +1,47 @@
 import React from "react";
-import { Form, redirect, useNavigate, data, useLoaderData } from "react-router";
+import { Form, redirect, useNavigate, useLoaderData } from "react-router";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 import { Button } from "~/modules/common/components/ui/Button";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
-import type { Route } from "../../../../../.react-router/types/app/modules/admin/routes/projects/[projectId]/delete";
-import { type TypedResponse, type Response } from "react-router"; // Import TypedResponse, Response
+// Define our loader and action params with proper typing
+type RouteParams = { projectId: string };
 import { deleteProject } from "~/modules/common/db"; // Import deleteProject
 
-// Use inferred return type
-export async function loader({ params, context }: Route.LoaderArgs) {
+// Return plain objects for type safety
+export async function loader({ params, context }: LoaderFunctionArgs & { params: RouteParams, context: { db: any } }) {
   const projectId = Number(params.projectId);
 
   if (isNaN(projectId)) {
-    // Use data helper
-    return data({ project: null, error: "Invalid Project ID" }, { status: 400 });
+    return { project: null, error: "Invalid Project ID" };
   }
 
   try {
     const project = await getProjectById(context.db, projectId);
     if (!project) {
-      // Use data helper
-      return data({ project: null, error: "Project not found" }, { status: 404 });
+      return { project: null, error: "Project not found" };
     }
-    // Use data helper
-    return data({ project });
+    return { project };
   } catch (error: any) {
     console.error("Error fetching project:", error);
-    // Use data helper for error
-    return data(
-      { project: null, error: error.message || "Failed to load project" },
-      { status: 500 }
-    );
+    return { project: null, error: error.message || "Failed to load project" };
   }
 }
 
-// Use inferred return type
-export async function action({ request, params, context }: Route.ActionArgs) {
+// Return plain objects or Response for type safety
+export async function action({ request, params, context }: ActionFunctionArgs & { params: RouteParams, context: { db: any } }) {
   const projectId = Number(params.projectId);
 
   if (isNaN(projectId)) {
-    // Use data helper
-    return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
+    return { success: false, error: "Invalid Project ID" };
   }
 
   const formData = await request.formData();
   const confirmDelete = formData.get("confirmDelete") === "true";
 
   if (!confirmDelete) {
-    // Use data helper
-    return data({ success: false, error: "Deletion was not confirmed" }, { status: 400 });
+    return { success: false, error: "Deletion was not confirmed" };
   }
 
   try {
@@ -59,11 +51,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
     return redirect("/admin/projects");
   } catch (error: any) {
     console.error("Error deleting project:", error);
-    // Use data helper for error
-    return data(
-      { success: false, error: error.message || "Failed to delete project" },
-      { status: 500 }
-    );
+    return { success: false, error: error.message || "Failed to delete project" };
   }
 }
 

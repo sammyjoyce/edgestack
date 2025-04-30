@@ -5,14 +5,14 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
-import { NavLink, Outlet, redirect, data, type TypedResponse, type Response, type To } from "react-router"; // Import To
+import { NavLink, Outlet, redirect, type To } from "react-router";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
-// Import generated types
-import type { Route } from "../../../.react-router/types/app/modules/admin/routes/_layout";
+// Import generated Route type for this route
+import type { Route } from "./+types/_layout";
 
-// Use inferred return type
-export async function loader({ request, context }: Route.LoaderArgs) {
+// Define loader with the generated LoaderArgs type
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   const isLoginRoute = url.pathname === "/admin/login";
   const isLogoutRoute = url.pathname === "/admin/logout";
@@ -47,8 +47,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   }
 
   // Allow access if logged in, or if accessing login/logout page
-  // Return null or data({}) as appropriate for LoaderData
-  return data({}); // Return empty data object
+  // Return an object directly instead of using data() helper
+  return { isAuthenticated: loggedIn };
 }
 
 interface NavItem {
@@ -95,7 +95,7 @@ export function Component() {
                     {item.name === "Live Site" ? (
                       // Use standard anchor for external/non-router link
                       <a
-                        href={item.href}
+                        href={item.href.toString()}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={classNames(
@@ -130,33 +130,6 @@ export function Component() {
                         {item.name}
                       </NavLink>
                     )}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-      <div className="w-px bg-gray-200" />
-      <main className="flex-1 px-8 py-8">
-        {/* Outlet will use the error boundary provided by the ErrorBoundary function */}
-        <Outlet />
-      </main>
-    </div>
-  );
-}
-
-export function ErrorBoundary() {
-  return <AdminErrorBoundary />;
-}
-                      }
-                    >
-                      <item.icon
-                        aria-hidden="true"
-                        className="size-5 shrink-0"
-                      />
-                      {item.name}
-                    </NavLink>
                   </li>
                 ))}
               </ul>

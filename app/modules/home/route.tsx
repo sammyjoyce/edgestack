@@ -1,4 +1,5 @@
-import { data, useLoaderData, type TypedResponse } from "react-router";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
+import { useLoaderData } from "react-router";
 
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
@@ -10,94 +11,98 @@ import RecentProjects from "~/modules/common/components/RecentProjects";
 import { getFeaturedProjects } from "app/modules/common/db"; // Import the new function
 import { getAllContent } from "app/modules/common/db";
 import type { JSX } from "react";
-// Import generated types
-import type { Route } from "../../.react-router/types/app/modules/home/route";
+// Type for Cloudflare environment with proper DB access
+type LoaderContext = LoaderFunctionArgs & {
+  context: {
+    db: unknown;
+    cloudflare?: {
+      env?: unknown;
+    };
+  };
+};
 import type { Project } from "~/database/schema"; // Ensure Project is imported
 
-export const meta: Route.MetaFunction<typeof loader> = ({ data }) => {
-  // Access loader data safely
-  const pageTitle = data?.content?.meta_title ?? "Lush Constructions";
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  // Access loader data safely with type assertions
+  const content = data?.content as Record<string, string> | undefined;
+  const pageTitle = content?.meta_title ?? "Lush Constructions";
   const pageDescription =
-    data?.content?.meta_description ??
+    content?.meta_description ??
     "High-Quality Solutions for Home & Office Improvement";
 
   return [
     { title: pageTitle },
     {
       name: "description",
-      name: "description",
       content: pageDescription,
     },
   ];
 };
 
-// Use inferred return type
-export async function loader({ context }: Route.LoaderArgs) {
+// Return a plain object for better type inference
+export async function loader({ context }: LoaderContext) {
   try {
     const [content, projects] = await Promise.all([
       getAllContent(context.db),
-      getFeaturedProjects(context.db), // Assuming this returns Project[]
+      getFeaturedProjects(context.db),
     ]);
-    // Use data helper
-    return data({ content, projects });
+    return { content, projects };
   } catch (error) {
     console.error("Error fetching data from D1:", error);
-    // Use data helper for error
-    return data(
-      {
-        content: {},
-        projects: [] as Project[],
-        error: "Failed to load home page data",
-      },
-      { status: 500 }
-    );
+    return {
+      content: {} as Record<string, string>,
+      projects: [] as Project[],
+      error: "Failed to load home page data"
+    };
   }
 }
 
 export default function HomeRoute(): JSX.Element {
   // Use type inference for useLoaderData
   const { content, projects } = useLoaderData<typeof loader>();
+  // Type assert content to have string keys and values
+  const typedContent = content as Record<string, string>;
 
   // Section mapping
   const sectionBlocks: Record<string, JSX.Element> = {
     hero: (
       <Hero
         key="hero"
-        title={content?.hero_title ?? "Building Dreams, Creating Spaces"}
+        title={typedContent?.hero_title ?? "Building Dreams, Creating Spaces"}
         subtitle={
-          content?.hero_subtitle ??
+          typedContent?.hero_subtitle ??
           "Your trusted partner in construction and renovation."
         }
-        imageUrl={content?.hero_image_url ?? "/assets/rozelle.jpg"}
+        imageUrl={typedContent?.hero_image_url ?? "/assets/rozelle.jpg"}
       />
     ),
     services: (
       <OurServices
         key="services"
-        introTitle={content?.services_intro_title ?? "Our Services"}
+        introTitle={typedContent?.services_intro_title ?? "Our Services"}
         introText={
-          content?.services_intro_text ??
+          typedContent?.services_intro_text ??
           "We offer a wide range of construction services."
         }
         servicesData={[
           {
-            title: content?.service_1_title ?? "Kitchens",
-            image: content?.service_1_image ?? "/assets/pic09-By9toE8x.png",
+            title: typedContent?.service_1_title ?? "Kitchens",
+            image: typedContent?.service_1_image ?? "/assets/pic09-By9toE8x.png",
             link: "#contact",
           },
           {
-            title: content?.service_2_title ?? "Bathrooms",
-            image: content?.service_2_image ?? "/assets/pic06-BnCQnmx7.png",
+            title: typedContent?.service_2_title ?? "Bathrooms",
+            image: typedContent?.service_2_image ?? "/assets/pic06-BnCQnmx7.png",
             link: "#contact",
           },
           {
-            title: content?.service_3_title ?? "Roofing",
-            image: content?.service_3_image ?? "/assets/pic13-C3BImLY9.png",
+            title: typedContent?.service_3_title ?? "Roofing",
+            image: typedContent?.service_3_image ?? "/assets/pic13-C3BImLY9.png",
             link: "#contact",
           },
           {
-            title: content?.service_4_title ?? "Renovations",
-            image: content?.service_4_image ?? "/assets/pic04-CxD2NUJX.png",
+            title: typedContent?.service_4_title ?? "Renovations",
+            image: typedContent?.service_4_image ?? "/assets/pic04-CxD2NUJX.png",
             link: "#contact",
           },
         ]}
@@ -106,9 +111,9 @@ export default function HomeRoute(): JSX.Element {
     projects: (
       <RecentProjects
         key="projects"
-        introTitle={content?.projects_intro_title ?? "Recent Projects"}
+        introTitle={typedContent?.projects_intro_title ?? "Recent Projects"}
         introText={
-          content?.projects_intro_text ??
+          typedContent?.projects_intro_text ??
           "Take a look at some of our recent work."
         }
         projects={projects}
@@ -117,17 +122,17 @@ export default function HomeRoute(): JSX.Element {
     about: (
       <AboutUs
         key="about"
-        title={content?.about_title ?? "About Us"}
-        text={content?.about_text ?? "Learn more about our company and values."}
-        imageUrl={content?.about_image_url ?? "/assets/rozelle.jpg"}
+        title={typedContent?.about_title ?? "About Us"}
+        text={typedContent?.about_text ?? "Learn more about our company and values."}
+        imageUrl={typedContent?.about_image_url ?? "/assets/rozelle.jpg"}
       />
     ),
-    contact: <ContactUs key="contact" content={content} />, // Pass content prop
+    contact: <ContactUs key="contact" content={typedContent} />, // Pass typed content prop
   };
 
   // Determine order
   const DEFAULT_ORDER = ["hero", "services", "projects", "about", "contact"];
-  const orderString = content?.home_sections_order as string | undefined;
+  const orderString = typedContent?.home_sections_order;
   const order = orderString
     ? orderString.split(",").filter((id) => id in sectionBlocks)
     : DEFAULT_ORDER;

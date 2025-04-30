@@ -6,9 +6,8 @@ import { NavLink, type To } from "react-router"; // Import To type
 
 interface MenuItem {
   name: string;
-  // Use To type for internal links, string for fragments/external
+  // Use To type for internal links, string for external links or fragments
   path: To | string;
-  path: string;
   isRouteLink?: boolean;
   submenu?: { name: string; path: string }[];
 }

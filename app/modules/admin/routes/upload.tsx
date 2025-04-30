@@ -1,23 +1,25 @@
 import React from "react";
-import { data, type TypedResponse } from "react-router";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { ImageUploadSection } from "../components/ImageUploadSection";
 // Import generated types
-import type { Route } from "../../../.react-router/types/app/modules/admin/routes/upload";
+import type { Route } from "./+types/upload";
 import { updateContent } from "app/modules/common/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { validateContentInsert } from "~/database/valibot-validation";
 import { handleImageUpload } from "~/utils/upload.server";
 
-// Use inferred return type
-export async function action({ request, context }: Route.ActionArgs) {
-  const unauthorized = () =>
-    // Use data helper
-    data({ success: false, error: "Unauthorized" }, { status: 401 });
+import type { ActionFunctionArgs } from "react-router";
 
-  const badRequest = (msg: string) =>
-    // Use data helper
-    data({ success: false, error: msg }, { status: 400 });
+export async function action({ request, context }: ActionFunctionArgs) {
+  const unauthorized = () => ({
+    success: false, 
+    error: "Unauthorized"
+  });
+
+  const badRequest = (msg: string) => ({
+    success: false, 
+    error: msg
+  });
 
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -54,37 +56,28 @@ export async function action({ request, context }: Route.ActionArgs) {
       try {
         validateContentInsert({ key, value: publicUrl });
       } catch (e: any) {
-        // Use data helper for validation error
-        return data(
-          {
-            success: false,
-            error: `Validation failed for key '${key}': ${e.message || e}`,
-          },
-          { status: 400 }
-        );
+        return {
+          success: false,
+          error: `Validation failed for key '${key}': ${e.message || e}`
+        };
       }
 
       await updateContent(context.db, { [key]: publicUrl });
 
-      // Use data helper for success
-      return data({ success: true, url: publicUrl, key: key });
+      return { success: true, url: publicUrl, key: key };
     } catch (error: any) {
       console.error("Upload error:", error);
-      // Use data helper for general error
-      return data(
-        {
-          success: false,
-          error: error.message || "An unexpected error occurred",
-        },
-        { status: 500 }
-      );
+      return {
+        success: false,
+        error: error.message || "An unexpected error occurred"
+      };
     }
   }
 
   return badRequest("Method not allowed");
 }
 
-export function Component() {
+export default function UploadRoute() {
   return (
     <FadeIn>
       <div className="space-y-8">

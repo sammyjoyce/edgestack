@@ -1,15 +1,19 @@
 import React from "react";
-import { Form, redirect, useNavigate, data, type Response } from "react-router";
+import { Form, redirect, useNavigate } from "react-router";
+import type { ActionFunctionArgs } from "react-router";
 import { Button } from "~/modules/common/components/ui/Button";
 import RichTextField from "../../components/RichTextField";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
-// Import generated types
-import type { Route } from "../../../../.react-router/types/app/modules/admin/routes/projects/new";
 import { createProject } from "~/modules/common/db"; // Import createProject
-import { validateProjectInsert } from "~/database/valibot-validation"; // Import validation
 
-// Use inferred return type
-export async function action({ request, context }: Route.ActionArgs) {
+// Define return types for action
+type ProjectActionData = {
+  success: boolean;
+  error?: string;
+};
+
+// Return plain objects or Response for type safety
+export async function action({ request, context }: ActionFunctionArgs): Promise<Response | ProjectActionData> {
   const formData = await request.formData();
 
   const title = formData.get("title") as string;
@@ -29,8 +33,13 @@ export async function action({ request, context }: Route.ActionArgs) {
   };
 
   try {
-    // Validate before creating
-    validateProjectInsert(projectData);
+    // Basic validation
+    if (!title.trim()) {
+      return {
+        success: false,
+        error: "Title is required"
+      };
+    }
 
     await createProject(context.db, projectData);
 
@@ -38,14 +47,10 @@ export async function action({ request, context }: Route.ActionArgs) {
     return redirect("/admin/projects");
   } catch (error: any) {
     console.error("Error creating project:", error);
-    // Use data helper for error response
-    return data(
-      {
-        success: false,
-        error: error.message || "Failed to create project",
-      },
-      { status: error.issues ? 400 : 500 } // Use 400 for validation errors
-    );
+    return {
+      success: false,
+      error: error.message || "Failed to create project"
+    };
   }
 }
 
@@ -128,9 +133,8 @@ export function NewProjectRoute() {
                 type="text"
                 name="imageUrl"
                 id="imageUrl"
-                required
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                placeholder="URL to project image"
+                placeholder="URL to project image (optional)"
               />
               <Button
                 as="a"

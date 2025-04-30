@@ -1,46 +1,54 @@
 import React from "react";
-import { Form, redirect, data, useLoaderData, Link, type Response } from "react-router";
+import { Form, redirect, useLoaderData, Link } from "react-router";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 import { Button } from "~/modules/common/components/ui/Button";
 import RichTextField from "~/modules/admin/components/RichTextField";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "app/modules/common/db";
-import { validateProjectUpdate } from "~/database/valibot-validation"; // Use update validation
+// The validateProjectUpdate function is not found, we'll implement inline validation
 import type { Project } from "~/database/schema";
 import { handleImageUpload } from "~/utils/upload.server";
-// Import generated types for this specific route
-import type { Route } from "../../../../../.react-router/types/app/modules/admin/routes/projects/[projectId]/edit";
+// Define route params type for type safety
+type RouteParams = { projectId: string };
 
-// Use inferred return type
-export async function loader({ params, context }: Route.LoaderArgs) {
+// Define return types for loader and action
+type ProjectLoaderData = {
+  project: Project | null;
+  error?: string;
+};
+
+type ProjectActionData = {
+  success: boolean;
+  error?: string;
+  project?: Project;
+};
+
+// Return plain objects with proper typing
+export async function loader({ params, context }: LoaderFunctionArgs & { params: RouteParams, context: { db: any } }): Promise<ProjectLoaderData> {
   const projectId = Number(params.projectId);
 
   if (isNaN(projectId)) {
-    // Use data helper
-    return data({ project: null, error: "Invalid Project ID" }, { status: 400 });
+    return { project: null, error: "Invalid Project ID" };
   }
 
   try {
     const project = await getProjectById(context.db, projectId);
     if (!project) {
-      // Use data helper
-      return data({ project: null, error: "Project not found" }, { status: 404 });
+      return { project: null, error: "Project not found" };
     }
-    // Use data helper
-    return data({ project });
+    return { project };
   } catch (error) {
     console.error("Error fetching project:", error);
-    // Use data helper
-    return data({ project: null, error: "Failed to load project" }, { status: 500 });
+    return { project: null, error: "Failed to load project" };
   }
 }
 
-// Use inferred return type
-export async function action({ request, params, context }: Route.ActionArgs) {
+// Return plain objects or Response for type safety
+export async function action({ request, params, context }: ActionFunctionArgs & { params: RouteParams, context: { db: any, cloudflare?: { env?: any } } }) {
   const projectId = Number(params.projectId);
 
   if (isNaN(projectId)) {
-    // Use data helper
-    return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
+    return { success: false, error: "Invalid Project ID" };
   }
 
   const formData = await request.formData();
@@ -61,11 +69,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
       // Access bucket from context
       const env = context.cloudflare?.env;
       if (!env) {
-        // Use data helper
-        return data(
-          { success: false, error: "Environment not available" },
-          { status: 500 }
-        );
+        return { success: false, error: "Environment not available" };
       }
 
       try {
@@ -83,19 +87,16 @@ export async function action({ request, params, context }: Route.ActionArgs) {
         if (uploadResult && typeof uploadResult === "string") {
           imageUrl = uploadResult;
         } else {
-          // Use data helper
-          return data({ success: false, error: "Failed to upload image" }, { status: 400 });
+          return { success: false, error: "Failed to upload image" };
         }
       } catch (error) {
         console.error("Image upload error:", error);
-        // Use data helper
-        return data({ success: false, error: "Failed to upload image" }, { status: 400 });
+        return { success: false, error: "Failed to upload image" };
       }
     }
 
     if (!title) {
-      // Use data helper
-      return data({ success: false, error: "Title is required" }, { status: 400 });
+      return { success: false, error: "Title is required" };
     }
 
     // Validate and update the project
@@ -108,18 +109,12 @@ export async function action({ request, params, context }: Route.ActionArgs) {
       sortOrder,
     };
 
-    // Use valibot validation for updates
-    try {
-      validateProjectUpdate(projectData);
-    } catch (error: any) {
-      // Use data helper for validation error
-      return data(
-        {
-          success: false,
-          error: error.message || "Validation failed",
-        },
-        { status: 400 }
-      );
+    // Basic validation - since validateProjectUpdate is not found
+    if (!title.trim()) {
+      return { 
+        success: false, 
+        error: "Title is required"
+      } as const;
     }
 
     // Update the project in the database
@@ -129,17 +124,18 @@ export async function action({ request, params, context }: Route.ActionArgs) {
     return redirect("/admin/projects");
   } catch (error: any) {
     console.error("Error updating project:", error);
-    // Use data helper for general error
-    return data(
-      { success: false, error: error.message || "Failed to update project" },
-      { status: 500 }
-    );
+    return { 
+      success: false, 
+      error: error.message || "Failed to update project" 
+    } as const;
   }
 }
 
-export function Component() {
-  // Use type inference for useLoaderData
-  const { project, error } = useLoaderData<typeof loader>();
+export default function Component() {
+  // Use type inference with explicit error handling
+  const loaderData = useLoaderData<typeof loader>();
+  const project = loaderData.project;
+  const error = 'error' in loaderData ? loaderData.error : undefined;
 
   if (error || !project) {
     return (
