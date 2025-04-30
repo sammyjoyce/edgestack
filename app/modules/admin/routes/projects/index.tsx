@@ -2,9 +2,9 @@ import React from "react";
 import { data, Link, Form, useLoaderData } from "react-router";
 import { Button } from "~/modules/common/components/ui/Button";
 import type { Project } from "~/database/schema";
-import type { Route } from "../../+types/route"; // Use general admin route type
 // Import generated types for this specific route
 import type {
+  Route, // Use generated Route type
   LoaderData,
   ActionData,
 } from "../../../../.react-router/types/app/modules/admin/routes/projects/index";
@@ -13,7 +13,7 @@ import type {
 export async function action({
   request,
   context,
-}: Route.ActionArgs): Promise<TypedResponse<ActionData>> { // Use TypedResponse and ActionData
+}: Route.ActionArgs): Promise<TypedResponse<ActionData>> { // Use generated Route.ActionArgs
   const formData = await request.formData();
   const intent = formData.get("intent") as string;
 
