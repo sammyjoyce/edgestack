@@ -1,14 +1,13 @@
 import React from "react";
+// Import useLoaderData and the specific LoaderData type from the layout route
 import { useLoaderData } from "react-router";
+import type { LoaderData } from "../../../.react-router/types/app/modules/projects/routes/_layout";
 import RecentProjects from "~/modules/common/components/RecentProjects";
 import type { Project } from "~/database/schema";
 
 export function ProjectsIndexRoute() {
-  // Get the content and projects data from the parent route
-  const { content, projects } = useLoaderData<{
-    content: Record<string, string>;
-    projects: Project[];
-  }>();
+  // Get the content and projects data from the layout loader
+  const { content, projects } = useLoaderData() as LoaderData;
 
   return (
     <RecentProjects

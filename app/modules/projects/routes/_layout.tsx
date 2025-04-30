@@ -1,22 +1,29 @@
-import { Outlet, data } from "react-router";
+import { Outlet, data, useLoaderData, type TypedResponse } from "react-router"; // Import useLoaderData, TypedResponse
 import Footer from "~/modules/common/components/Footer";
 import Header from "~/modules/common/components/Header";
 import { ProjectsErrorBoundary } from "../components/ProjectsErrorBoundary";
 import { getAllContent, getAllProjects } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
 import type { Route } from "~/modules/projects/+types/route";
+// Import generated type
+import type { LoaderData } from "../../../.react-router/types/app/modules/projects/routes/_layout";
 
-export async function loader({ context }: Route.LoaderArgs) {
+export async function loader({
+  context,
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
   try {
     const content = await getAllContent(context.db);
     const projects = await getAllProjects(context.db);
-    return data({ content, projects });
+    // Ensure shape matches LoaderData
+    return data({ content, projects } satisfies LoaderData);
   } catch (error) {
     console.error("Failed to fetch content or projects:", error);
-    return data(
-      { content: {} as Record<string, string>, projects: [] as Project[] },
-      { status: 500 }
-    );
+    // Ensure error response shape matches LoaderData
+    const errorData: LoaderData = {
+      content: {} as Record<string, string>,
+      projects: [] as Project[],
+    };
+    return data(errorData, { status: 500 });
   }
 }
 
@@ -37,7 +44,8 @@ export function ProjectsLayout() {
         </div>
       </div>
 
-      <Outlet context={{ type: "projects" }} />
+      {/* Outlet automatically receives context, use useLoaderData in children */}
+      <Outlet />
 
       <Footer />
     </div>

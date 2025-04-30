@@ -5,12 +5,17 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
-import { NavLink, Outlet, redirect, data } from "react-router";
+import { NavLink, Outlet, redirect, data, type TypedResponse } from "react-router";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import type { Route } from "~/modules/admin/+types/route";
+// Import generated type
+import type { LoaderData } from "../../../.react-router/types/app/modules/admin/routes/_layout";
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({
+  request,
+  context,
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData> | Response> { // Use TypedResponse or Response for redirects
   const url = new URL(request.url);
   const isLoginRoute = url.pathname === "/admin/login";
   const isLogoutRoute = url.pathname === "/admin/logout"; // Check for logout route
@@ -35,17 +40,18 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   if (!loggedIn && !isLoginRoute) {
     // Allow logout route to proceed to clear cookie even if not logged in
     if (!isLogoutRoute) {
-      return redirect("/admin/login");
+      return redirect("/admin/login"); // Use typed path
     }
   }
 
   // If logged in and trying to access login, redirect to admin dashboard
   if (loggedIn && isLoginRoute) {
-    return redirect("/admin");
+    return redirect("/admin"); // Use typed path
   }
 
   // Allow access if logged in, or if accessing login/logout page
-  return data(null); // Indicate successful auth check or allowed access
+  // Return type must match LoaderData or be a Response
+  return data(null satisfies LoaderData); // Ensure null matches LoaderData type if applicable, or adjust LoaderData
 }
 
 interface NavItem {
@@ -54,6 +60,7 @@ interface NavItem {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
+// Ensure hrefs match the typed paths
 const navigation: NavItem[] = [
   { name: "Dashboard", href: "/admin", icon: HomeIcon },
   { name: "Projects", href: "/admin/projects", icon: FolderIcon },
@@ -88,23 +95,63 @@ export function Component() {
               <ul role="list" className="-mx-2 space-y-1">
                 {navigation.map((item) => (
                   <li key={item.name}>
-                    <NavLink
-                      to={item.href}
-                      target={item.name === "Live Site" ? "_blank" : undefined}
-                      rel={
-                        item.name === "Live Site"
-                          ? "noopener noreferrer"
-                          : undefined
-                      }
-                      end={item.href === "/admin"} // Keep end prop for dashboard
-                      className={({ isActive }) =>
-                        classNames(
-                          // Don't mark Live Site as active based on URL matching
-                          item.name !== "Live Site" && isActive
-                            ? "bg-gray-700 text-white"
-                            : "text-gray-400 hover:bg-gray-700 hover:text-white",
+                    {item.name === "Live Site" ? (
+                      // Use standard anchor for external/non-router link
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={classNames(
+                          "text-gray-400 hover:bg-gray-700 hover:text-white",
                           "group flex gap-x-3 rounded-md p-2 text-sm font-medium"
-                        )
+                        )}
+                      >
+                        <item.icon
+                          aria-hidden="true"
+                          className="size-5 shrink-0"
+                        />
+                        {item.name}
+                      </a>
+                    ) : (
+                      // Use NavLink for internal routes with typed 'to'
+                      <NavLink
+                        to={item.href as any} // Cast needed if item.href isn't strictly a typed path
+                        end={item.href === "/admin"} // Keep end prop for dashboard
+                        className={({ isActive }) =>
+                          classNames(
+                            isActive
+                              ? "bg-gray-700 text-white"
+                              : "text-gray-400 hover:bg-gray-700 hover:text-white",
+                            "group flex gap-x-3 rounded-md p-2 text-sm font-medium"
+                          )
+                        }
+                      >
+                        <item.icon
+                          aria-hidden="true"
+                          className="size-5 shrink-0"
+                        />
+                        {item.name}
+                      </NavLink>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <div className="w-px bg-gray-200" />
+      <main className="flex-1 px-8 py-8">
+        {/* Outlet will use the error boundary provided by the ErrorBoundary function */}
+        <Outlet />
+      </main>
+    </div>
+  );
+}
+
+export function ErrorBoundary() {
+  return <AdminErrorBoundary />;
+}
                       }
                     >
                       <item.icon

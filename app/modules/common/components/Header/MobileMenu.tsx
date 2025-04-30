@@ -66,28 +66,35 @@ export default function MobileMenu({
             <div className="space-y-2 py-6">
               {menuItems.map((item) => (
                 <div key={item.name}>
-                  <NavLink
-                    to={item.path}
-                    className="-mx-3 block rounded-full px-5 py-2 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
-                    onClick={(e) =>
-                      item.isRouteLink
-                        ? onClose()
-                        : scrollToSection(e, item.path)
-                    }
-                  >
-                    {item.name}
-                  </NavLink>
+                  {item.isRouteLink ? (
+                    <NavLink
+                      to={item.path as any} // Cast needed if item.path isn't strictly a typed path
+                      className="-mx-3 block rounded-full px-5 py-2 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
+                      onClick={onClose} // Close menu on route navigation
+                    >
+                      {item.name}
+                    </NavLink>
+                  ) : (
+                    <a
+                      href={item.path}
+                      className="-mx-3 block rounded-full px-5 py-2 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
+                      onClick={(e) => scrollToSection(e, item.path)}
+                    >
+                      {item.name}
+                    </a>
+                  )}
                   {item.submenu && (
                     <div className="mt-2 space-y-2 pl-6">
                       {item.submenu.map((subItem) => (
-                        <NavLink
+                        // Assuming submenu items are always fragment identifiers for now
+                        <a
                           key={subItem.name}
-                          to={subItem.path}
+                          href={subItem.path}
                           className="-mx-3 block rounded-full px-5 py-2 font-semibold text-gray-400 text-sm transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
                           onClick={(e) => scrollToSection(e, subItem.path)}
                         >
                           {subItem.name}
-                        </NavLink>
+                        </a>
                       ))}
                     </div>
                   )}

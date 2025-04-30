@@ -6,13 +6,21 @@ import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "app/modules/common/db";
 import { validateProjectInsert } from "~/database/valibot-validation";
 import type { Project } from "~/database/schema";
-import type { Route, AppLoadContext } from "~/modules/admin/+types/route";
+import type { Route } from "~/modules/admin/+types/route"; // Keep existing Route type
 import { handleImageUpload } from "~/utils/upload.server";
+// Import generated types for this specific route
+import type {
+  LoaderData,
+  ActionData,
+  Params,
+} from "../../../../../.react-router/types/app/modules/admin/routes/projects/[projectId]/edit";
 
-export async function loader({ params, context }: Route.LoaderArgs) {
-  const projectId = params.projectId
-    ? Number.parseInt(params.projectId, 10)
-    : Number.NaN;
+export async function loader({
+  params,
+  context,
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
+  // params is already typed via Route.LoaderArgs if generator ran correctly
+  const projectId = Number(params.projectId); // Access typed param
 
   if (isNaN(projectId)) {
     return data(
@@ -39,10 +47,13 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   }
 }
 
-export async function action({ request, params, context }: Route.ActionArgs) {
-  const projectId = params.projectId
-    ? Number.parseInt(params.projectId, 10)
-    : Number.NaN;
+export async function action({
+  request,
+  params,
+  context,
+}: Route.ActionArgs): Promise<TypedResponse<ActionData>> { // Use TypedResponse and ActionData
+  // params is already typed via Route.ActionArgs
+  const projectId = Number(params.projectId); // Access typed param
 
   if (isNaN(projectId)) {
     return data(
@@ -139,7 +150,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
     // Update the project in the database
     await updateProject(context.db, projectId, projectData);
 
-    // Redirect to projects list after successful update
+    // Redirect to projects list after successful update using typed path
     return redirect("/admin/projects");
   } catch (error) {
     console.error("Error updating project:", error);
@@ -151,10 +162,8 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 }
 
 export function Component() {
-  const { project, error } = useLoaderData<{
-    project: Project | null;
-    error: string | undefined;
-  }>();
+  // Use generated LoaderData type
+  const { project, error } = useLoaderData() as LoaderData;
 
   if (error || !project) {
     return (
@@ -168,7 +177,7 @@ export function Component() {
         >
           Error: {error || "Failed to load project"}
         </div>
-        <Link to="/admin/projects" className="text-blue-600 hover:underline">
+        <Link to="/admin/projects" className="text-blue-600 hover:underline"> {/* Use typed path */}
           ← Back to Projects
         </Link>
       </FadeIn>
@@ -301,7 +310,7 @@ export function Component() {
         <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200 mt-6">
           <Button
             as={Link}
-            to="/admin/projects"
+            to="/admin/projects" // Use typed path
             className="bg-gray-100 text-gray-700 hover:bg-gray-200"
           >
             Cancel

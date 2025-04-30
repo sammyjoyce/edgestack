@@ -2,10 +2,18 @@ import React from "react";
 import { data, Link, Form, useLoaderData } from "react-router";
 import { Button } from "~/modules/common/components/ui/Button";
 import type { Project } from "~/database/schema";
-import type { Route } from "../../+types/projects/index";
+import type { Route } from "../../+types/route"; // Use general admin route type
+// Import generated types for this specific route
+import type {
+  LoaderData,
+  ActionData,
+} from "../../../../.react-router/types/app/modules/admin/routes/projects/index";
 
 // Add a properly scoped action to handle project management
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action({
+  request,
+  context,
+}: Route.ActionArgs): Promise<TypedResponse<ActionData>> { // Use TypedResponse and ActionData
   const formData = await request.formData();
   const intent = formData.get("intent") as string;
 
@@ -40,10 +48,8 @@ export async function action({ request, context }: Route.ActionArgs) {
 }
 
 export function ProjectsIndexRoute() {
-  const { projects, error } = useLoaderData<{
-    projects: Project[];
-    error: string | undefined;
-  }>();
+  // Use generated LoaderData type
+  const { projects, error } = useLoaderData() as LoaderData;
 
   return (
     <div>
@@ -51,7 +57,7 @@ export function ProjectsIndexRoute() {
         <h1 className="text-2xl font-semibold text-gray-900">
           Manage Projects
         </h1>
-        <Button as={Link} to="new" className="text-sm">
+        <Button as={Link} to="/admin/projects/new" className="text-sm"> {/* Use typed path */}
           Add New Project
         </Button>
       </div>
@@ -80,7 +86,8 @@ export function ProjectsIndexRoute() {
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <Link
-                      to={`${project.id}/edit`}
+                      to="/admin/projects/:projectId/edit" // Use typed path structure
+                      params={{ projectId: String(project.id) }} // Pass params
                       className="text-base font-semibold text-blue-600 truncate hover:underline"
                     >
                       {project.title}
@@ -92,7 +99,8 @@ export function ProjectsIndexRoute() {
                   <div className="ml-4 flex-shrink-0 flex items-center space-x-3">
                     <Button
                       as={Link}
-                      to={`${project.id}/edit`}
+                      to="/admin/projects/:projectId/edit" // Use typed path structure
+                      params={{ projectId: String(project.id) }} // Pass params
                       className="text-xs px-3 py-1"
                     >
                       Edit

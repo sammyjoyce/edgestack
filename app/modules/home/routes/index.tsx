@@ -6,6 +6,8 @@ import OurServices from "../components/OurServices";
 import RecentProjects from "~/modules/common/components/RecentProjects";
 import type { Route } from "~/modules/home/+types/route";
 import type { JSX } from "react";
+// Import the LoaderData type from the parent layout
+import type { LoaderData as HomeLayoutLoaderData } from "../../../.react-router/types/app/modules/home/routes/_layout";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -18,11 +20,8 @@ export const meta: Route.MetaFunction = () => {
 };
 
 export function HomeRoute(): JSX.Element {
-  // Use useOutletContext to get data from parent layout
-  const { content, projects } = useOutletContext<{
-    content: Record<string, string>;
-    projects: any[];
-  }>();
+  // Use useOutletContext with the specific type from the layout
+  const { content, projects } = useOutletContext<HomeLayoutLoaderData>();
 
   // Section mapping
   const sectionBlocks: Record<string, JSX.Element> = {

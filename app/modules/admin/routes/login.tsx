@@ -33,8 +33,8 @@ export async function action({ request, context }: Route.ActionArgs) {
     // Create signed session token
     const token = await sign(username, jwtSecret);
 
-    // Create response with redirect
-    const response = redirect("/admin");
+    // Create response with typed redirect
+    const response = redirect("/admin"); // Root admin path is typed
 
     // Set secure cookie with the token
     response.headers.set(
