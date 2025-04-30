@@ -1,0 +1,52 @@
+// Migrated from wrangler.toml to wrangler.jsonc
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "lush",
+  "main": "./workers/app.ts",
+  "compatibility_date": "2025-04-04",
+  "assets": {
+    "directory": "./build/client/"
+  },
+  "workers_dev": true,
+  "vars": {
+    "CLOUDFLARE_ACCOUNT_ID": "427aa00a5888cad78805c7128db1f817",
+    "CLOUDFLARE_DATABASE_ID": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
+    "JWT_SECRET": "dev_secret_change_me",
+    "ADMIN_USERNAME": "staging",
+    "ADMIN_PASSWORD": "staging"
+    // CLOUDFLARE_D1_TOKEN and PUBLIC_R2_URL are secrets and should NOT be here
+  },
+  "env": {
+    "production": {
+      "vars": {
+        "ADMIN_USERNAME": "staging",
+        "ADMIN_PASSWORD": "staging"
+        // You can override public vars for production here if needed
+        // "CLOUDFLARE_ACCOUNT_ID": "your-prod-account-id",
+        // "CLOUDFLARE_DATABASE_ID": "your-prod-database-id"
+      }
+    }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "lush-content-db",
+      "database_id": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
+      "migrations_dir": "drizzle"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "ASSETS_BUCKET",
+      "bucket_name": "lush-assets"
+      // Public URL for CMS image serving:
+      // https://your-account-id-here.r2.cloudflarestorage.com/lush-assets/
+      // IMPORTANT: Set the PUBLIC_R2_URL secret for production:
+      // wrangler secret put PUBLIC_R2_URL --env production
+    }
+  ]
+  // Secrets Configuration (run via CLI):
+  // wrangler secret put ADMIN_USERNAME
+  // wrangler secret put ADMIN_PASSWORD
+  // wrangler secret put JWT_SECRET
+}
