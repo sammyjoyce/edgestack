@@ -2,11 +2,11 @@ import React from "react";
 import type { FetcherWithComponents } from "react-router";
 
 import RichTextField from "~/modules/admin/components/RichTextField";
-// Import generated ActionData type for the /admin route
-import type { ActionData as AdminIndexActionData } from "../../../../.react-router/types/app/modules/admin/routes/index";
+// Import the specific action type
+import type { action as adminIndexAction } from "~/modules/admin/routes/index";
 
 interface ContactSectionEditorProps {
-  fetcher: FetcherWithComponents<AdminIndexActionData>; // Use generated type
+  fetcher: FetcherWithComponents<typeof adminIndexAction>; // Use inferred type
   initialContent: Record<string, string>;
 }
 
@@ -71,9 +71,11 @@ export function ContactSectionEditor({
   const handleBlur = React.useCallback(
     (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.currentTarget;
-      const data = new FormData();
-      data.append(name, value);
-      fetcher.submit(data, { method: "post" });
+      const formData = new FormData();
+      formData.append("intent", "updateTextContent"); // Add intent
+      formData.append(name, value);
+      // Use typed action path
+      fetcher.submit(formData, { method: "post", action: "/admin" });
     },
     [fetcher]
   );

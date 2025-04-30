@@ -1,11 +1,13 @@
-import React from "react"; // Remove duplicate React import
+import React from "react";
 import { Popover } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import clsx from "clsx"; // Use direct import
-import { NavLink } from "react-router";
+import clsx from "clsx";
+import { NavLink, type To } from "react-router"; // Import To type
 
 interface MenuItem {
   name: string;
+  // Use To type for internal links, string for fragments/external
+  path: To | string;
   path: string;
   isRouteLink?: boolean;
   submenu?: { name: string; path: string }[];
@@ -79,9 +81,8 @@ export default function DesktopNav({
             // Use typed 'to' for route links
             <NavLink
               key={item.name}
-              to={item.path} // Use typed path directly
+              to={item.path as To} // Cast to To for NavLink
               className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-              // onClick is fine for route links
             >
               {item.name}
             </NavLink>
@@ -89,9 +90,9 @@ export default function DesktopNav({
             // Use anchor tag for fragment identifiers
             <a
               key={item.name}
-              href={item.path}
+              href={item.path as string} // Cast to string for href
               className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-              onClick={(e) => scrollToSection(e, item.path)}
+              onClick={(e) => scrollToSection(e, item.path as string)} // Cast to string for scrollToSection
             >
               {item.name}
             </a>
@@ -106,9 +107,8 @@ export default function DesktopNav({
             // Use typed 'to' for route links
             <NavLink
               key={item.name}
-              to={item.path} // Use typed path directly
+              to={item.path as To} // Cast to To for NavLink
               className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-              // onClick is fine for route links
             >
               {item.name}
             </NavLink>
@@ -116,31 +116,14 @@ export default function DesktopNav({
             // Use anchor tag for fragment identifiers
             <a
               key={item.name}
-              href={item.path}
+              href={item.path as string} // Cast to string for href
               className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-              onClick={(e) => scrollToSection(e, item.path)}
-              }
+              onClick={(e) => scrollToSection(e, item.path as string)} // Cast to string for scrollToSection
             >
               {item.name}
-            </NavLink>
+            </a>
           )
         )}
-      </div>
-
-      {/* Right navigation items */}
-      <div className="hidden lg:flex lg:items-center lg:gap-x-6">
-        {menuItems.slice(2).map((item) => (
-          <NavLink
-            key={item.name}
-            to={item.path}
-            className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-            onClick={(e) =>
-              item.isRouteLink ? null : scrollToSection(e, item.path)
-            }
-          >
-            {item.name}
-          </NavLink>
-        ))}
       </div>
     </>
   );

@@ -3,13 +3,13 @@ import type { FetcherWithComponents } from "react-router";
 
 import RichTextField from "~/modules/admin/components/RichTextField";
 import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
-// Import generated ActionData types
-import type { ActionData as AdminUploadActionData } from "../../../../.react-router/types/app/modules/admin/routes/upload";
-import type { ActionData as AdminIndexActionData } from "../../../../.react-router/types/app/modules/admin/routes/index";
+// Import the specific action types
+import type { action as adminIndexAction } from "~/modules/admin/routes/index";
+import type { action as adminUploadAction } from "~/modules/admin/routes/upload";
 
 interface AboutSectionEditorProps {
-  // Use a union type if the fetcher might submit to different actions
-  fetcher: FetcherWithComponents<AdminIndexActionData | AdminUploadActionData>;
+  // Use a union type with inferred action types
+  fetcher: FetcherWithComponents<typeof adminIndexAction | typeof adminUploadAction>;
   initialContent: Record<string, string>;
   onImageUpload: (file: File) => void;
   imageUploading: boolean;
@@ -29,9 +29,11 @@ export function AboutSectionEditor({
   const handleBlur = React.useCallback(
     (e: React.FocusEvent<HTMLTextAreaElement>) => {
       const { name, value } = e.currentTarget;
-      const data = new FormData();
-      data.append(name, value);
-      fetcher.submit(data, { method: "post" });
+      const formData = new FormData();
+      formData.append("intent", "updateTextContent"); // Add intent
+      formData.append(name, value);
+      // Use typed action path
+      fetcher.submit(formData, { method: "post", action: "/admin" });
     },
     [fetcher]
   );

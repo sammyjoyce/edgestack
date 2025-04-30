@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { validateContentInsert } from "~/database/valibot-validation";
-// Import generated ActionData type for the /admin route
-import type { ActionData as AdminIndexActionData } from "../../../.react-router/types/app/modules/admin/routes/index";
+// Import the specific action type
+import type { action as adminIndexAction } from "~/modules/admin/routes/index";
 
 // Helper function for validation (can be kept here or imported)
 const validateField = (key: string, value: string): string | null => {
@@ -31,7 +31,7 @@ interface TextFieldConfig {
 
 interface UseTextContentFormArgs {
   initialContent: Record<string, string>;
-  fetcher: FetcherWithComponents<AdminIndexActionData>; // Use generated type
+  fetcher: FetcherWithComponents<typeof adminIndexAction>; // Use inferred type
   textFieldsConfig: TextFieldConfig[]; // Pass the config to the hook
 }
 

@@ -1,13 +1,19 @@
 import React, { useCallback, useState } from "react"; // Import React hooks
-// Remove Dialog, DialogPanel, Popover, ChevronDownIcon, XMarkIcon imports
 import { Bars3Icon } from "@heroicons/react/24/outline";
-// Remove clsx, AnimatePresence, motion imports (moved to MobileMenu)
-import { NavLink } from "react-router";
+import { NavLink, type To } from "react-router"; // Import To type
 import { Button } from "~/modules/common/components/ui/Button"; // Corrected path
 import MobileMenu from "./MobileMenu"; // Import MobileMenu
 import DesktopNav from "./DesktopNav"; // Import DesktopNav
 
-const menuItems = [
+// Define MenuItem type locally or import if shared
+interface MenuItem {
+  name: string;
+  path: To | string; // Use To for internal, string for fragments/external
+  isRouteLink?: boolean;
+  submenu?: { name: string; path: string }[]; // Submenu paths are likely fragments
+}
+
+const menuItems: MenuItem[] = [
   { name: "Home", path: "#hero" },
   {
     name: "Our Services",
@@ -64,7 +70,7 @@ function Header(): React.JSX.Element {
 
           {/* Logo (centered) */}
           <div className="-translate-x-1/2 absolute left-1/2 flex transform justify-center">
-            <NavLink to="/" className="relative z-10"> {/* Use typed path */}
+            <NavLink to="/" className="relative z-10">
               <img
                 src="/assets/logo_284x137-KoakP1Oi.png"
                 alt="LUSH CONSTRUCTIONS"

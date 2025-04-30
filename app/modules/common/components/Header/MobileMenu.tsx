@@ -1,15 +1,15 @@
 import React from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { AnimatePresence, motion } from "framer-motion"; // Use direct import
-import { NavLink } from "react-router";
+import { AnimatePresence, motion } from "framer-motion";
+import { NavLink, type To } from "react-router"; // Import To type
 import { Button } from "~/modules/common/components/ui/Button"; // Corrected path
 
 interface MenuItem {
   name: string;
-  path: string;
+  path: To | string; // Use To for internal, string for fragments/external
   isRouteLink?: boolean;
-  submenu?: { name: string; path: string }[];
+  submenu?: { name: string; path: string }[]; // Submenu paths are likely fragments
 }
 
 interface MobileMenuProps {
@@ -46,6 +46,7 @@ export default function MobileMenu({
       <DialogPanel className="fixed inset-shadow-sm inset-shadow-white/5 inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black/95 px-6 py-6 shadow-2xl backdrop-blur-lg sm:max-w-sm sm:ring-1 sm:ring-gray-800">
         <div className="flex items-center justify-between">
           <NavLink to="/" className="-m-1.5 p-1.5" onClick={onClose}>
+            <span className="sr-only">Lush Constructions Home</span>
             <img
               src="/assets/logo_284x137-KoakP1Oi.png"
               alt="LUSH CONSTRUCTIONS"
@@ -68,7 +69,7 @@ export default function MobileMenu({
                 <div key={item.name}>
                   {item.isRouteLink ? (
                     <NavLink
-                      to={item.path} // Use typed path directly
+                      to={item.path as To} // Cast to To for NavLink
                       className="-mx-3 block rounded-full px-5 py-2 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
                       onClick={onClose} // Close menu on route navigation
                     >
@@ -76,9 +77,9 @@ export default function MobileMenu({
                     </NavLink>
                   ) : (
                     <a
-                      href={item.path}
+                      href={item.path as string} // Cast to string for href
                       className="-mx-3 block rounded-full px-5 py-2 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
-                      onClick={(e) => scrollToSection(e, item.path)}
+                      onClick={(e) => scrollToSection(e, item.path as string)} // Cast to string for scrollToSection
                     >
                       {item.name}
                     </a>

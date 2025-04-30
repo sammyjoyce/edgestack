@@ -5,22 +5,17 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
-import { NavLink, Outlet, redirect, data, type TypedResponse } from "react-router";
+import { NavLink, Outlet, redirect, data, type TypedResponse, type Response, type To } from "react-router"; // Import To
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 // Import generated types
-import type {
-  Route, // Use generated Route type
-  LoaderData,
-} from "../../../.react-router/types/app/modules/admin/routes/_layout";
+import type { Route } from "../../../.react-router/types/app/modules/admin/routes/_layout";
 
-export async function loader({
-  request,
-  context,
-}: Route.LoaderArgs): Promise<TypedResponse<LoaderData> | Response> { // Use generated Route.LoaderArgs
+// Use inferred return type
+export async function loader({ request, context }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const isLoginRoute = url.pathname === "/admin/login";
-  const isLogoutRoute = url.pathname === "/admin/logout"; // Check for logout route
+  const isLogoutRoute = url.pathname === "/admin/logout";
 
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -42,31 +37,31 @@ export async function loader({
   if (!loggedIn && !isLoginRoute) {
     // Allow logout route to proceed to clear cookie even if not logged in
     if (!isLogoutRoute) {
-      return redirect("/admin/login"); // Use typed path
+      return redirect("/admin/login");
     }
   }
 
   // If logged in and trying to access login, redirect to admin dashboard
   if (loggedIn && isLoginRoute) {
-    return redirect("/admin"); // Use typed path
+    return redirect("/admin");
   }
 
   // Allow access if logged in, or if accessing login/logout page
-  // Return type must match LoaderData or be a Response
-  return data(null satisfies LoaderData); // Ensure null matches LoaderData type if applicable, or adjust LoaderData
+  // Return null or data({}) as appropriate for LoaderData
+  return data({}); // Return empty data object
 }
 
 interface NavItem {
   name: string;
-  href: string;
+  href: To | string; // Use To for internal, string for external
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
-// Ensure hrefs match the typed paths
+// Use typed paths for internal links
 const navigation: NavItem[] = [
   { name: "Dashboard", href: "/admin", icon: HomeIcon },
   { name: "Projects", href: "/admin/projects", icon: FolderIcon },
-  { name: "Live Site", href: "/", icon: DocumentDuplicateIcon },
+  { name: "Live Site", href: "/", icon: DocumentDuplicateIcon }, // Keep as string for external/root
   { name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
 
@@ -117,7 +112,7 @@ export function Component() {
                     ) : (
                       // Use NavLink for internal routes with typed 'to'
                       <NavLink
-                        to={item.href} // Use typed path directly
+                        to={item.href as To} // Cast to To for NavLink
                         end={item.href === "/admin"} // Keep end prop for dashboard
                         className={({ isActive }) =>
                           classNames(

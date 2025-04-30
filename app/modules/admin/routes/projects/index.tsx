@@ -63,7 +63,7 @@ export function ProjectsIndexRoute() {
         <h1 className="text-2xl font-semibold text-gray-900">
           Manage Projects
         </h1>
-        <Button as={Link} to="/admin/projects/new" className="text-sm"> {/* Use typed path */}
+        <Button as={Link} to="/admin/projects/new" className="text-sm">
           Add New Project
         </Button>
       </div>
@@ -92,8 +92,8 @@ export function ProjectsIndexRoute() {
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <Link
-                      to="/admin/projects/:projectId/edit" // Use typed path structure
-                      params={{ projectId: String(project.id) }} // Pass params
+                      to="/admin/projects/:projectId/edit"
+                      params={{ projectId: String(project.id) }}
                       className="text-base font-semibold text-blue-600 truncate hover:underline"
                     >
                       {project.title}
@@ -105,8 +105,8 @@ export function ProjectsIndexRoute() {
                   <div className="ml-4 flex-shrink-0 flex items-center space-x-3">
                     <Button
                       as={Link}
-                      to="/admin/projects/:projectId/edit" // Use typed path structure
-                      params={{ projectId: String(project.id) }} // Pass params
+                      to="/admin/projects/:projectId/edit"
+                      params={{ projectId: String(project.id) }}
                       className="text-xs px-3 py-1"
                     >
                       Edit

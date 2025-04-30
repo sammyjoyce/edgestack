@@ -1,60 +1,45 @@
 import React from "react";
-import { data, Link, useLoaderData } from "react-router";
+import { data, Link, useLoaderData, type TypedResponse } from "react-router";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
 // Import generated types
-import type {
-  Route, // Use generated Route type
-  LoaderData,
-  Params, // Params is automatically part of Route.LoaderArgs
-} from "../../../.react-router/types/app/modules/projects/routes/[projectId]";
-import { type TypedResponse } from "react-router"; // Import TypedResponse
+import type { Route } from "../../../.react-router/types/app/modules/projects/routes/[projectId]";
+import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer"; // Import renderer
 
-// Loader to fetch the specific project by ID
-export async function loader({
-  params,
-  context,
-}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use generated Route.LoaderArgs
-  // params is already typed
+// Loader to fetch the specific project by ID - Use inferred return type
+export async function loader({ params, context }: Route.LoaderArgs) {
   const projectId = Number(params.projectId);
 
-    // Ensure shape matches LoaderData
-    return data(
-      { project: null, error: "Invalid Project ID" } satisfies LoaderData,
-      { status: 400 }
-    );
+  if (isNaN(projectId)) {
+    // Use data helper
+    return data({ project: null, error: "Invalid Project ID" }, { status: 400 });
   }
 
   try {
     const project = await getProjectById(context.db, projectId);
     if (!project) {
-      // Ensure shape matches LoaderData
-      return data(
-        { project: null, error: "Project not found" } satisfies LoaderData,
-        { status: 404 }
-      );
+      // Use data helper
+      return data({ project: null, error: "Project not found" }, { status: 404 });
     }
-    // Ensure shape matches LoaderData
-    return data({ project, error: undefined } satisfies LoaderData);
-  } catch {
-    // Ensure shape matches LoaderData
+    // Use data helper
+    return data({ project });
+  } catch (error: any) {
+    console.error("Error loading project details:", error);
+    // Use data helper for error
     return data(
-      {
-        project: null,
-        error: "Failed to load project details",
-      } satisfies LoaderData,
+      { project: null, error: error.message || "Failed to load project details" },
       { status: 500 }
     );
   }
 }
 
 export function ProjectDetailRoute() {
-  // Get project data and error from the loader using generated type generic
-  const { project, error } = useLoaderData<LoaderData>();
+  // Use type inference for useLoaderData
+  const { project, error } = useLoaderData<typeof loader>();
 
   // Handle loader errors
-  if (error) { // Check for error first
+  if (error) {
     return (
       <div className="py-16 bg-white text-center">
         <h2 className="text-2xl font-semibold text-red-700 mb-4">
@@ -62,7 +47,7 @@ export function ProjectDetailRoute() {
         </h2>
         <p className="text-gray-500 mb-6">{error}</p>
         <Link
-          to="/projects" // Use typed path
+          to="/projects"
           className="inline-block text-blue-600 hover:underline"
         >
           ← Back to Projects
@@ -83,7 +68,7 @@ export function ProjectDetailRoute() {
           The project data could not be loaded.
         </p>
         <Link
-          to="/projects" // Use typed path
+          to="/projects"
           className="inline-block text-blue-600 hover:underline"
         >
           ← Back to Projects
@@ -105,19 +90,26 @@ export function ProjectDetailRoute() {
             <h2 className="text-3xl font-serif font-bold text-black mb-4">
               {project.title}
             </h2>
-            <p className="text-gray-700 text-lg mb-4">
-              {project.description ?? "No description provided."}
-            </p>
+            <ConditionalRichTextRenderer
+              text={project.description}
+              fallbackClassName="text-gray-700 text-lg mb-4"
+              fallbackTag="p"
+            />
             {project.details && (
-              <p className="text-gray-600 text-sm mb-6">
-                <strong>Details:</strong> {project.details}
-              </p>
+              <div className="prose prose-sm mt-4 mb-6">
+                <h3 className="font-semibold text-gray-800">Details:</h3>
+                <ConditionalRichTextRenderer
+                  text={project.details}
+                  fallbackClassName="text-gray-600"
+                  fallbackTag="div" // Use div if details might contain multiple paragraphs
+                />
+              </div>
             )}
             <p className="text-gray-500 italic mb-6">
               Contact us for more information about similar projects.
             </p>
             <Link
-              to="/projects" // Use typed path
+              to="/projects"
               className="inline-block text-blue-600 hover:underline"
             >
               ← Back to Projects
