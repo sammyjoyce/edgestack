@@ -8,12 +8,13 @@ import { motion } from "framer-motion"; // Use direct import
 import React from "react"; // Import React
 import ConditionalRichTextRenderer from "~/modules/common/components/ConditionalRichTextRenderer"; // Import the new component
 
-import { useLoaderData } from "react-router";
+// Remove the direct useLoaderData import - instead, take content as a prop
+interface ContactUsProps {
+  content?: Record<string, string>;
+}
 
-export default function ContactUs() {
-  // Use content from loader context if available
-  // The type should be inferred correctly by useLoaderData here
-  const { content = {} } = useLoaderData();
+export default function ContactUs({ content = {} }: ContactUsProps) {
+  // Extract values from content prop with fallbacks
   const {
     contact_headline: headline = "Ready to Start Your Project?",
     contact_intro:

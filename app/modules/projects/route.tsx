@@ -1,11 +1,9 @@
 import { Outlet } from "react-router";
 
-import { schema } from "~/database/schema";
-import { getAllContent, getAllProjects } from "~/db";
+import { getAllContent, getAllProjects } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
 import Footer from "~/modules/common/components/Footer";
 import Header from "~/modules/common/components/Header";
-import type { Route } from "./+types/route";
 
 export const meta: Route.MetaFunction = () => {
   return [

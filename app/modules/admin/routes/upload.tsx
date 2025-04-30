@@ -1,10 +1,12 @@
+import React from "react";
 import { data } from "react-router";
-import type { Route } from "./+types/upload";
-
-import { updateContent } from "~/db";
+import { FadeIn } from "~/modules/common/components/ui/FadeIn";
+import { ImageUploadSection } from "../components/ImageUploadSection";
+import type { Route } from "~/modules/admin/+types/route";
+import { updateContent } from "app/modules/common/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { validateContentInsert } from "~/database/valibot-validation";
-import { handleImageUpload } from "~/utils/upload.server"; // Import the helper
+import { handleImageUpload } from "~/utils/upload.server";
 
 export async function action({ request, context }: Route.ActionArgs) {
   const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
@@ -17,6 +19,7 @@ export async function action({ request, context }: Route.ActionArgs) {
   if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
     return unauthorized();
   }
+
   if (request.method === "POST") {
     try {
       const formData = await request.formData();
@@ -30,8 +33,17 @@ export async function action({ request, context }: Route.ActionArgs) {
         return badRequest("Missing key for database update.");
       }
 
-      // Use the helper function for upload
-      const publicUrl = await handleImageUpload(file, key, context); // Pass context directly
+      // Get the Cloudflare environment
+      const env = context.cloudflare?.env;
+      if (!env) {
+        return badRequest("Environment not available");
+      }
+
+      // Use the helper function for upload with type assertion for consistency
+      const publicUrl = await handleImageUpload(file, key, context as any);
+      if (!publicUrl || typeof publicUrl !== "string") {
+        return badRequest("Failed to upload image");
+      }
 
       // Validate before updating content DB
       try {
@@ -45,16 +57,39 @@ export async function action({ request, context }: Route.ActionArgs) {
           { status: 400 }
         );
       }
+
       await updateContent(context.db, { [key]: publicUrl });
 
       return data({ success: true, url: publicUrl, key: key });
     } catch (error: any) {
-      console.error("Upload Action Error:", error);
+      console.error("Upload error:", error);
       return data(
-        { success: false, error: "Error processing file upload." },
+        {
+          success: false,
+          error: error.message || "An unexpected error occurred",
+        },
         { status: 500 }
       );
     }
   }
-  return data({ error: "Invalid method" }, { status: 405 });
+
+  return badRequest("Method not allowed");
+}
+
+export function Component() {
+  return (
+    <FadeIn>
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-900">Image Upload</h1>
+          <p className="mt-2 text-sm text-gray-500">
+            Upload images to use on your website. Images will be optimized and
+            stored for use in your content.
+          </p>
+        </div>
+
+        <ImageUploadSection initialContent={{}} />
+      </div>
+    </FadeIn>
+  );
 }

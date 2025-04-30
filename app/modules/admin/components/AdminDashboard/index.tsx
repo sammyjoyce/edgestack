@@ -24,7 +24,7 @@ import { HeroSectionEditor } from "~/modules/admin/components/HeroSectionEditor"
 import { ServicesSectionEditor } from "~/modules/admin/components/ServicesSectionEditor";
 import { AboutSectionEditor } from "~/modules/admin/components/AboutSectionEditor";
 import { ContactSectionEditor } from "~/modules/admin/components/ContactSectionEditor";
-import type { action } from "~/modules/admin/pages";
+import type { AdminDashboardActionResponse } from "~/modules/admin/routes/index";
 
 // Helper to check if content is an error response using valibot
 const isContentError = (obj: any): obj is { error: string; status: number } => {
@@ -40,19 +40,33 @@ export default function AdminDashboard(): React.JSX.Element {
   // Changed to React.JSX.Element
   // Get initial content from loader
   const content = useLoaderData<typeof loader>();
-  // one fetcher per interactive block
-  const sorterFetcher = useFetcher<typeof action>();
-  const heroFetcher = useFetcher<typeof action>();
-  const servicesFetcher = useFetcher<typeof action>();
-  const aboutFetcher = useFetcher<typeof action>();
-  const contactFetcher = useFetcher<typeof action>();
-  const projectsFetcher = useFetcher<typeof action>(); // Added for projects section inputs
+  // Typed fetchers for different parts of the dashboard
+  const heroFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
+    useFetcher();
+  const introFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
+    useFetcher();
+  const servicesFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
+    useFetcher();
+  const aboutFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
+    useFetcher();
+  const contactFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
+    useFetcher();
+  // Added for consistent naming with code below
+  const sorterFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
+    useFetcher();
+  const projectsFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
+    useFetcher();
 
   // Access content safely with type guard, handle null case
   const safeContent =
     !content || isContentError(content)
       ? ({} as Record<string, string>)
       : (content as Record<string, string>);
+
+  // Check valid object for 'in' operator to avoid type error
+  const isValidObject = (obj: unknown): obj is Record<string, unknown> => {
+    return typeof obj === "object" && obj !== null;
+  };
 
   // Handler for Hero image upload
   const [heroUploading, setHeroUploading] = React.useState(false);
@@ -90,9 +104,10 @@ export default function AdminDashboard(): React.JSX.Element {
         action: "/admin/upload", // Keep targeting the dedicated upload action
         encType: "multipart/form-data",
       });
-      // Use the specific fetcher instance's data
+      // Use the specific fetcher instance's data with proper type checking
       if (
         fetcherInstance.data &&
+        isValidObject(fetcherInstance.data) &&
         "url" in fetcherInstance.data &&
         typeof fetcherInstance.data.url === "string"
       ) {

@@ -8,7 +8,11 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { LinkNode } from "@lexical/link"; // Import LinkNode
 import { ListItemNode, ListNode } from "@lexical/list"; // Import list nodes
-import type { EditorState, LexicalEditor, SerializedEditorState } from "lexical"; // Import LexicalEditor and SerializedEditorState
+import type {
+  EditorState,
+  LexicalEditor,
+  SerializedEditorState,
+} from "lexical"; // Import LexicalEditor and SerializedEditorState
 
 import React, { useRef, useCallback, useMemo } from "react";
 import LexicalToolbar from "app/modules/admin/components/RichTextField/Toolbar";

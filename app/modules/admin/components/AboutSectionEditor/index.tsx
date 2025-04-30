@@ -3,7 +3,7 @@ import type { FetcherWithComponents } from "react-router";
 
 import RichTextField from "~/modules/admin/components/RichTextField";
 import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
-import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
+import type { AdminActionResponse } from "~/modules/admin/+types/actions"; // Import the action response type
 
 interface AboutSectionEditorProps {
   fetcher: FetcherWithComponents<AdminActionResponse>; // Use specific type
