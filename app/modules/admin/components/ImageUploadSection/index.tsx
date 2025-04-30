@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useFetcher, type FetcherWithComponents } from "react-router";
+import { useFetcher } from "react-router";
 import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
-// Import the specific action type
-import type { action as adminUploadAction } from "~/modules/admin/routes/upload";
+// Define action response type structure
+// This aligns with what the upload action returns without needing direct imports
 import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
 import { Button } from "~/modules/common/components/ui/Button";
 import { GrayscaleTransitionImage } from "~/modules/common/components/ui/GrayscaleTransitionImage";
@@ -34,16 +34,18 @@ export function ImageUploadSection({
     Array(imageFields.length).fill("")
   );
 
-  // One fetcher per field, typed with inferred action type
-  const fetchers = imageFields.map(() => useFetcher<typeof adminUploadAction>());
+  // One fetcher per field, using the proper return type based on Route type
+  // We define the shape we expect the action to return based on the route's return type
+  type UploadActionReturn = { success: boolean; url?: string; key?: string; error?: string };
+  const fetchers = imageFields.map(() => useFetcher<UploadActionReturn>());
   // Create refs for each file input
   const fileInputRefs = imageFields.map(() => useRef<HTMLInputElement>(null));
 
-  // Type the fetcher argument with inferred action type
+  // Type the fetcher argument with proper type
   const makeDropHandler = useCallback(
     (
         idx: number,
-        fetcher: FetcherWithComponents<typeof adminUploadAction>,
+        fetcher: ReturnType<typeof useFetcher<UploadActionReturn>>,
         key: string,
         label: string
       ) =>

@@ -7,17 +7,23 @@ import {
 } from "framer-motion"; // Use direct import
 import type React from "react";
 import { useRef } from "react";
+import type { HTMLMotionProps } from "framer-motion";
 
 const MotionImage = motion.img;
 
-// Define props based on standard img attributes we want to support
-interface GrayscaleTransitionImageProps
-  extends Omit<
-    React.ImgHTMLAttributes<HTMLImageElement>,
-    "style" | "className" // Exclude style (handled by motion) and className (handled by wrapper)
-  > {
-  className?: string; // Allow className for the wrapper div
+// Define a more compatible props interface that works with both HTML and Motion props
+interface GrayscaleTransitionImageProps {
+  className?: string;  // For the wrapper div
   alt?: string;
+  src?: string;
+  width?: number | string;
+  height?: number | string;
+  loading?: "eager" | "lazy";
+  decoding?: "sync" | "async" | "auto";
+  id?: string;
+  sizes?: string;
+  srcSet?: string;
+  [key: string]: any; // Allow other props but don't enforce type checking on them
 }
 
 export function GrayscaleTransitionImage({
@@ -48,14 +54,24 @@ export function GrayscaleTransitionImage({
     className: "absolute inset-0 h-full w-full object-cover",
     loading,
     decoding,
+    // Exclude event handlers from regular img element
+    onDrag: undefined,
+    onDragEnd: undefined,
+    onDragStart: undefined,
   };
 
   return (
     // Apply passed className to the wrapper div
     <div ref={ref} className={clsx("group relative", className)}>
       <MotionImage
-        {...imgProps} // Spread defined, compatible img props
-        style={{ filter } as any} // Apply motion style
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className="absolute inset-0 h-full w-full object-cover"
+        loading={loading}
+        decoding={decoding}
+        style={{ filter }} // Type-safe without 'as any'
         {...rest} // Spread remaining props
       />
       {/* Static image for hover effect */}

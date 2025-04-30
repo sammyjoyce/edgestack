@@ -2,17 +2,17 @@ import {
   ArrowLeftCircleIcon,
   DocumentDuplicateIcon,
   FolderIcon,
-  HomeIcon,
+  HomeIcon
 } from "@heroicons/react/24/outline";
 import React from "react";
-import { NavLink, Outlet, redirect, type Response, type To } from "react-router"; // Import To
-// Import generated types
-import type { Route } from "../../.react-router/types/app/modules/admin/route";
+import { NavLink, Outlet, redirect, type To } from "react-router";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { data, useFetcher } from "react-router";
+// Using standard types instead of generated types
+import type { LoaderFunction } from "react-router";
 
-// Use inferred return type
-export async function loader({ request, context }: Route.LoaderArgs) {
+// Define explicit loader signature
+export const loader: LoaderFunction = async ({ request, context }) => {
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
   if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -88,19 +88,20 @@ export function Component() {
                         end={item.href === "/admin"}
                         className={({ isActive }) =>
                           classNames(
-                          isActive
-                            ? "bg-gray-700 text-white" // Slightly lighter active bg
-                            : "text-gray-400 hover:bg-gray-700 hover:text-white",
-                          "group flex gap-x-3 rounded-md p-2 text-sm font-medium" // Use text-sm and font-medium
-                        )
-                      }
-                    >
-                      <item.icon
-                        aria-hidden="true"
-                        className="size-5 shrink-0" // Slightly smaller icon
-                      />
-                      {item.name}
-                    </NavLink>
+                            isActive
+                              ? "bg-gray-700 text-white" // Slightly lighter active bg
+                              : "text-gray-400 hover:bg-gray-700 hover:text-white",
+                            "group flex gap-x-3 rounded-md p-2 text-sm font-medium" // Use text-sm and font-medium
+                          )
+                        }
+                      >
+                        <item.icon
+                          aria-hidden="true"
+                          className="size-5 shrink-0" // Slightly smaller icon
+                        />
+                        {item.name}
+                      </NavLink>
+                    )}
                   </li>
                 ))}
               </ul>

@@ -1,32 +1,35 @@
 import React, { useState } from "react";
-import { Form, redirect, data, type TypedResponse, type Response } from "react-router";
+import { Form, redirect, useActionData } from "react-router";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
-// Import generated types
-import type { Route } from "../../../.react-router/types/app/modules/admin/routes/login";
+// Import generated types from proper path
+import type { Route } from "./+types/login";
 import { sign, COOKIE_NAME, COOKIE_MAX_AGE } from "~/modules/common/utils/auth";
 
-// Use inferred return type
-export async function action({ request, context }: Route.ActionArgs) {
+// Use generated type without explicit return type annotation
+export const action = async ({ request, context }: Route.ActionArgs) => {
   const formData = await request.formData();
   const username = formData.get("username") as string;
   const password = formData.get("password") as string;
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 
   if (!jwtSecret) {
-    // Use data helper
-    return data({ success: false, error: "JWT_SECRET not configured" }, { status: 500 });
+    // Return error data directly
+    return { success: false, error: "JWT_SECRET not configured" };
   }
 
-  // Use environment variables for credentials
-  const adminUsername = context.cloudflare?.env?.ADMIN_USERNAME;
-  const adminPassword = context.cloudflare?.env?.ADMIN_PASSWORD;
+  // Access environment variables with proper typing
+  // We know these exist in worker-configuration.d.ts but need to handle type checking properly
+  const env = context.cloudflare?.env;
+  // Use optional chaining to access potentially undefined properties
+  const adminUsername = env && 'ADMIN_USERNAME' in env ? env.ADMIN_USERNAME as string : undefined;
+  const adminPassword = env && 'ADMIN_PASSWORD' in env ? env.ADMIN_PASSWORD as string : undefined;
 
   if (!adminUsername || !adminPassword) {
-    // Use data helper
-    return data(
-      { success: false, error: "Admin credentials not configured" },
-      { status: 500 }
-    );
+    // Return error data directly
+    return {
+      success: false, 
+      error: "Admin credentials not configured"
+    };
   }
 
   // Check against environment variable credentials
@@ -46,15 +49,17 @@ export async function action({ request, context }: Route.ActionArgs) {
     return response;
   }
 
-  // Use data helper
-  return data(
-    { success: false, error: "Invalid username or password" },
-    { status: 401 }
-  );
+  // Return error data directly
+  return {
+    success: false, 
+    error: "Invalid username or password"
+  };
 }
 
 export function LoginRoute() {
-  const [formError, setFormError] = useState<string | null>(null);
+  // Use useActionData to get typed action data
+  const actionData = useActionData<typeof action>();
+  const [error, setError] = useState<string | null>(actionData?.error || null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const form = e.currentTarget;
@@ -63,9 +68,9 @@ export function LoginRoute() {
 
     if (!username || !password) {
       e.preventDefault();
-      setFormError("Username and password are required");
+      setError("Username and password are required");
     } else {
-      setFormError(null);
+      setError(null);
     }
   };
 
@@ -86,12 +91,12 @@ export function LoginRoute() {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <Form method="post" className="space-y-6" onSubmit={handleSubmit}>
-              {formError && (
+              {error && (
                 <div className="rounded-md bg-red-50 p-4">
                   <div className="flex">
                     <div className="ml-3">
                       <h3 className="text-sm font-medium text-red-800">
-                        {formError}
+                        {error}
                       </h3>
                     </div>
                   </div>

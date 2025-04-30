@@ -1,11 +1,11 @@
-import { Outlet } from "react-router";
+import { Outlet, data, type MetaFunction, type LoaderFunction } from "react-router";
 
 import { getAllContent, getAllProjects } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
 import Footer from "~/modules/common/components/Footer";
 import Header from "~/modules/common/components/Header";
 
-export const meta: Route.MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Projects | Lush Constructions" },
     {
@@ -17,7 +17,7 @@ export const meta: Route.MetaFunction = () => {
 
 // Loader to fetch dynamic content from D1
 // The loader should return the data type, React Router handles the Response wrapping
-export async function loader({ context }: Route.LoaderArgs) {
+export const loader: LoaderFunction = async ({ context }) => {
   try {
     const content = await getAllContent(context.db);
     const projects = await getAllProjects(context.db);
@@ -37,7 +37,7 @@ export async function loader({ context }: Route.LoaderArgs) {
   }
 }
 
-export default function Projects({ loaderData }: Route.ComponentProps) {
+export default function Projects({ loaderData }: { loaderData: any }) {
   const { content, projects } = loaderData; // Destructure projects here
 
   return (

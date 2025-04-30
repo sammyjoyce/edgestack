@@ -1,22 +1,20 @@
 import React from "react";
-// Import useRouteLoaderData and the specific loader type from the layout route
-import { useRouteLoaderData } from "react-router";
-// Import the specific loader type from the layout route
-import type { loader as projectsLayoutLoader } from "~/modules/projects/routes/_layout";
+import { useOutletContext } from "react-router";
 import RecentProjects from "~/modules/common/components/RecentProjects";
-import type { Project } from "~/database/schema";
+// Import the parent layout's loader for type inference
+import { loader as parentLoader } from "~/modules/projects/routes/_layout";
+// Import generated Route type for this route
+import type { Route } from "./+types/index";
 
 export function ProjectsIndexRoute() {
-  // Get the content and projects data from the layout loader using useRouteLoaderData
-  const layoutData = useRouteLoaderData<typeof projectsLayoutLoader>("routes/_layout");
-  const content = layoutData?.content;
-  const projects = layoutData?.projects ?? []; // Provide default empty array
+  // Use context from parent with proper typing
+  const { content, projects = [] } = useOutletContext<Awaited<ReturnType<typeof parentLoader>>>();
 
   return (
     <RecentProjects
-      introTitle={content?.projects_intro_title ?? "Featured Projects"}
+      introTitle={content.projects_intro_title ?? "Featured Projects"}
       introText={
-        content?.projects_intro_text ??
+        content.projects_intro_text ??
         "Take a look at some of our recent work that demonstrates our expertise and dedication to excellence."
       }
       projects={projects}

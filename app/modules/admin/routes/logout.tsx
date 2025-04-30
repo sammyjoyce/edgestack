@@ -1,11 +1,11 @@
 import React from "react";
-import { redirect, type Response } from "react-router";
-// Import generated types (though loader doesn't use args)
-import type { Route } from "../../../.react-router/types/app/modules/admin/routes/logout";
+import { redirect } from "react-router";
+// Import generated types from the correct path
+import type { Route } from "./+types/logout";
 import { COOKIE_NAME } from "~/modules/common/utils/auth";
 
-// Use inferred return type
-export async function loader() {
+// Use the generated type with the proper format
+export const loader = async (): Promise<Response> => {
   // Create response with typed redirect to login
   const response = redirect("/admin/login");
 

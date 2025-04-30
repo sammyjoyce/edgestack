@@ -5,22 +5,23 @@ import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
 import RecentProjects from "~/modules/common/components/RecentProjects";
 import type { JSX } from "react";
-// Import the specific loader type from the parent layout
-import type { loader as homeLayoutLoader } from "~/modules/home/routes/_layout";
-// Import generated Route type for meta function
-import type { Route } from "../../../.react-router/types/app/modules/home/routes/index";
+// Import generated Route type from the proper location
+import type { Route } from "./+types/index";
+// Import parent route loader function for typing
+import { loader as parentLoader } from "~/modules/home/routes/_layout";
 
-export const meta: Route.MetaFunction<typeof homeLayoutLoader> = ({ data }) => {
-  // Access loader data safely from layout
-  const pageTitle = data?.content?.meta_title ?? "Lush Constructions";
+export const meta: Route.MetaFunction = ({ matches }) => {
+  // Access loader data safely from parent layout match using the correct type (Awaited to unwrap the Promise)
+  const parentLayoutMatch = matches.find(match => match?.id === "modules/home/routes/_layout");
+  const parentLayoutData = parentLayoutMatch?.data as Awaited<ReturnType<typeof parentLoader>> | undefined;
+  const pageTitle = parentLayoutData?.content?.meta_title ?? "Lush Constructions";
   const pageDescription =
-    data?.content?.meta_description ??
+    parentLayoutData?.content?.meta_description ??
     "High-Quality Solutions for Home & Office Improvement";
 
   return [
     { title: pageTitle },
     {
-      name: "description",
       name: "description",
       content: pageDescription,
     },
@@ -28,8 +29,8 @@ export const meta: Route.MetaFunction<typeof homeLayoutLoader> = ({ data }) => {
 };
 
 export function HomeRoute(): JSX.Element {
-  // Use useOutletContext with the inferred type from the layout loader
-  const { content, projects } = useOutletContext<Awaited<ReturnType<typeof homeLayoutLoader>>['data']>();
+  // Use useOutletContext with Awaited<ReturnType> to unwrap the Promise
+  const { content = {}, projects = [] } = useOutletContext<Awaited<ReturnType<typeof parentLoader>>>();
 
   // Section mapping
   const sectionBlocks: Record<string, JSX.Element> = {

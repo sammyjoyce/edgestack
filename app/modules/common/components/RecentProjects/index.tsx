@@ -71,8 +71,7 @@ export default function RecentProjects({
                     />
                     {/* Use Link with typed 'to' prop */}
                     <Link
-                      to="/projects/:projectId"
-                      params={{ projectId: String(project.id) }}
+                      to={`/projects/${project.id}`}
                       className="font-semibold text-base text-black underline underline-offset-4 transition hover:text-gray-700"
                     >
                       View Project Details →

@@ -1,35 +1,39 @@
-import { Outlet, data, useLoaderData, type TypedResponse } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import Footer from "~/modules/common/components/Footer";
 import Header from "~/modules/common/components/Header";
 import { ProjectsErrorBoundary } from "../components/ProjectsErrorBoundary";
 import { getAllContent, getAllProjects } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
-// Import generated types
-import type { Route } from "../../../.react-router/types/app/modules/projects/routes/_layout";
+// Import generated Route type for type safety
+import type { Route } from "./+types/_layout";
 
-// Use inferred return type
-export async function loader({ context }: Route.LoaderArgs) {
+// Loader with generated type safety
+type ProjectsLayoutLoaderData = {
+  content: Record<string, string>;
+  projects: Project[];
+  error?: string;
+};
+
+export const loader = async ({ context }: LoaderFunctionArgs): Promise<ProjectsLayoutLoaderData> => {
   try {
     const content = await getAllContent(context.db);
     const projects = await getAllProjects(context.db);
-    // Use data helper
-    return data({ content, projects });
+    // Return data directly without helper for clearer typing
+    return { content, projects };
   } catch (error) {
     console.error("Failed to fetch content or projects:", error);
-    // Use data helper for error
-    return data(
-      {
-        content: {},
-        projects: [] as Project[],
-        error: "Failed to load projects layout data",
-      },
-      { status: 500 }
-    );
+    // Return error data directly
+    return {
+      content: {},
+      projects: [],
+      error: "Failed to load projects layout data",
+    };
   }
 }
 
 export function ProjectsLayout() {
-  // Use type inference for useLoaderData - though not strictly needed if only Outlet is used
+  // Use type inference with the loader function
   const loaderData = useLoaderData<typeof loader>();
 
   return (
@@ -42,7 +46,7 @@ export function ProjectsLayout() {
             Our Projects
           </h1>
           <p className="mx-auto max-w-3xl text-center text-gray-700 text-xl">
-            {loaderData?.content?.projects_page_intro ?? // Use loaderData safely
+            {loaderData.content.projects_page_intro ?? 
               "Explore our portfolio of completed projects, showcasing our commitment to quality craftsmanship and attention to detail."}
           </p>
         </div>
