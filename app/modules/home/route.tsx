@@ -9,13 +9,15 @@ import OurServices from "./components/OurServices";
 import RecentProjects from "~/modules/common/components/RecentProjects";
 import { getFeaturedProjects } from "app/modules/common/db"; // Import the new function
 import { getAllContent } from "app/modules/common/db";
-import type { Route } from "./+types/route";
 import type { JSX } from "react";
-// Import generated loader type
-import type { LoaderData } from "../../.react-router/types/app/modules/home/route";
+// Import generated types
+import type {
+  Route, // Use generated Route type
+  LoaderData,
+} from "../../.react-router/types/app/modules/home/route";
 import type { Project } from "~/database/schema"; // Ensure Project is imported
 
-export const meta: Route.MetaFunction<typeof loader> = ({ data }) => { // Type meta function if needed
+export const meta: Route.MetaFunction<typeof loader> = ({ data }) => { // Use generated Route.MetaFunction
   return [
     { title: "Lush Constructions" },
     {
@@ -27,7 +29,7 @@ export const meta: Route.MetaFunction<typeof loader> = ({ data }) => { // Type m
 
 export async function loader({
   context,
-}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use generated Route.LoaderArgs
   try {
     const [content, projects] = await Promise.all([
       getAllContent(context.db),
@@ -39,16 +41,17 @@ export async function loader({
     console.error("Error fetching data from D1:", error);
     // Ensure the error response shape matches LoaderData
     const errorData: LoaderData = {
-      content: {} as Record<string, string>,
+      content: {},
       projects: [],
+      error: "Failed to load home page data", // Add error field if defined in LoaderData
     };
     return data(errorData, { status: 500 });
   }
 }
 
 export default function HomeRoute(): JSX.Element { // Rename component if desired
-  // Use useLoaderData with the generated type
-  const { content, projects } = useLoaderData() as LoaderData;
+  // Use useLoaderData with the generated type generic
+  const { content, projects } = useLoaderData<LoaderData>();
 
   // Section mapping
   const sectionBlocks: Record<string, JSX.Element> = {

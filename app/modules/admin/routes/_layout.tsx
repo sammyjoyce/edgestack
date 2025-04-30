@@ -8,14 +8,16 @@ import React from "react";
 import { NavLink, Outlet, redirect, data, type TypedResponse } from "react-router";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
-import type { Route } from "~/modules/admin/+types/route";
-// Import generated type
-import type { LoaderData } from "../../../.react-router/types/app/modules/admin/routes/_layout";
+// Import generated types
+import type {
+  Route, // Use generated Route type
+  LoaderData,
+} from "../../../.react-router/types/app/modules/admin/routes/_layout";
 
 export async function loader({
   request,
   context,
-}: Route.LoaderArgs): Promise<TypedResponse<LoaderData> | Response> { // Use TypedResponse or Response for redirects
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData> | Response> { // Use generated Route.LoaderArgs
   const url = new URL(request.url);
   const isLoginRoute = url.pathname === "/admin/login";
   const isLogoutRoute = url.pathname === "/admin/logout"; // Check for logout route
@@ -115,7 +117,7 @@ export function Component() {
                     ) : (
                       // Use NavLink for internal routes with typed 'to'
                       <NavLink
-                        to={item.href as any} // Cast needed if item.href isn't strictly a typed path
+                        to={item.href} // Use typed path directly
                         end={item.href === "/admin"} // Keep end prop for dashboard
                         className={({ isActive }) =>
                           classNames(

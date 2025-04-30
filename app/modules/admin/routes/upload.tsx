@@ -1,18 +1,30 @@
 import React from "react";
-import { data } from "react-router";
+import { data, type TypedResponse } from "react-router"; // Import TypedResponse
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { ImageUploadSection } from "../components/ImageUploadSection";
-import type { Route } from "~/modules/admin/+types/route";
+// Import generated types
+import type {
+  Route, // Use generated Route type
+  ActionData,
+} from "../../../.react-router/types/app/modules/admin/routes/upload";
 import { updateContent } from "app/modules/common/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { validateContentInsert } from "~/database/valibot-validation";
 import { handleImageUpload } from "~/utils/upload.server";
 
-export async function action({ request, context }: Route.ActionArgs) {
-  const unauthorized = () => data({ error: "Unauthorized" }, { status: 401 });
+export async function action({
+  request,
+  context,
+}: Route.ActionArgs): Promise<TypedResponse<ActionData>> { // Use generated Route.ActionArgs and TypedResponse
+  const unauthorized = () =>
+    // Ensure shape matches ActionData
+    data({ success: false, error: "Unauthorized" } satisfies ActionData, {
+      status: 401,
+    });
 
   const badRequest = (msg: string) =>
-    data({ success: false, error: msg }, { status: 400 });
+    // Ensure shape matches ActionData
+    data({ success: false, error: msg } satisfies ActionData, { status: 400 });
 
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -49,25 +61,28 @@ export async function action({ request, context }: Route.ActionArgs) {
       try {
         validateContentInsert({ key, value: publicUrl });
       } catch (e: any) {
+        // Ensure shape matches ActionData
         return data(
           {
             success: false,
             error: `Validation failed for key '${key}': ${e.message || e}`,
-          },
+          } satisfies ActionData,
           { status: 400 }
         );
       }
 
       await updateContent(context.db, { [key]: publicUrl });
 
-      return data({ success: true, url: publicUrl, key: key });
+      // Ensure shape matches ActionData
+      return data({ success: true, url: publicUrl, key: key } satisfies ActionData);
     } catch (error: any) {
       console.error("Upload error:", error);
+      // Ensure shape matches ActionData
       return data(
         {
           success: false,
           error: error.message || "An unexpected error occurred",
-        },
+        } satisfies ActionData,
         { status: 500 }
       );
     }

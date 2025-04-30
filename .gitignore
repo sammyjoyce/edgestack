@@ -10,3 +10,5 @@ node_modules
 .mf
 .wrangler
 .aider*
+# React Router generated types
+.react-router/

@@ -2,10 +2,11 @@ import React from "react";
 import type { FetcherWithComponents } from "react-router";
 
 import RichTextField from "~/modules/admin/components/RichTextField";
-import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
+// Import generated ActionData type for the /admin route
+import type { ActionData as AdminIndexActionData } from "../../../../.react-router/types/app/modules/admin/routes/index";
 
 interface ContactSectionEditorProps {
-  fetcher: FetcherWithComponents<AdminActionResponse>; // Use specific type
+  fetcher: FetcherWithComponents<AdminIndexActionData>; // Use generated type
   initialContent: Record<string, string>;
 }
 

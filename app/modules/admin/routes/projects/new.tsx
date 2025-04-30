@@ -3,9 +3,17 @@ import { Form, redirect, useNavigate, data } from "react-router";
 import { Button } from "~/modules/common/components/ui/Button";
 import RichTextField from "../../components/RichTextField";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
-import type { Route } from "../../+types/projects/new";
+// Import generated types
+import type {
+  Route,
+  ActionData,
+} from "../../../../.react-router/types/app/modules/admin/routes/projects/new";
+import { type TypedResponse, type Response } from "react-router"; // Import Response, TypedResponse
 
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action({
+  request,
+  context,
+}: Route.ActionArgs): Promise<TypedResponse<ActionData> | Response> { // Use TypedResponse/ActionData or Response
   const formData = await request.formData();
 
   const title = formData.get("title") as string;
@@ -13,12 +21,12 @@ export async function action({ request, context }: Route.ActionArgs) {
   const details = formData.get("details") as string;
   const imageUrl = formData.get("imageUrl") as string;
 
-  if (!title || !description || !imageUrl) {
+    // Ensure shape matches ActionData
     return data(
       {
         success: false,
         error: "Title, description, and image URL are required",
-      },
+      } satisfies ActionData,
       { status: 400 }
     );
   }
@@ -36,8 +44,9 @@ export async function action({ request, context }: Route.ActionArgs) {
     return redirect("/admin/projects");
   } catch (error) {
     console.error("Error creating project:", error);
+    // Ensure shape matches ActionData
     return data(
-      { success: false, error: "Failed to create project" },
+      { success: false, error: "Failed to create project" } satisfies ActionData,
       { status: 500 }
     );
   }

@@ -64,7 +64,7 @@ function Header(): React.JSX.Element {
 
           {/* Logo (centered) */}
           <div className="-translate-x-1/2 absolute left-1/2 flex transform justify-center">
-            <NavLink to="/" className="relative z-10">
+            <NavLink to="/" className="relative z-10"> {/* Use typed path */}
               <img
                 src="/assets/logo_284x137-KoakP1Oi.png"
                 alt="LUSH CONSTRUCTIONS"

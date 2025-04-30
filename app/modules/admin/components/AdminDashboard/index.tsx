@@ -9,6 +9,9 @@ import {
 // Types
 // Import the specific loader type for the index route
 import type { LoaderData } from "../../../.react-router/types/app/modules/admin/routes/index";
+// Import generated ActionData types
+import type { ActionData as AdminIndexActionData } from "../../../.react-router/types/app/modules/admin/routes/index";
+import type { ActionData as AdminUploadActionData } from "../../../.react-router/types/app/modules/admin/routes/upload";
 
 // Validation
 import { validateErrorResponse } from "~/database/valibot-validation";
@@ -25,10 +28,11 @@ import { HeroSectionEditor } from "~/modules/admin/components/HeroSectionEditor"
 import { ServicesSectionEditor } from "~/modules/admin/components/ServicesSectionEditor";
 import { AboutSectionEditor } from "~/modules/admin/components/AboutSectionEditor";
 import { ContactSectionEditor } from "~/modules/admin/components/ContactSectionEditor";
-import type { AdminDashboardActionResponse } from "~/modules/admin/routes/index";
 
 // Helper to check if content is an error response using valibot
-const isContentError = (obj: any): obj is { error: string; status: number } => {
+const isContentError = (
+  obj: any
+): obj is { error: string; status?: number } => { // status is optional in LoaderData
   try {
     validateErrorResponse(obj);
     return true;
@@ -38,30 +42,26 @@ const isContentError = (obj: any): obj is { error: string; status: number } => {
 };
 
 export default function AdminDashboard(): React.JSX.Element {
-  // Use the generated LoaderData type
-  const content = useLoaderData() as LoaderData;
-  // Typed fetchers for different parts of the dashboard
-  const heroFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
-    useFetcher();
-  const introFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
-    useFetcher();
-  const servicesFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
-    useFetcher();
-  const aboutFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
-    useFetcher();
-  const contactFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
-    useFetcher();
-  // Added for consistent naming with code below
-  const sorterFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
-    useFetcher();
-  const projectsFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
-    useFetcher();
+  // Use the generated LoaderData type, access content safely
+  const loaderData = useLoaderData<LoaderData>();
+  const content = loaderData?.content; // Access content property
 
-  // Access content safely with type guard, handle null case
+  // Typed fetchers for different parts of the dashboard
+  // Use a union type for fetchers that might submit to different actions
+  const heroFetcher = useFetcher<AdminIndexActionData | AdminUploadActionData>();
+  const introFetcher = useFetcher<AdminIndexActionData>(); // Assuming only text updates
+  const servicesFetcher =
+    useFetcher<AdminIndexActionData | AdminUploadActionData>();
+  const aboutFetcher = useFetcher<AdminIndexActionData | AdminUploadActionData>();
+  const contactFetcher = useFetcher<AdminIndexActionData>(); // Assuming only text updates
+  const sorterFetcher = useFetcher<AdminIndexActionData>(); // For reorderSections
+  const projectsFetcher = useFetcher<AdminIndexActionData>(); // For project intro text/title
+
+  // Access content safely, handle null/error case
   const safeContent =
-    !content || isContentError(content)
+    !content || typeof content !== "object" || "error" in content
       ? ({} as Record<string, string>)
-      : (content as Record<string, string>);
+      : content;
 
   // Check valid object for 'in' operator to avoid type error
   const isValidObject = (obj: unknown): obj is Record<string, unknown> => {
@@ -105,14 +105,10 @@ export default function AdminDashboard(): React.JSX.Element {
         action: "/admin/upload", // Use typed path
         encType: "multipart/form-data",
       });
-      // Use the specific fetcher instance's data with proper type checking
-      if (
-        fetcherInstance.data &&
-        isValidObject(fetcherInstance.data) &&
-        "url" in fetcherInstance.data &&
-        typeof fetcherInstance.data.url === "string"
-      ) {
-        setUrl(fetcherInstance.data.url);
+      // Use the specific fetcher instance's data with proper type checking (ActionData for /admin/upload)
+      const uploadData = fetcherInstance.data as AdminUploadActionData | null;
+      if (uploadData?.success && uploadData.url) {
+        setUrl(uploadData.url);
       }
       setUploading(false);
     },
@@ -167,12 +163,12 @@ export default function AdminDashboard(): React.JSX.Element {
       {/* 🔀 Drag-to-reorder CMS sections */}
       <SectionSorter // <<< HERE
         orderValue={sectionsOrder}
-        fetcher={sorterFetcher as FetcherWithComponents<any>} // Use sorterFetcher
+        fetcher={sorterFetcher} // Pass typed fetcher
       />
       {/* Removed the global status block */}
       <section aria-label="Hero Section Editor" role="region" tabIndex={0}>
         <HeroSectionEditor
-          fetcher={heroFetcher as FetcherWithComponents<any>} // Use heroFetcher
+          fetcher={heroFetcher} // Pass typed fetcher
           initialContent={safeContent}
           onImageUpload={handleHeroImageUpload}
           imageUploading={heroUploading}
@@ -181,7 +177,7 @@ export default function AdminDashboard(): React.JSX.Element {
       </section>
       <section aria-label="Services Section Editor" role="region" tabIndex={0}>
         <ServicesSectionEditor
-          fetcher={servicesFetcher as FetcherWithComponents<any>} // Use servicesFetcher
+          fetcher={servicesFetcher} // Pass typed fetcher
           initialContent={safeContent}
           onImageUpload={handleServiceImageUpload}
           imageUploading={serviceUploading}
@@ -288,7 +284,7 @@ export default function AdminDashboard(): React.JSX.Element {
       </section>
       <section aria-label="About Section Editor" role="region" tabIndex={0}>
         <AboutSectionEditor
-          fetcher={aboutFetcher as FetcherWithComponents<any>} // Use aboutFetcher
+          fetcher={aboutFetcher} // Pass typed fetcher
           initialContent={safeContent}
           onImageUpload={handleAboutImageUpload}
           imageUploading={aboutUploading}
@@ -297,7 +293,7 @@ export default function AdminDashboard(): React.JSX.Element {
       </section>
       <section aria-label="Contact Section Editor" role="region" tabIndex={0}>
         <ContactSectionEditor
-          fetcher={contactFetcher as FetcherWithComponents<any>} // Use contactFetcher
+          fetcher={contactFetcher} // Pass typed fetcher
           initialContent={safeContent}
         />
       </section>

@@ -68,7 +68,7 @@ export default function MobileMenu({
                 <div key={item.name}>
                   {item.isRouteLink ? (
                     <NavLink
-                      to={item.path as any} // Cast needed if item.path isn't strictly a typed path
+                      to={item.path} // Use typed path directly
                       className="-mx-3 block rounded-full px-5 py-2 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
                       onClick={onClose} // Close menu on route navigation
                     >

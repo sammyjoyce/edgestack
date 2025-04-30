@@ -1,11 +1,14 @@
 import React from "react";
 import type { FetcherWithComponents } from "react-router";
+// Import generated ActionData type for the relevant route (likely /admin/upload or /admin)
+import type { ActionData as AdminUploadActionData } from "../../../../.react-router/types/app/modules/admin/routes/upload";
+import type { ActionData as AdminIndexActionData } from "../../../../.react-router/types/app/modules/admin/routes/index";
 
 import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
-import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
 
 interface HeroSectionEditorProps {
-  fetcher: FetcherWithComponents<AdminActionResponse>; // Use specific type
+  // Use a union type if the fetcher might submit to different actions
+  fetcher: FetcherWithComponents<AdminIndexActionData | AdminUploadActionData>;
   initialContent: Record<string, string>;
   onImageUpload: (file: File) => void;
   imageUploading: boolean;

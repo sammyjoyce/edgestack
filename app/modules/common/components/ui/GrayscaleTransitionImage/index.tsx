@@ -28,8 +28,7 @@ export function GrayscaleTransitionImage({
   height,
   loading = "lazy",
   decoding = "async",
-  // Explicitly ignore other props to avoid type conflicts with motion.img
-  ..._ignoredRest
+  ...rest // Capture remaining props
 }: GrayscaleTransitionImageProps) {
   const ref = useRef<React.ElementRef<"div">>(null);
   const { scrollYProgress } = useScroll({
@@ -57,6 +56,7 @@ export function GrayscaleTransitionImage({
       <MotionImage
         {...imgProps} // Spread defined, compatible img props
         style={{ filter } as any} // Apply motion style
+        {...rest} // Spread remaining props
       />
       {/* Static image for hover effect */}
       <div

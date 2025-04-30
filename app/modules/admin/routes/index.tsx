@@ -1,6 +1,11 @@
 import React, { type JSX } from "react";
-import { data } from "react-router";
-import type { Route } from "~/modules/admin/+types/route";
+import { data, type TypedResponse } from "react-router"; // Import TypedResponse
+// Import generated types for this specific route
+import type {
+  Route,
+  LoaderData,
+  ActionData,
+} from "../../../.react-router/types/app/modules/admin/routes/index";
 
 import AdminDashboard from "../components/AdminDashboard";
 
@@ -9,14 +14,11 @@ import { getAllContent, updateContent } from "app/modules/common/db";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
 import { validateContentInsert } from "~/database/valibot-validation";
 
-// Define a type for the possible responses from this action
-export type AdminDashboardActionResponse =
-  | { success: true; message?: string } // Success (reorder, text update)
-  | { success: false; error: string } // Specific error (bad request, validation)
-  | { error: string }; // General error (unauthorized, invalid method, server error)
-
 // Loader to get dashboard content
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({
+  request,
+  context,
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
   // Auth check (could rely on layout loader, but explicit check is safer)
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -24,29 +26,32 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     // Note: Layout loader should ideally handle the redirect,
     // but returning an error here provides feedback if layout fails.
     return data({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  try {
-    const items = await getAllContent(context.db);
-    return data(items); // Return content object directly
+    // Ensure the returned shape matches LoaderData
+    return data({ content: items } satisfies LoaderData);
   } catch (error) {
     console.error("Admin Loader Error:", error);
-    return data({ error: "Failed to load dashboard content" }, { status: 500 });
+    // Ensure the error response shape matches LoaderData
+    const errorData: LoaderData = {
+      content: {},
+      error: "Failed to load dashboard content",
+    };
+    return data(errorData, { status: 500 });
   }
-}
-
 // Centralized action for the admin dashboard (excluding image uploads)
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action({
+  request,
+  context,
+}: Route.ActionArgs): Promise<TypedResponse<ActionData>> { // Use TypedResponse and ActionData
   const unauthorized = () =>
-    data({ error: "Unauthorized" } as AdminDashboardActionResponse, {
+    data({ success: false, error: "Unauthorized" } satisfies ActionData, {
       status: 401,
     });
   const badRequest = (msg: string) =>
-    data({ success: false, error: msg } as AdminDashboardActionResponse, {
+    data({ success: false, error: msg } satisfies ActionData, {
       status: 400,
     });
   const serverError = (msg: string) =>
-    data({ success: false, error: msg } as AdminDashboardActionResponse, {
+    data({ success: false, error: msg } satisfies ActionData, {
       status: 500,
     });
 
@@ -84,10 +89,11 @@ export async function action({ request, context }: Route.ActionArgs) {
         }
 
         await updateContent(context.db, { home_sections_order: orderValue });
+        // Ensure shape matches ActionData
         return data({
           success: true,
           message: "Section order saved.",
-        } as AdminDashboardActionResponse);
+        } satisfies ActionData);
       }
 
       case "updateTextContent":
@@ -127,10 +133,11 @@ export async function action({ request, context }: Route.ActionArgs) {
           intent === "updateTextContent"
         ) {
           // If intent was explicitly updateTextContent but no fields changed
+          // Ensure shape matches ActionData
           return data({
             success: true,
             message: "No text content changed.",
-          } as AdminDashboardActionResponse);
+          } satisfies ActionData);
         }
 
         await updateContent(context.db, updates);
@@ -140,7 +147,8 @@ export async function action({ request, context }: Route.ActionArgs) {
           updatedKeys.length === 1
             ? `Saved changes for '${updatedKeys[0]}'.`
             : "Text content saved.";
-        return data({ success: true, message } as AdminDashboardActionResponse);
+        // Ensure shape matches ActionData
+        return data({ success: true, message } satisfies ActionData);
       }
     }
   } catch (error: any) {

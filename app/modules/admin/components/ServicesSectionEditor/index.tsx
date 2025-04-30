@@ -1,17 +1,19 @@
 import React, { useState, useCallback, useEffect } from "react";
 import type { FetcherWithComponents } from "react-router";
 import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
-import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
+// Import generated ActionData types
+import type { ActionData as AdminUploadActionData } from "../../../../.react-router/types/app/modules/admin/routes/upload";
+import type { ActionData as AdminIndexActionData } from "../../../../.react-router/types/app/modules/admin/routes/index";
+
 
 interface ServiceField {
   titleKey: string;
   textKey: string;
   imageKey: string;
   label: string;
-}
-
 interface ServicesSectionEditorProps {
-  fetcher: FetcherWithComponents<AdminActionResponse>; // Use specific type
+  // Use a union type if the fetcher might submit to different actions
+  fetcher: FetcherWithComponents<AdminIndexActionData | AdminUploadActionData>;
   initialContent: Record<string, string>;
   onImageUpload: (idx: number, file: File) => void;
   imageUploading: boolean[];
