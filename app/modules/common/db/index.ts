@@ -1,7 +1,7 @@
 import { asc, desc, eq } from "drizzle-orm"; // Use direct import
 import type { DrizzleD1Database } from "drizzle-orm/d1"; // Remove D1Result for now
-import type { NewContent, NewProject, Project } from "../../database/schema"; // Import asc for ordering // Import Project types
-import * as schema from "../../database/schema";
+import type { NewContent, NewProject, Project } from "~/database/schema"; // Import asc for ordering // Import Project types
+import * as schema from "~/database/schema";
 
 // Remove duplicate import: import type { Content, NewContent, Project, NewProject } from "../../database/schema";
 

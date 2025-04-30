@@ -1,18 +1,14 @@
 import React from "react";
-import type { Route } from "./+types/index";
-import { useOutletContext } from "react-router";
+import { useLoaderData } from "react-router";
+import RecentProjects from "~/modules/common/components/RecentProjects";
 import type { Project } from "~/database/schema";
 
-interface ProjectsContext {
-  content?: { [key: string]: string };
-  projects: Project[];
-}
-import RecentProjects from "~/modules/common/components/RecentProjects";
-
-export default function ProjectsIndex(_props: Route.ComponentProps) {
-  // Get the content data from the parent route
+export function ProjectsIndexRoute() {
   // Get the content and projects data from the parent route
-  const { content, projects } = useOutletContext<ProjectsContext>();
+  const { content, projects } = useLoaderData<{
+    content: Record<string, string>;
+    projects: Project[];
+  }>();
 
   return (
     <RecentProjects
@@ -25,3 +21,6 @@ export default function ProjectsIndex(_props: Route.ComponentProps) {
     />
   );
 }
+
+// Default export for backwards compatibility
+export default ProjectsIndexRoute;

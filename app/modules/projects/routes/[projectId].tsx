@@ -1,15 +1,9 @@
 import React from "react";
-import type { Route } from "./+types/detail";
-import { data, Link, useOutletContext } from "react-router";
-import { getProjectById } from "~/db";
-
+import { data, Link, useLoaderData } from "react-router";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
-import type { Project } from "~/database/schema"; // Import FadeIn
-
-// Define the type for the context passed from the parent route
-type ProjectsContext = {
-  content: { [key: string]: string } | undefined;
-};
+import { getProjectById } from "app/modules/common/db";
+import type { Project } from "~/database/schema";
+import type { Route } from "../+types/detail";
 
 // Loader to fetch the specific project by ID
 export async function loader({ params, context }: Route.LoaderArgs) {
@@ -41,13 +35,12 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   }
 }
 
-export default function ProjectDetail({ loaderData }: Route.ComponentProps) {
-  // Get the content data from the parent route (optional, could be used for general text)
-  const outletContext = useOutletContext<ProjectsContext>();
-  const content = outletContext?.content; // Handle potential undefined context
-
+export function ProjectDetailRoute() {
   // Get project data and error from the loader
-  const { project, error } = loaderData;
+  const { project, error } = useLoaderData<{
+    project: Project | null;
+    error: string | undefined;
+  }>();
 
   // Handle loader errors
   if (error && !project) {
@@ -92,28 +85,24 @@ export default function ProjectDetail({ loaderData }: Route.ComponentProps) {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <FadeIn>
           <article className="bg-gray-50 p-6 rounded-lg shadow-md">
-            {/* Use project.imageUrl, provide fallback */}
             <img
-              src={project.imageUrl ?? "/assets/placeholder.png"} // Add a placeholder image path
+              src={project.imageUrl ?? "/assets/placeholder.png"}
               alt={project.title}
-              className="w-full h-64 md:h-96 object-cover rounded-md mb-6 bg-gray-200" // Add bg color for missing images
+              className="w-full h-64 md:h-96 object-cover rounded-md mb-6 bg-gray-200"
             />
             <h2 className="text-3xl font-serif font-bold text-black mb-4">
               {project.title}
             </h2>
             <p className="text-gray-700 text-lg mb-4">
-              {project.description ?? "No description provided."}{" "}
-              {/* Fallback text */}
+              {project.description ?? "No description provided."}
             </p>
             {project.details && (
               <p className="text-gray-600 text-sm mb-6">
                 <strong>Details:</strong> {project.details}
               </p>
             )}
-            {/* Optional: Use content from context for generic text */}
             <p className="text-gray-500 italic mb-6">
-              {content?.project_detail_footer ??
-                "Contact us for more information about similar projects."}
+              Contact us for more information about similar projects.
             </p>
             <Link
               to="/projects"
@@ -127,3 +116,6 @@ export default function ProjectDetail({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
+
+// Default export for backwards compatibility
+export default ProjectDetailRoute;

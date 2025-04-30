@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { validateContentInsert } from "~/database/valibot-validation";
-import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
+import type { AdminActionResponse } from "~/modules/admin/+types/actions"; // Import the centralized action response type
 
 // Helper function for validation (can be kept here or imported)
 const validateField = (key: string, value: string): string | null => {

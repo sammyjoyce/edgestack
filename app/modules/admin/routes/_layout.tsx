@@ -5,35 +5,47 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
-import { NavLink, Outlet, redirect } from "react-router";
-import type { Route } from "./+types/route";
+import { NavLink, Outlet, redirect, data } from "react-router";
+import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
-import { data, useFetcher } from "react-router"; // Import useFetcher and data
+import type { Route } from "~/modules/admin/+types/route";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const isLoginRoute = url.pathname === "/admin/login";
+  const isLogoutRoute = url.pathname === "/admin/logout"; // Check for logout route
+
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
-  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-    return redirect("/admin/login");
-  }
-  return null;
-}
 
-// Add a placeholder action to catch unexpected submissions to the layout route
-export async function action({ request }: Route.ActionArgs) {
-  console.log(">>> Submission received by /admin LAYOUT action <<<");
-  try {
-    const formData = await request.formData();
-    const dataEntries = Object.fromEntries(formData);
-    console.log("Layout Action - Form Data:", dataEntries);
-    const referrer = request.headers.get("referer");
-    console.log("Layout Action - Referrer:", referrer);
-  } catch (e) {
-    console.error("Layout Action - Error reading form data:", e);
+  // Verify token function
+  const isAuthenticated = async () => {
+    if (!sessionValue || !jwtSecret) return false;
+    try {
+      return await verify(sessionValue, jwtSecret);
+    } catch (e) {
+      console.error("Token verification failed:", e);
+      return false;
+    }
+  };
+
+  const loggedIn = await isAuthenticated();
+
+  // If not logged in and trying to access anything other than login, redirect to login
+  if (!loggedIn && !isLoginRoute) {
+    // Allow logout route to proceed to clear cookie even if not logged in
+    if (!isLogoutRoute) {
+      return redirect("/admin/login");
+    }
   }
-  // Return a simple response to stop the error
-  // Remove the placeholder action entirely
-  // return data({ message: "Layout placeholder action processed submission." });
+
+  // If logged in and trying to access login, redirect to admin dashboard
+  if (loggedIn && isLoginRoute) {
+    return redirect("/admin");
+  }
+
+  // Allow access if logged in, or if accessing login/logout page
+  return data(null); // Indicate successful auth check or allowed access
 }
 
 interface NavItem {
@@ -66,7 +78,6 @@ export function Component() {
             className="h-8 w-auto mx-auto"
           />
         </div>
-        {/* Standardize admin label */}
         <div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
           Admin Menu
         </div>
@@ -79,19 +90,26 @@ export function Component() {
                   <li key={item.name}>
                     <NavLink
                       to={item.href}
-                      end={item.href === "/admin"}
+                      target={item.name === "Live Site" ? "_blank" : undefined}
+                      rel={
+                        item.name === "Live Site"
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                      end={item.href === "/admin"} // Keep end prop for dashboard
                       className={({ isActive }) =>
                         classNames(
-                          isActive
-                            ? "bg-gray-700 text-white" // Slightly lighter active bg
+                          // Don't mark Live Site as active based on URL matching
+                          item.name !== "Live Site" && isActive
+                            ? "bg-gray-700 text-white"
                             : "text-gray-400 hover:bg-gray-700 hover:text-white",
-                          "group flex gap-x-3 rounded-md p-2 text-sm font-medium" // Use text-sm and font-medium
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-medium"
                         )
                       }
                     >
                       <item.icon
                         aria-hidden="true"
-                        className="size-5 shrink-0" // Slightly smaller icon
+                        className="size-5 shrink-0"
                       />
                       {item.name}
                     </NavLink>
@@ -104,8 +122,13 @@ export function Component() {
       </aside>
       <div className="w-px bg-gray-200" />
       <main className="flex-1 px-8 py-8">
+        {/* Outlet will use the error boundary provided by the ErrorBoundary function */}
         <Outlet />
       </main>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  return <AdminErrorBoundary />;
 }

@@ -1,15 +1,10 @@
-import { data } from "react-router"; // data helper is typically in the node adapter
-
-import AboutUs from "./components/AboutUs";
-import ContactUs from "./components/ContactUs";
-import Footer from "~/modules/common/components/Footer";
-import Header from "~/modules/common/components/Header";
-import Hero from "./components/Hero";
-import OurServices from "./components/OurServices";
+import { useOutletContext } from "react-router";
+import AboutUs from "../components/AboutUs";
+import ContactUs from "../components/ContactUs";
+import Hero from "../components/Hero";
+import OurServices from "../components/OurServices";
 import RecentProjects from "~/modules/common/components/RecentProjects";
-import { getFeaturedProjects } from "app/modules/common/db"; // Import the new function
-import { getAllContent } from "app/modules/common/db";
-import type { Route } from "./+types/route";
+import type { Route } from "~/modules/home/+types/route";
 import type { JSX } from "react";
 
 export const meta: Route.MetaFunction = () => {
@@ -22,26 +17,12 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export async function loader({ context }: Route.LoaderArgs) {
-  try {
-    const [content, projects] = await Promise.all([
-      getAllContent(context.db),
-      getFeaturedProjects(context.db),
-    ]);
-    return data({ content, projects });
-  } catch (error) {
-    console.error("Error fetching data from D1:", error);
-    return data(
-      { content: {} as Record<string, string>, projects: [] },
-      { status: 500 }
-    );
-  }
-}
-
-export default function Home({
-  loaderData,
-}: Route.ComponentProps): JSX.Element {
-  const { content, projects } = loaderData; // Destructure projects
+export function HomeRoute(): JSX.Element {
+  // Use useOutletContext to get data from parent layout
+  const { content, projects } = useOutletContext<{
+    content: Record<string, string>;
+    projects: any[];
+  }>();
 
   // Section mapping
   const sectionBlocks: Record<string, JSX.Element> = {
@@ -107,7 +88,7 @@ export default function Home({
         imageUrl={content?.about_image_url ?? "/assets/rozelle.jpg"}
       />
     ),
-    contact: <ContactUs key="contact" />,
+    contact: <ContactUs key="contact" content={content} />,
   };
 
   // Determine order
@@ -117,11 +98,8 @@ export default function Home({
     ? orderString.split(",").filter((id) => id in sectionBlocks)
     : DEFAULT_ORDER;
 
-  return (
-    <div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
-      <Header />
-      {order.map((id) => sectionBlocks[id])}
-      <Footer />
-    </div>
-  );
+  return <>{order.map((id) => sectionBlocks[id])}</>;
 }
+
+// Default export for backwards compatibility
+export default HomeRoute;

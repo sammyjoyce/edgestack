@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useFetcher, type FetcherWithComponents } from "react-router"; // Import FetcherWithComponents
 import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
-import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
+import type { AdminActionResponse } from "~/modules/admin/+types/actions"; // Import the centralized action response type
 import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
 import { Button } from "~/modules/common/components/ui/Button";
 import { GrayscaleTransitionImage } from "~/modules/common/components/ui/GrayscaleTransitionImage";
@@ -85,10 +85,16 @@ export function ImageUploadSection({
             next[idx] = `${imageFields[idx].label} uploaded successfully!`;
             return next;
           });
-        } else if ("error" in fetcher.data) {
+        } else if (
+          fetcher.data &&
+          typeof fetcher.data === "object" &&
+          "error" in fetcher.data
+        ) {
+          // Handle error response with proper type checking
+          const errorData = fetcher.data as { error: string };
           setStatusTexts((prev) => {
             const next = [...prev];
-            next[idx] = fetcher.data.error; // fetcher.data.error is string
+            next[idx] = errorData.error;
             return next;
           });
         }
@@ -171,11 +177,25 @@ export function ImageUploadSection({
                   alt={`${label} Preview`}
                   className="rounded border border-gray-200 mt-2 max-w-full w-48 h-auto object-cover bg-gray-100" // Added border color
                 />
-                {fetcher.data && "error" in fetcher.data && (
-                  <div className="text-red-600 mt-2 text-xs" role="alert"> {/* Smaller text */}
-                    {fetcher.data.error}
-                  </div>
-                )}
+                {fetcher.data &&
+                  typeof fetcher.data === "object" &&
+                  "success" in fetcher.data &&
+                  fetcher.data.success &&
+                  "url" in fetcher.data && (
+                    <div className="mt-4">
+                      <img
+                        src={(fetcher.data as { url: string }).url}
+                        alt={`Uploaded ${label}`}
+                      />
+                    </div>
+                  )}
+                {fetcher.data &&
+                  typeof fetcher.data === "object" &&
+                  "error" in fetcher.data && (
+                    <div className="text-red-600 mt-2 text-xs" role="alert">
+                      {(fetcher.data as { error: string }).error}
+                    </div>
+                  )}
               </fetcher.Form>
             </FadeIn>
           );

@@ -16,7 +16,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import React, { useEffect, useState, useCallback } from "react";
 import type { FetcherWithComponents } from "react-router";
-import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
+import type { AdminActionResponse } from "~/modules/admin/+types/actions"; // Import the centralized action response type
 
 type Section = { id: string; label: string };
 
@@ -62,12 +62,17 @@ export default function SectionSorter({
   /* --- Persist order after every change ---------------------------------- */
   useEffect(() => {
     // Prevent initial submission on mount if order hasn't changed
-    const initialOrder = orderValue || DEFAULT_SECTIONS.map(s => s.id).join(",");
+    const initialOrder =
+      orderValue || DEFAULT_SECTIONS.map((s) => s.id).join(",");
     const currentOrder = sections.map((s) => s.id).join(",");
 
-    if(initialOrder === currentOrder && fetcher.state === 'idle' && !fetcher.data) {
-       // Don't submit if order is the same as initial and fetcher is idle without prior data
-       return;
+    if (
+      initialOrder === currentOrder &&
+      fetcher.state === "idle" &&
+      !fetcher.data
+    ) {
+      // Don't submit if order is the same as initial and fetcher is idle without prior data
+      return;
     }
 
     const data = new FormData();

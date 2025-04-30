@@ -1,7 +1,7 @@
 import React, { useRef } from "react"; // Keep only useRef
 import type { FetcherWithComponents } from "react-router";
 import { useTextContentForm } from "~/modules/admin/hooks/useTextContentForm"; // Import the hook
-import type { AdminActionResponse } from "~/modules/admin/pages"; // Import the action response type
+import type { AdminActionResponse } from "~/modules/admin/+types/actions"; // Import the centralized action response type
 
 // Config array for text fields with help text
 const textFields = [
