@@ -21,13 +21,19 @@ export async function loader({ context }: Route.LoaderArgs) {
   try {
     const content = await getAllContent(context.db);
     const projects = await getAllProjects(context.db);
-    return { content, projects };
+    // Use data helper
+    return data({ content, projects });
   } catch (error) {
     console.error("Failed to fetch content or projects:", error);
-    return {
-      content: {} as Record<string, string>,
-      projects: [] as Project[],
-    };
+    // Use data helper for error
+    return data(
+      {
+        content: {} as Record<string, string>,
+        projects: [] as Project[],
+        error: "Failed to load projects data", // Add error field if needed
+      },
+      { status: 500 }
+    );
   }
 }
 
