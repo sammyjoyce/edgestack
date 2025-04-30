@@ -4,89 +4,72 @@ import { Button } from "~/modules/common/components/ui/Button";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
-import type { Route } from "~/modules/admin/+types/route"; // Use general admin route type
-// Import generated types
-import type {
-  LoaderData,
-  ActionData,
-  Params,
-} from "../../../../../.react-router/types/app/modules/admin/routes/projects/[projectId]/delete";
+import type { Route } from "../../../../../.react-router/types/app/modules/admin/routes/projects/[projectId]/delete";
+import { type TypedResponse, type Response } from "react-router"; // Import TypedResponse, Response
+import { deleteProject } from "~/modules/common/db"; // Import deleteProject
 
-export async function loader({
-  params,
-  context,
-}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
-  // params is already typed
+// Use inferred return type
+export async function loader({ params, context }: Route.LoaderArgs) {
   const projectId = Number(params.projectId);
 
   if (isNaN(projectId)) {
-    return data(
-      { project: null, error: "Invalid Project ID" },
-      { status: 400 }
-    );
+    // Use data helper
+    return data({ project: null, error: "Invalid Project ID" }, { status: 400 });
   }
 
   try {
     const project = await getProjectById(context.db, projectId);
     if (!project) {
-      return data(
-        { project: null, error: "Project not found" },
-        { status: 404 }
-      );
+      // Use data helper
+      return data({ project: null, error: "Project not found" }, { status: 404 });
     }
-    return data({ project, error: undefined });
-  } catch (error) {
+    // Use data helper
+    return data({ project });
+  } catch (error: any) {
     console.error("Error fetching project:", error);
+    // Use data helper for error
     return data(
-      { project: null, error: "Failed to load project" },
+      { project: null, error: error.message || "Failed to load project" },
       { status: 500 }
     );
   }
 }
 
-export async function action({
-  request,
-  params,
-  context,
-}: Route.ActionArgs): Promise<TypedResponse<ActionData> | Response> { // Use TypedResponse/ActionData or Response
-  // params is already typed
+// Use inferred return type
+export async function action({ request, params, context }: Route.ActionArgs) {
   const projectId = Number(params.projectId);
 
   if (isNaN(projectId)) {
-    return data(
-      { success: false, error: "Invalid Project ID" },
-      { status: 400 }
-    );
+    // Use data helper
+    return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
   }
 
   const formData = await request.formData();
   const confirmDelete = formData.get("confirmDelete") === "true";
 
   if (!confirmDelete) {
-    return data(
-      { success: false, error: "Deletion was not confirmed" },
-      { status: 400 }
-    );
+    // Use data helper
+    return data({ success: false, error: "Deletion was not confirmed" }, { status: 400 });
   }
 
   try {
-    // Implement project deletion logic here
-    console.log("Deleting project:", projectId);
+    await deleteProject(context.db, projectId);
 
-    // Redirect to projects list after successful deletion using typed path
+    // Redirect to projects list after successful deletion
     return redirect("/admin/projects");
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error deleting project:", error);
+    // Use data helper for error
     return data(
-      { success: false, error: "Failed to delete project" },
+      { success: false, error: error.message || "Failed to delete project" },
       { status: 500 }
     );
   }
 }
 
 export function DeleteProjectRoute() {
-  // Use generated LoaderData type
-  const { project, error } = useLoaderData() as LoaderData;
+  // Use type inference for useLoaderData
+  const { project, error } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
 
   if (error || !project) {

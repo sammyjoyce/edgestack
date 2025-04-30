@@ -8,54 +8,80 @@ import type {
   LoaderData,
   ActionData,
 } from "../../../../.react-router/types/app/modules/admin/routes/projects/index";
+import { type TypedResponse } from "react-router"; // Import TypedResponse
+import { deleteProject, getAllProjects } from "~/modules/common/db"; // Import DB functions
+import { getSessionCookie, verify } from "~/modules/common/utils/auth"; // Import auth utils
 
-// Add a properly scoped action to handle project management
-export async function action({
-  request,
-  context,
-}: Route.ActionArgs): Promise<TypedResponse<ActionData>> { // Use generated Route.ActionArgs
+// Loader to fetch all projects - Use inferred return type
+export async function loader({ request, context }: Route.LoaderArgs) {
+  // Auth check (redundant with layout loader but good practice)
+  const unauthorized = () =>
+    data({ projects: [], error: "Unauthorized" }, { status: 401 });
+
+  const sessionValue = getSessionCookie(request);
+  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
+    return unauthorized();
+  }
+
+  try {
+    const projects = await getAllProjects(context.db);
+    // Use data helper
+    return data({ projects });
+  } catch (error) {
+    console.error("Failed to load projects:", error);
+    // Use data helper for error
+    return data({ projects: [], error: "Failed to load projects" }, { status: 500 });
+  }
+}
+
+// Action to handle project management - Use inferred return type
+export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
   const intent = formData.get("intent") as string;
 
-  // Ensure the user is authenticated (redundant with layout loader but good practice)
-  // Ensure shape matches ActionData
+  // Auth check
   const unauthorized = () =>
-    data({ success: false, error: "Unauthorized" } satisfies ActionData, {
-      status: 401,
-    });
+    data({ success: false, error: "Unauthorized" }, { status: 401 });
+  const sessionValue = getSessionCookie(request);
+  const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+  if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
+    return unauthorized();
+  }
 
   // Handle delete project intent
   if (intent === "deleteProject") {
-    const projectId = formData.get("projectId") as string;
-    if (!projectId) {
-      // Ensure shape matches ActionData
-      return data(
-        { success: false, error: "Missing project ID" } satisfies ActionData,
-        { status: 400 }
-      );
+    const projectIdStr = formData.get("projectId") as string;
+    if (!projectIdStr) {
+      // Use data helper
+      return data({ success: false, error: "Missing project ID" }, { status: 400 });
+    }
+    const projectId = Number(projectIdStr);
+    if (isNaN(projectId)) {
+      return data({ success: false, error: "Invalid project ID" }, { status: 400 });
     }
 
     try {
-      // Implement project deletion logic here
-      console.log(`Deleting project ${projectId}`);
-      // Ensure shape matches ActionData
-      return data({ success: true, projectId } satisfies ActionData);
-    } catch (error) {
+      await deleteProject(context.db, projectId);
+      // Use data helper
+      return data({ success: true, projectId });
+    } catch (error: any) {
       console.error("Failed to delete project:", error);
-      // Ensure shape matches ActionData
+      // Use data helper for error
       return data(
-        { success: false, error: "Failed to delete project" } satisfies ActionData,
+        { success: false, error: error.message || "Failed to delete project" },
         { status: 500 }
       );
-  // Ensure shape matches ActionData
-  return data({ success: false, error: "Unknown intent" } satisfies ActionData, {
-    status: 400,
-  });
+    }
+  }
+
+  // Use data helper for unknown intent
+  return data({ success: false, error: "Unknown intent" }, { status: 400 });
 }
 
 export function ProjectsIndexRoute() {
-  // Use generated LoaderData type with hook generic
-  const { projects, error } = useLoaderData<LoaderData>();
+  // Use type inference for useLoaderData
+  const { projects, error } = useLoaderData<typeof loader>();
 
   return (
     <div>
