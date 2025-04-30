@@ -16,8 +16,8 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import React, { useEffect, useState, useCallback } from "react";
 import type { FetcherWithComponents } from "react-router";
-// Import generated ActionData type for the /admin route
-import type { ActionData as AdminIndexActionData } from "../../../../.react-router/types/app/modules/admin/routes/index";
+// Import the specific action type
+import type { action as adminIndexAction } from "~/modules/admin/routes/index";
 
 type Section = { id: string; label: string };
 
@@ -25,7 +25,7 @@ interface SectionSorterProps {
   /** Persisted comma-separated order string, e.g. `"hero,services,about,contact"` */
   orderValue: string | undefined;
   /** Fetcher from AdminDashboard – we reuse it to save after each drag */
-  fetcher: FetcherWithComponents<AdminIndexActionData>; // Use generated type
+  fetcher: FetcherWithComponents<typeof adminIndexAction>; // Use inferred type
 }
 
 /** Default order if no value persisted */
@@ -79,8 +79,8 @@ export default function SectionSorter({
     const data = new FormData();
     data.append("intent", "reorderSections"); // Add intent
     data.append("home_sections_order", currentOrder);
-    // Submit to the current route (which is /admin)
-    fetcher.submit(data, { method: "post" });
+    // Submit to the /admin route
+    fetcher.submit(data, { method: "post", action: "/admin" });
   }, [sections, fetcher, orderValue]); // Add orderValue to dependencies
 
   /* --- Drag end handler -------------------------------------------------- */

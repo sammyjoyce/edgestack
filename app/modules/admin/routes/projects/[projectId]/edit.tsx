@@ -1,69 +1,46 @@
 import React from "react";
-import { Form, redirect, data, useLoaderData, Link } from "react-router";
+import { Form, redirect, data, useLoaderData, Link, type Response } from "react-router";
 import { Button } from "~/modules/common/components/ui/Button";
 import RichTextField from "~/modules/admin/components/RichTextField";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "app/modules/common/db";
-import { validateProjectInsert } from "~/database/valibot-validation";
+import { validateProjectUpdate } from "~/database/valibot-validation"; // Use update validation
 import type { Project } from "~/database/schema";
 import { handleImageUpload } from "~/utils/upload.server";
 // Import generated types for this specific route
-import type {
-  Route, // Use generated Route type
-  LoaderData,
-  ActionData,
-  Params, // Params is automatically part of Route.LoaderArgs/ActionArgs
-} from "../../../../../.react-router/types/app/modules/admin/routes/projects/[projectId]/edit";
-import { type TypedResponse, type Response } from "react-router"; // Import Response
+import type { Route } from "../../../../../.react-router/types/app/modules/admin/routes/projects/[projectId]/edit";
 
-export async function loader({
-  params,
-  context,
-}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use generated Route.LoaderArgs
-  // params is already typed via Route.LoaderArgs if generator ran correctly
-  const projectId = Number(params.projectId); // Access typed param
+// Use inferred return type
+export async function loader({ params, context }: Route.LoaderArgs) {
+  const projectId = Number(params.projectId);
 
-    // Ensure shape matches LoaderData
-    return data(
-      { project: null, error: "Invalid Project ID" } satisfies LoaderData,
-      { status: 400 }
-    );
+  if (isNaN(projectId)) {
+    // Use data helper
+    return data({ project: null, error: "Invalid Project ID" }, { status: 400 });
   }
 
   try {
     const project = await getProjectById(context.db, projectId);
     if (!project) {
-      // Ensure shape matches LoaderData
-      return data(
-        { project: null, error: "Project not found" } satisfies LoaderData,
-        { status: 404 }
-      );
+      // Use data helper
+      return data({ project: null, error: "Project not found" }, { status: 404 });
     }
-    // Ensure shape matches LoaderData
-    return data({ project, error: undefined } satisfies LoaderData);
+    // Use data helper
+    return data({ project });
   } catch (error) {
     console.error("Error fetching project:", error);
-    // Ensure shape matches LoaderData
-    return data(
-      { project: null, error: "Failed to load project" } satisfies LoaderData,
-      { status: 500 }
-    );
+    // Use data helper
+    return data({ project: null, error: "Failed to load project" }, { status: 500 });
   }
 }
 
-export async function action({
-  request,
-  params,
-  context,
-}: Route.ActionArgs): Promise<TypedResponse<ActionData> | Response> { // Use generated Route.ActionArgs, add Response
-  // params is already typed via Route.ActionArgs
-  const projectId = Number(params.projectId); // Access typed param
+// Use inferred return type
+export async function action({ request, params, context }: Route.ActionArgs) {
+  const projectId = Number(params.projectId);
 
-    // Ensure shape matches ActionData
-    return data(
-      { success: false, error: "Invalid Project ID" } satisfies ActionData,
-      { status: 400 }
-    );
+  if (isNaN(projectId)) {
+    // Use data helper
+    return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
   }
 
   const formData = await request.formData();
@@ -83,12 +60,10 @@ export async function action({
     if (imageFile && imageFile.size > 0) {
       // Access bucket from context
       const env = context.cloudflare?.env;
-        // Ensure shape matches ActionData
+      if (!env) {
+        // Use data helper
         return data(
-          {
-            success: false,
-            error: "Environment not available",
-          } satisfies ActionData,
+          { success: false, error: "Environment not available" },
           { status: 500 }
         );
       }
@@ -108,27 +83,19 @@ export async function action({
         if (uploadResult && typeof uploadResult === "string") {
           imageUrl = uploadResult;
         } else {
-          // Ensure shape matches ActionData
-          return data(
-            { success: false, error: "Failed to upload image" } satisfies ActionData,
-            { status: 400 }
-          );
+          // Use data helper
+          return data({ success: false, error: "Failed to upload image" }, { status: 400 });
         }
       } catch (error) {
         console.error("Image upload error:", error);
-        // Ensure shape matches ActionData
-        return data(
-          { success: false, error: "Failed to upload image" } satisfies ActionData,
-          { status: 400 }
-        );
+        // Use data helper
+        return data({ success: false, error: "Failed to upload image" }, { status: 400 });
       }
     }
 
-      // Ensure shape matches ActionData
-      return data(
-        { success: false, error: "Title is required" } satisfies ActionData,
-        { status: 400 }
-      );
+    if (!title) {
+      // Use data helper
+      return data({ success: false, error: "Title is required" }, { status: 400 });
     }
 
     // Validate and update the project
@@ -136,22 +103,21 @@ export async function action({
       title,
       description: description || "",
       details: details || "",
-      imageUrl,
+      imageUrl: imageUrl || null, // Use null if empty
       isFeatured,
       sortOrder,
     };
 
-    // Use valibot validation
-      validateProjectInsert(projectData);
-      // If validation passes (doesn't throw), continue
-    } catch (error) {
-      // If validation fails, it throws an error
-      // Ensure shape matches ActionData
+    // Use valibot validation for updates
+    try {
+      validateProjectUpdate(projectData);
+    } catch (error: any) {
+      // Use data helper for validation error
       return data(
         {
           success: false,
-          error: error instanceof Error ? error.message : "Validation failed",
-        } satisfies ActionData,
+          error: error.message || "Validation failed",
+        },
         { status: 400 }
       );
     }
@@ -159,21 +125,21 @@ export async function action({
     // Update the project in the database
     await updateProject(context.db, projectId, projectData);
 
-    // Redirect to projects list after successful update using typed path
-    return redirect("/admin/projects"); // Use typed path
-  } catch (error) {
+    // Redirect to projects list after successful update
+    return redirect("/admin/projects");
+  } catch (error: any) {
     console.error("Error updating project:", error);
-    // Ensure shape matches ActionData
+    // Use data helper for general error
     return data(
-      { success: false, error: "Failed to update project" } satisfies ActionData,
+      { success: false, error: error.message || "Failed to update project" },
       { status: 500 }
     );
   }
 }
 
 export function Component() {
-  // Use generated LoaderData type with hook generic
-  const { project, error } = useLoaderData<LoaderData>();
+  // Use type inference for useLoaderData
+  const { project, error } = useLoaderData<typeof loader>();
 
   if (error || !project) {
     return (
@@ -187,7 +153,7 @@ export function Component() {
         >
           Error: {error || "Failed to load project"}
         </div>
-        <Link to="/admin/projects" className="text-blue-600 hover:underline"> {/* Use typed path */}
+        <Link to="/admin/projects" className="text-blue-600 hover:underline">
           ← Back to Projects
         </Link>
       </FadeIn>
@@ -320,7 +286,7 @@ export function Component() {
         <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200 mt-6">
           <Button
             as={Link}
-            to="/admin/projects" // Use typed path
+            to="/admin/projects"
             className="bg-gray-100 text-gray-700 hover:bg-gray-200"
           >
             Cancel

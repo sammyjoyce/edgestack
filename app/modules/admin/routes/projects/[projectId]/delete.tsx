@@ -100,7 +100,7 @@ export function DeleteProjectRoute() {
             <div className="mt-4">
               <Button
                 type="button"
-                onClick={() => navigate("/admin/projects")} // Use typed path
+                onClick={() => navigate("/admin/projects")}
                 className="text-sm"
               >
                 Return to Projects
@@ -121,7 +121,7 @@ export function DeleteProjectRoute() {
           </h1>
           <Button
             variant="secondary"
-            onClick={() => navigate("/admin/projects")} // Use typed path
+            onClick={() => navigate("/admin/projects")}
             className="text-sm"
           >
             Cancel
@@ -173,7 +173,7 @@ export function DeleteProjectRoute() {
               <Button
                 type="button"
                 variant="secondary"
-                onClick={() => navigate("/admin/projects")} // Use typed path
+                onClick={() => navigate("/admin/projects")}
               >
                 Cancel
               </Button>

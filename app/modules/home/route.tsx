@@ -1,4 +1,4 @@
-import { data, useLoaderData, type TypedResponse } from "react-router"; // Import useLoaderData, TypedResponse
+import { data, useLoaderData, type TypedResponse } from "react-router";
 
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
@@ -11,47 +11,52 @@ import { getFeaturedProjects } from "app/modules/common/db"; // Import the new f
 import { getAllContent } from "app/modules/common/db";
 import type { JSX } from "react";
 // Import generated types
-import type {
-  Route, // Use generated Route type
-  LoaderData,
-} from "../../.react-router/types/app/modules/home/route";
+import type { Route } from "../../.react-router/types/app/modules/home/route";
 import type { Project } from "~/database/schema"; // Ensure Project is imported
 
-export const meta: Route.MetaFunction<typeof loader> = ({ data }) => { // Use generated Route.MetaFunction
+export const meta: Route.MetaFunction<typeof loader> = ({ data }) => {
+  // Access loader data safely
+  const pageTitle = data?.content?.meta_title ?? "Lush Constructions";
+  const pageDescription =
+    data?.content?.meta_description ??
+    "High-Quality Solutions for Home & Office Improvement";
+
   return [
-    { title: "Lush Constructions" },
+    { title: pageTitle },
     {
       name: "description",
-      content: "High-Quality Solutions for Home & Office Improvement",
+      name: "description",
+      content: pageDescription,
     },
   ];
 };
 
-export async function loader({
-  context,
-}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use generated Route.LoaderArgs
+// Use inferred return type
+export async function loader({ context }: Route.LoaderArgs) {
   try {
     const [content, projects] = await Promise.all([
       getAllContent(context.db),
       getFeaturedProjects(context.db), // Assuming this returns Project[]
     ]);
-    // Ensure the returned shape matches LoaderData
-    return data({ content, projects } satisfies LoaderData);
+    // Use data helper
+    return data({ content, projects });
   } catch (error) {
     console.error("Error fetching data from D1:", error);
-    // Ensure the error response shape matches LoaderData
-    const errorData: LoaderData = {
-      content: {},
-      projects: [],
-      error: "Failed to load home page data", // Add error field if defined in LoaderData
-    };
-    return data(errorData, { status: 500 });
+    // Use data helper for error
+    return data(
+      {
+        content: {},
+        projects: [] as Project[],
+        error: "Failed to load home page data",
+      },
+      { status: 500 }
+    );
   }
 }
 
-export default function HomeRoute(): JSX.Element { // Rename component if desired
-  // Use useLoaderData with the generated type generic
-  const { content, projects } = useLoaderData<LoaderData>();
+export default function HomeRoute(): JSX.Element {
+  // Use type inference for useLoaderData
+  const { content, projects } = useLoaderData<typeof loader>();
 
   // Section mapping
   const sectionBlocks: Record<string, JSX.Element> = {
@@ -117,7 +122,7 @@ export default function HomeRoute(): JSX.Element { // Rename component if desire
         imageUrl={content?.about_image_url ?? "/assets/rozelle.jpg"}
       />
     ),
-    contact: <ContactUs key="contact" />,
+    contact: <ContactUs key="contact" content={content} />, // Pass content prop
   };
 
   // Determine order

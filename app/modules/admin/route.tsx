@@ -5,36 +5,34 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
-import { NavLink, Outlet, redirect, type Response } from "react-router"; // Import Response
+import { NavLink, Outlet, redirect, type Response, type To } from "react-router"; // Import To
 // Import generated types
 import type { Route } from "../../.react-router/types/app/modules/admin/route";
 import { getSessionCookie, verify } from "~/modules/common/utils/auth";
-import { data, useFetcher } from "react-router"; // Import useFetcher and data
+import { data, useFetcher } from "react-router";
 
-export async function loader({
-  request,
-  context,
-}: Route.LoaderArgs): Promise<Response | null> { // Use generated Route.LoaderArgs, return Response | null
+// Use inferred return type
+export async function loader({ request, context }: Route.LoaderArgs) {
   const sessionValue = getSessionCookie(request);
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
   if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-    return redirect("/admin/login"); // Use typed path
+    return redirect("/admin/login");
   }
   return null;
 }
 
-// Remove placeholder action
 
 interface NavItem {
   name: string;
-  href: string;
+  href: To | string; // Use To for internal, string for external
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
+// Use typed paths for internal links
 const navigation: NavItem[] = [
   { name: "Dashboard", href: "/admin", icon: HomeIcon },
   { name: "Projects", href: "/admin/projects", icon: FolderIcon },
-  { name: "Live Site", href: "/", icon: DocumentDuplicateIcon },
+  { name: "Live Site", href: "/", icon: DocumentDuplicateIcon }, // Keep as string for external/root
   { name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
 
@@ -66,11 +64,30 @@ export function Component() {
               <ul role="list" className="-mx-2 space-y-1">
                 {navigation.map((item) => (
                   <li key={item.name}>
-                    <NavLink
-                      to={item.href} // Use typed path directly
-                      end={item.href === "/admin"}
-                      className={({ isActive }) =>
-                        classNames(
+                    {item.name === "Live Site" ? (
+                      // Use standard anchor for external/non-router link
+                      <a
+                        href={item.href as string} // Cast to string
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={classNames(
+                          "text-gray-400 hover:bg-gray-700 hover:text-white",
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-medium"
+                        )}
+                      >
+                        <item.icon
+                          aria-hidden="true"
+                          className="size-5 shrink-0"
+                        />
+                        {item.name}
+                      </a>
+                    ) : (
+                      // Use NavLink for internal routes with typed 'to'
+                      <NavLink
+                        to={item.href as To} // Cast to To
+                        end={item.href === "/admin"}
+                        className={({ isActive }) =>
+                          classNames(
                           isActive
                             ? "bg-gray-700 text-white" // Slightly lighter active bg
                             : "text-gray-400 hover:bg-gray-700 hover:text-white",

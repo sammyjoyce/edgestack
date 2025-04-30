@@ -1,53 +1,50 @@
 import React from "react";
-import { Form, redirect, useNavigate, data } from "react-router";
+import { Form, redirect, useNavigate, data, type Response } from "react-router";
 import { Button } from "~/modules/common/components/ui/Button";
 import RichTextField from "../../components/RichTextField";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 // Import generated types
-import type {
-  Route,
-  ActionData,
-} from "../../../../.react-router/types/app/modules/admin/routes/projects/new";
-import { type TypedResponse, type Response } from "react-router"; // Import Response, TypedResponse
+import type { Route } from "../../../../.react-router/types/app/modules/admin/routes/projects/new";
+import { createProject } from "~/modules/common/db"; // Import createProject
+import { validateProjectInsert } from "~/database/valibot-validation"; // Import validation
 
-export async function action({
-  request,
-  context,
-}: Route.ActionArgs): Promise<TypedResponse<ActionData> | Response> { // Use TypedResponse/ActionData or Response
+// Use inferred return type
+export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
 
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const details = formData.get("details") as string;
-  const imageUrl = formData.get("imageUrl") as string;
+  const imageUrl = formData.get("imageUrl") as string | undefined; // Allow undefined
+  const isFeatured = formData.has("isFeatured");
+  const sortOrder = parseInt(formData.get("sortOrder") as string, 10) || 0;
 
-    // Ensure shape matches ActionData
+  const projectData = {
+    title,
+    description: description || "",
+    details: details || "",
+    imageUrl: imageUrl || null, // Use null if empty
+    isFeatured,
+    sortOrder,
+  };
+
+  try {
+    // Validate before creating
+    validateProjectInsert(projectData);
+
+    await createProject(context.db, projectData);
+
+    // Redirect to projects list after successful creation
+    return redirect("/admin/projects");
+  } catch (error: any) {
+    console.error("Error creating project:", error);
+    // Use data helper for error response
     return data(
       {
         success: false,
-        error: "Title, description, and image URL are required",
-      } satisfies ActionData,
-      { status: 400 }
-    );
-  }
-
-  try {
-    // Implement project creation logic here
-    console.log("Creating new project:", {
-      title,
-      description,
-      details,
-      imageUrl,
-    });
-
-    // Redirect to projects list after successful creation using typed path
-    return redirect("/admin/projects");
-  } catch (error) {
-    console.error("Error creating project:", error);
-    // Ensure shape matches ActionData
-    return data(
-      { success: false, error: "Failed to create project" } satisfies ActionData,
-      { status: 500 }
+        error: error.message || "Failed to create project",
+      },
+      { status: error.issues ? 400 : 500 } // Use 400 for validation errors
     );
   }
 }
@@ -64,7 +61,7 @@ export function NewProjectRoute() {
           </h1>
           <Button
             variant="secondary"
-            onClick={() => navigate("/admin/projects")} // Use typed path
+            onClick={() => navigate("/admin/projects")}
             className="text-sm"
           >
             Cancel
@@ -152,7 +149,7 @@ export function NewProjectRoute() {
             <Button
               type="button"
               variant="secondary"
-              onClick={() => navigate("/admin/projects")} // Use typed path
+              onClick={() => navigate("/admin/projects")}
             >
               Cancel
             </Button>

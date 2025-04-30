@@ -7,14 +7,13 @@ import {
 } from "react-router";
 
 // Types
-// Import the specific loader type for the index route
-import type { LoaderData } from "../../../.react-router/types/app/modules/admin/routes/index";
-// Import generated ActionData types
-import type { ActionData as AdminIndexActionData } from "../../../.react-router/types/app/modules/admin/routes/index";
-import type { ActionData as AdminUploadActionData } from "../../../.react-router/types/app/modules/admin/routes/upload";
+// Import the specific loader and action types
+import type { loader as adminIndexLoader } from "~/modules/admin/routes/index";
+import type { action as adminIndexAction } from "~/modules/admin/routes/index";
+import type { action as adminUploadAction } from "~/modules/admin/routes/upload";
 
 // Validation
-import { validateErrorResponse } from "~/database/valibot-validation";
+// import { validateErrorResponse } from "~/database/valibot-validation"; // Not used directly here
 
 // UI primitives
 import { Container } from "~/modules/common/components/ui/Container";
@@ -31,42 +30,27 @@ import { ContactSectionEditor } from "~/modules/admin/components/ContactSectionE
 
 // Helper to check if content is an error response using valibot
 const isContentError = (
-  obj: any
-): obj is { error: string; status?: number } => { // status is optional in LoaderData
-  try {
-    validateErrorResponse(obj);
-    return true;
-  } catch {
-    return false;
-  }
-};
+// Removed isContentError helper as it's not used
 
 export default function AdminDashboard(): React.JSX.Element {
-  // Use the generated LoaderData type, access content safely
-  const loaderData = useLoaderData<LoaderData>();
+  // Use type inference for useLoaderData
+  const loaderData = useLoaderData<typeof adminIndexLoader>();
   const content = loaderData?.content; // Access content property
 
-  // Typed fetchers for different parts of the dashboard
-  // Use a union type for fetchers that might submit to different actions
-  const heroFetcher = useFetcher<AdminIndexActionData | AdminUploadActionData>();
-  const introFetcher = useFetcher<AdminIndexActionData>(); // Assuming only text updates
-  const servicesFetcher =
-    useFetcher<AdminIndexActionData | AdminUploadActionData>();
-  const aboutFetcher = useFetcher<AdminIndexActionData | AdminUploadActionData>();
-  const contactFetcher = useFetcher<AdminIndexActionData>(); // Assuming only text updates
-  const sorterFetcher = useFetcher<AdminIndexActionData>(); // For reorderSections
-  const projectsFetcher = useFetcher<AdminIndexActionData>(); // For project intro text/title
+  // Typed fetchers using inferred types
+  const heroFetcher = useFetcher<typeof adminIndexAction | typeof adminUploadAction>();
+  const introFetcher = useFetcher<typeof adminIndexAction>();
+  const servicesFetcher = useFetcher<typeof adminIndexAction | typeof adminUploadAction>();
+  const aboutFetcher = useFetcher<typeof adminIndexAction | typeof adminUploadAction>();
+  const contactFetcher = useFetcher<typeof adminIndexAction>();
+  const sorterFetcher = useFetcher<typeof adminIndexAction>();
+  const projectsFetcher = useFetcher<typeof adminIndexAction>();
 
   // Access content safely, handle null/error case
   const safeContent =
     !content || typeof content !== "object" || "error" in content
       ? ({} as Record<string, string>)
       : content;
-
-  // Check valid object for 'in' operator to avoid type error
-  const isValidObject = (obj: unknown): obj is Record<string, unknown> => {
-    return typeof obj === "object" && obj !== null;
-  };
 
   // Handler for Hero image upload
   const [heroUploading, setHeroUploading] = React.useState(false);
@@ -102,11 +86,11 @@ export default function AdminDashboard(): React.JSX.Element {
       // Use typed action path
       await fetcherInstance.submit(fd, {
         method: "post",
-        action: "/admin/upload", // Use typed path
+        action: "/admin/upload",
         encType: "multipart/form-data",
       });
-      // Use the specific fetcher instance's data with proper type checking (ActionData for /admin/upload)
-      const uploadData = fetcherInstance.data as AdminUploadActionData | null;
+      // Use the specific fetcher instance's data with inferred type
+      const uploadData = fetcherInstance.data;
       if (uploadData?.success && uploadData.url) {
         setUrl(uploadData.url);
       }
@@ -211,10 +195,11 @@ export default function AdminDashboard(): React.JSX.Element {
                   safeContent.projects_intro_title || "Recent Projects"
                 }
                 onBlur={(e) => {
-                  const data = new FormData();
-                  data.append("projects_intro_title", e.target.value);
-                  // Use projectsFetcher for project intro fields
-                  projectsFetcher.submit(data, { method: "post" });
+                  const formData = new FormData();
+                  formData.append("intent", "updateTextContent"); // Add intent
+                  formData.append("projects_intro_title", e.target.value);
+                  // Use projectsFetcher for project intro fields with typed action
+                  projectsFetcher.submit(formData, { method: "post", action: "/admin" });
                 }}
               />
             </div>
@@ -235,10 +220,11 @@ export default function AdminDashboard(): React.JSX.Element {
                   "Take a look at some of our recent work."
                 }
                 onBlur={(e) => {
-                  const data = new FormData();
-                  data.append("projects_intro_text", e.target.value);
-                  // Use projectsFetcher for project intro fields
-                  projectsFetcher.submit(data, { method: "post" });
+                  const formData = new FormData();
+                  formData.append("intent", "updateTextContent"); // Add intent
+                  formData.append("projects_intro_text", e.target.value);
+                  // Use projectsFetcher for project intro fields with typed action
+                  projectsFetcher.submit(formData, { method: "post", action: "/admin" });
                 }}
               />
             </div>
@@ -273,7 +259,7 @@ export default function AdminDashboard(): React.JSX.Element {
             {/* Increased margin */}
             <Button
               as={Link}
-              to="/admin/projects" // Use typed path
+              to="/admin/projects"
               className="bg-blue-600 text-white hover:bg-blue-700 text-sm"
               aria-label="Go to Projects Admin"
             >
@@ -293,7 +279,7 @@ export default function AdminDashboard(): React.JSX.Element {
       </section>
       <section aria-label="Contact Section Editor" role="region" tabIndex={0}>
         <ContactSectionEditor
-          fetcher={contactFetcher} // Pass typed fetcher
+          fetcher={contactFetcher}
           initialContent={safeContent}
         />
       </section>

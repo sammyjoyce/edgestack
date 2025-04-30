@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useFetcher, type FetcherWithComponents } from "react-router"; // Import FetcherWithComponents
+import { useFetcher, type FetcherWithComponents } from "react-router";
 import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
-// Import generated ActionData type for the /admin/upload route
-import type { ActionData as AdminUploadActionData } from "../../../../.react-router/types/app/modules/admin/routes/upload";
+// Import the specific action type
+import type { action as adminUploadAction } from "~/modules/admin/routes/upload";
 import ImageUploadZone from "~/modules/admin/components/ImageUploadZone";
 import { Button } from "~/modules/common/components/ui/Button";
 import { GrayscaleTransitionImage } from "~/modules/common/components/ui/GrayscaleTransitionImage";
@@ -34,16 +34,16 @@ export function ImageUploadSection({
     Array(imageFields.length).fill("")
   );
 
-  // One fetcher per field, typed with generated ActionData
-  const fetchers = imageFields.map(() => useFetcher<AdminUploadActionData>());
+  // One fetcher per field, typed with inferred action type
+  const fetchers = imageFields.map(() => useFetcher<typeof adminUploadAction>());
   // Create refs for each file input
   const fileInputRefs = imageFields.map(() => useRef<HTMLInputElement>(null));
 
-  // Type the fetcher argument with generated ActionData
+  // Type the fetcher argument with inferred action type
   const makeDropHandler = useCallback(
     (
         idx: number,
-        fetcher: FetcherWithComponents<AdminUploadActionData>,
+        fetcher: FetcherWithComponents<typeof adminUploadAction>,
         key: string,
         label: string
       ) =>
@@ -59,7 +59,7 @@ export function ImageUploadSection({
         // Use typed action path for the upload route
         fetcher.submit(formData, {
           method: "post",
-          action: "/admin/upload", // Use typed path
+          action: "/admin/upload",
           encType: "multipart/form-data",
         });
 
@@ -94,8 +94,8 @@ export function ImageUploadSection({
           typeof fetcher.data === "object" &&
           "error" in fetcher.data
         ) {
-          // Handle error response with proper type checking using ActionData
-          const errorData = fetcher.data; // Already typed as AdminUploadActionData | null
+          // Handle error response with inferred type
+          const errorData = fetcher.data;
           setStatusTexts((prev) => {
             const next = [...prev];
             // Use optional chaining and provide a default message
@@ -153,11 +153,8 @@ export function ImageUploadSection({
                   className="w-full" // Ensure zone takes width
                 />
                 <input type="hidden" name="key" value={key} />
-                {/* Remove the redundant submit button, rely on dropzone click/drop */}
-                {/* <Button
-                  type="submit" // This button doesn't actually submit the file from the dropzone input
-                  aria-label={`Upload ${label}`}
-                  onClick={() =>
+                {/* Removed the redundant submit button */}
+                {/* <Button type="submit" aria-label={`Upload ${label}`} onClick={() =>
                     setStatusTexts((prev) => {
                       const next = [...prev];
                       next[idx] = `Uploading ${label}…`;
@@ -176,7 +173,7 @@ export function ImageUploadSection({
                 >
                   {statusTexts[idx]}
                 </div>
-                {/* Use fetcher.data typed as AdminUploadActionData */}
+                {/* Use fetcher.data with inferred type */}
                 <GrayscaleTransitionImage
                   id={`${key}_preview`}
                   src={
@@ -187,16 +184,12 @@ export function ImageUploadSection({
                   alt={`${label} Preview`}
                   className="rounded border border-gray-200 mt-2 max-w-full w-48 h-auto object-cover bg-gray-100" // Added border color
                 />
-                {fetcher.data?.success && fetcher.data.url && (
-                  <div className="mt-4">
-                    <img src={fetcher.data.url} alt={`Uploaded ${label}`} />
-                  </div>
-                )}
+                {/* Removed redundant image display, GrayscaleTransitionImage handles preview */}
                 {fetcher.data?.error && (
                   <div className="text-red-600 mt-2 text-xs" role="alert">
                     {fetcher.data.error}
                   </div>
-                  )}
+                )}
               </fetcher.Form>
             </FadeIn>
           );

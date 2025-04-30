@@ -1,12 +1,13 @@
 import React from "react";
-import { redirect, type Response } from "react-router"; // Import Response
+import { redirect, type Response } from "react-router";
 // Import generated types (though loader doesn't use args)
 import type { Route } from "../../../.react-router/types/app/modules/admin/routes/logout";
 import { COOKIE_NAME } from "~/modules/common/utils/auth";
 
-export async function loader(): Promise<Response> { // Return Promise<Response>
+// Use inferred return type
+export async function loader() {
   // Create response with typed redirect to login
-  const response = redirect("/admin/login"); // Use typed path
+  const response = redirect("/admin/login");
 
   // Clear session cookie
   response.headers.set(

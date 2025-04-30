@@ -1,28 +1,20 @@
 import React, { useState } from "react";
-import { Form, redirect, data, type TypedResponse, type Response } from "react-router"; // Import Response, TypedResponse
+import { Form, redirect, data, type TypedResponse, type Response } from "react-router";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 // Import generated types
-import type {
-  Route,
-  ActionData,
-} from "../../../.react-router/types/app/modules/admin/routes/login";
+import type { Route } from "../../../.react-router/types/app/modules/admin/routes/login";
 import { sign, COOKIE_NAME, COOKIE_MAX_AGE } from "~/modules/common/utils/auth";
 
-export async function action({
-  request,
-  context,
-}: Route.ActionArgs): Promise<TypedResponse<ActionData> | Response> { // Use TypedResponse/ActionData or Response
+// Use inferred return type
+export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
   const username = formData.get("username") as string;
   const password = formData.get("password") as string;
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 
   if (!jwtSecret) {
-    // Ensure shape matches ActionData
-    return data(
-      { success: false, error: "JWT_SECRET not configured" } satisfies ActionData,
-      { status: 500 }
-    );
+    // Use data helper
+    return data({ success: false, error: "JWT_SECRET not configured" }, { status: 500 });
   }
 
   // Use environment variables for credentials
@@ -30,12 +22,9 @@ export async function action({
   const adminPassword = context.cloudflare?.env?.ADMIN_PASSWORD;
 
   if (!adminUsername || !adminPassword) {
-    // Ensure shape matches ActionData
+    // Use data helper
     return data(
-      {
-        success: false,
-        error: "Admin credentials not configured",
-      } satisfies ActionData,
+      { success: false, error: "Admin credentials not configured" },
       { status: 500 }
     );
   }
@@ -46,7 +35,7 @@ export async function action({
     const token = await sign(username, jwtSecret);
 
     // Create response with typed redirect
-    const response = redirect("/admin"); // Use typed path
+    const response = redirect("/admin");
 
     // Set secure cookie with the token
     response.headers.set(
@@ -57,12 +46,9 @@ export async function action({
     return response;
   }
 
-  // Ensure shape matches ActionData
+  // Use data helper
   return data(
-    {
-      success: false,
-      error: "Invalid username or password",
-    } satisfies ActionData,
+    { success: false, error: "Invalid username or password" },
     { status: 401 }
   );
 }

@@ -5,24 +5,31 @@ import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
 import RecentProjects from "~/modules/common/components/RecentProjects";
 import type { JSX } from "react";
-// Import the LoaderData type from the parent layout
-import type { LoaderData as HomeLayoutLoaderData } from "../../../.react-router/types/app/modules/home/routes/_layout";
+// Import the specific loader type from the parent layout
+import type { loader as homeLayoutLoader } from "~/modules/home/routes/_layout";
 // Import generated Route type for meta function
 import type { Route } from "../../../.react-router/types/app/modules/home/routes/index";
 
-export const meta: Route.MetaFunction = () => { // Use generated Route.MetaFunction
+export const meta: Route.MetaFunction<typeof homeLayoutLoader> = ({ data }) => {
+  // Access loader data safely from layout
+  const pageTitle = data?.content?.meta_title ?? "Lush Constructions";
+  const pageDescription =
+    data?.content?.meta_description ??
+    "High-Quality Solutions for Home & Office Improvement";
+
   return [
-    { title: "Lush Constructions" },
+    { title: pageTitle },
     {
       name: "description",
-      content: "High-Quality Solutions for Home & Office Improvement",
+      name: "description",
+      content: pageDescription,
     },
   ];
 };
 
 export function HomeRoute(): JSX.Element {
-  // Use useOutletContext with the specific type from the layout
-  const { content, projects } = useOutletContext<HomeLayoutLoaderData>();
+  // Use useOutletContext with the inferred type from the layout loader
+  const { content, projects } = useOutletContext<Awaited<ReturnType<typeof homeLayoutLoader>>['data']>();
 
   // Section mapping
   const sectionBlocks: Record<string, JSX.Element> = {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, type To } from "react-router"; // Import To type
 import type { Project } from "~/database/schema";
 import { SectionIntro } from "~/modules/common/components/ui/SectionIntro";
 import { Container } from "~/modules/common/components/ui/Container";
@@ -72,7 +72,7 @@ export default function RecentProjects({
                     {/* Use Link with typed 'to' prop */}
                     <Link
                       to="/projects/:projectId"
-                      params={{ projectId: String(project.id) }} // Pass params object
+                      params={{ projectId: String(project.id) }}
                       className="font-semibold text-base text-black underline underline-offset-4 transition hover:text-gray-700"
                     >
                       View Project Details →
