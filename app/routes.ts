@@ -18,12 +18,13 @@ export default [
 		route(":projectId", "routes/projects/routes/[projectId].tsx"),
 	]),
 
-	// Admin routes (all in one hierarchy, no flat routes)
+	// Admin login route (outside the admin layout with sidebar)
+	route("admin/login", "routes/admin/routes/login.tsx"),
+
+	// Admin routes with sidebar layout (excludes login)
 	route("admin", "routes/admin/routes/_layout.tsx", [
 		index("routes/admin/routes/index.tsx"),
-		route("login", "routes/admin/routes/login.tsx"),
 		route("logout", "routes/admin/routes/logout.tsx"),
-		route("upload", "routes/admin/routes/upload.tsx"),
 		route("projects", "routes/admin/routes/projects/_layout.tsx", [
 			index("routes/admin/routes/projects/index.tsx"),
 			route("new", "routes/admin/routes/projects/new.tsx"),
