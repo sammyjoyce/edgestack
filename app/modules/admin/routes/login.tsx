@@ -18,8 +18,9 @@ export async function action({
   const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 
   if (!jwtSecret) {
+    // Ensure shape matches ActionData
     return data(
-      { success: false, error: "JWT_SECRET not configured" },
+      { success: false, error: "JWT_SECRET not configured" } satisfies ActionData,
       { status: 500 }
     );
   }
@@ -29,8 +30,12 @@ export async function action({
   const adminPassword = context.cloudflare?.env?.ADMIN_PASSWORD;
 
   if (!adminUsername || !adminPassword) {
+    // Ensure shape matches ActionData
     return data(
-      { success: false, error: "Admin credentials not configured" },
+      {
+        success: false,
+        error: "Admin credentials not configured",
+      } satisfies ActionData,
       { status: 500 }
     );
   }
