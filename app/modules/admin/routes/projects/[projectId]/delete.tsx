@@ -4,12 +4,20 @@ import { Button } from "~/modules/common/components/ui/Button";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
-import type { Route } from "~/modules/admin/+types/projects/delete";
+import type { Route } from "~/modules/admin/+types/route"; // Use general admin route type
+// Import generated types
+import type {
+  LoaderData,
+  ActionData,
+  Params,
+} from "../../../../../.react-router/types/app/modules/admin/routes/projects/[projectId]/delete";
 
-export async function loader({ params, context }: Route.LoaderArgs) {
-  const projectId = params.projectId
-    ? Number.parseInt(params.projectId, 10)
-    : Number.NaN;
+export async function loader({
+  params,
+  context,
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
+  // params is already typed
+  const projectId = Number(params.projectId);
 
   if (isNaN(projectId)) {
     return data(
@@ -36,10 +44,13 @@ export async function loader({ params, context }: Route.LoaderArgs) {
   }
 }
 
-export async function action({ request, params, context }: Route.ActionArgs) {
-  const projectId = params.projectId
-    ? Number.parseInt(params.projectId, 10)
-    : Number.NaN;
+export async function action({
+  request,
+  params,
+  context,
+}: Route.ActionArgs): Promise<TypedResponse<ActionData> | Response> { // Use TypedResponse/ActionData or Response
+  // params is already typed
+  const projectId = Number(params.projectId);
 
   if (isNaN(projectId)) {
     return data(
@@ -62,7 +73,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
     // Implement project deletion logic here
     console.log("Deleting project:", projectId);
 
-    // Redirect to projects list after successful deletion
+    // Redirect to projects list after successful deletion using typed path
     return redirect("/admin/projects");
   } catch (error) {
     console.error("Error deleting project:", error);
@@ -74,10 +85,8 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 }
 
 export function DeleteProjectRoute() {
-  const { project, error } = useLoaderData<{
-    project: Project | null;
-    error: string | undefined;
-  }>();
+  // Use generated LoaderData type
+  const { project, error } = useLoaderData() as LoaderData;
   const navigate = useNavigate();
 
   if (error || !project) {
@@ -91,7 +100,7 @@ export function DeleteProjectRoute() {
             <div className="mt-4">
               <Button
                 type="button"
-                onClick={() => navigate("/admin/projects")}
+                onClick={() => navigate("/admin/projects")} // Use typed path
                 className="text-sm"
               >
                 Return to Projects
@@ -112,7 +121,7 @@ export function DeleteProjectRoute() {
           </h1>
           <Button
             variant="secondary"
-            onClick={() => navigate("/admin/projects")}
+            onClick={() => navigate("/admin/projects")} // Use typed path
             className="text-sm"
           >
             Cancel
@@ -164,7 +173,7 @@ export function DeleteProjectRoute() {
               <Button
                 type="button"
                 variant="secondary"
-                onClick={() => navigate("/admin/projects")}
+                onClick={() => navigate("/admin/projects")} // Use typed path
               >
                 Cancel
               </Button>

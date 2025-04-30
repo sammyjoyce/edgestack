@@ -32,7 +32,7 @@ export async function action({ request, context }: Route.ActionArgs) {
       imageUrl,
     });
 
-    // Redirect to projects list after successful creation
+    // Redirect to projects list after successful creation using typed path
     return redirect("/admin/projects");
   } catch (error) {
     console.error("Error creating project:", error);
@@ -55,7 +55,7 @@ export function NewProjectRoute() {
           </h1>
           <Button
             variant="secondary"
-            onClick={() => navigate("/admin/projects")}
+            onClick={() => navigate("/admin/projects")} // Use typed path
             className="text-sm"
           >
             Cancel
@@ -143,7 +143,7 @@ export function NewProjectRoute() {
             <Button
               type="button"
               variant="secondary"
-              onClick={() => navigate("/admin/projects")}
+              onClick={() => navigate("/admin/projects")} // Use typed path
             >
               Cancel
             </Button>

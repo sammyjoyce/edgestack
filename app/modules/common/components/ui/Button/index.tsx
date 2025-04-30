@@ -1,7 +1,7 @@
 import clsx from "clsx"; // Use direct import
 import type { ForwardedRef, ReactNode } from "react";
 import React, { forwardRef } from "react"; // Import React
-import { Link } from "react-router";
+import { Link, type To } from "react-router"; // Import To type
 
 // Simplified Button props - covers all the different use cases
 type ButtonProps = {
@@ -9,7 +9,7 @@ type ButtonProps = {
   className?: string;
   children?: ReactNode;
   // For Link component
-  to?: string;
+  to?: To; // Use the To type from react-router
   // For anchor element
   href?: string;
   // For polymorphic rendering

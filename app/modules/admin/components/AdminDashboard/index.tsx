@@ -3,11 +3,12 @@ import {
   type FetcherWithComponents,
   useFetcher,
   useLoaderData,
-  Link, // Import Link
+  Link,
 } from "react-router";
 
 // Types
-import type { loader } from "~/modules/admin/route";
+// Import the specific loader type for the index route
+import type { LoaderData } from "../../../.react-router/types/app/modules/admin/routes/index";
 
 // Validation
 import { validateErrorResponse } from "~/database/valibot-validation";
@@ -37,9 +38,8 @@ const isContentError = (obj: any): obj is { error: string; status: number } => {
 };
 
 export default function AdminDashboard(): React.JSX.Element {
-  // Changed to React.JSX.Element
-  // Get initial content from loader
-  const content = useLoaderData<typeof loader>();
+  // Use the generated LoaderData type
+  const content = useLoaderData() as LoaderData;
   // Typed fetchers for different parts of the dashboard
   const heroFetcher: FetcherWithComponents<AdminDashboardActionResponse> =
     useFetcher();
@@ -99,9 +99,10 @@ export default function AdminDashboard(): React.JSX.Element {
       const fd = new FormData();
       fd.append("image", file);
       fd.append("key", key);
+      // Use typed action path
       await fetcherInstance.submit(fd, {
         method: "post",
-        action: "/admin/upload", // Keep targeting the dedicated upload action
+        action: "/admin/upload", // Use typed path
         encType: "multipart/form-data",
       });
       // Use the specific fetcher instance's data with proper type checking
@@ -275,9 +276,9 @@ export default function AdminDashboard(): React.JSX.Element {
             {" "}
             {/* Increased margin */}
             <Button
-              as={Link} /* Use Link component */
-              to="/admin/projects" /* Use 'to' prop */
-              className="bg-blue-600 text-white hover:bg-blue-700 text-sm" /* Explicit style, text-sm */
+              as={Link}
+              to="/admin/projects" // Use typed path
+              className="bg-blue-600 text-white hover:bg-blue-700 text-sm"
               aria-label="Go to Projects Admin"
             >
               Go to Projects Admin

@@ -1,4 +1,4 @@
-import { data } from "react-router"; // data helper is typically in the node adapter
+import { data, useLoaderData, type TypedResponse } from "react-router"; // Import useLoaderData, TypedResponse
 
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
@@ -11,8 +11,11 @@ import { getFeaturedProjects } from "app/modules/common/db"; // Import the new f
 import { getAllContent } from "app/modules/common/db";
 import type { Route } from "./+types/route";
 import type { JSX } from "react";
+// Import generated loader type
+import type { LoaderData } from "../../.react-router/types/app/modules/home/route";
+import type { Project } from "~/database/schema"; // Ensure Project is imported
 
-export const meta: Route.MetaFunction = () => {
+export const meta: Route.MetaFunction<typeof loader> = ({ data }) => { // Type meta function if needed
   return [
     { title: "Lush Constructions" },
     {
@@ -22,26 +25,30 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export async function loader({ context }: Route.LoaderArgs) {
+export async function loader({
+  context,
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
   try {
     const [content, projects] = await Promise.all([
       getAllContent(context.db),
-      getFeaturedProjects(context.db),
+      getFeaturedProjects(context.db), // Assuming this returns Project[]
     ]);
-    return data({ content, projects });
+    // Ensure the returned shape matches LoaderData
+    return data({ content, projects } satisfies LoaderData);
   } catch (error) {
     console.error("Error fetching data from D1:", error);
-    return data(
-      { content: {} as Record<string, string>, projects: [] },
-      { status: 500 }
-    );
+    // Ensure the error response shape matches LoaderData
+    const errorData: LoaderData = {
+      content: {} as Record<string, string>,
+      projects: [],
+    };
+    return data(errorData, { status: 500 });
   }
 }
 
-export default function Home({
-  loaderData,
-}: Route.ComponentProps): JSX.Element {
-  const { content, projects } = loaderData; // Destructure projects
+export default function HomeRoute(): JSX.Element { // Rename component if desired
+  // Use useLoaderData with the generated type
+  const { content, projects } = useLoaderData() as LoaderData;
 
   // Section mapping
   const sectionBlocks: Record<string, JSX.Element> = {

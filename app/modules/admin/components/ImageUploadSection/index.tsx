@@ -55,9 +55,10 @@ export function ImageUploadSection({
         formData.append("image", file);
         formData.append("key", key);
 
+        // Use typed action path for the upload route
         fetcher.submit(formData, {
           method: "post",
-          action: "/admin", // Target /admin
+          action: "/admin/upload", // Use typed path
           encType: "multipart/form-data",
         });
 

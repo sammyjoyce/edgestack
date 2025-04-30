@@ -69,9 +69,10 @@ export default function RecentProjects({
                       fallbackClassName="mb-4 text-base text-gray-700 md:mb-6 md:text-lg"
                       fallbackTag="p"
                     />
-                    {/* Use Link instead of a - Ensure project.id is correct type */}
+                    {/* Use Link with typed 'to' prop */}
                     <Link
-                      to={`/projects/${project.id}`} // ID is now number
+                      to="/projects/:projectId"
+                      params={{ projectId: String(project.id) }} // Pass params object
                       className="font-semibold text-base text-black underline underline-offset-4 transition hover:text-gray-700"
                     >
                       View Project Details →

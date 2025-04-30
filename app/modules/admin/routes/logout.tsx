@@ -4,8 +4,8 @@ import type { Route } from "../+types/route";
 import { COOKIE_NAME } from "~/modules/common/utils/auth";
 
 export async function loader() {
-  // Create response with redirect to login
-  const response = redirect("/admin/login");
+  // Create response with typed redirect to login
+  const response = redirect("/admin/login"); // Use typed path
 
   // Clear session cookie
   response.headers.set(

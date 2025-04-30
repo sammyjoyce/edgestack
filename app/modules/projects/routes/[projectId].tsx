@@ -3,13 +3,21 @@ import { data, Link, useLoaderData } from "react-router";
 import { FadeIn } from "~/modules/common/components/ui/FadeIn";
 import { getProjectById } from "app/modules/common/db";
 import type { Project } from "~/database/schema";
-import type { Route } from "../+types/detail";
+import type { Route } from "../+types/route"; // Use general projects route type
+// Import generated types
+import type {
+  LoaderData,
+  Params,
+} from "../../../.react-router/types/app/modules/projects/routes/[projectId]";
+import { type TypedResponse } from "react-router"; // Import TypedResponse
 
 // Loader to fetch the specific project by ID
-export async function loader({ params, context }: Route.LoaderArgs) {
-  const projectId = params.projectId
-    ? Number.parseInt(params.projectId, 10)
-    : Number.NaN;
+export async function loader({
+  params,
+  context,
+}: Route.LoaderArgs): Promise<TypedResponse<LoaderData>> { // Use TypedResponse and LoaderData
+  // params is already typed
+  const projectId = Number(params.projectId);
 
   if (isNaN(projectId)) {
     return data(
@@ -36,14 +44,11 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 }
 
 export function ProjectDetailRoute() {
-  // Get project data and error from the loader
-  const { project, error } = useLoaderData<{
-    project: Project | null;
-    error: string | undefined;
-  }>();
+  // Get project data and error from the loader using generated type
+  const { project, error } = useLoaderData() as LoaderData;
 
   // Handle loader errors
-  if (error && !project) {
+  if (error) { // Check for error first
     return (
       <div className="py-16 bg-white text-center">
         <h2 className="text-2xl font-semibold text-red-700 mb-4">
@@ -51,7 +56,7 @@ export function ProjectDetailRoute() {
         </h2>
         <p className="text-gray-500 mb-6">{error}</p>
         <Link
-          to="/projects"
+          to="/projects" // Use typed path
           className="inline-block text-blue-600 hover:underline"
         >
           ← Back to Projects
@@ -60,7 +65,8 @@ export function ProjectDetailRoute() {
     );
   }
 
-  // Handle case where project is somehow null/undefined even without error (defensive)
+  // Handle case where project is null (valid state if not found, but loader returns 404)
+  // This case might not be reachable if loader always throws or returns error data on failure.
   if (!project) {
     return (
       <div className="py-16 bg-white text-center">
@@ -71,7 +77,7 @@ export function ProjectDetailRoute() {
           The project data could not be loaded.
         </p>
         <Link
-          to="/projects"
+          to="/projects" // Use typed path
           className="inline-block text-blue-600 hover:underline"
         >
           ← Back to Projects
@@ -105,7 +111,7 @@ export function ProjectDetailRoute() {
               Contact us for more information about similar projects.
             </p>
             <Link
-              to="/projects"
+              to="/projects" // Use typed path
               className="inline-block text-blue-600 hover:underline"
             >
               ← Back to Projects
