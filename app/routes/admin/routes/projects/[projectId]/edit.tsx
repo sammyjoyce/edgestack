@@ -179,7 +179,7 @@ export default function Component() {
 			<Form
 				method="post"
 				encType="multipart/form-data"
-				className="bg-white shadow-xs border border-gray-200 rounded-lg p-6 space-y-6"
+				className="bg-white shadow-xs border border-gray-200 rounded-lg p-6 flex flex-col gap-6"
 			>
 				<div>
 					<label
@@ -293,7 +293,7 @@ export default function Component() {
 					/>
 				</div>
 
-				<div className="flex justify-end space-x-3 pt-6 border-t border-gray-200 mt-6">
+				<div className="flex justify-end gap-3 pt-6 border-t border-gray-200 mt-6">
 					<Button
 						as={Link}
 						to="/admin/projects"

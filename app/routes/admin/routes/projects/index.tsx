@@ -131,7 +131,7 @@ export function ProjectsIndexRoute() {
 											{project.description || "No description"}
 										</p>
 									</div>
-									<div className="ml-4 shrink-0 flex items-center space-x-3">
+									<div className="ml-4 shrink-0 flex items-center gap-3">
 										<Button
 											as={Link}
 											to={`/admin/projects/${project.id}/edit`}

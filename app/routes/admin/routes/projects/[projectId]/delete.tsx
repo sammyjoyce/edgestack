@@ -95,7 +95,7 @@ export function DeleteProjectRoute() {
 
 	return (
 		<FadeIn>
-			<div className="space-y-8">
+			<div className="flex flex-col gap-8">
 				<div className="flex justify-between items-center">
 					<h1 className="text-2xl font-semibold text-gray-900">
 						Delete Project
@@ -129,7 +129,7 @@ export function DeleteProjectRoute() {
 						<p className="text-gray-600">{project.description}</p>
 					</div>
 
-					<Form method="post" className="space-y-6">
+					<Form method="post" className="flex flex-col gap-6">
 						<div className="flex items-start">
 							<div className="flex items-center h-5">
 								<input
@@ -150,7 +150,7 @@ export function DeleteProjectRoute() {
 							</div>
 						</div>
 
-						<div className="flex justify-end space-x-3 pt-4">
+						<div className="flex justify-end gap-3 pt-4">
 							<Button
 								type="button"
 								variant="secondary"

@@ -118,9 +118,9 @@ export function ServicesSectionEditor({
 					Services Section
 				</h2>
 				<div className="flex flex-col gap-8">
-					<div className="space-y-1.5">
+					<div className="flex flex-col gap-1.5">
 						{" "}
-						{/* Use space-y for consistent spacing */}
+						{/* Use gap for consistent spacing */}
 						<label
 							htmlFor="services_intro_title"
 							className="block text-sm font-medium text-gray-700" /* Standard label */

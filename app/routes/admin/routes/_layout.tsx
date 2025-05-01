@@ -89,7 +89,7 @@ export function Component() {
 				<nav className="flex flex-1 flex-col">
 					<ul className="flex flex-1 flex-col gap-y-7">
 						<li>
-							<ul className="-mx-2 space-y-1">
+							<ul className="-mx-2 flex flex-col gap-1">
 								{navigation.map((item) => (
 									<li key={item.name}>
 										{item.name === "Live Site" ? (
