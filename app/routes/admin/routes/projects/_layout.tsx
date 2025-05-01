@@ -1,9 +1,9 @@
-import { getAllProjects } from "~/routes/common/db";
 import React from "react";
 import { Outlet, useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import { getAllProjects } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import { AdminErrorBoundary } from "../../components/AdminErrorBoundary";
 // Define the loader data type

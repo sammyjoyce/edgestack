@@ -5,7 +5,13 @@ import {
 	HomeIcon,
 } from "@heroicons/react/24/outline";
 import type React from "react";
-import { NavLink, Outlet, type To, redirect, useLoaderData } from "react-router";
+import {
+	NavLink,
+	Outlet,
+	type To,
+	redirect,
+	useLoaderData,
+} from "react-router";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 // Import generated Route type for this route

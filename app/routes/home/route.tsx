@@ -1,12 +1,12 @@
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { useLoaderData } from "react-router";
 
-import { getFeaturedProjects } from "~/routes/common/db"; // Import the new function
-import { getAllContent } from "~/routes/common/db";
 import type { JSX } from "react";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import RecentProjects from "~/routes/common/components/RecentProjects";
+import { getFeaturedProjects } from "~/routes/common/db"; // Import the new function
+import { getAllContent } from "~/routes/common/db";
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import Hero from "./components/Hero";

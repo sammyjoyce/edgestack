@@ -9,8 +9,8 @@ import type React from "react"; // Keep only useRef
 import { useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { Pill, PillStatus } from "~/components/ui/Pill"; // Adjust path if needed
-import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm"; // Import the hook
 import RichTextField from "~/routes/admin/components/RichTextField"; // Import RichTextField
+import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm"; // Import the hook
 import { Button } from "~/routes/common/components/ui/Button";
 
 // Define the expected shape of action response data to match the hook
@@ -202,7 +202,7 @@ export function TextContentForm({
 						</PillStatus>
 						{fetcher.data.error || "An error occurred."}
 					</Pill>
-				) : feedback && feedback.toLowerCase().includes("validation") ? (
+				) : feedback?.toLowerCase().includes("validation") ? (
 					<Pill
 						variant="outline"
 						className="border-amber-200 bg-amber-50 text-amber-700"

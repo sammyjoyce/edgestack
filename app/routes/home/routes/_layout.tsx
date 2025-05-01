@@ -1,10 +1,10 @@
-import { getAllContent, getFeaturedProjects } from "~/routes/common/db";
 import { Outlet, useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 // Still need the Project type for internal typing
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
+import { getAllContent, getFeaturedProjects } from "~/routes/common/db";
 import { HomeErrorBoundary } from "../components/HomeErrorBoundary";
 // Import generated Route type for type safety
 import type { Route } from "./+types/_layout";

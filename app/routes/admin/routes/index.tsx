@@ -5,9 +5,9 @@ import type { Route } from "./+types/index";
 
 import AdminDashboard from "../components/AdminDashboard";
 
+import { validateContentInsert } from "~/database/valibot-validation";
 // Database and Utils
 import { getAllContent, updateContent } from "~/routes/common/db";
-import { validateContentInsert } from "~/database/valibot-validation";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 
 // Loader to get dashboard content - use the generated LoaderArgs type

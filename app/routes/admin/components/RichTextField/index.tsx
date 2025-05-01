@@ -1,6 +1,5 @@
 import { LinkNode } from "@lexical/link"; // Import LinkNode
 import { ListItemNode, ListNode } from "@lexical/list"; // Import list nodes
-import { HeadingNode, QuoteNode } from "@lexical/rich-text"; // Import heading and quote nodes
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
@@ -9,11 +8,12 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { HeadingNode, QuoteNode } from "@lexical/rich-text"; // Import heading and quote nodes
 import type { EditorState, LexicalEditor } from "lexical"; // Import LexicalEditor
 
-import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
 import type React from "react";
 import { useCallback, useMemo, useRef } from "react";
+import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
 
 /**
  * RichTextField renders a Lexical rich text editor and manages its state.
