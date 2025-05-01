@@ -1,6 +1,14 @@
+import {
+	ArrowPathIcon,
+	CheckCircleIcon,
+	ExclamationTriangleIcon,
+	InformationCircleIcon,
+	XCircleIcon,
+} from "@heroicons/react/20/solid";
 import type React from "react"; // Keep only useRef
 import { useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
+import { Pill, PillStatus } from "~/components/ui/Pill"; // Adjust path if needed
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm"; // Import the hook
 
 // Define the expected shape of action response data to match the hook
@@ -151,14 +159,61 @@ export function TextContentForm({
 			</div>
 			<div
 				aria-live="polite"
-				className="min-h-[1.5em] mb-2 text-sm"
+				className="min-h-[2.25rem] mb-2 text-sm flex items-center"
 				role="status"
 			>
-				{feedback && (
-					<span className="inline-block px-2 py-1 rounded bg-blue-50 text-blue-700">
+				{isSubmitting ? (
+					<Pill variant="secondary">
+						<PillStatus>
+							<ArrowPathIcon className="size-3 animate-spin" />
+							Saving...
+						</PillStatus>
+					</Pill>
+				) : fetcher.data?.success ? (
+					<Pill
+						variant="outline"
+						className="border-emerald-200 bg-emerald-50 text-emerald-700"
+					>
+						<PillStatus>
+							<CheckCircleIcon className="size-3 text-emerald-500" />
+							Saved
+						</PillStatus>
+						{fetcher.data.message || "Changes saved successfully."}
+					</Pill>
+				) : fetcher.data?.error ? (
+					<Pill
+						variant="outline"
+						className="border-red-200 bg-red-50 text-red-700"
+					>
+						<PillStatus>
+							<XCircleIcon className="size-3 text-red-500" />
+							Error
+						</PillStatus>
+						{fetcher.data.error || "An error occurred."}
+					</Pill>
+				) : feedback && feedback.toLowerCase().includes("validation") ? (
+					<Pill
+						variant="outline"
+						className="border-amber-200 bg-amber-50 text-amber-700"
+					>
+						<PillStatus>
+							<ExclamationTriangleIcon className="size-3 text-amber-500" />
+							Validation Error
+						</PillStatus>
 						{feedback}
-					</span>
-				)}
+					</Pill>
+				) : feedback && feedback === "Changes reverted." ? (
+					<Pill
+						variant="outline"
+						className="border-blue-200 bg-blue-50 text-blue-700"
+					>
+						<PillStatus>
+							<InformationCircleIcon className="size-3 text-blue-500" />
+							Info
+						</PillStatus>
+						{feedback}
+					</Pill>
+				) : null}
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				{textFields.map(({ key, label, rows, help }) => (
