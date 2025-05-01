@@ -1,6 +1,6 @@
 import React from "react"; // Ensure React is imported for JSX
 import { Link, useFetcher, useLoaderData } from "react-router";
-
+import type { Tab } from "~/routes/common/components/ui/Tabs"; // Import Tab type
 
 // Types
 // Import the specific loader type
@@ -13,6 +13,7 @@ import { Button } from "~/routes/common/components/ui/Button";
 // UI primitives
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import { Tabs } from "~/routes/common/components/ui/Tabs"; // Import Tabs component
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 
 import { AboutSectionEditor } from "~/routes/admin/components/AboutSectionEditor";
@@ -21,6 +22,7 @@ import { HeroSectionEditor } from "~/routes/admin/components/HeroSectionEditor";
 // Admin components
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { ServicesSectionEditor } from "~/routes/admin/components/ServicesSectionEditor";
+import { ImageUploadSection } from "~/routes/admin/components/ImageUploadSection"; // Import ImageUploadSection
 
 // Helper functionality moved to util function if needed
 
@@ -46,8 +48,6 @@ export default function AdminDashboard(): React.JSX.Element {
 	const contactFetcher = useFetcher<ActionData>();
 	const sorterFetcher = useFetcher<ActionData>();
 	const projectsFetcher = useFetcher<ActionData>();
-
-	
 
 	// Access content safely, handle null/error case
 	const safeContent =
@@ -150,51 +150,54 @@ export default function AdminDashboard(): React.JSX.Element {
 	 * ------------------------------------------------- */
 	const sectionsOrder = safeContent.home_sections_order as string | undefined;
 
-	return (
-		<Container className="space-y-10">
-			{" "}
-			{/* Add vertical spacing between sections */}
-			<SectionIntro title="Home Page Editor" className="mb-8" />{" "}
-			{/* Adjusted margin */}
-			{/* 🔀 Drag-to-reorder CMS sections */}
-			<SectionSorter // <<< HERE
-				orderValue={sectionsOrder}
-				fetcher={sorterFetcher} // Pass typed fetcher
-			/>
-			{/* Removed the global status block */}
-			<section aria-label="Hero Section Editor">
+	// Define tabs configuration
+	const tabs: Tab[] = [
+		{
+			title: "Order",
+			value: "order",
+			content: (
+				<SectionSorter orderValue={sectionsOrder} fetcher={sorterFetcher} />
+			),
+		},
+		{
+			title: "Hero",
+			value: "hero",
+			content: (
 				<HeroSectionEditor
-					fetcher={heroFetcher} // Pass typed fetcher
+					fetcher={heroFetcher}
 					initialContent={safeContent}
 					onImageUpload={handleHeroImageUpload}
 					imageUploading={heroUploading}
 					heroImageUrl={heroImageUrl}
 				/>
-			</section>
-			<section aria-label="Services Section Editor">
+			),
+		},
+		{
+			title: "Services",
+			value: "services",
+			content: (
 				<ServicesSectionEditor
-					fetcher={servicesFetcher} // Pass typed fetcher
+					fetcher={servicesFetcher}
 					initialContent={safeContent}
 					onImageUpload={handleServiceImageUpload}
 					imageUploading={serviceUploading}
 					serviceImageUrls={serviceImageUrls}
 				/>
-			</section>
-			<section aria-label="Recent Projects Editor">
+			),
+		},
+		{
+			title: "Projects Intro",
+			value: "projects",
+			content: (
 				<div className="p-6 bg-white rounded-lg shadow-xs border border-gray-200">
-					{" "}
-					{/* Adjusted shadow/border */}
 					<h2 className="text-xl font-semibold text-gray-900 mb-4">
-						Projects Section
-					</h2>{" "}
-					{/* Adjusted size/color/margin */}
+						Projects Section Intro
+					</h2>
 					<div className="grid grid-cols-1 gap-6 mt-4">
-						{" "}
-						{/* Increased gap */}
 						<div>
 							<label
 								htmlFor="projects_intro_title"
-								className="block text-sm font-medium text-gray-700 mb-1" /* Added margin */
+								className="block text-sm font-medium text-gray-700 mb-1"
 							>
 								Projects Intro Title
 							</label>
@@ -202,15 +205,14 @@ export default function AdminDashboard(): React.JSX.Element {
 								type="text"
 								name="projects_intro_title"
 								id="projects_intro_title"
-								className="block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
+								className="block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 text-sm"
 								defaultValue={
 									safeContent.projects_intro_title || "Recent Projects"
 								}
 								onBlur={(e) => {
 									const formData = new FormData();
-									formData.append("intent", "updateTextContent"); // Add intent
+									formData.append("intent", "updateTextContent");
 									formData.append("projects_intro_title", e.target.value);
-									// Use projectsFetcher for project intro fields with typed action
 									projectsFetcher.submit(formData, {
 										method: "post",
 										action: "/admin",
@@ -221,24 +223,23 @@ export default function AdminDashboard(): React.JSX.Element {
 						<div>
 							<label
 								htmlFor="projects_intro_text"
-								className="block text-sm font-medium text-gray-700 mb-1" /* Added margin */
+								className="block text-sm font-medium text-gray-700 mb-1"
 							>
 								Projects Intro Text
 							</label>
 							<textarea
 								name="projects_intro_text"
 								id="projects_intro_text"
-								rows={3} /* Increased rows */
-								className="block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 text-sm" /* Use text-sm */
+								rows={3}
+								className="block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 text-sm"
 								defaultValue={
 									safeContent.projects_intro_text ||
 									"Take a look at some of our recent work."
 								}
 								onBlur={(e) => {
 									const formData = new FormData();
-									formData.append("intent", "updateTextContent"); // Add intent
+									formData.append("intent", "updateTextContent");
 									formData.append("projects_intro_text", e.target.value);
-									// Use projectsFetcher for project intro fields with typed action
 									projectsFetcher.submit(formData, {
 										method: "post",
 										action: "/admin",
@@ -248,14 +249,10 @@ export default function AdminDashboard(): React.JSX.Element {
 						</div>
 					</div>
 					<div className="mt-4 text-sm text-gray-600 space-y-1">
-						{" "}
-						{/* Adjusted margin/size/spacing */}
 						<p>
 							<strong>Note:</strong>
 						</p>
 						<ul className="list-disc list-inside space-y-1">
-							{" "}
-							{/* Added spacing */}
 							<li>
 								To add, edit, or reorder projects, visit the Projects admin
 								page.
@@ -273,8 +270,6 @@ export default function AdminDashboard(): React.JSX.Element {
 						</ul>
 					</div>
 					<div className="mt-6">
-						{" "}
-						{/* Increased margin */}
 						<Button
 							as={Link}
 							to="/admin/projects"
@@ -285,22 +280,51 @@ export default function AdminDashboard(): React.JSX.Element {
 						</Button>
 					</div>
 				</div>
-			</section>
-			<section aria-label="About Section Editor">
+			),
+		},
+		{
+			title: "About",
+			value: "about",
+			content: (
 				<AboutSectionEditor
-					fetcher={aboutFetcher} // Pass typed fetcher
+					fetcher={aboutFetcher}
 					initialContent={safeContent}
 					onImageUpload={handleAboutImageUpload}
 					imageUploading={aboutUploading}
 					aboutImageUrl={aboutImageUrl}
 				/>
-			</section>
-			<section aria-label="Contact Section Editor">
+			),
+		},
+		{
+			title: "Contact",
+			value: "contact",
+			content: (
 				<ContactSectionEditor
 					fetcher={contactFetcher}
 					initialContent={safeContent}
 				/>
-			</section>
+			),
+		},
+		{
+			title: "Images",
+			value: "images",
+			content: <ImageUploadSection initialContent={safeContent} />,
+		},
+	];
+
+	return (
+		<Container className="mt-8">
+			{" "}
+			{/* Adjusted container */}
+			<SectionIntro title="Home Page Editor" className="mb-8" />{" "}
+			{/* Adjusted margin */}
+			{/* Render the Tabs component */}
+			<Tabs
+				tabs={tabs}
+				containerClassName="mb-8" // Add margin below tabs
+				// Apply consistent styling to content area if needed, or let individual components handle it
+				// contentClassName="bg-white p-6 rounded-lg shadow-xs border border-gray-200"
+			/>
 		</Container>
 	);
 }
