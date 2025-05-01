@@ -10,6 +10,7 @@ import { useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { Pill, PillStatus } from "~/components/ui/Pill"; // Adjust path if needed
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm"; // Import the hook
+import RichTextField from "~/routes/admin/components/RichTextField"; // Import RichTextField
 import { Button } from "~/routes/common/components/ui/Button";
 
 // Define the expected shape of action response data to match the hook
@@ -19,66 +20,75 @@ type ActionResponseData = {
 	message?: string;
 };
 
-// Config array for text fields with help text
 const textFields = [
 	{
 		key: "hero_title",
 		label: "Hero Title",
 		rows: 2,
+		isRichText: false,
 		help: "Main heading for the hero section.",
 	},
 	{
 		key: "hero_subtitle",
 		label: "Hero Subtitle",
 		rows: 3,
+		isRichText: false,
 		help: "Subtitle or tagline for the hero.",
 	},
 	{
 		key: "about_title",
 		label: "About Title",
 		rows: 2,
+		isRichText: false,
 		help: "Heading for the about section.",
 	},
 	{
 		key: "about_text",
 		label: "About Text",
 		rows: 5,
+		isRichText: true,
 		help: "Description for the about section.",
 	},
 	{
 		key: "services_intro_title",
 		label: "Services Intro Title",
 		rows: 2,
+		isRichText: false,
 		help: "Heading for the services intro.",
 	},
 	{
 		key: "services_intro_text",
 		label: "Services Intro Text",
 		rows: 4,
+		isRichText: true,
 		help: "Description for the services intro.",
 	},
 	{
 		key: "service_1_title",
 		label: "Service 1 Title",
 		rows: 2,
+		isRichText: false,
 		help: "Title for the first service.",
 	},
 	{
 		key: "service_1_text",
 		label: "Service 1 Text",
 		rows: 3,
+		isRichText: true,
 		help: "Description for the first service.",
 	},
 	{
 		key: "service_2_title",
 		label: "Service 2 Title",
 		rows: 2,
+		isRichText: false,
 		help: "Title for the second service.",
 	},
 	{
 		key: "service_2_text",
 		label: "Service 2 Text",
 		rows: 3,
+		isRichText: true,
 		help: "Description for the second service.",
 	},
 ];
@@ -217,30 +227,36 @@ export function TextContentForm({
 				) : null}
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				{textFields.map(({ key, label, rows, help }) => (
+				{textFields.map(({ key, label, rows, help, isRichText }) => (
 					<div className="flex flex-col gap-1" key={key}>
 						<label
 							htmlFor={key}
 							className="block text-sm font-medium text-gray-700 mb-1"
 						>
 							{label}
-							<Tooltip id={`help-${key}`}>{help}</Tooltip>
+							{help && <Tooltip id={`help-${key}`}>{help}</Tooltip>}
 						</label>
-						<textarea
-							name={key}
-							id={key}
-							data-key={key}
-							rows={rows}
-							aria-label={label}
-							aria-describedby={`help-${key}`}
-							value={fields[key] ?? ""} // Use fields directly from hook
-							onBlur={handleBlur}
-							onChange={handleChange}
-							tabIndex={0}
-							className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm ${
-								errors[key] ? "border-red-500" : "border-gray-300"
-							}`}
-						/>
+						{isRichText ? (
+							<RichTextField
+								name={key}
+								initialJSON={fields[key] ?? ""}
+								disabled={isSubmitting}
+							/>
+						) : (
+							<textarea
+								name={key}
+								id={key}
+								rows={rows}
+								aria-label={label}
+								aria-describedby={help ? `help-${key}` : undefined}
+								value={fields[key] ?? ""} // Use fields directly from hook
+								onBlur={handleBlur}
+								onChange={handleChange}
+								className={`block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm ${
+									errors[key] ? "border-red-500" : "border-gray-300"
+								}`}
+							/>
+						)}
 						{errors[key] && (
 							<span className="text-xs text-red-600 mt-1" role="alert">
 								{errors[key]}

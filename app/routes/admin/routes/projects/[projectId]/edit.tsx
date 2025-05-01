@@ -205,13 +205,11 @@ export default function Component() {
 					>
 						Description
 					</label>
-					<textarea
+					<RichTextField
 						name="description"
-						id="description"
-						rows={4}
-						defaultValue={project.description || ""}
-						className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+						initialJSON={project.description || ""}
 					/>
+					{/* Hidden input for description is handled by RichTextField */}
 				</div>
 
 				<div>

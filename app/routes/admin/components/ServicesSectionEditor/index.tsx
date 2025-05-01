@@ -2,6 +2,7 @@ import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import type { FetcherWithComponents } from "react-router";
 import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
+import RichTextField from "~/routes/admin/components/RichTextField"; // Import RichTextField
 // Import the specific action types
 import type { action as adminIndexAction } from "~/routes/admin/routes/index";
 import type { action as adminUploadAction } from "~/routes/admin/routes/upload";
@@ -141,13 +142,12 @@ export function ServicesSectionEditor({
 						>
 							Services Intro Text
 						</label>
-						<textarea
+						<RichTextField
 							name="services_intro_text"
-							id="services_intro_text"
-							rows={4}
-							defaultValue={initialContent.services_intro_text || ""}
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Standard input */
-							onBlur={handleBlur}
+							initialJSON={initialContent.services_intro_text || ""}
+							disabled={
+								fetcher.state === "submitting" || fetcher.state === "loading"
+							}
 						/>
 					</div>
 					{serviceFields.map((field, idx) => (
@@ -178,13 +178,12 @@ export function ServicesSectionEditor({
 								>
 									{field.label} Text
 								</label>
-								<textarea
+								<RichTextField
 									name={field.textKey}
-									id={field.textKey}
-									rows={3}
-									defaultValue={initialContent[field.textKey] || ""}
-									className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Standard input */
-									onBlur={handleBlur}
+									initialJSON={initialContent[field.textKey] || ""}
+									disabled={
+										fetcher.state === "submitting" || fetcher.state === "loading"
+									}
 								/>
 							</div>
 							<div className="flex flex-col items-center justify-start pt-1">

@@ -10,13 +10,13 @@ type ActionResponseData = {
 	message?: string;
 };
 
-// Helper function for validation (can be kept here or imported)
-const validateField = (key: string, value: string): string | null => {
+const validateField = (key: string, value: string, isRichText: boolean): string | null => {
+	// Skip validation for rich text fields for now
+	if (isRichText) return null;
+
 	try {
 		// Basic check: Ensure key and value are not empty before specific validation
 		if (!key || !value) {
-			// Depending on requirements, empty might be valid or invalid.
-			// return "Key or value cannot be empty.";
 			return null; // Or handle as needed
 		}
 		validateContentInsert({ key, value });
@@ -30,12 +30,12 @@ const validateField = (key: string, value: string): string | null => {
 	}
 };
 
-// Define the structure for text fields configuration
 interface TextFieldConfig {
 	key: string;
 	label: string;
 	rows: number;
 	help: string;
+	isRichText?: boolean; // Add flag for rich text fields
 }
 
 interface UseTextContentFormArgs {
@@ -72,6 +72,12 @@ export function useTextContentForm({
 		[textFieldsConfig],
 	);
 
+	// Helper to check if a field is rich text
+	const isRichTextField = useCallback(
+		(key: string): boolean => textFieldsConfig.find((f) => f.key === key)?.isRichText ?? false,
+		[textFieldsConfig],
+	);
+
 	// Handler for auto-save on blur
 	const handleBlur = useCallback(
 		(e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -79,8 +85,12 @@ export function useTextContentForm({
 
 			const { name, value } = e.currentTarget;
 
+			// Skip blur handling for rich text fields as they update via hidden input
+			if (isRichTextField(name)) return;
+
 			if (autoSave) {
-				const err = validateField(name, value);
+				// Pass isRichText flag to validation
+				const err = validateField(name, value, false); // Always false here as we skipped rich text above
 				if (!err) {
 					const data = new FormData();
 					data.append("intent", "updateTextContent"); // Add intent
@@ -105,13 +115,16 @@ export function useTextContentForm({
 				setPendingFields((prev) => ({ ...prev, [name]: value }));
 			}
 		},
-		[autoSave, fetcher, labelForKey],
+		[autoSave, fetcher, labelForKey, isRichTextField],
 	);
 
 	// Handler for manual input change (only affects pending state)
 	const handleChange = useCallback(
 		(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 			if (autoSave) return; // Don't update pending if auto-saving
+
+			// Skip change handling for rich text fields
+			if (isRichTextField(e.currentTarget.name)) return;
 
 			const { name, value } = e.currentTarget;
 			setPendingFields((prev) => ({ ...prev, [name]: value }));
@@ -124,7 +137,7 @@ export function useTextContentForm({
 				});
 			}
 		},
-		[autoSave, errors],
+		[autoSave, errors, isRichTextField],
 	);
 
 	// Manual save
@@ -137,7 +150,8 @@ export function useTextContentForm({
 			const newErrors: Record<string, string> = {};
 			for (const [key, value] of Object.entries(pendingFields)) {
 				try {
-					validateField(key, value);
+					// Pass isRichText flag to validation
+					validateField(key, value, isRichTextField(key));
 				} catch (err: unknown) {
 					let message = "Validation failed";
 					if (err instanceof Error) {
@@ -167,7 +181,7 @@ export function useTextContentForm({
 			// Update the 'saved' fields state after successful manual save intention
 			setFields(pendingFields);
 		},
-		[fetcher, pendingFields],
+		[fetcher, pendingFields, isRichTextField],
 	);
 
 	// Manual undo

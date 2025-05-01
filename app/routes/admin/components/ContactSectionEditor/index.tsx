@@ -14,50 +14,70 @@ const contactFields = [
 	{
 		key: "contact_headline",
 		label: "Contact Headline",
+		isRichText: false,
 		rows: 2,
 		placeholder: "Ready to Start Your Project?",
 	},
 	{
 		key: "contact_intro",
 		label: "Contact Intro",
+		isRichText: true,
 		rows: 3,
 		placeholder: "From concept to completion, we're here...",
 	},
 	{
 		key: "contact_address",
 		label: "Address",
+		isRichText: true,
 		rows: 2,
 		placeholder: "PO BOX 821\nMarrickville, NSW 2204",
 	},
 	{
 		key: "contact_phone",
 		label: "Phone",
+		isRichText: true,
 		rows: 1,
 		placeholder: "0404 289 437",
 	},
 	{
 		key: "contact_email",
 		label: "Email",
+		isRichText: true,
 		rows: 1,
 		placeholder: "contact@lushconstructions.com",
 	},
 	{
 		key: "contact_hours",
 		label: "Hours",
+		isRichText: true,
 		rows: 2,
 		placeholder: "Monday - Friday: 7am - 5pm\nSaturday: By appointment",
 	},
-	{ key: "contact_abn", label: "ABN", rows: 1, placeholder: "99 652 947 528" },
-	{ key: "contact_acn", label: "ACN", rows: 1, placeholder: "141 565 746" },
+	{
+		key: "contact_abn",
+		label: "ABN",
+		isRichText: true,
+		rows: 1,
+		placeholder: "99 652 947 528",
+	},
+	{
+		key: "contact_acn",
+		label: "ACN",
+		isRichText: true,
+		rows: 1,
+		placeholder: "141 565 746",
+	},
 	{
 		key: "contact_license",
 		label: "License Number",
+		isRichText: true,
 		rows: 1,
 		placeholder: "4632530",
 	},
 	{
 		key: "contact_instagram",
 		label: "Instagram URL",
+		isRichText: true,
 		rows: 1,
 		placeholder: "https://www.instagram.com/lushconstructions",
 	},
@@ -92,7 +112,7 @@ export function ContactSectionEditor({
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
 				{" "}
 				{/* Adjusted gap */}
-				{contactFields.map(({ key, label, rows, placeholder }) => (
+				{contactFields.map(({ key, label, rows, placeholder, isRichText }) => (
 					<div className="flex flex-col gap-y-1" key={key}>
 						{" "}
 						{/* Adjusted gap */}
@@ -104,8 +124,7 @@ export function ContactSectionEditor({
 							{/* Standard label */}
 							{label}
 						</label>
-						{rows > 1 && key === "contact_intro" ? (
-							// Rich text editor for contact_intro using Lexical
+						{isRichText ? (
 							<RichTextField
 								name={key}
 								initialJSON={initialContent[key]}
@@ -118,8 +137,7 @@ export function ContactSectionEditor({
 								rows={rows}
 								defaultValue={initialContent[key] || ""}
 								placeholder={placeholder}
-								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Standard input */
-								onBlur={handleBlur}
+								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
 							/>
 						) : (
 							<input
@@ -128,8 +146,7 @@ export function ContactSectionEditor({
 								id={key}
 								defaultValue={initialContent[key] || ""}
 								placeholder={placeholder}
-								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Standard input */
-								onBlur={handleBlur}
+								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
 							/>
 						)}
 					</div>
