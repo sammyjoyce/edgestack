@@ -5,7 +5,7 @@ import {
 	HomeIcon,
 } from "@heroicons/react/24/outline";
 import type React from "react";
-import { NavLink, Outlet, type To, redirect } from "react-router";
+import { NavLink, Outlet, type To, redirect, useLoaderData } from "react-router";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 // Import generated Route type for this route
@@ -139,8 +139,8 @@ export function Component() {
 			</aside>
 			<div className="w-px bg-gray-200" />
 			<main className="flex-1 px-8 py-8">
-				{/* Outlet will use the error boundary provided by the ErrorBoundary function */}
-				<Outlet />
+				{/* Pass loader data to Outlet context and use error boundary */}
+				<Outlet context={useLoaderData<typeof loader>()} />
 			</main>
 		</div>
 	);
@@ -149,3 +149,6 @@ export function Component() {
 export function ErrorBoundary() {
 	return <AdminErrorBoundary />;
 }
+
+// Default export for React Router 7 conventions
+export default Component;
