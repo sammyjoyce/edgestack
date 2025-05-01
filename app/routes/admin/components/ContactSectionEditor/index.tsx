@@ -88,17 +88,18 @@ export function ContactSectionEditor({
 	initialContent,
 }: ContactSectionEditorProps): React.ReactElement {
 	// Use React.ReactElement
-	const handleBlur = React.useCallback(
-		(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-			const { name, value } = e.currentTarget;
-			const formData = new FormData();
-			formData.append("intent", "updateTextContent"); // Add intent
-			formData.append(name, value);
-			// Use typed action path
-			fetcher.submit(formData, { method: "post", action: "/admin" });
-		},
-		[fetcher],
-	);
+	// Remove handleBlur as RichTextField handles its updates internally
+	// const handleBlur = React.useCallback(
+	// 	(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+	// 		const { name, value } = e.currentTarget;
+	// 		const formData = new FormData();
+	// 		formData.append("intent", "updateTextContent"); // Add intent
+	// 		formData.append(name, value);
+	// 		// Use typed action path
+	// 		fetcher.submit(formData, { method: "post", action: "/admin" });
+	// 	},
+	// 	[fetcher],
+	// );
 
 	return (
 		<section className="bg-white rounded-lg shadow-xs border border-gray-200 p-6">
