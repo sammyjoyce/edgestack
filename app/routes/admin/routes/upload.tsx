@@ -80,7 +80,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 export default function UploadRoute() {
 	return (
 		<FadeIn>
-			<div className="space-y-8">
+			<div className="flex flex-col gap-8">
 				<div>
 					<h1 className="text-2xl font-semibold text-gray-900">Image Upload</h1>
 					<p className="mt-2 text-sm text-gray-500">

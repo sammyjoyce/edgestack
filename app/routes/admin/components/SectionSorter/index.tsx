@@ -131,7 +131,7 @@ export default function SectionSorter({
 					strategy={verticalListSortingStrategy}
 				>
 					<ul
-						className="space-y-2"
+						className="flex flex-col gap-2"
 						aria-describedby="section-sorter-instructions"
 					>
 						{sections.map((s, idx) => (

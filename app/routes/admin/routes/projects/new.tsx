@@ -63,7 +63,7 @@ export function NewProjectRoute() {
 
 	return (
 		<FadeIn>
-			<div className="space-y-8">
+			<div className="flex flex-col gap-8">
 				<div className="flex justify-between items-center">
 					<h1 className="text-2xl font-semibold text-gray-900">
 						Add New Project
@@ -79,7 +79,7 @@ export function NewProjectRoute() {
 
 				<Form
 					method="post"
-					className="space-y-6 bg-white p-6 rounded-lg shadow-xs border border-gray-200"
+					className="flex flex-col gap-6 bg-white p-6 rounded-lg shadow-xs border border-gray-200"
 				>
 					<div>
 						<label
@@ -132,7 +132,7 @@ export function NewProjectRoute() {
 						>
 							Image URL
 						</label>
-						<div className="flex space-x-2">
+						<div className="flex gap-2">
 							<input
 								type="text"
 								name="imageUrl"
@@ -153,7 +153,7 @@ export function NewProjectRoute() {
 						</div>
 					</div>
 
-					<div className="flex justify-end space-x-3 pt-4">
+					<div className="flex justify-end gap-3 pt-4">
 						<Button
 							type="button"
 							variant="secondary"
