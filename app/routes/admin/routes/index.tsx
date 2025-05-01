@@ -179,3 +179,6 @@ export function AdminIndexRoute(): JSX.Element {
 		</main>
 	);
 }
+
+// Default export for React Router 7 conventions
+export default AdminIndexRoute;
