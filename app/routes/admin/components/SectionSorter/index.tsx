@@ -195,10 +195,10 @@ function SortableItem({
 			{...attributes}
 			{...listeners}
 			style={style}
-			className={`flex items-center justify-between rounded border border-gray-200 bg-white px-4 py-2 shadow-xs cursor-grab focus:outline-hidden focus:ring-2 focus:ring-indigo-500 ${
+			className={`flex items-center justify-between rounded border border-gray-200 bg-white px-4 py-2 shadow-xs cursor-grab focus:outline-none focus:ring-2 focus:ring-primary ${
 				/* Adjusted border/focus */
 				isDragging
-					? "opacity-50 ring-2 ring-indigo-500"
+					? "opacity-50 ring-2 ring-primary"
 					: "" /* Style when dragging */
 			}`}
 			aria-label={`Section ${label}, position ${

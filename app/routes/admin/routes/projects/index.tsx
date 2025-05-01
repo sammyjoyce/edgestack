@@ -126,7 +126,7 @@ export function ProjectsIndexRoute() {
 									<div className="flex-1 min-w-0">
 										<Link
 											to={`/admin/projects/${project.id}/edit`}
-											className="text-base font-semibold text-indigo-600 truncate hover:underline"
+											className="text-base font-semibold text-primary truncate hover:underline"
 										>
 											{project.title}
 										</Link>

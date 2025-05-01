@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+	/* Existing theme variables like --font-sans, --color-gray-*, etc. */
 	--font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 	--font-serif: "Playfair Display", serif;
 
@@ -29,6 +30,20 @@
 	--ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 	--ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
 	--ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+	/* --- NEW THEME COLORS --- */
+	--color-primary: hsl(16, 93%, 49%);
+	--color-secondary: hsl(0, 0%, 16%);
+	--color-tertiary: hsl(0, 0%, 43%);
+	--color-neutral-light: hsl(0, 0%, 71%);
+	--color-neutral-dark: hsl(0, 0%, 31%);
+	--color-background-light: hsl(0, 0%, 93%);
+	--color-background-dark: hsl(0, 0%, 20%);
+	--color-foreground-light: hsl(0, 0%, 26%);
+	--color-foreground-dark: hsl(0, 0%, 93%);
+	--color-screen-light: hsl(0, 0%, 98%);
+	--color-screen-dark: hsl(0, 0%, 26%);
+	/* --- END NEW THEME COLORS --- */
 }
 
 /*
