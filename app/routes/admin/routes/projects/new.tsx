@@ -105,14 +105,11 @@ export function NewProjectRoute() {
 						>
 							Description
 						</label>
-						<textarea
+						<RichTextField
 							name="description"
-							id="description"
-							rows={3}
-							required
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
-							placeholder="Brief description of the project"
+							initialJSON="" // Start empty for new project
 						/>
+						{/* Hidden input for description is handled by RichTextField */}
 					</div>
 
 					<div>
