@@ -50,7 +50,7 @@ export default function ImageUploadZone({
 					isDragReject
 						? "border-red-400 bg-red-50" /* Adjusted colors */
 						: isDragActive
-							? "border-blue-400 bg-blue-50" /* Adjusted colors */
+							? "border-indigo-400 bg-indigo-50" /* Adjusted colors */
 							: "border-gray-300"
 				} ${disabled ? "opacity-50 pointer-events-none" : ""}`}
 				aria-label="Image upload drop zone"

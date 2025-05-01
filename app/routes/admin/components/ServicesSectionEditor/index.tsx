@@ -133,7 +133,7 @@ export function ServicesSectionEditor({
 							id="services_intro_title"
 							rows={2}
 							defaultValue={initialContent.services_intro_title || ""}
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Standard input */
+							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" /* Standard input */
 							onBlur={handleBlur}
 						/>
 						<label
@@ -169,7 +169,7 @@ export function ServicesSectionEditor({
 									id={field.titleKey}
 									rows={2}
 									defaultValue={initialContent[field.titleKey] || ""}
-									className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" /* Standard input */
+									className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" /* Standard input */
 									onBlur={handleBlur}
 								/>
 								<label

@@ -95,7 +95,7 @@ export function NewProjectRoute() {
 							name="title"
 							id="title"
 							required
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
 							placeholder="Enter project title"
 						/>
 					</div>
@@ -136,7 +136,7 @@ export function NewProjectRoute() {
 								type="text"
 								name="imageUrl"
 								id="imageUrl"
-								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
 								placeholder="URL to project image (optional)"
 							/>
 							<Button

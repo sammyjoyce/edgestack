@@ -151,7 +151,7 @@ export default function Component() {
 				>
 					Error: {error || "Failed to load project"}
 				</div>
-				<Link to="/admin/projects" className="text-blue-600 hover:underline">
+				<Link to="/admin/projects" className="text-indigo-600 hover:underline">
 					← Back to Projects
 				</Link>
 			</FadeIn>
@@ -182,7 +182,7 @@ export default function Component() {
 						id="title"
 						required
 						defaultValue={project.title}
-						className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+						className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
 					/>
 				</div>
 
@@ -217,7 +217,7 @@ export default function Component() {
 						id="isFeatured"
 						value="true"
 						defaultChecked={project.isFeatured ?? false}
-						className="size-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+						className="size-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
 					/>
 					<label
 						htmlFor="isFeatured"
@@ -258,7 +258,7 @@ export default function Component() {
 						name="image"
 						id="image"
 						accept="image/*"
-						className="block w-full text-sm text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+						className="block w-full text-sm text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
 					/>
 				</div>
 
@@ -275,7 +275,7 @@ export default function Component() {
 						id="sortOrder"
 						min="0"
 						defaultValue={project.sortOrder ?? 0}
-						className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+						className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
 					/>
 				</div>
 
@@ -289,7 +289,7 @@ export default function Component() {
 					</Button>
 					<Button
 						type="submit"
-						className="bg-blue-600 text-white hover:bg-blue-700"
+						className="bg-indigo-600 text-white hover:bg-indigo-700"
 					>
 						Save Changes
 					</Button>

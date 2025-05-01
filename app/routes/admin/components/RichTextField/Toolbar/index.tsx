@@ -142,8 +142,8 @@ export default function LexicalToolbar(): JSX.Element {
 					className={clsx(
 						"px-2 py-0.5 rounded border text-xs focus:outline-hidden transition-colors",
 						active[btn.arg]
-							? "bg-blue-600 text-white border-blue-600"
-							: "border-transparent text-gray-600 hover:bg-gray-200 focus:ring-1 focus:ring-blue-500",
+							? "bg-indigo-600 text-white border-indigo-600"
+							: "border-transparent text-gray-600 hover:bg-gray-200 focus:ring-1 focus:ring-indigo-500",
 					)}
 					onMouseDown={(e) => {
 						e.preventDefault();

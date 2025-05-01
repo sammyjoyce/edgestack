@@ -24,7 +24,7 @@ export function AdminErrorBoundary() {
 				<div className="flex flex-col gap-4">
 					<Link
 						to="/admin"
-						className="px-4 py-2 bg-blue-600 text-white rounded-md text-center hover:bg-blue-700 transition-colors"
+						className="px-4 py-2 bg-indigo-600 text-white rounded-md text-center hover:bg-indigo-700 transition-colors"
 					>
 						Return to Admin Dashboard
 					</Link>
