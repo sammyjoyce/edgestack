@@ -161,7 +161,7 @@ export function TextContentForm({
 							type="checkbox"
 							checked={autoSave}
 							onChange={(e) => setAutoSave(e.target.checked)}
-							className="ml-2 accent-blue-600"
+							className="ml-2 accent-indigo-600"
 							aria-checked={autoSave}
 							aria-label="Toggle auto-save on or off"
 						/>
@@ -216,10 +216,10 @@ export function TextContentForm({
 				) : feedback && feedback === "Changes reverted." ? (
 					<Pill
 						variant="outline"
-						className="border-blue-200 bg-blue-50 text-blue-700"
+						className="border-indigo-200 bg-indigo-50 text-indigo-700"
 					>
 						<PillStatus>
-							<InformationCircleIcon className="size-3 text-blue-500" />
+							<InformationCircleIcon className="size-3 text-indigo-500" />
 							Info
 						</PillStatus>
 						{feedback}
@@ -252,7 +252,7 @@ export function TextContentForm({
 								value={fields[key] ?? ""} // Use fields directly from hook
 								onBlur={handleBlur}
 								onChange={handleChange}
-								className={`block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm ${
+								className={`block w-full rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm ${
 									errors[key] ? "border-red-500" : "border-gray-300"
 								}`}
 							/>
@@ -269,7 +269,7 @@ export function TextContentForm({
 				<div className="flex gap-2 mt-4">
 					<Button
 						type="submit"
-						className="bg-blue-600 text-white hover:bg-blue-700"
+						className="bg-indigo-600 text-white hover:bg-indigo-700"
 						aria-label="Save changes"
 					>
 						Save
