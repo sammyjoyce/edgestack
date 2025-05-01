@@ -109,11 +109,11 @@ export function ServicesSectionEditor({
 	}, [imageUploading, statusTexts]);
 
 	return (
-		<div className="overflow-hidden bg-white sm:rounded-lg shadow-xs border border-gray-200">
+		<div className="overflow-hidden bg-screen-light sm:rounded-lg shadow-xs border border-neutral-light">
 			{" "}
 			{/* Use white bg, adjusted shadow/border */}
 			<div className="px-4 py-5 sm:p-6">
-				<h2 className="text-xl font-semibold text-gray-900 mb-6">
+				<h2 className="text-xl font-semibold text-foreground-light mb-6">
 					{" "}
 					{/* Use semibold, increased margin */}
 					Services Section
