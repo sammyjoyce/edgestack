@@ -305,11 +305,6 @@ export default function AdminDashboard(): React.JSX.Element {
 				/>
 			),
 		},
-		{
-			title: "Images",
-			value: "images",
-			content: <ImageUploadSection initialContent={safeContent} />,
-		},
 	];
 
 	return (
