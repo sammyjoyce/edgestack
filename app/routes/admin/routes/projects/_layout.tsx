@@ -1,6 +1,6 @@
 import { getAllProjects } from "~/routes/common/db";
 import React from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
@@ -37,9 +37,10 @@ export async function loader({
 }
 
 export function ProjectsLayout() {
+	const loaderData = useLoaderData<typeof loader>();
 	return (
 		<FadeIn>
-			<Outlet />
+			<Outlet context={loaderData} />
 		</FadeIn>
 	);
 }
@@ -48,5 +49,5 @@ export function ErrorBoundary() {
 	return <AdminErrorBoundary />;
 }
 
-// Default export for backwards compatibility
+// Default export for React Router 7 conventions
 export default ProjectsLayout;

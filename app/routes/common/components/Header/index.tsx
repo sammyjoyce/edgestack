@@ -81,29 +81,14 @@ function Header(): React.JSX.Element {
 					</div>
 
 					{/* Right navigation items and CTA */}
-					<div className="flex items-center">
+					<div className="flex items-center justify-end lg:justify-start">
 						{/* CTA Button (using Button component) - Kept in Header */}
 						<Button
 							to="tel:0404289437"
-							className="group ml-4 flex items-center gap-2 px-3 py-2 sm:ml-8 sm:px-4 sm:py-2 lg:ml-6 min-[80rem]:flex text-sm font-semibold bg-white text-neutral-950 hover:bg-neutral-200 rounded-full shadow-md transition-all duration-300"
+							className="ml-4 flex items-center px-3 py-2 sm:ml-8 sm:px-4 sm:py-2 lg:ml-6 min-[80rem]:flex text-base font-semibold bg-white text-neutral-950 hover:bg-neutral-200 rounded-full shadow-md transition-all duration-300"
 							invert
 						>
-							<span className="flex items-center gap-x-2">
-								<svg
-									className="size-4 fill-gray-800 transition-all duration-300 ease-in-out group-hover:fill-black"
-									viewBox="0 0 24 24"
-									role="img"
-									aria-label="Phone"
-								>
-									<title>Phone</title>
-									<path
-										fillRule="evenodd"
-										d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5z"
-										clipRule="evenodd"
-									/>
-								</svg>
-								<span>0404 289 437</span>
-							</span>
+							<span className="block lg:inline">0404 289 437</span>
 						</Button>
 					</div>
 				</div>

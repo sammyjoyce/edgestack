@@ -54,8 +54,8 @@ export function ProjectsLayout() {
 				</div>
 			</div>
 
-			{/* Outlet automatically receives context, use useLoaderData or useOutletContext in children */}
-			<Outlet />
+			{/* Pass loader data explicitly to the Outlet context */}
+			<Outlet context={loaderData} />
 
 			<Footer />
 		</div>
