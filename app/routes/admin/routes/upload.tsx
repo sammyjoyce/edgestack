@@ -6,11 +6,9 @@ import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import { handleImageUpload } from "~/utils/upload.server";
 import { ImageUploadSection } from "../components/ImageUploadSection";
 // Import generated types
-import type { Route } from "./+types/upload";
+import type { Route } from "./+types/upload"; // Ensure this path is correct
 
-import type { ActionFunctionArgs } from "react-router";
-
-export async function action({ request, context }: ActionFunctionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
 	const unauthorized = () => ({
 		success: false,
 		error: "Unauthorized",
@@ -47,7 +45,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 			}
 
 			// Use the helper function for upload with type assertion for consistency
-			const publicUrl = await handleImageUpload(file, key, context as any);
+			const publicUrl = await handleImageUpload(file, key, context);
 			if (!publicUrl || typeof publicUrl !== "string") {
 				return badRequest("Failed to upload image");
 			}

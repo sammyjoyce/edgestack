@@ -8,11 +8,7 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import type {
-	EditorState,
-	LexicalEditor,
-	SerializedEditorState,
-} from "lexical"; // Import LexicalEditor and SerializedEditorState
+import type { EditorState, LexicalEditor } from "lexical"; // Import LexicalEditor
 
 import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
 import type React from "react";

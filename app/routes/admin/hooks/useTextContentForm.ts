@@ -48,7 +48,18 @@ export function useTextContentForm({
 	initialContent,
 	fetcher,
 	textFieldsConfig, // Receive the config
-}: UseTextContentFormArgs) {
+}: UseTextContentFormArgs): {
+	autoSave: boolean;
+	setAutoSave: React.Dispatch<React.SetStateAction<boolean>>;
+	fields: Record<string, string>;
+	errors: Record<string, string>;
+	feedback: string | null;
+	handleBlur: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
+	handleChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
+	handleSave: (e?: React.FormEvent) => void;
+	handleUndo: () => void;
+	isSubmitting: boolean;
+} {
 	const [autoSave, setAutoSave] = useState(true);
 	const [fields, setFields] = useState<Record<string, string>>(initialContent);
 	const [pendingFields, setPendingFields] =

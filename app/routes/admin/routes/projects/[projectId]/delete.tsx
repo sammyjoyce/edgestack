@@ -5,15 +5,15 @@ import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
 import { Button } from "~/routes/common/components/ui/Button";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-// Define our loader and action params with proper typing
-type RouteParams = { projectId: string };
+// Import generated types if available (assuming generouted)
+import type { Route } from "./+types/[projectId]/delete"; // Adjust path if needed
 import { deleteProject } from "~/routes/common/db"; // Import deleteProject
 
 // Return plain objects for type safety
 export async function loader({
 	params,
 	context,
-}: LoaderFunctionArgs & { params: RouteParams; context: { db: any } }) {
+}: Route.LoaderArgs) { // Use generated type
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
@@ -36,8 +36,8 @@ export async function loader({
 export async function action({
 	request,
 	params,
-	context,
-}: ActionFunctionArgs & { params: RouteParams; context: { db: any } }) {
+	context, // context will be typed by Route.ActionArgs
+}: Route.ActionArgs) { // Use generated type
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {

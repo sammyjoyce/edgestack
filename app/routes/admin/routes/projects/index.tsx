@@ -39,10 +39,10 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 	}
 }
 
-// Action to handle project management - Return plain objects for type safety
+ // Action to handle project management - Return plain objects for type safety
 export async function action({ request, context }: ActionFunctionArgs) {
 	const formData = await request.formData();
-	const intent = formData.get("intent") as string;
+	const intent = formData.get("intent")?.toString();
 
 	// Auth check
 	const unauthorized = () => {
@@ -56,7 +56,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
 	// Handle delete project intent
 	if (intent === "deleteProject") {
-		const projectIdStr = formData.get("projectId") as string;
+		const projectIdStr = formData.get("projectId")?.toString();
 		if (!projectIdStr) {
 			return { success: false, error: "Missing project ID" } as const;
 		}
@@ -68,11 +68,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
 		try {
 			await deleteProject(context.db, projectId);
 			return { success: true, projectId } as const;
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error("Failed to delete project:", error);
 			return {
 				success: false,
-				error: error.message || "Failed to delete project",
+				error: (error instanceof Error ? error.message : "Failed to delete project") || "Failed to delete project",
 			} as const;
 		}
 	}
@@ -114,7 +114,7 @@ export function ProjectsIndexRoute() {
 			) : (
 				<div className="bg-white shadow-xs border border-gray-200 overflow-hidden rounded-lg">
 					<ul className="divide-y divide-gray-200">
-						{projects.map((project: Project) => (
+						{projects.map((project) => (
 							<li
 								key={project.id}
 								className="px-6 py-5 hover:bg-gray-50 transition-colors duration-150"

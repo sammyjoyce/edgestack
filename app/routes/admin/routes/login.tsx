@@ -22,8 +22,8 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		ADMIN_PASSWORD: env?.ADMIN_PASSWORD ? "[set]" : "[missing]",
 	});
 	const formData = await request.formData();
-	const username = formData.get("username") as string;
-	const password = formData.get("password") as string;
+	const username = formData.get("username")?.toString() ?? "";
+	const password = formData.get("password")?.toString() ?? "";
 	const jwtSecret = env?.JWT_SECRET;
 
 	// Provide clear error if JWT_SECRET is missing
