@@ -70,7 +70,7 @@ export function HeroSectionEditor({
 						{/* Reduced gap */}
 						<label
 							htmlFor="hero_title"
-							className="block text-sm font-medium text-gray-700"
+							className="block text-sm font-medium text-gray-700 mb-1"
 						>
 							{" "}
 							{/* Standard label */}
@@ -86,7 +86,7 @@ export function HeroSectionEditor({
 						/>
 						<label
 							htmlFor="hero_subtitle"
-							className="block text-sm font-medium text-gray-700 mt-3" /* Standard label, added margin */
+							className="block text-sm font-medium text-gray-700 mb-1 mt-3" /* Standard label, added margin */
 						>
 							Hero Subtitle
 						</label>
