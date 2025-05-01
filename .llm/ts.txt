@@ -1,0 +1,56 @@
+# TypeScript core-conventions for Windsurf
+rules:
+  - id: any-inside-generic-functions
+    description: >
+      Allow the use of `any` only inside the body of generic functions when
+      it is the most concise way to express logic that the type-checker
+      cannot model. Avoid `any` everywhere else.
+
+  - id: avoid-default-exports
+    description: >
+      Prefer named exports. Use a default export only when a framework
+      (e.g. Next.js pages, Remix/React Router 7+ routes) mandates it.
+
+  - id: use-discriminated-unions
+    description: >
+      Model variant data with discriminated unions and exhaustive `switch`
+      statements; avoid the “bag-of-optionals” anti-pattern.
+
+  - id: no-new-enums
+    description: >
+      Do not introduce new `enum`s. Retain existing ones, but for new
+      enum-like needs use `as const` objects plus `keyof typeof`.
+
+  - id: prefer-import-type
+    description: >
+      When importing types, use a top-level `import type { … }` statement
+      instead of inline `import { type … }`.
+
+  - id: install-latest-libraries
+    description: >
+      Use the package-manager CLI (`pnpm add`, `yarn add`, `npm install`)
+      to fetch the latest library versions instead of editing `package.json`
+      by hand.
+
+  - id: prefer-interfaces-for-inheritance
+    description: >
+      For inheritance use `interface … extends …`. Avoid intersection‐type
+      (`&`) combinations unless `extends` is impossible.
+
+  - id: concise-jsdoc
+    description: >
+      Add JSDoc comments only where behaviour is not self-evident; keep them
+      short and link related symbols with `{@link …}`.
+
+  - id: naming-conventions
+    description: >
+      * Files: kebab-case (`my-component.ts`)
+      * Variables/functions: camelCase (`myVariable`)
+      * Types/interfaces/classes: PascalCase (`MyType`)
+      * Constants / enum values: ALL_CAPS (`MAX_COUNT`)
+      * Generic parameters: prefix with `T` (`TKey`, `TValue`).
+
+  - id: noUncheckedIndexedAccess-awareness
+    description: >
+      Be aware that enabling `noUncheckedIndexedAccess` widens indexed
+      access types to include `undefined`; write code accordingly.

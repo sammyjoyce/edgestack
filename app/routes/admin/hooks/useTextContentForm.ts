@@ -10,7 +10,11 @@ type ActionResponseData = {
 	message?: string;
 };
 
-const validateField = (key: string, value: string, isRichText: boolean): string | null => {
+const validateField = (
+	key: string,
+	value: string,
+	isRichText: boolean,
+): string | null => {
 	// Skip validation for rich text fields for now
 	if (isRichText) return null;
 
@@ -54,8 +58,12 @@ export function useTextContentForm({
 	fields: Record<string, string>;
 	errors: Record<string, string>;
 	feedback: string | null;
-	handleBlur: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
-	handleChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
+	handleBlur: (
+		e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>,
+	) => void;
+	handleChange: (
+		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+	) => void;
 	handleSave: (e?: React.FormEvent) => void;
 	handleUndo: () => void;
 	isSubmitting: boolean;
@@ -85,7 +93,8 @@ export function useTextContentForm({
 
 	// Helper to check if a field is rich text
 	const isRichTextField = useCallback(
-		(key: string): boolean => textFieldsConfig.find((f) => f.key === key)?.isRichText ?? false,
+		(key: string): boolean =>
+			textFieldsConfig.find((f) => f.key === key)?.isRichText ?? false,
 		[textFieldsConfig],
 	);
 

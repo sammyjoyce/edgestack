@@ -39,7 +39,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 	}
 }
 
- // Action to handle project management - Return plain objects for type safety
+// Action to handle project management - Return plain objects for type safety
 export async function action({ request, context }: ActionFunctionArgs) {
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
@@ -72,7 +72,10 @@ export async function action({ request, context }: ActionFunctionArgs) {
 			console.error("Failed to delete project:", error);
 			return {
 				success: false,
-				error: (error instanceof Error ? error.message : "Failed to delete project") || "Failed to delete project",
+				error:
+					(error instanceof Error
+						? error.message
+						: "Failed to delete project") || "Failed to delete project",
 			} as const;
 		}
 	}

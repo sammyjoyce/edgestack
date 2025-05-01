@@ -1,14 +1,15 @@
-import React, { Fragment } from "react";
+import clsx from "clsx";
 import type {
 	SerializedEditorState,
-	SerializedLexicalNode,
-	SerializedTextNode,
-	SerializedLinkNode,
 	SerializedHeadingNode,
-	SerializedListNode,
+	SerializedLexicalNode,
+	SerializedLinkNode,
 	SerializedListItemNode,
+	SerializedListNode,
+	SerializedTextNode,
 } from "lexical";
-import clsx from "clsx";
+import type React from "react";
+import { Fragment } from "react";
 // Optional: If you want to render internal links using react-router
 // import { Link as RouterLink } from "react-router-dom";
 
@@ -102,7 +103,9 @@ function renderNode(node: SerializedLexicalNode, key: number): React.ReactNode {
 			// Optionally log unhandled node types
 			// console.warn("Unhandled Lexical node type:", node.type);
 			// Render children for unknown block-level nodes, or null for unknown inline nodes
-			return "children" in node ? <Fragment key={key}>{children}</Fragment> : null;
+			return "children" in node ? (
+				<Fragment key={key}>{children}</Fragment>
+			) : null;
 	}
 }
 

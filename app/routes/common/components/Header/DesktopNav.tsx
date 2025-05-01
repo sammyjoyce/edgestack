@@ -1,129 +1,72 @@
-import { Popover } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import clsx from "clsx";
-import type React from "react";
-import { NavLink, type To } from "react-router"; // Import To type
+import type { JSX, MouseEvent } from "react";
+import type { MenuItem, MenuItemAnchor, MenuItemRoute, Path } from ".";
+import { Button } from "../ui/Button";
 
-interface MenuItem {
-	name: string;
-	// Use To type for internal links, string for external links or fragments
-	path: To | string;
-	isRouteLink?: boolean;
-	submenu?: { name: string; path: string }[];
+/* ─── Props ──────────────────────────────────────── */
+
+export interface DesktopNavProps {
+	menuItems: readonly MenuItem[];
+	scrollToSection: (e: MouseEvent<HTMLAnchorElement>, id: string) => void;
 }
 
-interface DesktopNavProps {
-	menuItems: MenuItem[];
-	scrollToSection: (
-		event: React.MouseEvent<HTMLAnchorElement>,
-		sectionId: string,
-	) => void;
+/* ─── Type guards ────────────────────────────────── */
+
+const isRoute = (i: MenuItem): i is MenuItemRoute =>
+	"isRouteLink" in i && i.isRouteLink;
+
+const isAnchorPath = (p: Path): p is `#${string}` | `http${string}` =>
+	typeof p === "string";
+
+/* ─── Helpers ────────────────────────────────────── */
+
+function LinkButton(
+	item: MenuItemRoute | MenuItemAnchor,
+	scrollTo: DesktopNavProps["scrollToSection"],
+) {
+	if (isRoute(item)) {
+		return (
+			<Button key={item.name} to={item.path}>
+				{item.name}
+			</Button>
+		);
+	}
+
+	// anchor / external:
+	const href = item.path;
+	const id =
+		isAnchorPath(href) && href.startsWith("#") ? href.slice(1) : undefined;
+
+	return (
+		<Button
+			key={item.name}
+			href={href}
+			onClick={id ? (e) => scrollTo(e, id) : undefined}
+		>
+			{item.name}
+		</Button>
+	);
 }
+
+/* ─── Component ──────────────────────────────────── */
 
 export default function DesktopNav({
 	menuItems,
 	scrollToSection,
-}: DesktopNavProps): React.JSX.Element {
-	// Changed to React.JSX.Element
+}: DesktopNavProps): JSX.Element {
+	const [left, right] = [menuItems.slice(0, 3), menuItems.slice(3)];
+
 	return (
 		<>
-			{/* Left navigation items */}
-			<div className="hidden lg:flex lg:items-center lg:gap-x-6">
-				{menuItems.slice(0, 2).map((item) =>
-					item.submenu ? (
-						<Popover key={item.name} className="relative">
-							{({ open }) => (
-								<>
-									<Popover.Button
-										className={clsx(
-											"flex items-center gap-x-1 font-semibold text-base text-gray-300 transition-all duration-300 ease-in-out hover:text-gray-100",
-											open && "text-gray-100",
-										)}
-									>
-										{item.name}
-										<ChevronDownIcon
-											className={clsx(
-												"h-5 w-5 flex-none text-gray-400 transition-transform duration-300",
-												open && "rotate-180 text-gray-100",
-											)}
-											aria-hidden="true"
-										/>
-									</Popover.Button>
-									<Popover.Panel className="-translate-x-1/2 absolute left-1/2 z-10 mt-3 w-screen max-w-min transform px-2">
-										<div className="overflow-hidden rounded-lg bg-gray-900/95 shadow-lg ring-1 ring-gray-800 backdrop-blur-xs">
-											<div className="relative grid gap-6 px-5 py-6 sm:gap-8 sm:p-8">
-												{item.submenu?.map(
-													(
-														subItem, // Use optional chaining
-													) => (
-														<NavLink
-															key={subItem.name}
-															to={subItem.path}
-															className="-m-3 flex items-start rounded-lg p-3 hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-800/50"
-															onClick={(e) => scrollToSection(e, subItem.path)}
-														>
-															<div className="ml-4">
-																<p className="font-medium text-gray-300 text-sm hover:text-gray-100">
-																	{subItem.name}
-																</p>
-															</div>
-														</NavLink>
-													),
-												)}
-											</div>
-										</div>
-									</Popover.Panel>
-								</>
-							)}
-						</Popover>
-					) : item.isRouteLink ? (
-						// Use typed 'to' for route links
-						<NavLink
-							key={item.name}
-							to={item.path as To} // Cast to To for NavLink
-							className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-						>
-							{item.name}
-						</NavLink>
-					) : (
-						// Use anchor tag for fragment identifiers
-						<a
-							key={item.name}
-							href={item.path as string} // Cast to string for href
-							className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-							onClick={(e) => scrollToSection(e, item.path as string)} // Cast to string for scrollToSection
-						>
-							{item.name}
-						</a>
-					),
-				)}
-			</div>
+			<nav className="hidden lg:flex items-center gap-x-4">
+				{left.map((i) => LinkButton(i, scrollToSection))}
+			</nav>
 
-			{/* Right navigation items */}
-			<div className="hidden lg:flex lg:items-center lg:gap-x-6">
-				{menuItems.slice(2).map((item) =>
-					item.isRouteLink ? (
-						// Use typed 'to' for route links
-						<NavLink
-							key={item.name}
-							to={item.path as To} // Cast to To for NavLink
-							className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-						>
-							{item.name}
-						</NavLink>
-					) : (
-						// Use anchor tag for fragment identifiers
-						<a
-							key={item.name}
-							href={item.path as string} // Cast to string for href
-							className="relative rounded-full px-4 py-2 font-semibold text-base tracking-tight transition-all duration-300 ease-in-out after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-left after:scale-x-0 after:bg-black/70 after:transition-transform after:duration-300 after:ease-in-out hover:bg-white/70 hover:shadow-lg hover:after:scale-x-100 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-black/60 focus-visible:ring-offset-2"
-							onClick={(e) => scrollToSection(e, item.path as string)} // Cast to string for scrollToSection
-						>
-							{item.name}
-						</a>
-					),
-				)}
-			</div>
+			<nav className="hidden lg:flex items-center gap-x-4">
+				{right.map((i) => LinkButton(i, scrollToSection))}
+				<Button to="tel:0404289437" size="xs" invert>
+					0404 289 437
+				</Button>
+			</nav>
 		</>
 	);
 }

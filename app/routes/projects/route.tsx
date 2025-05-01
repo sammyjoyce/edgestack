@@ -5,10 +5,10 @@ import {
 	data,
 } from "react-router";
 
-import { getAllContent, getAllProjects } from "~/routes/common/db";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
+import { getAllContent, getAllProjects } from "~/routes/common/db";
 
 export const meta: MetaFunction = () => {
 	return [

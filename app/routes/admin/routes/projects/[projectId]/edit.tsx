@@ -1,4 +1,3 @@
-import { getProjectById, updateProject } from "~/routes/common/db";
 import React from "react";
 import { Form, Link, redirect, useLoaderData } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
@@ -7,6 +6,7 @@ import type { Project } from "~/database/schema";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { Button } from "~/routes/common/components/ui/Button";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
 // Import generated types if available (assuming generouted)
 import type { Route } from "./+types/[projectId]/edit"; // Adjust path if needed
@@ -27,7 +27,8 @@ type ProjectActionData = {
 export async function loader({
 	params, // params will be typed by Route.LoaderArgs
 	context, // context will be typed by Route.LoaderArgs
-}: Route.LoaderArgs): Promise<ProjectLoaderData> { // Use generated type
+}: Route.LoaderArgs): Promise<ProjectLoaderData> {
+	// Use generated type
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
@@ -51,7 +52,8 @@ export async function action({
 	request,
 	params,
 	context, // context will be typed by Route.ActionArgs
-}: Route.ActionArgs) { // Use generated type
+}: Route.ActionArgs) {
+	// Use generated type
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
@@ -85,7 +87,11 @@ export async function action({
 				const imageKey = `project-${projectId}-${Date.now()}`;
 
 				// Pass the FormData file to the image upload handler with all required parameters
-				const uploadResult = await handleImageUpload(imageFile, imageKey, context);
+				const uploadResult = await handleImageUpload(
+					imageFile,
+					imageKey,
+					context,
+				);
 				if (uploadResult && typeof uploadResult === "string") {
 					imageUrl = uploadResult;
 				} else {

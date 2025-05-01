@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion"; // Use framer-motion
 import clsx from "clsx"; // For combining class names
+import { motion } from "framer-motion"; // Use framer-motion
+import type React from "react";
+import { useState } from "react";
 
 // Basic cn utility function (replace with your preferred library if available)
 function cn(...inputs: (string | undefined | null | boolean)[]) {
@@ -66,7 +67,7 @@ export const Tabs = ({
 						{active.value === tab.value && (
 							<motion.div
 								layoutId="clickedbutton"
-								transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
+								transition={{ type: "spring", bounce: 0.12, duration: 0.5 }}
 								className={cn(
 									"absolute inset-0 bg-gray-100 border border-gray-300 rounded-full", // Adjusted active style
 									activeTabClassName,
@@ -123,7 +124,7 @@ export const FadeInDiv = ({
 						opacity: idx < 3 ? 1 - idx * 0.1 : 0,
 					}}
 					animate={{
-						y: isActive(tab) ? [0, 40, 0] : 0,
+						y: isActive(tab) ? [0, 15, 0] : 0,
 					}}
 					className={cn("w-full h-full absolute top-0 left-0", className)}
 				>

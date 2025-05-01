@@ -10,14 +10,11 @@
   "workers_dev": true,
   "vars": {
     "CLOUDFLARE_ACCOUNT_ID": "427aa00a5888cad78805c7128db1f817",
-    "CLOUDFLARE_DATABASE_ID": "89bb8c60-84fb-4f13-9320-e5cf623f4963"
-    // CLOUDFLARE_D1_TOKEN and PUBLIC_R2_URL are secrets and should NOT be here
-  },
-  "env": {
-    "production": {
-      // Production secrets (ADMIN_USERNAME, ADMIN_PASSWORD, JWT_SECRET, PUBLIC_R2_URL)
-      // must be set using `wrangler secret put --env production <KEY>`
-    }
+    "CLOUDFLARE_DATABASE_ID": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
+    // CLOUDFLARE_D1_TOKEN and PUBLIC_R2_URL are secrets and should NOT be here 
+    "ADMIN_USERNAME": "admin",
+    "ADMIN_PASSWORD": "admin",
+    "JWT_SECRET": "super_secret_squidward_tentacles"
   },
   "d1_databases": [
     {
@@ -30,7 +27,8 @@
   "r2_buckets": [
     {
       "binding": "ASSETS_BUCKET",
-      "bucket_name": "lush-assets"
+      "bucket_name": "lush-assets",
+      "preview_bucket_name": "lush-assets-dev"
       // Public URL for CMS image serving:
       // https://your-account-id-here.r2.cloudflarestorage.com/lush-assets/
       // IMPORTANT: Set the PUBLIC_R2_URL secret for production:

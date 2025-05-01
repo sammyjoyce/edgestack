@@ -18,7 +18,8 @@ type ProjectActionData = {
 export async function action({
 	request,
 	context, // context will be typed by Route.ActionArgs
-}: Route.ActionArgs): Promise<Response | ProjectActionData> { // Use generated type
+}: Route.ActionArgs): Promise<Response | ProjectActionData> {
+	// Use generated type
 	const formData = await request.formData();
 
 	const title = formData.get("title")?.toString() ?? "";

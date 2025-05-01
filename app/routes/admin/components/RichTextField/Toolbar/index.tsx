@@ -16,11 +16,17 @@ import {
 	CAN_UNDO_COMMAND,
 	FORMAT_ELEMENT_COMMAND,
 	FORMAT_TEXT_COMMAND,
-	type TextFormatType,
 	REDO_COMMAND,
+	type TextFormatType,
 	UNDO_COMMAND,
 } from "lexical";
-import { type JSX, type ReactNode, useCallback, useEffect, useState } from "react";
+import {
+	type JSX,
+	type ReactNode,
+	useCallback,
+	useEffect,
+	useState,
+} from "react";
 
 // Simple divider component
 function Divider() {
@@ -183,7 +189,9 @@ export default function LexicalToolbar(): JSX.Element {
 			</button>
 			<button
 				type="button"
-				onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify")}
+				onClick={() =>
+					editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify")
+				}
 				className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200"
 				aria-label="Justify Align"
 			>

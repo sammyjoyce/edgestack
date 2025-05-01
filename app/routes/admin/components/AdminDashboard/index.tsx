@@ -13,16 +13,16 @@ import { Button } from "~/routes/common/components/ui/Button";
 // UI primitives
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { Tabs } from "~/routes/common/components/ui/Tabs"; // Import Tabs component
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
+import { Tabs } from "~/routes/common/components/ui/Tabs"; // Import Tabs component
 
 import { AboutSectionEditor } from "~/routes/admin/components/AboutSectionEditor";
 import { ContactSectionEditor } from "~/routes/admin/components/ContactSectionEditor";
 import { HeroSectionEditor } from "~/routes/admin/components/HeroSectionEditor";
+import { ImageUploadSection } from "~/routes/admin/components/ImageUploadSection"; // Import ImageUploadSection
 // Admin components
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { ServicesSectionEditor } from "~/routes/admin/components/ServicesSectionEditor";
-import { ImageUploadSection } from "~/routes/admin/components/ImageUploadSection"; // Import ImageUploadSection
 
 // Helper functionality moved to util function if needed
 

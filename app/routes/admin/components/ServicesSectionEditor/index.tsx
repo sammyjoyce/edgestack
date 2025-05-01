@@ -182,7 +182,8 @@ export function ServicesSectionEditor({
 									name={field.textKey}
 									initialJSON={initialContent[field.textKey] || ""}
 									disabled={
-										fetcher.state === "submitting" || fetcher.state === "loading"
+										fetcher.state === "submitting" ||
+										fetcher.state === "loading"
 									}
 								/>
 							</div>

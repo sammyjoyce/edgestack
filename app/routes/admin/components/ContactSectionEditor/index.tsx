@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import type { FetcherWithComponents } from "react-router";
 
 import RichTextField from "~/routes/admin/components/RichTextField";

@@ -7,7 +7,13 @@ import {
 	// useLoaderData, // Not needed if loader only redirects or returns null
 } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { COOKIE_MAX_AGE, COOKIE_NAME, sign, getSessionCookie, verify } from "~/routes/common/utils/auth";
+import {
+	COOKIE_MAX_AGE,
+	COOKIE_NAME,
+	getSessionCookie,
+	sign,
+	verify,
+} from "~/routes/common/utils/auth";
 // Import generated types from proper path
 import type { Route } from "./+types/login";
 
@@ -133,7 +139,11 @@ export default function LoginRoute() {
 
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
 					<div className="bg-white py-8 px-4 shadow-xs sm:rounded-lg sm:px-10">
-						<Form method="post" className="gap-6 flex flex-col" onSubmit={handleSubmit}>
+						<Form
+							method="post"
+							className="gap-6 flex flex-col"
+							onSubmit={handleSubmit}
+						>
 							{effectiveError && (
 								<div className="rounded-md bg-red-100 border border-red-400 p-4 mb-4">
 									<div className="flex items-center">
