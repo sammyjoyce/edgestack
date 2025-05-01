@@ -5,6 +5,8 @@ import { Button } from "~/routes/common/components/ui/Button";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { createProject } from "~/routes/common/db"; // Import createProject
 import RichTextField from "../../components/RichTextField";
+// Import generated types if available (assuming generouted)
+import type { Route } from "./+types/new"; // Adjust path if needed
 
 // Define return types for action
 type ProjectActionData = {
@@ -15,13 +17,13 @@ type ProjectActionData = {
 // Return plain objects or Response for type safety
 export async function action({
 	request,
-	context,
-}: ActionFunctionArgs): Promise<Response | ProjectActionData> {
+	context, // context will be typed by Route.ActionArgs
+}: Route.ActionArgs): Promise<Response | ProjectActionData> { // Use generated type
 	const formData = await request.formData();
 
-	const title = formData.get("title") as string;
-	const description = formData.get("description") as string;
-	const details = formData.get("details") as string;
+	const title = formData.get("title")?.toString() ?? "";
+	const description = formData.get("description")?.toString() ?? "";
+	const details = formData.get("details")?.toString() ?? "";
 	const imageUrl = formData.get("imageUrl") as string | undefined; // Allow undefined
 	const isFeatured = formData.has("isFeatured");
 	const sortOrder =

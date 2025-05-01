@@ -8,8 +8,8 @@ import RichTextField from "~/routes/admin/components/RichTextField";
 import { Button } from "~/routes/common/components/ui/Button";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { handleImageUpload } from "~/utils/upload.server";
-// Define route params type for type safety
-type RouteParams = { projectId: string };
+// Import generated types if available (assuming generouted)
+import type { Route } from "./+types/[projectId]/edit"; // Adjust path if needed
 
 // Define return types for loader and action
 type ProjectLoaderData = {
@@ -25,12 +25,9 @@ type ProjectActionData = {
 
 // Return plain objects with proper typing
 export async function loader({
-	params,
-	context,
-}: LoaderFunctionArgs & {
-	params: RouteParams;
-	context: { db: any };
-}): Promise<ProjectLoaderData> {
+	params, // params will be typed by Route.LoaderArgs
+	context, // context will be typed by Route.LoaderArgs
+}: Route.LoaderArgs): Promise<ProjectLoaderData> { // Use generated type
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
@@ -53,11 +50,8 @@ export async function loader({
 export async function action({
 	request,
 	params,
-	context,
-}: ActionFunctionArgs & {
-	params: RouteParams;
-	context: { db: any; cloudflare?: { env?: any } };
-}) {
+	context, // context will be typed by Route.ActionArgs
+}: Route.ActionArgs) { // Use generated type
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
@@ -66,9 +60,9 @@ export async function action({
 
 	const formData = await request.formData();
 
-	const title = formData.get("title") as string;
-	const description = formData.get("description") as string;
-	const details = formData.get("details") as string;
+	const title = formData.get("title")?.toString() ?? "";
+	const description = formData.get("description")?.toString() ?? "";
+	const details = formData.get("details")?.toString() ?? "";
 	const isFeatured = formData.has("isFeatured");
 	const sortOrder =
 		Number.parseInt(formData.get("sortOrder") as string, 10) || 0;
@@ -91,13 +85,7 @@ export async function action({
 				const imageKey = `project-${projectId}-${Date.now()}`;
 
 				// Pass the FormData file to the image upload handler with all required parameters
-				// Use the original context - the handleImageUpload function just needs access to ASSETS_BUCKET
-				// Use a type assertion to bypass TypeScript's type checking while maintaining runtime compatibility
-				const uploadResult = await handleImageUpload(
-					imageFile,
-					imageKey,
-					context as any,
-				);
+				const uploadResult = await handleImageUpload(imageFile, imageKey, context);
 				if (uploadResult && typeof uploadResult === "string") {
 					imageUrl = uploadResult;
 				} else {

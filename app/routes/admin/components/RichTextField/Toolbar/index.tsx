@@ -7,13 +7,12 @@ import {
 	FORMAT_TEXT_COMMAND,
 	type TextFormatType,
 } from "lexical";
-import type React from "react";
-import { type JSX, useCallback, useEffect, useState } from "react";
+import { type JSX, type ReactNode, useCallback, useEffect, useState } from "react";
 
 interface ToolbarButton {
 	label: string;
 	arg: TextFormatType;
-	icon: React.ReactNode;
+	icon: ReactNode;
 }
 
 const TOOLBAR_BUTTONS: ToolbarButton[] = [
