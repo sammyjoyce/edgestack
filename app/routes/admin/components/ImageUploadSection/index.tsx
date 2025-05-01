@@ -132,7 +132,7 @@ export function ImageUploadSection({
 								method="post"
 								action="/admin/upload"
 								encType="multipart/form-data"
-								className="flex flex-col items-center bg-white rounded-lg shadow-sm p-4 gap-2 border"
+								className="flex flex-col items-center gap-2 pt-4"
 								aria-describedby={`help-${key}`}
 							>
 								<label
