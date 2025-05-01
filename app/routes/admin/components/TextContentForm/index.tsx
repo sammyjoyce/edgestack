@@ -126,7 +126,7 @@ export function TextContentForm({
 			ref={ref}
 			method="post"
 			aria-label="Text Content Editor"
-			className="flex flex-col gap-6 bg-gray-50 rounded-lg shadow-sm p-6"
+			className="flex flex-col gap-6 bg-gray-50 rounded-lg shadow-xs p-6"
 			onSubmit={handleSave}
 		>
 			<div className="flex items-center gap-4 mb-2">
