@@ -97,7 +97,7 @@ export default function SectionSorter({
 
 	return (
 		<section
-			className="bg-white p-6 rounded-lg shadow-sm border border-gray-200"
+			className="bg-white p-6 rounded-lg shadow-xs border border-gray-200"
 			aria-labelledby="section-order-heading"
 		>
 			{" "}
@@ -195,7 +195,7 @@ function SortableItem({
 			{...attributes}
 			{...listeners}
 			style={style}
-			className={`flex items-center justify-between rounded border border-gray-200 bg-white px-4 py-2 shadow-sm cursor-grab focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+			className={`flex items-center justify-between rounded border border-gray-200 bg-white px-4 py-2 shadow-xs cursor-grab focus:outline-hidden focus:ring-2 focus:ring-blue-500 ${
 				/* Adjusted border/focus */
 				isDragging
 					? "opacity-50 ring-2 ring-blue-500"

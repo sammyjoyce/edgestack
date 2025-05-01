@@ -59,7 +59,7 @@ export function AboutSectionEditor({
 	}, [isUploading, uploadStatus]); // Use renamed prop in dependency array
 
 	return (
-		<div className="overflow-hidden bg-white sm:rounded-lg shadow-sm border border-gray-200">
+		<div className="overflow-hidden bg-white sm:rounded-lg shadow-xs border border-gray-200">
 			{" "}
 			{/* Use white bg, adjusted shadow/border */}
 			<div className="px-4 py-5 sm:p-6">

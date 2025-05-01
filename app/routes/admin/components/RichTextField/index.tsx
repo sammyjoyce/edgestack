@@ -73,7 +73,7 @@ export default function RichTextField({
 					<RichTextPlugin
 						contentEditable={
 							<ContentEditable
-								className={`prose prose-sm max-w-none min-h-[8rem] border border-gray-300 rounded-b-md rounded-tr-md p-3 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white ${
+								className={`prose prose-sm max-w-none min-h-[8rem] border border-gray-300 rounded-b-md rounded-tr-md p-3 focus:outline-hidden focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white ${
 									/* Adjusted prose size, border, focus, bg */
 									disabled ? "opacity-50 bg-gray-50" : ""
 								}`}

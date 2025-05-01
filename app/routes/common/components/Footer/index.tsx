@@ -162,7 +162,7 @@ export default function Footer(): React.JSX.Element {
 									<li className="max-w-[200px] sm:max-w-full">
 										<a
 											href="mailto:info@lushconstructions.com.au" // Use mailto: prefix
-											className="-mx-2 block overflow-hidden text-ellipsis rounded px-2 py-1 text-[13px] text-gray-300 leading-tight transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
+											className="-mx-2 block overflow-hidden truncate rounded px-2 py-1 text-[13px] text-gray-300 leading-tight transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
 										>
 											info@lushconstructions.com.au
 										</a>

@@ -104,7 +104,7 @@ export default function LoginRoute() {
 				</div>
 
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-					<div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+					<div className="bg-white py-8 px-4 shadow-sm sm:rounded-lg sm:px-10">
 						<Form method="post" className="space-y-6" onSubmit={handleSubmit}>
 							{effectiveError && (
 								<div className="rounded-md bg-red-100 border border-red-400 p-4 mb-4">
@@ -153,7 +153,7 @@ export default function LoginRoute() {
 										type="text"
 										autoComplete="username"
 										required
-										className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+										className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-xs focus:border-blue-500 focus:outline-hidden focus:ring-blue-500 sm:text-sm"
 									/>
 								</div>
 							</div>
@@ -172,7 +172,7 @@ export default function LoginRoute() {
 										type="password"
 										autoComplete="current-password"
 										required
-										className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+										className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-xs focus:border-blue-500 focus:outline-hidden focus:ring-blue-500 sm:text-sm"
 									/>
 								</div>
 							</div>
