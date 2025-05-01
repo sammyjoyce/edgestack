@@ -98,7 +98,7 @@ export function ContactSectionEditor({
 						{/* Adjusted gap */}
 						<label
 							htmlFor={key}
-							className="block text-sm font-medium text-gray-700"
+							className="block text-sm font-medium text-gray-700 mb-1"
 						>
 							{" "}
 							{/* Standard label */}

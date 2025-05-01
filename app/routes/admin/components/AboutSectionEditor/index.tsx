@@ -73,7 +73,7 @@ export function AboutSectionEditor({
 						{/* Reduced gap */}
 						<label
 							htmlFor="about_title"
-							className="block text-sm font-medium text-gray-700" /* Standard label */
+							className="block text-sm font-medium text-gray-700 mb-1" /* Standard label */
 						>
 							About Title
 						</label>
@@ -87,7 +87,7 @@ export function AboutSectionEditor({
 						/>
 						<label
 							htmlFor="about_text"
-							className="block text-sm font-medium text-gray-700 mt-3"
+							className="block text-sm font-medium text-gray-700 mb-1 mt-3"
 						>
 							{" "}
 							{/* Standard label, added margin */}

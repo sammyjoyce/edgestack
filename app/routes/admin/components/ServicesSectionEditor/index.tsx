@@ -123,7 +123,7 @@ export function ServicesSectionEditor({
 						{/* Use gap for consistent spacing */}
 						<label
 							htmlFor="services_intro_title"
-							className="block text-sm font-medium text-gray-700" /* Standard label */
+							className="block text-sm font-medium text-gray-700 mb-1" /* Standard label */
 						>
 							Services Intro Title
 						</label>
@@ -137,7 +137,7 @@ export function ServicesSectionEditor({
 						/>
 						<label
 							htmlFor="services_intro_text"
-							className="block text-sm font-medium text-gray-700 pt-3" /* Standard label, added padding */
+							className="block text-sm font-medium text-gray-700 mb-1 pt-3" /* Standard label, added padding */
 						>
 							Services Intro Text
 						</label>
@@ -160,7 +160,7 @@ export function ServicesSectionEditor({
 								{/* Reduced gap */}
 								<label
 									htmlFor={field.titleKey}
-									className="block text-sm font-medium text-gray-700" /* Standard label */
+									className="block text-sm font-medium text-gray-700 mb-1" /* Standard label */
 								>
 									{field.label} Title
 								</label>
@@ -174,7 +174,7 @@ export function ServicesSectionEditor({
 								/>
 								<label
 									htmlFor={field.textKey}
-									className="block text-sm font-medium text-gray-700 pt-3" /* Standard label, added padding */
+									className="block text-sm font-medium text-gray-700 mb-1 pt-3" /* Standard label, added padding */
 								>
 									{field.label} Text
 								</label>

@@ -119,7 +119,7 @@ export function ImageUploadSection({
 		<section
 			id="image-uploads"
 			ref={ref}
-			className="bg-gray-50 rounded-lg shadow p-6 mt-8"
+			className="bg-white border border-gray-200 rounded-lg shadow-xs p-6 mt-8"
 			aria-labelledby="image-uploads-heading"
 		>
 			<SectionIntro title="Image Uploads" className="mb-4" />
@@ -137,7 +137,7 @@ export function ImageUploadSection({
 							>
 								<label
 									htmlFor={`${key}_input`}
-									className="font-bold text-gray-700 self-start"
+									className="block text-sm font-medium text-gray-700 mb-1 self-start"
 								>
 									{label}
 									<span

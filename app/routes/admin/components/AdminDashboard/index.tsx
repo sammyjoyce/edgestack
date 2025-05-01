@@ -205,7 +205,7 @@ export default function AdminDashboard(): React.JSX.Element {
 								type="text"
 								name="projects_intro_title"
 								id="projects_intro_title"
-								className="block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 text-sm"
+								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
 								defaultValue={
 									safeContent.projects_intro_title || "Recent Projects"
 								}
@@ -231,7 +231,7 @@ export default function AdminDashboard(): React.JSX.Element {
 								name="projects_intro_text"
 								id="projects_intro_text"
 								rows={3}
-								className="block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 text-sm"
+								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
 								defaultValue={
 									safeContent.projects_intro_text ||
 									"Take a look at some of our recent work."

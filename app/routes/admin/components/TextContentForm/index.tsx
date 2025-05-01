@@ -10,6 +10,7 @@ import { useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { Pill, PillStatus } from "~/components/ui/Pill"; // Adjust path if needed
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm"; // Import the hook
+import { Button } from "~/routes/common/components/ui/Button";
 
 // Define the expected shape of action response data to match the hook
 type ActionResponseData = {
@@ -134,11 +135,11 @@ export function TextContentForm({
 			ref={ref}
 			method="post"
 			aria-label="Text Content Editor"
-			className="flex flex-col gap-6 bg-gray-50 rounded-lg shadow-xs p-6"
+			className="flex flex-col gap-6 bg-white border border-gray-200 rounded-lg shadow-xs p-6"
 			onSubmit={handleSave}
 		>
 			<div className="flex items-center gap-4 mb-2">
-				<h2 className="text-xl font-semibold text-gray-800">Text Content</h2>
+				<h2 className="text-xl font-semibold text-gray-900">Text Content</h2>
 				<div className="flex items-center gap-2 ml-auto">
 					<label
 						htmlFor="auto-save-toggle"
@@ -220,7 +221,7 @@ export function TextContentForm({
 					<div className="flex flex-col gap-1" key={key}>
 						<label
 							htmlFor={key}
-							className="font-bold text-gray-700 flex items-center"
+							className="block text-sm font-medium text-gray-700 mb-1"
 						>
 							{label}
 							<Tooltip id={`help-${key}`}>{help}</Tooltip>
@@ -236,8 +237,8 @@ export function TextContentForm({
 							onBlur={handleBlur}
 							onChange={handleChange}
 							tabIndex={0}
-							className={`border rounded p-2 focus:outline-hidden focus:ring-2 focus:ring-blue-400 bg-white ${
-								errors[key] ? "border-red-500" : ""
+							className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm ${
+								errors[key] ? "border-red-500" : "border-gray-300"
 							}`}
 						/>
 						{errors[key] && (
@@ -250,21 +251,21 @@ export function TextContentForm({
 			</div>
 			{!autoSave && (
 				<div className="flex gap-2 mt-4">
-					<button
+					<Button
 						type="submit"
-						className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-hidden focus:ring-2 focus:ring-blue-400"
+						className="bg-blue-600 text-white hover:bg-blue-700"
 						aria-label="Save changes"
 					>
 						Save
-					</button>
-					<button
+					</Button>
+					<Button
 						type="button"
 						onClick={handleUndo}
-						className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 focus:outline-hidden focus:ring-2 focus:ring-blue-400"
+						variant="secondary"
 						aria-label="Undo changes"
 					>
 						Undo
-					</button>
+					</Button>
 				</div>
 			)}
 		</form>

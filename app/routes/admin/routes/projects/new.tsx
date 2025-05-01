@@ -93,7 +93,7 @@ export function NewProjectRoute() {
 							name="title"
 							id="title"
 							required
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
 							placeholder="Enter project title"
 						/>
 					</div>
@@ -110,7 +110,7 @@ export function NewProjectRoute() {
 							id="description"
 							rows={3}
 							required
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
 							placeholder="Brief description of the project"
 						/>
 					</div>
@@ -137,7 +137,7 @@ export function NewProjectRoute() {
 								type="text"
 								name="imageUrl"
 								id="imageUrl"
-								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
 								placeholder="URL to project image (optional)"
 							/>
 							<Button
@@ -153,7 +153,7 @@ export function NewProjectRoute() {
 						</div>
 					</div>
 
-					<div className="flex justify-end gap-3 pt-4">
+					<div className="flex justify-end gap-3 pt-4 border-t border-gray-200 mt-6">
 						<Button
 							type="button"
 							variant="secondary"
