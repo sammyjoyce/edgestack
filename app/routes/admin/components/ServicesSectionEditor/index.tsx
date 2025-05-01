@@ -123,8 +123,8 @@ export function ServicesSectionEditor({
 						{" "}
 						{/* Use gap for consistent spacing */}
 						<label
-							htmlFor="services_intro_title"
-							className="block text-sm font-medium text-gray-700 mb-1" /* Standard label */
+							htmlFor="services_intro_title" // Standard label
+							className="block text-sm font-medium text-secondary mb-1"
 						>
 							Services Intro Title
 						</label>
@@ -133,12 +133,12 @@ export function ServicesSectionEditor({
 							id="services_intro_title"
 							rows={2}
 							defaultValue={initialContent.services_intro_title || ""}
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" /* Standard input */
+							className="block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary text-sm text-foreground-light bg-screen-light" /* Standard input */
 							onBlur={handleBlur}
 						/>
 						<label
-							htmlFor="services_intro_text"
-							className="block text-sm font-medium text-gray-700 mb-1 pt-3" /* Standard label, added padding */
+							htmlFor="services_intro_text" // Standard label, added padding
+							className="block text-sm font-medium text-secondary mb-1 pt-3"
 						>
 							Services Intro Text
 						</label>
@@ -153,14 +153,14 @@ export function ServicesSectionEditor({
 					{serviceFields.map((field, idx) => (
 						<div
 							key={field.label}
-							className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-200 pt-6 mt-6" /* Adjusted border/padding/margin */
+							className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-neutral-light pt-6 mt-6" /* Adjusted border/padding/margin */
 						>
 							<div className="flex flex-col gap-y-1.5">
 								{" "}
 								{/* Reduced gap */}
 								<label
-									htmlFor={field.titleKey}
-									className="block text-sm font-medium text-gray-700 mb-1" /* Standard label */
+									htmlFor={field.titleKey} // Standard label
+									className="block text-sm font-medium text-secondary mb-1"
 								>
 									{field.label} Title
 								</label>
@@ -169,12 +169,12 @@ export function ServicesSectionEditor({
 									id={field.titleKey}
 									rows={2}
 									defaultValue={initialContent[field.titleKey] || ""}
-									className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" /* Standard input */
+									className="block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary text-sm text-foreground-light bg-screen-light" /* Standard input */
 									onBlur={handleBlur}
 								/>
 								<label
-									htmlFor={field.textKey}
-									className="block text-sm font-medium text-gray-700 mb-1 pt-3" /* Standard label, added padding */
+									htmlFor={field.textKey} // Standard label, added padding
+									className="block text-sm font-medium text-secondary mb-1 pt-3"
 								>
 									{field.label} Text
 								</label>
@@ -189,20 +189,20 @@ export function ServicesSectionEditor({
 							<div className="flex flex-col items-center justify-start pt-1">
 								{" "}
 								{/* Align top */}
-								<label
-									className="block text-sm font-medium text-gray-700 mb-1 self-start" /* Standard label, align left */
+								<label // Standard label, align left
+									className="block text-sm font-medium text-secondary mb-1 self-start"
 									htmlFor={`service-image-upload-${idx}`}
 								>
 									{field.label} Image
 								</label>
-								<p className="text-xs text-gray-500 mb-2 self-start">
+								<p className="text-xs text-neutral-dark mb-2 self-start">
 									{" "}
 									{/* Help text */}
 									Upload or drag and drop an image for the{" "}
 									{field.label.toLowerCase()}.
 								</p>
-								<div
-									className="text-sm text-gray-600 mb-2 h-5 self-start" /* Align left */
+								<div // Align left
+									className="text-sm text-tertiary mb-2 h-5 self-start"
 									role="status"
 									aria-live="polite"
 								>
