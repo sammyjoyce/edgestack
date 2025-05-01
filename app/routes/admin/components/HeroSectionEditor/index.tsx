@@ -81,7 +81,7 @@ export function HeroSectionEditor({
 							id="hero_title"
 							rows={2}
 							defaultValue={initialContent.hero_title || ""}
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" /* Standard input */
+							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm" /* Standard input */
 							onBlur={handleBlur}
 						/>
 						<label
@@ -95,7 +95,7 @@ export function HeroSectionEditor({
 							id="hero_subtitle"
 							rows={3}
 							defaultValue={initialContent.hero_subtitle || ""}
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" /* Standard input */
+							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm" /* Standard input */
 							onBlur={handleBlur}
 						/>
 					</div>
