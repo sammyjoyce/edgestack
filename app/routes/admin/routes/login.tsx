@@ -1,8 +1,13 @@
 import type React from "react";
 import { useState } from "react";
-import { Form, redirect, useActionData } from "react-router";
+import {
+	Form,
+	redirect,
+	useActionData,
+	// useLoaderData, // Not needed if loader only redirects or returns null
+} from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { COOKIE_MAX_AGE, COOKIE_NAME, sign } from "~/routes/common/utils/auth";
+import { COOKIE_MAX_AGE, COOKIE_NAME, sign, getSessionCookie, verify } from "~/routes/common/utils/auth";
 // Import generated types from proper path
 import type { Route } from "./+types/login";
 
@@ -66,6 +71,29 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		success: false,
 		error: "Invalid username or password",
 	};
+};
+
+// Add loader to check authentication status before rendering the login page
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
+	const sessionValue = getSessionCookie(request);
+	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+
+	if (sessionValue && jwtSecret) {
+		try {
+			const isAuthenticated = await verify(sessionValue, jwtSecret);
+			if (isAuthenticated) {
+				// If already logged in, redirect to the admin dashboard
+				return redirect("/admin");
+			}
+		} catch (e) {
+			// Ignore verification errors, just means they aren't logged in
+			console.error("Login loader verification error:", e);
+		}
+	}
+
+	// If not logged in or verification fails, allow rendering the login page
+	// Returning null is standard practice here
+	return null;
 };
 
 export default function LoginRoute() {
