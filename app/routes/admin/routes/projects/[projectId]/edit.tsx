@@ -179,7 +179,7 @@ export default function Component() {
 			<Form
 				method="post"
 				encType="multipart/form-data"
-				className="bg-white shadow-sm border border-gray-200 rounded-lg p-6 space-y-6"
+				className="bg-white shadow-xs border border-gray-200 rounded-lg p-6 space-y-6"
 			>
 				<div>
 					<label

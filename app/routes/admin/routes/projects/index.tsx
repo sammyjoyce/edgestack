@@ -112,7 +112,7 @@ export function ProjectsIndexRoute() {
 					No projects found. Add your first project!
 				</p>
 			) : (
-				<div className="bg-white shadow-sm border border-gray-200 overflow-hidden rounded-lg">
+				<div className="bg-white shadow-xs border border-gray-200 overflow-hidden rounded-lg">
 					<ul className="divide-y divide-gray-200">
 						{projects.map((project: Project) => (
 							<li
@@ -131,7 +131,7 @@ export function ProjectsIndexRoute() {
 											{project.description || "No description"}
 										</p>
 									</div>
-									<div className="ml-4 flex-shrink-0 flex items-center space-x-3">
+									<div className="ml-4 shrink-0 flex items-center space-x-3">
 										<Button
 											as={Link}
 											to={`/admin/projects/${project.id}/edit`}

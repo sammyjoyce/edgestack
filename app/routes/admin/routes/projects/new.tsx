@@ -79,7 +79,7 @@ export function NewProjectRoute() {
 
 				<Form
 					method="post"
-					className="space-y-6 bg-white p-6 rounded-lg shadow-sm border border-gray-200"
+					className="space-y-6 bg-white p-6 rounded-lg shadow-xs border border-gray-200"
 				>
 					<div>
 						<label

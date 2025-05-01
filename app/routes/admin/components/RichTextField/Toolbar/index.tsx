@@ -72,7 +72,7 @@ export default function LexicalToolbar(): JSX.Element {
 					aria-label={btn.label}
 					aria-pressed={active[btn.arg] ?? false}
 					className={clsx(
-						"px-2 py-0.5 rounded border text-xs focus:outline-none transition-colors" /* Adjusted padding/size */,
+						"px-2 py-0.5 rounded border text-xs focus:outline-hidden transition-colors" /* Adjusted padding/size */,
 						active[btn.arg]
 							? "bg-blue-600 text-white border-blue-600" /* Adjusted colors */
 							: "border-transparent text-gray-600 hover:bg-gray-200 focus:ring-1 focus:ring-blue-500" /* Adjusted colors/focus */,

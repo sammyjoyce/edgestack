@@ -109,7 +109,7 @@ export function DeleteProjectRoute() {
 					</Button>
 				</div>
 
-				<div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+				<div className="bg-white p-6 rounded-lg shadow-xs border border-gray-200">
 					<div className="rounded-md bg-yellow-50 p-4 mb-6">
 						<div className="flex">
 							<div className="ml-3">
