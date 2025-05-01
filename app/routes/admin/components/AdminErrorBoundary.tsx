@@ -18,7 +18,7 @@ export function AdminErrorBoundary() {
 
 	return (
 		<div className="flex items-center justify-center min-h-[75vh]">
-			<div className="p-8 bg-white rounded-lg shadow-md max-w-md w-full">
+			<div className="p-8 bg-white rounded-lg shadow-xs border border-gray-200 max-w-md w-full">
 				<h1 className="text-2xl font-bold text-red-600 mb-3">{title}</h1>
 				<p className="text-gray-600 mb-6">{message}</p>
 				<div className="flex flex-col gap-4">
