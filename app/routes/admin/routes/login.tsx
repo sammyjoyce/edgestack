@@ -104,7 +104,7 @@ export default function LoginRoute() {
 				</div>
 
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-					<div className="bg-white py-8 px-4 shadow-sm sm:rounded-lg sm:px-10">
+					<div className="bg-white py-8 px-4 shadow-xs sm:rounded-lg sm:px-10">
 						<Form method="post" className="space-y-6" onSubmit={handleSubmit}>
 							{effectiveError && (
 								<div className="rounded-md bg-red-100 border border-red-400 p-4 mb-4">

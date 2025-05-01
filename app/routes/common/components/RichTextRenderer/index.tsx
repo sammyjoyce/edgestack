@@ -31,7 +31,7 @@ export default function RichTextRenderer({ json, className }: Props) {
 				<RichTextPlugin
 					contentEditable={
 						// Use a simple div for read-only display
-						<ContentEditable className="outline-none" readOnly={true} />
+						<ContentEditable className="outline-hidden" readOnly={true} />
 					}
 					// Placeholder component is optional for read-only
 					placeholder={null}
