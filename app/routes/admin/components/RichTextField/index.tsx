@@ -18,6 +18,15 @@ import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
 import type React from "react";
 import { useCallback, useMemo, useRef } from "react";
 
+/**
+ * RichTextField renders a Lexical rich text editor and manages its state.
+ *
+ * - It does NOT directly update the database.
+ * - It serializes the editor state to a JSON string and stores it in a hidden input.
+ * - The hidden input's `name` prop (e.g., "about_text") ensures its value is included in the parent form submission.
+ * - When the parent <Form> is submitted (either via a standard <Form> or fetcher.submit()), the hidden input's value is sent to the server.
+ * - The server-side action function receives this value and performs the database update.
+ */
 interface Props {
 	name: string; // form field key e.g. "about_text"
 	initialJSON?: string | null; // value from loader
