@@ -1,5 +1,6 @@
 import { LinkNode } from "@lexical/link"; // Import LinkNode
 import { ListItemNode, ListNode } from "@lexical/list"; // Import list nodes
+import { HeadingNode, QuoteNode } from "@lexical/rich-text"; // Import heading and quote nodes
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
@@ -49,7 +50,11 @@ export default function RichTextField({
 		() => ({
 			namespace: name,
 			onError: console.error,
-			nodes: [ListNode, ListItemNode, LinkNode], // Register the nodes
+			// Register the core nodes + list and link nodes
+			nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, LinkNode],
+			theme: {
+				text: { underline: "underline" }, // Add theme for underline
+			},
 			editorState: initialJSON
 				? (editor: LexicalEditor) => {
 						// Use string directly if it's a string, otherwise null/undefined is fine
