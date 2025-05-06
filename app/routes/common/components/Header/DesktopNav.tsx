@@ -40,7 +40,9 @@ function LinkButton(
 		<Button
 			key={item.name}
 			href={href}
-			onClick={id ? (e: MouseEvent<HTMLAnchorElement>) => scrollTo(e, id) : undefined}
+			onClick={
+				id ? (e: MouseEvent<HTMLAnchorElement>) => scrollTo(e, id) : undefined
+			}
 		>
 			{item.name}
 		</Button>

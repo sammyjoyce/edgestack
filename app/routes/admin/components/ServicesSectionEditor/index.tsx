@@ -12,10 +12,9 @@ interface ServiceField {
 	textKey: string;
 	imageKey: string;
 	label: string;
-} // Added closing brace
+}
 
 interface ServicesSectionEditorProps {
-	// Use a union type with inferred action types
 	fetcher: FetcherWithComponents<
 		typeof adminIndexAction | typeof adminUploadAction
 	>;
@@ -62,7 +61,6 @@ export function ServicesSectionEditor({
 	imageUploading,
 	serviceImageUrls,
 }: ServicesSectionEditorProps): React.ReactElement {
-	// Use React.ReactElement
 	const [statusTexts, setStatusTexts] = useState<string[]>(
 		Array(serviceFields.length).fill(""),
 	);
@@ -71,9 +69,8 @@ export function ServicesSectionEditor({
 		(e: React.FocusEvent<HTMLTextAreaElement>) => {
 			const { name, value } = e.currentTarget;
 			const formData = new FormData();
-			formData.append("intent", "updateTextContent"); // Add intent
+			formData.append("intent", "updateTextContent");
 			formData.append(name, value);
-			// Use typed action path
 			fetcher.submit(formData, { method: "post", action: "/admin" });
 		},
 		[fetcher],
@@ -94,7 +91,6 @@ export function ServicesSectionEditor({
 		[onImageUpload],
 	);
 
-	// Update status once upload completes
 	useEffect(() => {
 		imageUploading.forEach((uploading, idx) => {
 			if (!uploading && statusTexts[idx].startsWith("Uploading")) {
@@ -110,20 +106,14 @@ export function ServicesSectionEditor({
 
 	return (
 		<div className="overflow-hidden bg-screen-light sm:rounded-lg shadow-xs border border-neutral-light">
-			{" "}
-			{/* Use white bg, adjusted shadow/border */}
 			<div className="px-4 py-5 sm:p-6">
 				<h2 className="text-xl font-semibold text-foreground-light mb-6">
-					{" "}
-					{/* Use semibold, increased margin */}
 					Services Section
 				</h2>
 				<div className="flex flex-col gap-8">
 					<div className="flex flex-col gap-1.5">
-						{" "}
-						{/* Use gap for consistent spacing */}
 						<label
-							htmlFor="services_intro_title" // Standard label
+							htmlFor="services_intro_title"
 							className="block text-sm font-medium text-secondary mb-1"
 						>
 							Services Intro Title
@@ -133,11 +123,11 @@ export function ServicesSectionEditor({
 							id="services_intro_title"
 							rows={2}
 							defaultValue={initialContent.services_intro_title || ""}
-							className="block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary text-sm text-foreground-light bg-screen-light" /* Standard input */
+							className="block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary text-sm text-foreground-light bg-screen-light"
 							onBlur={handleBlur}
 						/>
 						<label
-							htmlFor="services_intro_text" // Standard label, added padding
+							htmlFor="services_intro_text"
 							className="block text-sm font-medium text-secondary mb-1 pt-3"
 						>
 							Services Intro Text
@@ -153,13 +143,11 @@ export function ServicesSectionEditor({
 					{serviceFields.map((field, idx) => (
 						<div
 							key={field.label}
-							className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-neutral-light pt-6 mt-6" /* Adjusted border/padding/margin */
+							className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-neutral-light pt-6 mt-6"
 						>
 							<div className="flex flex-col gap-y-1.5">
-								{" "}
-								{/* Reduced gap */}
 								<label
-									htmlFor={field.titleKey} // Standard label
+									htmlFor={field.titleKey}
 									className="block text-sm font-medium text-secondary mb-1"
 								>
 									{field.label} Title
@@ -169,11 +157,11 @@ export function ServicesSectionEditor({
 									id={field.titleKey}
 									rows={2}
 									defaultValue={initialContent[field.titleKey] || ""}
-									className="block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary text-sm text-foreground-light bg-screen-light" /* Standard input */
+									className="block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary text-sm text-foreground-light bg-screen-light"
 									onBlur={handleBlur}
 								/>
 								<label
-									htmlFor={field.textKey} // Standard label, added padding
+									htmlFor={field.textKey}
 									className="block text-sm font-medium text-secondary mb-1 pt-3"
 								>
 									{field.label} Text
@@ -188,21 +176,17 @@ export function ServicesSectionEditor({
 								/>
 							</div>
 							<div className="flex flex-col items-center justify-start pt-1">
-								{" "}
-								{/* Align top */}
-								<label // Standard label, align left
+								<label
 									className="block text-sm font-medium text-secondary mb-1 self-start"
 									htmlFor={`service-image-upload-${idx}`}
 								>
 									{field.label} Image
 								</label>
 								<p className="text-xs text-neutral-dark mb-2 self-start">
-									{" "}
-									{/* Help text */}
-									Upload or drag and drop an image for the{" "}
+									Upload or drag and drop an image for the
 									{field.label.toLowerCase()}.
 								</p>
-								<div // Align left
+								<div
 									className="text-sm text-tertiary mb-2 h-5 self-start"
 									role="status"
 									aria-live="polite"
@@ -215,8 +199,8 @@ export function ServicesSectionEditor({
 									uploading={imageUploading[idx]}
 									imageUrl={serviceImageUrls[idx]}
 									label={`${field.label} Image`}
-									className="mt-1" /* Added margin */
-									fieldKey={field.imageKey} // Use the field's imageKey as the field key
+									className="mt-1"
+									fieldKey={field.imageKey}
 								/>
 							</div>
 						</div>

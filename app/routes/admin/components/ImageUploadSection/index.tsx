@@ -144,7 +144,7 @@ export function ImageUploadSection({
 										className="ml-1 text-xs text-gray-500"
 										role="tooltip"
 									>
-										Upload or drag and drop an image for the{" "}
+										Upload or drag and drop an image for the
 										{label.toLowerCase()}.
 									</span>
 								</label>

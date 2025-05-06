@@ -55,7 +55,7 @@ export function GridListItem({
 						)}
 					>
 						{title}.
-					</strong>{" "}
+					</strong>
 					{children}
 				</Border>
 			</FadeIn>

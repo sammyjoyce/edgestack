@@ -3,14 +3,14 @@ import { Form, Link, redirect, useLoaderData } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 // The validateProjectUpdate function is not found, we'll implement inline validation
 import type { Project } from "~/database/schema";
-import RichTextField from "~/routes/admin/components/RichTextField";
 import { ProjectImageSelector } from "~/routes/admin/components/ProjectImageSelector";
+import RichTextField from "~/routes/admin/components/RichTextField";
 import { Button } from "~/routes/common/components/ui/Button";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
 // Import generated types from the .react-router directory
-import type { Route } from "../../../../../../.react-router/types/app/routes/admin/routes/projects/[projectId]/+types/edit"
+import type { Route } from "../../../../../../.react-router/types/app/routes/admin/routes/projects/[projectId]/+types/edit";
 
 // Define return types for loader and action
 type ProjectLoaderData = {

@@ -57,22 +57,19 @@ export function HeroSectionEditor({
 
 	return (
 		<div className="overflow-hidden bg-white sm:rounded-lg shadow-xs border border-gray-200">
-			{" "}
 			{/* Use white bg, adjusted shadow/border */}
 			<div className="px-4 py-5 sm:p-6">
 				<h2 className="text-xl font-semibold text-gray-900 mb-6">
 					Hero Section
-				</h2>{" "}
+				</h2>
 				{/* Use semibold, increased margin */}
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div className="flex flex-col gap-y-1.5">
-						{" "}
 						{/* Reduced gap */}
 						<label
 							htmlFor="hero_title"
 							className="block text-sm font-medium text-gray-700 mb-1"
 						>
-							{" "}
 							{/* Standard label */}
 							Hero Title
 						</label>
@@ -100,7 +97,6 @@ export function HeroSectionEditor({
 						/>
 					</div>
 					<div className="flex flex-col items-center justify-start pt-1">
-						{" "}
 						{/* Align top */}
 						<label
 							className="block text-sm font-medium text-gray-700 mb-1 self-start" /* Standard label, align left */
@@ -109,7 +105,6 @@ export function HeroSectionEditor({
 							Hero Image
 						</label>
 						<p className="text-xs text-gray-500 mb-2 self-start">
-							{" "}
 							{/* Help text */}
 							Upload or drag and drop an image for the hero section.
 						</p>

@@ -27,7 +27,7 @@ export function LogoutRoute() {
 					Logging out...
 				</h2>
 				<p className="mt-2 text-center text-sm text-gray-600">
-					If you are not redirected, please{" "}
+					If you are not redirected, please
 					<a href="/admin/login" className="text-primary hover:underline">
 						click here
 					</a>

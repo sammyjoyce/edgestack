@@ -265,8 +265,8 @@ export default function AdminDashboard(): React.JSX.Element {
 							</li>
 							<li>
 								To feature a project on the home page, edit the project and
-								enable the{" "}
-								<span className="font-semibold text-gray-700">"Featured"</span>{" "}
+								enable the
+								<span className="font-semibold text-gray-700">"Featured"</span>
 								option.
 							</li>
 							<li>
@@ -315,9 +315,8 @@ export default function AdminDashboard(): React.JSX.Element {
 
 	return (
 		<Container className="mt-8">
-			{" "}
 			{/* Adjusted container */}
-			<SectionIntro title="Home Page Editor" className="mb-8" />{" "}
+			<SectionIntro title="Home Page Editor" className="mb-8" />
 			{/* Adjusted margin */}
 			{/* Render the Tabs component */}
 			<Tabs

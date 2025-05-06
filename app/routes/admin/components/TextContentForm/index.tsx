@@ -5,15 +5,14 @@ import {
 	InformationCircleIcon,
 	XCircleIcon,
 } from "@heroicons/react/20/solid";
-import type React from "react"; // Keep only useRef
+import type React from "react";
 import { useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
-import { Pill, PillStatusComponent } from "~/routes/common/components/ui/Pill"; // Using PillStatusComponent
-import RichTextField from "~/routes/admin/components/RichTextField"; // Import RichTextField
-import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm"; // Import the hook
+import RichTextField from "~/routes/admin/components/RichTextField";
+import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";
 import { Button } from "~/routes/common/components/ui/Button";
+import { Pill, PillStatusComponent } from "~/routes/common/components/ui/Pill";
 
-// Define the expected shape of action response data to match the hook
 type ActionResponseData = {
 	success?: boolean;
 	error?: string;
@@ -121,23 +120,22 @@ export function TextContentForm({
 	const localFormRef = useRef<HTMLFormElement>(null);
 	const ref = formRef || localFormRef;
 
-	// Use the custom hook to manage form state and logic
 	const {
 		autoSave,
 		setAutoSave,
-		fields, // Use the fields from the hook (either saved or pending)
+		fields,
 		errors,
 		feedback,
 		handleBlur,
 		handleChange,
 		handleSave,
 		handleUndo,
-		isSubmitting, // Use submitting state from hook
+		isSubmitting,
 	} = useTextContentForm({
 		initialContent,
 		fetcher,
 		textFieldsConfig: textFields,
-	}); // Pass config to hook
+	});
 
 	return (
 		<form

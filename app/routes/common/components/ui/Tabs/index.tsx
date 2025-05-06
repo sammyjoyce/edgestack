@@ -76,7 +76,6 @@ export const Tabs = ({
 						)}
 
 						<span className="relative block text-gray-700 hover:text-black">
-							{" "}
 							{/* Adjusted text color */}
 							{tab.title}
 						</span>

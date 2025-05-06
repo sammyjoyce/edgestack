@@ -3,11 +3,16 @@ import { validateContentInsert } from "~/database/valibot-validation";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
-import { handleImageUpload, listStoredImages, deleteStoredImage, type StoredImage } from "~/utils/upload.server";
-import { ImageUploadSection } from "../components/ImageUploadSection";
-import { ImageGallery } from "../components/ImageGallery";
+import {
+	type StoredImage,
+	deleteStoredImage,
+	handleImageUpload,
+	listStoredImages,
+} from "~/utils/upload.server";
 // Import the properly generated types
-import type { Route } from "../../../../.react-router/types/app/routes/admin/routes/+types/upload"
+import type { Route } from "../../../../.react-router/types/app/routes/admin/routes/+types/upload";
+import { ImageGallery } from "../components/ImageGallery";
+import { ImageUploadSection } from "../components/ImageUploadSection";
 
 export async function loader({ context, request }: Route.LoaderArgs) {
 	// Authentication check
@@ -59,12 +64,12 @@ export async function action({ request, context }: Route.ActionArgs) {
 				const success = await deleteStoredImage(filename, context);
 				return { success, action: "delete", filename };
 			}
-			
+
 			// Handle image selection (updating content with existing image URL)
 			if (intent === "selectImage") {
 				const key = formData.get("key");
 				const imageUrl = formData.get("imageUrl");
-				
+
 				if (!key || typeof key !== "string") {
 					return badRequest("Missing key for database update.");
 				}
@@ -139,21 +144,27 @@ export default function UploadRoute() {
 		<FadeIn>
 			<div className="flex flex-col gap-8">
 				<div>
-					<h1 className="text-2xl font-semibold text-gray-900">Image Management</h1>
+					<h1 className="text-2xl font-semibold text-gray-900">
+						Image Management
+					</h1>
 					<p className="mt-2 text-sm text-gray-500">
-						Upload new images or select from existing ones. Images will be optimized and
-						stored for use in your content.
+						Upload new images or select from existing ones. Images will be
+						optimized and stored for use in your content.
 					</p>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 					<div>
-						<h2 className="text-xl font-medium text-gray-900 mb-4">Upload New Images</h2>
+						<h2 className="text-xl font-medium text-gray-900 mb-4">
+							Upload New Images
+						</h2>
 						<ImageUploadSection initialContent={{}} />
 					</div>
-					
+
 					<div>
-						<h2 className="text-xl font-medium text-gray-900 mb-4">Manage Existing Images</h2>
+						<h2 className="text-xl font-medium text-gray-900 mb-4">
+							Manage Existing Images
+						</h2>
 						<ImageGallery />
 					</div>
 				</div>

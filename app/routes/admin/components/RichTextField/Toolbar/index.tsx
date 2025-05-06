@@ -147,8 +147,9 @@ export default function LexicalToolbar(): JSX.Element {
 					aria-pressed={active[btn.arg] ?? false}
 					className={clsx(
 						"px-2 py-0.5 rounded border text-xs focus:outline-hidden transition-colors",
-						active[btn.arg] ? "bg-primary text-white border-primary"
-						: "border-transparent text-gray-600 hover:bg-gray-200 focus:ring-1 focus:ring-primary",
+						active[btn.arg]
+							? "bg-primary text-white border-primary"
+							: "border-transparent text-gray-600 hover:bg-gray-200 focus:ring-1 focus:ring-primary",
 					)}
 					onMouseDown={(e) => {
 						e.preventDefault();
