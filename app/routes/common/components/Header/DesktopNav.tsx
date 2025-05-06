@@ -12,7 +12,7 @@ export interface DesktopNavProps {
 /* ─── Type guards ────────────────────────────────── */
 
 const isRoute = (i: MenuItem): i is MenuItemRoute =>
-	"isRouteLink" in i && i.isRouteLink;
+	"isRouteLink" in i && i.isRouteLink === true;
 
 const isAnchorPath = (p: Path): p is `#${string}` | `http${string}` =>
 	typeof p === "string";
@@ -40,7 +40,7 @@ function LinkButton(
 		<Button
 			key={item.name}
 			href={href}
-			onClick={id ? (e) => scrollTo(e, id) : undefined}
+			onClick={id ? (e: MouseEvent<HTMLAnchorElement>) => scrollTo(e, id) : undefined}
 		>
 			{item.name}
 		</Button>

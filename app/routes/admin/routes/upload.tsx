@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { validateContentInsert } from "~/database/valibot-validation";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
-import { handleImageUpload } from "~/utils/upload.server";
+import { handleImageUpload, listStoredImages, deleteStoredImage, type StoredImage } from "~/utils/upload.server";
 import { ImageUploadSection } from "../components/ImageUploadSection";
-// Import generated types
-import type { Route } from "./+types/upload"; // Ensure this path is correct
+import { ImageGallery } from "../components/ImageGallery";
+// Import the properly generated types
+import type { Route } from "../../../../.react-router/types/app/routes/admin/routes/+types/upload"
+
+export async function loader({ context, request }: Route.LoaderArgs) {
+	// Authentication check
+	const sessionValue = getSessionCookie(request);
+	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
+		throw new Response("Unauthorized", { status: 401 });
+	}
+
+	try {
+		// List all stored images
+		const images = await listStoredImages(context);
+		return { images };
+	} catch (error: any) {
+		console.error("Error listing images:", error);
+		return { images: [], error: error.message || "Failed to list images" };
+	}
+}
 
 export async function action({ request, context }: Route.ActionArgs) {
 	const unauthorized = () => ({
@@ -28,6 +47,46 @@ export async function action({ request, context }: Route.ActionArgs) {
 	if (request.method === "POST") {
 		try {
 			const formData = await request.formData();
+			const intent = formData.get("intent");
+
+			// Handle image deletion
+			if (intent === "deleteImage") {
+				const filename = formData.get("filename");
+				if (!filename || typeof filename !== "string") {
+					return badRequest("Missing filename for deletion.");
+				}
+
+				const success = await deleteStoredImage(filename, context);
+				return { success, action: "delete", filename };
+			}
+			
+			// Handle image selection (updating content with existing image URL)
+			if (intent === "selectImage") {
+				const key = formData.get("key");
+				const imageUrl = formData.get("imageUrl");
+				
+				if (!key || typeof key !== "string") {
+					return badRequest("Missing key for database update.");
+				}
+				if (!imageUrl || typeof imageUrl !== "string") {
+					return badRequest("Missing image URL.");
+				}
+
+				// Validate before updating content DB
+				try {
+					validateContentInsert({ key, value: imageUrl });
+				} catch (e: any) {
+					return {
+						success: false,
+						error: `Validation failed for key '${key}': ${e.message || e}`,
+					};
+				}
+
+				await updateContent(context.db, { [key]: imageUrl });
+				return { success: true, url: imageUrl, key, action: "select" };
+			}
+
+			// Handle image upload (existing functionality)
 			const file = formData.get("image");
 			const key = formData.get("key");
 
@@ -62,7 +121,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 			await updateContent(context.db, { [key]: publicUrl });
 
-			return { success: true, url: publicUrl, key: key };
+			return { success: true, url: publicUrl, key, action: "upload" };
 		} catch (error: any) {
 			console.error("Upload error:", error);
 			return {
@@ -80,14 +139,24 @@ export default function UploadRoute() {
 		<FadeIn>
 			<div className="flex flex-col gap-8">
 				<div>
-					<h1 className="text-2xl font-semibold text-gray-900">Image Upload</h1>
+					<h1 className="text-2xl font-semibold text-gray-900">Image Management</h1>
 					<p className="mt-2 text-sm text-gray-500">
-						Upload images to use on your website. Images will be optimized and
+						Upload new images or select from existing ones. Images will be optimized and
 						stored for use in your content.
 					</p>
 				</div>
 
-				<ImageUploadSection initialContent={{}} />
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div>
+						<h2 className="text-xl font-medium text-gray-900 mb-4">Upload New Images</h2>
+						<ImageUploadSection initialContent={{}} />
+					</div>
+					
+					<div>
+						<h2 className="text-xl font-medium text-gray-900 mb-4">Manage Existing Images</h2>
+						<ImageGallery />
+					</div>
+				</div>
 			</div>
 		</FadeIn>
 	);

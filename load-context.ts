@@ -6,7 +6,6 @@ import type { AppLoadContext } from "react-router";
 
 declare global {
   interface CloudflareEnvironment extends Env {
-	PUBLIC_R2_URL?: string;
   }
 }
 

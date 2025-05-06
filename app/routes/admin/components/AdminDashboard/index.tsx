@@ -2,6 +2,10 @@ import React from "react"; // Ensure React is imported for JSX
 import { Link, useFetcher, useLoaderData } from "react-router";
 import type { Tab } from "~/routes/common/components/ui/Tabs"; // Import Tab type
 
+// Import the admin route file for its types
+import { action as adminAction } from "~/routes/admin/routes/index";
+import { action as uploadAction } from "~/routes/admin/routes/upload";
+
 // Types
 // Import the specific loader type
 import type { loader as adminIndexLoader } from "~/routes/admin/routes/index";
@@ -40,14 +44,16 @@ export default function AdminDashboard(): React.JSX.Element {
 		message?: string;
 	};
 
-	// Type-safe fetchers
-	const heroFetcher = useFetcher<ActionData>();
-	const introFetcher = useFetcher<ActionData>();
-	const servicesFetcher = useFetcher<ActionData>();
-	const aboutFetcher = useFetcher<ActionData>();
-	const contactFetcher = useFetcher<ActionData>();
-	const sorterFetcher = useFetcher<ActionData>();
-	const projectsFetcher = useFetcher<ActionData>();
+	// Use React Router 7's built-in type inference - no explicit type parameters
+	// This lets React Router handle the complex type relationships correctly
+	const heroFetcher = useFetcher();
+	const introFetcher = useFetcher();
+	const servicesFetcher = useFetcher();
+	const aboutFetcher = useFetcher();
+	const contactFetcher = useFetcher();
+	const sorterFetcher = useFetcher();
+	const projectsFetcher = useFetcher();
+	const uploadFetcher = useFetcher();
 
 	// Access content safely, handle null/error case
 	const safeContent =
