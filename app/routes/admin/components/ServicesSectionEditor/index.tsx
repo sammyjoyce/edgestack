@@ -1,7 +1,7 @@
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import type { FetcherWithComponents } from "react-router";
-import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
+import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField"; // Import RichTextField
 // Import the specific action types
 import type { action as adminIndexAction } from "~/routes/admin/routes/index";
@@ -209,13 +209,14 @@ export function ServicesSectionEditor({
 								>
 									{statusTexts[idx]}
 								</div>
-								<ImageUploadZone
+								<ImageSelector
 									onDrop={handleDrop(idx)}
 									disabled={imageUploading[idx]}
 									uploading={imageUploading[idx]}
 									imageUrl={serviceImageUrls[idx]}
 									label={`${field.label} Image`}
 									className="mt-1" /* Added margin */
+									fieldKey={field.imageKey} // Use the field's imageKey as the field key
 								/>
 							</div>
 						</div>

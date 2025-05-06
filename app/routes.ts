@@ -25,6 +25,7 @@ export default [
 	route("admin", "routes/admin/routes/_layout.tsx", [
 		index("routes/admin/routes/index.tsx"),
 		route("logout", "routes/admin/routes/logout.tsx"),
+		route("upload", "routes/admin/routes/upload.tsx"),
 		route("projects", "routes/admin/routes/projects/_layout.tsx", [
 			index("routes/admin/routes/projects/index.tsx"),
 			route("new", "routes/admin/routes/projects/new.tsx"),

@@ -1,13 +1,33 @@
 import clsx from "clsx";
 import type {
 	SerializedEditorState,
-	SerializedHeadingNode,
 	SerializedLexicalNode,
-	SerializedLinkNode,
-	SerializedListItemNode,
-	SerializedListNode,
 	SerializedTextNode,
 } from "lexical";
+
+// Define missing serialized node types that don't exist in base lexical package
+interface SerializedHeadingNode extends SerializedLexicalNode {
+	tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+	children: SerializedLexicalNode[];
+}
+
+interface SerializedLinkNode extends SerializedLexicalNode {
+	url: string;
+	target?: string;
+	rel?: string;
+	children: SerializedLexicalNode[];
+}
+
+interface SerializedListItemNode extends SerializedLexicalNode {
+	value: number;
+	children: SerializedLexicalNode[];
+}
+
+interface SerializedListNode extends SerializedLexicalNode {
+	listType: 'bullet' | 'number' | 'check';
+	tag: 'ul' | 'ol';
+	children: SerializedLexicalNode[];
+}
 import type React from "react";
 import { Fragment } from "react";
 // Optional: If you want to render internal links using react-router

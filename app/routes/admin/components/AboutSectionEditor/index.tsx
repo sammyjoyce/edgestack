@@ -1,7 +1,7 @@
 import React, { type JSX, useState, useEffect } from "react";
 import type { FetcherWithComponents } from "react-router";
 
-import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
+import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
 // Import the specific action types
 import type { action as adminIndexAction } from "~/routes/admin/routes/index";
@@ -121,13 +121,14 @@ export function AboutSectionEditor({
 						>
 							{uploadStatus}
 						</output>
-						<ImageUploadZone
+						<ImageSelector
 							onDrop={handleDrop}
 							disabled={isUploading} // Use renamed prop
 							uploading={isUploading} // Use renamed prop
 							imageUrl={aboutImageUrl}
 							label="About Image"
 							className="mt-1" /* Added margin */
+							fieldKey="about_image_url" // The field key for this image
 						/>
 					</div>
 				</div>

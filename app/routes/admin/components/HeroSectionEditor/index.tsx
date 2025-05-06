@@ -4,7 +4,7 @@ import type { FetcherWithComponents } from "react-router";
 import type { action as adminIndexAction } from "~/routes/admin/routes/index";
 import type { action as adminUploadAction } from "~/routes/admin/routes/upload";
 
-import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
+import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 
 interface HeroSectionEditorProps {
 	// Use a union type with inferred action types
@@ -120,13 +120,14 @@ export function HeroSectionEditor({
 						>
 							{uploadStatus}
 						</output>
-						<ImageUploadZone
+						<ImageSelector
 							onDrop={handleDrop}
 							disabled={imageUploading}
 							uploading={imageUploading}
 							imageUrl={heroImageUrl}
 							label="Hero Image"
 							className="mt-1" /* Added margin */
+							fieldKey="hero_image_url" // The field key for this image
 						/>
 					</div>
 				</div>

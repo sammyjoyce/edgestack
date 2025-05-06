@@ -4,12 +4,13 @@ import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 // The validateProjectUpdate function is not found, we'll implement inline validation
 import type { Project } from "~/database/schema";
 import RichTextField from "~/routes/admin/components/RichTextField";
+import { ProjectImageSelector } from "~/routes/admin/components/ProjectImageSelector";
 import { Button } from "~/routes/common/components/ui/Button";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
-// Import generated types if available (assuming generouted)
-import type { Route } from "./+types/[projectId]/edit"; // Adjust path if needed
+// Import generated types from the .react-router directory
+import type { Route } from "../../../../../../.react-router/types/app/routes/admin/routes/projects/[projectId]/+types/edit"
 
 // Define return types for loader and action
 type ProjectLoaderData = {
@@ -233,39 +234,11 @@ export default function Component() {
 					</label>
 				</div>
 
-				{/* Display current image if available */}
-				{project.imageUrl && (
-					<div className="mt-2">
-						<label className="block text-sm font-medium text-gray-700 mb-1">
-							Current Image
-						</label>
-						<img
-							src={project.imageUrl}
-							alt="Current project image"
-							className="max-w-xs h-auto rounded border border-gray-200"
-						/>
-						<input
-							type="hidden"
-							name="currentImageUrl"
-							value={project.imageUrl}
-						/>
-					</div>
-				)}
-
 				<div>
-					<label
-						htmlFor="image"
-						className="block text-sm font-medium text-gray-700 mb-1"
-					>
-						Replace Image (Optional)
+					<label className="block text-sm font-medium text-gray-700 mb-1">
+						Project Image
 					</label>
-					<input
-						type="file"
-						name="image"
-						id="image"
-						accept="image/*"
-						className="block w-full text-sm text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
-					/>
+					<ProjectImageSelector currentImage={project.imageUrl || undefined} />
 				</div>
 
 				<div>

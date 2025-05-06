@@ -3,8 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useFetcher } from "react-router";
 // Define action response type structure
 // This aligns with what the upload action returns without needing direct imports
-import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
-import { Button } from "~/routes/common/components/ui/Button";
+import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { GrayscaleTransitionImage } from "~/routes/common/components/ui/GrayscaleTransitionImage";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
@@ -149,7 +148,7 @@ export function ImageUploadSection({
 										{label.toLowerCase()}.
 									</span>
 								</label>
-								<ImageUploadZone
+								<ImageSelector
 									fileInputRef={
 										fileInputRefs[idx] as React.RefObject<HTMLInputElement>
 									}
@@ -159,6 +158,7 @@ export function ImageUploadSection({
 									imageUrl={fetcher.data?.url || initialContent[key] || ""}
 									label={label}
 									className="w-full" // Ensure zone takes width
+									fieldKey={key} // Pass the field key for selecting existing images
 								/>
 								<input type="hidden" name="key" value={key} />
 								{/* Removed the redundant submit button */}

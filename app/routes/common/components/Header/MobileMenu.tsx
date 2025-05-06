@@ -21,12 +21,12 @@ interface MobileMenuProps {
 /* ─── Type guard ─────────────────────────────────── */
 
 const isRoute = (i: MenuItem): i is MenuItemRoute =>
-	"isRouteLink" in i && i.isRouteLink;
+	"isRouteLink" in i && i.isRouteLink === true;
 
 /* ─── Component ──────────────────────────────────── */
 
 export default function MobileMenu({
-	isOpen,
+	isOpen = false, // Provide default value to ensure boolean
 	onClose,
 	menuItems,
 	scrollToSection,
@@ -83,8 +83,11 @@ export default function MobileMenu({
 						) : (
 							<a
 								key={item.name}
-								href={item.path}
-								onClick={(e) => scrollToSection(e, item.path.replace(/^#/, ""))}
+								href={typeof item.path === "string" ? item.path : "#"}
+								onClick={(e) => {
+									const path = typeof item.path === "string" ? item.path : "#";
+									scrollToSection(e, path.replace(/^#/, ""));
+								}}
 								className="block rounded-full px-5 py-2 text-base font-semibold text-gray-300 transition hover:bg-gray-900/50 hover:text-gray-100"
 							>
 								{item.name}

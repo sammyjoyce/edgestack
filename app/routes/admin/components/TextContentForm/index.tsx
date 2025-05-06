@@ -8,7 +8,7 @@ import {
 import type React from "react"; // Keep only useRef
 import { useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
-import { Pill, PillStatus } from "~/components/ui/Pill"; // Adjust path if needed
+import { Pill, PillStatusComponent } from "~/routes/common/components/ui/Pill"; // Using PillStatusComponent
 import RichTextField from "~/routes/admin/components/RichTextField"; // Import RichTextField
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm"; // Import the hook
 import { Button } from "~/routes/common/components/ui/Button";
@@ -175,20 +175,20 @@ export function TextContentForm({
 			>
 				{isSubmitting ? (
 					<Pill variant="secondary">
-						<PillStatus>
+						<PillStatusComponent>
 							<ArrowPathIcon className="size-3 animate-spin" />
 							Saving...
-						</PillStatus>
+						</PillStatusComponent>
 					</Pill>
 				) : fetcher.data?.success ? (
 					<Pill
 						variant="outline"
 						className="border-emerald-200 bg-emerald-50 text-emerald-700"
 					>
-						<PillStatus>
+						<PillStatusComponent>
 							<CheckCircleIcon className="size-3 text-emerald-500" />
 							Saved
-						</PillStatus>
+						</PillStatusComponent>
 						{fetcher.data.message || "Changes saved successfully."}
 					</Pill>
 				) : fetcher.data?.error ? (
@@ -196,10 +196,10 @@ export function TextContentForm({
 						variant="outline"
 						className="border-red-200 bg-red-50 text-red-700"
 					>
-						<PillStatus>
+						<PillStatusComponent>
 							<XCircleIcon className="size-3 text-red-500" />
 							Error
-						</PillStatus>
+						</PillStatusComponent>
 						{fetcher.data.error || "An error occurred."}
 					</Pill>
 				) : feedback?.toLowerCase().includes("validation") ? (
@@ -207,10 +207,10 @@ export function TextContentForm({
 						variant="outline"
 						className="border-amber-200 bg-amber-50 text-amber-700"
 					>
-						<PillStatus>
+						<PillStatusComponent>
 							<ExclamationTriangleIcon className="size-3 text-amber-500" />
 							Validation Error
-						</PillStatus>
+						</PillStatusComponent>
 						{feedback}
 					</Pill>
 				) : feedback && feedback === "Changes reverted." ? (
@@ -218,10 +218,10 @@ export function TextContentForm({
 						variant="outline"
 						className="border-primary/30 bg-primary/10 text-primary"
 					>
-						<PillStatus>
+						<PillStatusComponent>
 							<InformationCircleIcon className="size-3 text-primary" />
 							Info
-						</PillStatus>
+						</PillStatusComponent>
 						{feedback}
 					</Pill>
 				) : null}
