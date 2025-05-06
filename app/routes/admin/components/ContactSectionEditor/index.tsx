@@ -103,25 +103,20 @@ export function ContactSectionEditor({
 
 	return (
 		<section className="bg-white rounded-lg shadow-xs border border-gray-200 p-6">
-			{" "}
 			{/* Adjusted shadow/border/padding */}
 			<h2 className="text-xl font-semibold text-gray-900 mb-6">
-				{" "}
 				{/* Use semibold, increased margin */}
 				Contact Section (Home Page)
 			</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-				{" "}
 				{/* Adjusted gap */}
 				{contactFields.map(({ key, label, rows, placeholder, isRichText }) => (
 					<div className="flex flex-col gap-y-1" key={key}>
-						{" "}
 						{/* Adjusted gap */}
 						<label
 							htmlFor={key}
 							className="block text-sm font-medium text-gray-700 mb-1"
 						>
-							{" "}
 							{/* Standard label */}
 							{label}
 						</label>

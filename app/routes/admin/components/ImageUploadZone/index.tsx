@@ -41,7 +41,6 @@ export default function ImageUploadZone({
 
 	return (
 		<section className={`${className} w-full flex flex-col items-center`}>
-			{" "}
 			{/* Removed margin */}
 			<div
 				{...getRootProps()}
@@ -57,7 +56,6 @@ export default function ImageUploadZone({
 			>
 				<input ref={fileInputRef} {...getInputProps()} />
 				<p className="text-sm text-center text-gray-600">
-					{" "}
 					{/* Adjusted color */}
 					{uploading
 						? "Uploading..."

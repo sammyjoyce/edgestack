@@ -28,7 +28,7 @@ export default function RecentProjects({
 				title={introTitle ?? "Recent Projects"}
 				className="mb-16 max-w-6xl px-4 lg:px-8"
 			>
-				{introText && <p>{introText}</p>}{" "}
+				{introText && <p>{introText}</p>}
 				{/* Conditionally render intro text if provided */}
 			</SectionIntro>
 			<Container className="max-w-6xl px-4 lg:px-8">

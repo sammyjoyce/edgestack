@@ -7,7 +7,7 @@ import type {
 
 // Define missing serialized node types that don't exist in base lexical package
 interface SerializedHeadingNode extends SerializedLexicalNode {
-	tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+	tag: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 	children: SerializedLexicalNode[];
 }
 
@@ -24,8 +24,8 @@ interface SerializedListItemNode extends SerializedLexicalNode {
 }
 
 interface SerializedListNode extends SerializedLexicalNode {
-	listType: 'bullet' | 'number' | 'check';
-	tag: 'ul' | 'ol';
+	listType: "bullet" | "number" | "check";
+	tag: "ul" | "ol";
 	children: SerializedLexicalNode[];
 }
 import type React from "react";

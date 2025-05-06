@@ -625,21 +625,21 @@ export default function Hero({ title, subtitle, imageUrl }: HeroProps) { // Acce
 					{/* Animated headline and subheadline */}
 					<div className="relative animate-fade-in-up text-center">
 						<h1 className="text-wrap:balance mb-4 rounded-xl bg-black/80 px-5 py-2 font-display font-medium font-serif text-5xl text-gray-100 text-white tracking-tight drop-shadow-2xl backdrop-blur-md transition-all duration-300 ease-in-out sm:text-6xl lg:text-7xl">
-							{title} {/* Use dynamic title */}
+{title} {/* Use dynamic title */}
 						</h1>
 						<div className="mx-auto inline-block">
-							<p className="mx-auto rounded-xl bg-black/80 px-4 py-2 text-center font-sans text-gray-100 text-lg drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out sm:text-lg lg:text-2xl">
-								{subtitle} {/* Use dynamic subtitle */}
-							</p>
+<p className="mx-auto rounded-xl bg-black/80 px-4 py-2 text-center font-sans text-gray-100 text-lg drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out sm:text-lg lg:text-2xl">
+	{subtitle} {/* Use dynamic subtitle */}
+</p>
 						</div>
 						{/* CTA Buttons */}
 						<div className="mt-6 flex items-center justify-center gap-x-6">
-							<Button invert to="#contact">
-								Enquire Now
-							</Button>
-							<Button invert to="#services">
-								Our Services <span aria-hidden="true">→</span>
-							</Button>
+<Button invert to="#contact">
+	Enquire Now
+</Button>
+<Button invert to="#services">
+	Our Services <span aria-hidden="true">→</span>
+</Button>
 						</div>
 					</div>
 				</div>

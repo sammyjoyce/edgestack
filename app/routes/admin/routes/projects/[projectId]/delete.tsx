@@ -7,7 +7,7 @@ import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById } from "~/routes/common/db";
 import { deleteProject } from "~/routes/common/db"; // Import deleteProject
 // Import generated types from the .react-router directory
-import type { Route } from "../../../../../../.react-router/types/app/routes/admin/routes/projects/[projectId]/+types/delete"
+import type { Route } from "../../../../../../.react-router/types/app/routes/admin/routes/projects/[projectId]/+types/delete";
 
 // Return plain objects for type safety
 export async function loader({ params, context }: Route.LoaderArgs) {

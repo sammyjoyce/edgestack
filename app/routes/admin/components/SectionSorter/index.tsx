@@ -72,16 +72,14 @@ export default function SectionSorter({
 			fetcher.state === "idle" &&
 			!fetcher.data
 		) {
-			// Don't submit if order is the same as initial and fetcher is idle without prior data
 			return;
 		}
 
 		const data = new FormData();
-		data.append("intent", "reorderSections"); // Add intent
+		data.append("intent", "reorderSections");
 		data.append("home_sections_order", currentOrder);
-		// Submit to the /admin route
 		fetcher.submit(data, { method: "post", action: "/admin" });
-	}, [sections, fetcher, orderValue]); // Add orderValue to dependencies
+	}, [sections, fetcher, orderValue]);
 
 	/* --- Drag end handler -------------------------------------------------- */
 	const handleDragEnd = useCallback((event: DragEndEvent) => {
@@ -100,24 +98,22 @@ export default function SectionSorter({
 			className="bg-white p-6 rounded-lg shadow-xs border border-gray-200"
 			aria-labelledby="section-order-heading"
 		>
-			{" "}
-			{/* Added container style */}
 			<h2
 				id="section-order-heading"
-				className="text-xl font-semibold text-gray-900 mb-2" /* Use semibold */
+				className="text-xl font-semibold text-gray-900 mb-2"
 			>
 				Home Page Section Order
 			</h2>
 			<p
 				id="section-sorter-instructions"
-				className="text-sm text-gray-600 mb-4" /* Increased margin */
+				className="text-sm text-gray-600 mb-4"
 			>
 				Drag and drop to reorder sections. Changes are saved automatically.
 			</p>
 			<div
 				role="status"
 				aria-live="polite"
-				className="text-sm text-gray-600 h-5 mb-4" /* Increased margin */
+				className="text-sm text-gray-600 h-5 mb-4"
 			>
 				{statusMsg}
 			</div>
@@ -151,7 +147,6 @@ export default function SectionSorter({
 	);
 }
 
-/* --- Sortable list item -------------------------------------------------- */
 function SortableItem({
 	id,
 	label,
@@ -196,10 +191,7 @@ function SortableItem({
 			{...listeners}
 			style={style}
 			className={`flex items-center justify-between rounded border border-gray-200 bg-white px-4 py-2 shadow-xs cursor-grab focus:outline-none focus:ring-2 focus:ring-primary ${
-				/* Adjusted border/focus */
-				isDragging
-					? "opacity-50 ring-2 ring-primary"
-					: "" /* Style when dragging */
+				isDragging ? "opacity-50 ring-2 ring-primary" : ""
 			}`}
 			aria-label={`Section ${label}, position ${
 				index + 1

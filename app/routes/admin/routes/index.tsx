@@ -174,7 +174,7 @@ export function AdminIndexRoute(): JSX.Element {
 	const loaderData = useLoaderData<typeof loader>();
 	return (
 		<main id="admin-dashboard-main" aria-label="Admin Dashboard">
-			<AdminDashboard />{" "}
+			<AdminDashboard />
 			{/* Renders the component containing all editors/sorters */}
 		</main>
 	);
