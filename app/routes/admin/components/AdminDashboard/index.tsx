@@ -2,13 +2,6 @@ import React from "react"; // Ensure React is imported for JSX
 import { Link, useFetcher, useLoaderData } from "react-router";
 import type { Tab } from "~/routes/common/components/ui/Tabs"; // Import Tab type
 
-// Import the action types instead of the actions themselves
-import type { action as adminActionType } from "~/routes/admin/routes/index";
-import type { action as uploadActionType } from "~/routes/admin/routes/upload";
-
-// Types
-// Import the specific loader type
-import type { loader as adminIndexLoader } from "~/routes/admin/routes/index";
 
 // Validation
 // import { validateErrorResponse } from "~/database/valibot-validation"; // Not used directly here
