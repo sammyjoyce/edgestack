@@ -68,26 +68,28 @@ export async function action({ request, context }: Route.ActionArgs) {
 				const publicUrlBase = context.cloudflare?.env?.PUBLIC_R2_URL || "/assets";
 				const fullUrl = `${publicUrlBase.replace(/\/?$/, "/")}${filename}`;
 
-				const dbStatements = [];
-				const mediaToDelete = await context.db.select({ id: schema.media.id }).from(schema.media).where(eq(schema.media.url, fullUrl)).get();
-				
-				dbStatements.push(context.db.delete(schema.media).where(eq(schema.media.url, fullUrl)));
+				await context.db.transaction(async (tx) => {
+					const dbStatements = [];
+					const mediaToDelete = await tx.select({ id: schema.media.id }).from(schema.media).where(eq(schema.media.url, fullUrl)).get();
+					
+					dbStatements.push(tx.delete(schema.media).where(eq(schema.media.url, fullUrl)));
 
-				if (mediaToDelete) {
+					if (mediaToDelete) {
+						dbStatements.push(
+							tx.update(schema.content)
+								.set({ mediaId: null, value: "" }) // Clear link and value
+								.where(eq(schema.content.mediaId, mediaToDelete.id))
+						);
+					}
+					// Fallback: also clear content if it directly stores the URL in 'value'
 					dbStatements.push(
-						context.db.update(schema.content)
-							.set({ mediaId: null, value: "" }) // Clear link and value
-							.where(eq(schema.content.mediaId, mediaToDelete.id))
+						tx.update(schema.content)
+							.set({ value: "", mediaId: null }) // Ensure mediaId is also cleared here
+							.where(eq(schema.content.value, fullUrl))
 					);
-				}
-				// Fallback: also clear content if it directly stores the URL in 'value'
-				dbStatements.push(
-					context.db.update(schema.content)
-						.set({ value: "", mediaId: null }) // Ensure mediaId is also cleared here
-						.where(eq(schema.content.value, fullUrl))
-				);
-				
-				await context.db.batch(dbStatements.map(stmt => stmt.toSQL ? stmt : Promise.resolve(stmt))); // Filter out non-statement promises if any
+					
+					await tx.batch(dbStatements);
+				});
 
 				return { success: true, action: "delete", filename };
 			}
@@ -114,8 +116,11 @@ export async function action({ request, context }: Route.ActionArgs) {
 					};
 				}
 				
-				const mediaRecord = await context.db.select({ id: schema.media.id }).from(schema.media).where(eq(schema.media.url, imageUrl)).get();
-				await updateContent(context.db, { [key]: { value: imageUrl, mediaId: mediaRecord?.id ?? null } });
+				// updateContent uses batch internally, so a separate transaction here is fine.
+				await context.db.transaction(async (tx) => {
+					const mediaRecord = await tx.select({ id: schema.media.id }).from(schema.media).where(eq(schema.media.url, imageUrl)).get();
+					await updateContent(tx, { [key]: { value: imageUrl, mediaId: mediaRecord?.id ?? null } });
+				});
 				return { success: true, url: imageUrl, key, action: "select" };
 			}
 
@@ -152,33 +157,38 @@ export async function action({ request, context }: Route.ActionArgs) {
 				};
 			}
 			
-			const mediaAltText = file.name; 
+			const mediaAltText = file.name;
 			
-			// Insert media and get its ID
-			let newMediaId: number | null = null;
-			try {
-				const mediaInsertResult = await context.db.insert(schema.media).values({
-					url: publicUrl,
-					alt: mediaAltText,
-				}).returning({ id: schema.media.id }).get();
+			await context.db.transaction(async (tx) => {
+				// Insert media and get its ID
+				let newMediaId: number | null = null;
+				try {
+					const mediaInsertResult = await tx.insert(schema.media).values({
+						url: publicUrl,
+						alt: mediaAltText,
+					}).returning({ id: schema.media.id }).get();
 
-				if (mediaInsertResult) {
-					newMediaId = mediaInsertResult.id;
-				} else {
-					// Fallback for D1 if returning().get() is not ideal / returns undefined
-					const runResult = await context.db.insert(schema.media).values({url: publicUrl, alt: mediaAltText}).run();
-					if (runResult.meta.last_row_id) {
-						newMediaId = runResult.meta.last_row_id;
+					if (mediaInsertResult) {
+						newMediaId = mediaInsertResult.id;
+					} else {
+						// Fallback for D1 if returning().get() is not ideal / returns undefined
+						const runResult = await tx.insert(schema.media).values({url: publicUrl, alt: mediaAltText}).run();
+						if (runResult.meta.last_row_id) {
+							newMediaId = runResult.meta.last_row_id;
+						}
 					}
+				} catch (dbError) {
+					console.error("Error inserting into media table:", dbError);
+					// Decide if this error should prevent content update or just be logged
+					// For now, we'll proceed to update content with URL only if media insert fails
+					// Throwing error here will rollback the transaction.
+					throw dbError; 
 				}
-			} catch (dbError) {
-				console.error("Error inserting into media table:", dbError);
-				// Decide if this error should prevent content update or just be logged
-				// For now, we'll proceed to update content with URL only if media insert fails
-			}
-			
-			// Now update content with the publicUrl and newMediaId (if available)
-			await updateContent(context.db, { [key]: { value: publicUrl, mediaId: newMediaId } });
+				
+				// Now update content with the publicUrl and newMediaId (if available)
+				// updateContent uses batch internally.
+				await updateContent(tx, { [key]: { value: publicUrl, mediaId: newMediaId } });
+			});
 
 			return { success: true, url: publicUrl, key, action: "upload" };
 		} catch (error: any) {
