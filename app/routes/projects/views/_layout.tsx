@@ -17,7 +17,7 @@ type ProjectsLayoutLoaderData = {
 
 export const loader = async ({
 	context,
-}: Route.LoaderArgs): Promise<ProjectsLayoutLoaderData> => {
+}: Route.LoaderArgs) => {
 	try {
 		const { getAllContent, getAllProjects } =
 			await import("~/routes/common/db");
@@ -25,14 +25,13 @@ export const loader = async ({
 		const projects = await getAllProjects(context.db);
 		// Return data directly without helper for clearer typing
 		return { content, projects };
-	} catch (error) {
+	} catch (error: any) {
 		console.error("Failed to fetch content or projects:", error);
-		// Return error data directly
-		return {
-			content: {},
-			projects: [],
-			error: "Failed to load projects layout data",
-		};
+		// Throw data response for error handling by ErrorBoundary
+		throw data(
+			{ message: error.message || "Failed to load projects layout data" },
+			{ status: 500 },
+		);
 	}
 };
 

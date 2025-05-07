@@ -60,9 +60,13 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 
 	// Effect to remove deleted images from the list
 	React.useEffect(() => {
-		// If action was successful deletion, refresh the page to get updated list
+		// If action was successful deletion, React Router will revalidate loaders.
+		// The images list should update automatically if the loader data changes.
+		// No explicit reload needed if revalidation is working correctly.
 		if (fetcher.data?.success && fetcher.data?.action === "delete") {
-			window.location.reload();
+			// Optionally, provide user feedback about successful deletion if needed
+			// For example, using a toast notification or a status message.
+			// If the list doesn't update, ensure the loader for `images` is revalidated.
 		}
 	}, [fetcher.data]);
 

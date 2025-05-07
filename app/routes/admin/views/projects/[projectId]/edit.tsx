@@ -27,23 +27,26 @@ type ProjectActionData = {
 export async function loader({
 	params, // params will be typed by Route.LoaderArgs
 	context, // context will be typed by Route.LoaderArgs
-}: Route.LoaderArgs): Promise<ProjectLoaderData> {
+}: Route.LoaderArgs) {
 	// Use generated type
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		return { project: null, error: "Invalid Project ID" };
+		throw data({ message: "Invalid Project ID" }, { status: 400 });
 	}
 
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			return { project: null, error: "Project not found" };
+			throw data({ message: "Project not found" }, { status: 404 });
 		}
 		return { project };
-	} catch (error) {
+	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		return { project: null, error: "Failed to load project" };
+		throw data(
+			{ message: error.message || "Failed to load project" },
+			{ status: 500 },
+		);
 	}
 }
 
@@ -144,29 +147,7 @@ export async function action({
 }
 
 export default function Component() {
-	// Error and !project cases are now handled by ErrorBoundary if loader throws
 	const { project } = useLoaderData<typeof loader>();
-
-	// This check might be redundant if loader always throws for !project
-	if (!project) {
-        // This case should ideally be caught by an ErrorBoundary if loader throws a 404
-        return (
-            <FadeIn>
-                <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-                    Edit Project
-                </h1>
-                <div
-                    className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
-                    role="alert"
-                >
-                    Error: Project not found or could not be loaded.
-                </div>
-                <Link to="/admin/projects" className="text-primary hover:underline">
-                    ← Back to Projects
-                </Link>
-            </FadeIn>
-        );
-    }
 
 	return (
 		<FadeIn>
