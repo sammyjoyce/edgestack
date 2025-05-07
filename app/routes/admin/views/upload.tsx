@@ -55,24 +55,52 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 			// Handle image deletion
 			if (intent === "deleteImage") {
-				const filename = formData.get("filename");
-				if (!filename || typeof filename !== "string") {
+				const filename = formData.get("filename")?.toString(); // R2 key
+				if (!filename) {
 					return badRequest("Missing filename for deletion.");
 				}
 
-				const success = await deleteStoredImage(filename, context);
-				return { success, action: "delete", filename };
+				const r2Deleted = await deleteStoredImage(filename, context);
+				if (!r2Deleted) {
+					return { success: false, error: "Failed to delete image from storage." };
+				}
+
+				const publicUrlBase = context.cloudflare?.env?.PUBLIC_R2_URL || "/assets";
+				const fullUrl = `${publicUrlBase.replace(/\/?$/, "/")}${filename}`;
+
+				const dbStatements = [];
+				const mediaToDelete = await context.db.select({ id: schema.media.id }).from(schema.media).where(eq(schema.media.url, fullUrl)).get();
+				
+				dbStatements.push(context.db.delete(schema.media).where(eq(schema.media.url, fullUrl)));
+
+				if (mediaToDelete) {
+					dbStatements.push(
+						context.db.update(schema.content)
+							.set({ mediaId: null, value: "" }) // Clear link and value
+							.where(eq(schema.content.mediaId, mediaToDelete.id))
+					);
+				}
+				// Fallback: also clear content if it directly stores the URL in 'value'
+				dbStatements.push(
+					context.db.update(schema.content)
+						.set({ value: "", mediaId: null }) // Ensure mediaId is also cleared here
+						.where(eq(schema.content.value, fullUrl))
+				);
+				
+				await context.db.batch(dbStatements.map(stmt => stmt.toSQL ? stmt : Promise.resolve(stmt))); // Filter out non-statement promises if any
+
+				return { success: true, action: "delete", filename };
 			}
 
 			// Handle image selection (updating content with existing image URL)
 			if (intent === "selectImage") {
-				const key = formData.get("key");
-				const imageUrl = formData.get("imageUrl");
+				const key = formData.get("key")?.toString();
+				const imageUrl = formData.get("imageUrl")?.toString();
 
-				if (!key || typeof key !== "string") {
+				if (!key) {
 					return badRequest("Missing key for database update.");
 				}
-				if (!imageUrl || typeof imageUrl !== "string") {
+				if (!imageUrl) {
 					return badRequest("Missing image URL.");
 				}
 
@@ -85,14 +113,15 @@ export async function action({ request, context }: Route.ActionArgs) {
 						error: `Validation failed for key '${key}': ${e.message || e}`,
 					};
 				}
-
-				await updateContent(context.db, { [key]: imageUrl });
+				
+				const mediaRecord = await context.db.select({ id: schema.media.id }).from(schema.media).where(eq(schema.media.url, imageUrl)).get();
+				await updateContent(context.db, { [key]: { value: imageUrl, mediaId: mediaRecord?.id ?? null } });
 				return { success: true, url: imageUrl, key, action: "select" };
 			}
 
 			// Handle image upload (existing functionality)
-			const file = formData.get("image");
-			const key = formData.get("key");
+			const file = formData.get("image") as File | null;
+			const key = formData.get("key")?.toString();
 
 			if (!file || !(file instanceof File)) {
 				return badRequest("No file uploaded or invalid format.");
