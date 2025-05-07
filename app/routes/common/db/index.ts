@@ -75,57 +75,70 @@ export async function updateContent(
 		}
 
 		const value = dataToSet.value;
-		// Ensure page, section, type are strings or null for SQL query
-		const page = typeof dataToSet.page === 'string' ? dataToSet.page : null;
-		const section = typeof dataToSet.section === 'string' ? dataToSet.section : null;
-		const type = dataToSet.type ?? "text";
-		const sortOrder = dataToSet.sortOrder ?? 0;
-		const mediaId = dataToSet.mediaId ?? null;
-		const updatedAt = new Date().toISOString();
+		const page = typeof dataToSet.page === "string" ? dataToSet.page : undefined; // Let Drizzle handle schema default
+		const section = typeof dataToSet.section === "string" ? dataToSet.section : undefined; // Let Drizzle handle schema default
+		const type = dataToSet.type ?? undefined; // Let Drizzle handle schema default
+		const sortOrder = dataToSet.sortOrder ?? undefined; // Let Drizzle handle schema default
+		const mediaId = dataToSet.mediaId ?? null; // Explicitly null if not provided
+		const metadata = typeof dataToSet.metadata === "string" ? dataToSet.metadata : null;
+		const currentTimestamp = new Date();
 
-		const existingRowPromise = db.get(sql`SELECT key FROM content WHERE key = ${key}`);
+		// Data for the VALUES clause of INSERT (needs to satisfy NewContent)
+		const valuesPayload: schema.NewContent = {
+			key,
+			value,
+			page,
+			section,
+			type,
+			sortOrder,
+			mediaId,
+			metadata,
+			// Drizzle's runtime default/hook handles updatedAt on insert if not provided
+			// For explicit control or if DB defaults are preferred, set it here.
+			// schema.content.updatedAt has a runtime default(new Date())
+		};
 
-		const operationExecutionPromise = existingRowPromise.then(async (existingRow) => {
-			let operationPromise: Promise<D1Result<unknown>>;
-			if (existingRow) {
-				// Validate before updating existing content
-				validateContentUpdate(dataToSet);
-				console.log(
-					`[Content Update - DIAGNOSTIC V4] Updating existing key '${key}' to value: '${value}' at ${new Date().toISOString()}`,
-				);
-				operationPromise = db.run(
-					sql`UPDATE content SET value = ${value}, page = ${page}, section = ${section}, type = ${type}, sortOrder = ${sortOrder}, mediaId = ${mediaId}, updatedAt = ${updatedAt} WHERE key = ${key}`
-				);
-			} else {
-				// For new content, existing validation (validateContentInsert) should be handled by the caller
-				console.log(
-					`[Content Update - DIAGNOSTIC V4] Inserting new key '${key}' with value: '${value}' at ${new Date().toISOString()}`,
-				);
-				const createdAt = updatedAt; 
-				operationPromise = db.run(
-					sql`INSERT INTO content (key, value, page, section, type, sortOrder, mediaId, createdAt, updatedAt) VALUES (${key}, ${value}, ${page}, ${section}, ${type}, ${sortOrder}, ${mediaId}, ${createdAt}, ${updatedAt})`
-				);
-			}
-			return operationPromise.then(result => {
-				console.log(
-					`[Content Update - DIAGNOSTIC V4] D1 result for '${existingRow ? "UPDATE" : "INSERT"}' on key '${key}':`,
-					{ success: result.success, changes: result.meta?.changes, rows_written: result.meta?.rows_written },
-				);
-				return result;
+		// Data for the SET clause of ON CONFLICT DO UPDATE
+		const setDataPayload: Partial<schema.Content> = {
+			value,
+			updatedAt: currentTimestamp, // Drizzle's $onUpdate will also set this
+		};
+		if (page !== undefined) setDataPayload.page = page;
+		if (section !== undefined) setDataPayload.section = section;
+		if (type !== undefined) setDataPayload.type = type;
+		if (sortOrder !== undefined) setDataPayload.sortOrder = sortOrder;
+		if (mediaId !== undefined) setDataPayload.mediaId = mediaId; // handles null
+		if (metadata !== undefined) setDataPayload.metadata = metadata;
+
+
+		// Validate payloads (optional here if confident in data structure, but good for robustness)
+		// validateContentInsert(valuesPayload); // May need adjustment if Drizzle defaults are not part of schema
+		validateContentUpdate(setDataPayload);
+
+
+		const upsertStatement = db
+			.insert(schema.content)
+			.values(valuesPayload)
+			.onConflictDoUpdate({
+				target: schema.content.key,
+				set: setDataPayload,
 			});
-		}).catch(error => {
-			console.error(`[Content Update - DIAGNOSTIC V4] Error during DB operation for key '${key}':`, error);
-			return { success: false, error: String(error), meta: { error: String(error) } } as unknown as D1Result<unknown>;
-		});
-		promises.push(operationExecutionPromise);
+		promises.push(upsertStatement.run());
 	}
 
-	const results = await Promise.all(promises);
-	console.log(
-		`[Content Update - DIAGNOSTIC V4] All operations completed at ${new Date().toISOString()}. Results:`,
-		results.map(r => ({ success: r.success, error: r.error, changes: r.meta?.changes, written: r.meta?.rows_written })),
-	);
-	return results;
+	// Execute all upsert statements in a single batch
+	try {
+		const results = await db.batch(promises);
+		console.log(
+			`[Content Update - DIAGNOSTIC V4] Batch operations completed at ${new Date().toISOString()}. Results:`,
+			results.map(r => ({ success: r.success, error: r.error, changes: r.meta?.changes, written: r.meta?.rows_written })),
+		);
+		return results;
+	} catch (batchError) {
+		console.error(`[Content Update - DIAGNOSTIC V4] Error during batch operation:`, batchError);
+		// Construct a D1Result-like array for consistent return type
+		return updates.map(() => ({ success: false, error: String(batchError), meta: { error: String(batchError) } } as unknown as D1Result<unknown>));
+	}
 }
 
 // --- Project CRUD Functions ---
