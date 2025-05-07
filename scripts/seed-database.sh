@@ -17,15 +17,14 @@ LOCAL_DB_FILE_PATH="${LOCAL_DB_DIR}/db.sqlite"
 if [ "$1" = "--remote" ]; then
   REMOTE_FLAG="--remote"
   echo "⚠️  Running in REMOTE mode - this will update the production database!"
-  printf "Are you sure you want to continue? (y/n) "
+  printf "Are you sure you want to continue? (yes/no) "
   read -r REPLY_VAL
-  case "$REPLY_VAL" in
-    [Yy]*) echo "Proceeding with remote seed." ;;
-    *)
-      echo "Aborting."
-      exit 1
-      ;;
-  esac
+  if [ "$REPLY_VAL" = "yes" ]; then
+    echo "Proceeding with remote seed."
+  else
+    echo "Aborting."
+    exit 1
+  fi
 else
   # Local mode: Reset local D1 database by deleting its directory
   if [ -d "$LOCAL_DB_DIR" ]; then
