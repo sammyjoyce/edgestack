@@ -2,8 +2,7 @@ import React from "react";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
-import { getProjectById } from "~/routes/common/db";
-import { deleteProject } from "~/routes/common/db"; // Import deleteProject
+import { deleteProject, getProjectById } from "~/routes/common/db"; // Import deleteProject and getProjectById statically
 import type { Route } from "./+types/delete";
 import { Button } from "../../../components/ui/Button";
 import { FadeIn } from "../../../components/ui/FadeIn";
