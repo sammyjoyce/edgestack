@@ -1,4 +1,4 @@
-import { useLoaderData, type MetaFunction } from "react-router";
+import { useLoaderData, type MetaFunction, data } from "react-router"; // Added data import
 
 import type { JSX } from "react";
 import type { Route } from "./+types/route";
@@ -13,12 +13,12 @@ import Hero from "./components/Hero";
 import OurServices from "./components/OurServices";
 import type { Project } from "~/database/schema"; // Ensure Project is imported
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-	// Access loader data safely with type assertions
-	const content = data?.content as Record<string, string> | undefined;
-	const pageTitle = content?.meta_title ?? "Lush Constructions";
+export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
+	// Access loader data safely. The loader ensures 'content' is an object.
+	const content = loaderData?.content ?? {};
+	const pageTitle = content.meta_title ?? "Lush Constructions";
 	const pageDescription =
-		content?.meta_description ??
+		content.meta_description ??
 		"High-Quality Solutions for Home & Office Improvement";
 
 	return [

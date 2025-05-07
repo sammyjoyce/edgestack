@@ -15,8 +15,8 @@ import type { NewContent, NewProject } from "./schema";
  */
 
 // Main seed function that populates the database
-export async function seedDatabase(db: D1Database) {
-  const drizzleDb = drizzle(db, { schema });
+export async function seedDatabase(d1: D1Database) { // Changed parameter name for clarity
+  const drizzleDb = drizzle(d1, { schema });
   
   console.log("🌱 Starting database seed...");
 
@@ -42,7 +42,7 @@ export async function seedDatabase(db: D1Database) {
 }
 
 // Seed all the content for pages
-async function seedContent(db: any) {
+async function seedContent(db: DrizzleD1Database<typeof schema>) {
   // Define the content for the site
   const contentItems: NewContent[] = [
     // Hero Section
@@ -296,7 +296,7 @@ async function seedContent(db: any) {
 }
 
 // Seed sample projects
-async function seedProjects(db: any) {
+async function seedProjects(db: DrizzleD1Database<typeof schema>) {
   // Define sample projects
   const projects: NewProject[] = [
     {

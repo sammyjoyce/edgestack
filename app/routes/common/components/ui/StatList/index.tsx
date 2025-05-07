@@ -1,6 +1,6 @@
-import type React from "react"; // Import React
-import { Border } from "~/routes/common/components/ui/Border"; // Corrected path
-import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn"; // Corrected path
+import React from "react"; // Import React
+import { Border } from "~/routes/common/components/ui/Border";
+import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
 
 export function StatList({
 	children,

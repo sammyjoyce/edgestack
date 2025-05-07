@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react"; // Import React
 // Define props interface
 import { Button } from "~/routes/common/components/ui/Button";
 
@@ -14,8 +14,8 @@ export default function Hero({
 	subtitle,
 	imageUrl,
 	altText = "Modern home extension background",
-}: HeroProps): React.ReactElement {
-	// Use React.ReactElement
+}: HeroProps): JSX.Element {
+	// Use JSX.Element
 	const backgroundUrl = imageUrl ?? "/assets/rozelle.jpg";
 
 	return (

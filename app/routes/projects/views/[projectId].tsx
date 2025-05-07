@@ -37,31 +37,8 @@ export function ProjectDetailRoute() {
 	// Error and !project cases are now handled by ErrorBoundary if loader throws
 	const { project } = useLoaderData<typeof loader>();
 
-	// This check might be redundant if loader always throws for !project
-	// and caught by an ErrorBoundary. If project can be legitimately null
-	// in a success scenario (not an error/not found), this check is needed.
-	// Based on the loader logic, !project should result in a 404 throw.
-	if (!project) {
-		// This part might be unreachable if ErrorBoundary catches all !project cases.
-		// For robustness, or if there's a path where project is null without error, keep it.
-		return (
-			<div className="py-16 bg-white text-center">
-				<h2 className="text-2xl font-semibold text-gray-700 mb-4">
-					Project Data Unavailable
-				</h2>
-				<p className="text-gray-500 mb-6">
-					The project data could not be loaded or found.
-				</p>
-				<Link
-					to="/projects"
-					className="inline-block text-blue-600 hover:underline"
-				>
-					← Back to Projects
-				</Link>
-			</div>
-		);
-	}
-
+	// The loader now guarantees that 'project' is available if no error was thrown.
+	// Error cases (including not found) are handled by the ErrorBoundary.
 	return (
 		<div className="py-16 bg-white">
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">

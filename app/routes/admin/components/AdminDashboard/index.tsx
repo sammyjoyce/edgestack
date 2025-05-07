@@ -1,9 +1,8 @@
 import React from "react"; // Ensure React is imported for JSX
 import { Link, useFetcher } from "react-router";
-import type { Tab } from "~/routes/common/components/ui/Tabs"; // Import Tab type
+import type { Tab } from "~/routes/common/components/ui/Tabs";
 
 import { Button } from "~/routes/admin/components/ui/Button";
-// UI primitives
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
@@ -12,10 +11,13 @@ import { Tabs } from "~/routes/common/components/ui/Tabs"; // Import Tabs compon
 import { AboutSectionEditor } from "~/routes/admin/components/AboutSectionEditor";
 import { ContactSectionEditor } from "~/routes/admin/components/ContactSectionEditor";
 import { HeroSectionEditor } from "~/routes/admin/components/HeroSectionEditor";
-import { ImageUploadSection } from "~/routes/admin/components/ImageUploadSection"; // Import ImageUploadSection
+import { ImageUploadSection } from "~/routes/admin/components/ImageUploadSection";
 // Admin components
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { ServicesSectionEditor } from "~/routes/admin/components/ServicesSectionEditor";
+// Import action types for fetchers
+import type { action as adminIndexAction } from "~/routes/admin/views/index";
+import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 
 interface AdminDashboardProps {
 	initialContent: Record<string, string> | undefined;

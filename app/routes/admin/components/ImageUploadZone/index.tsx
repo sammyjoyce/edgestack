@@ -1,5 +1,4 @@
-import type React from "react";
-import { useCallback } from "react";
+import React, { useCallback } from "react"; // Import React
 import { useDropzone } from "react-dropzone";
 
 interface ImageUploadZoneProps {
@@ -20,8 +19,8 @@ export default function ImageUploadZone({
 	label = "Upload Image",
 	className = "",
 	fileInputRef,
-}: ImageUploadZoneProps): React.ReactElement {
-	// Use React.ReactElement
+}: ImageUploadZoneProps): JSX.Element {
+	// Use JSX.Element
 	const handleDrop = useCallback(
 		(accepted: File[]) => {
 			if (!disabled && accepted.length > 0) {

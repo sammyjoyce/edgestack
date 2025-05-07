@@ -1,5 +1,5 @@
 import clsx from "clsx"; // Use direct import
-import type React from "react"; // Import React
+import React from "react"; // Import React
 
 type ContainerProps<T extends React.ElementType = "div"> = {
 	// Add default type

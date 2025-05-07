@@ -1,7 +1,5 @@
-import type React from "react";
+import React, { Fragment } from "react"; // Import React and Fragment
 import RichTextRenderer from "~/routes/common/components/RichTextRenderer";
-
-// Removed duplicate React import
 
 interface ConditionalRichTextRendererProps {
 	text: string | undefined | null;
@@ -19,8 +17,8 @@ export default function ConditionalRichTextRenderer({
 	fallbackClassName = "text-base sm:text-lg", // Default fallback style
 	richTextClassName, // Optional class for RichTextRenderer container
 	fallbackTag: FallbackTag = "p", // Default to <p> tag
-}: ConditionalRichTextRendererProps): React.JSX.Element | null {
-	// Changed to React.JSX.Element
+}: ConditionalRichTextRendererProps): JSX.Element | null {
+	// Changed to JSX.Element
 	if (!text) {
 		return null; // Render nothing if text is empty or null/undefined
 	}

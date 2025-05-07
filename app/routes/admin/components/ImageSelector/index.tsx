@@ -1,5 +1,4 @@
-import type React from "react";
-import { useState } from "react";
+import React, { useState, useRef } from "react"; // Import React and useRef
 import { useFetcher } from "react-router";
 import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";
@@ -25,9 +24,9 @@ export function ImageSelector({
 	imageUrl,
 	label = "Upload Image",
 	className = "",
-	fileInputRef,
+	fileInputRef, // This ref is passed from parent, no need to create one here if parent manages it
 	fieldKey,
-}: ImageSelectorProps): React.ReactElement {
+}: ImageSelectorProps): JSX.Element { // Changed to JSX.Element
 	const [isOpen, setIsOpen] = useState(false);
 	const fetcher = useFetcher();
 
