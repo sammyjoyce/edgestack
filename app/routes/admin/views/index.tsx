@@ -1,7 +1,7 @@
 import React, { type JSX } from "react"; // Added React import for JSX
 // admin.route.tsx
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { json, redirect, useLoaderData } from "react-router";
+import { data, redirect, useLoaderData } from "react-router";
 import { validateContentInsert } from "~/database/valibot-validation";
 import { getAllContent, updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
@@ -37,11 +37,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
 	const token = getSessionCookie(request);
 	const secret = context.cloudflare?.env?.JWT_SECRET || context.env?.JWT_SECRET;
 	if (!token || !secret || !(await verify(token, secret))) {
-		return json({ success: false, error: "Unauthorized" }, { status: 401 });
+		return data({ success: false, error: "Unauthorized" }, { status: 401 });
 	}
 
 	if (request.method !== "POST") {
-		return json({ error: "Invalid method" }, { status: 405 });
+		return data({ error: "Invalid method" }, { status: 405 });
 	}
 
 	const formData = await request.formData();
@@ -64,9 +64,9 @@ export async function action({ request, context }: ActionFunctionArgs) {
 			}
 			if (Object.keys(updates).length > 0) {
 				await updateContent(context.db, updates);
-				return json({ success: true, message: "Text content updated." });
+				return data({ success: true, message: "Text content updated." });
 			}
-			return json({
+			return data({
 				success: true,
 				message: "No text content changes detected.",
 			});
@@ -74,18 +74,18 @@ export async function action({ request, context }: ActionFunctionArgs) {
 		if (intent === "reorderSections") {
 			const orderValue = formData.get("home_sections_order");
 			if (typeof orderValue !== "string") {
-				return json(
+				return data(
 					{ success: false, error: "Invalid section order data." },
 					{ status: 400 },
 				);
 			}
 			validateContentInsert({ key: "home_sections_order", value: orderValue });
 			await updateContent(context.db, { home_sections_order: orderValue });
-			return json({ success: true, message: "Section order saved." });
+			return data({ success: true, message: "Section order saved." });
 		}
 
 		// Fallback for unknown or missing intent if form was submitted
-		return json(
+		return data(
 			{ success: false, error: "Unknown or missing intent" },
 			{ status: 400 },
 		);
@@ -99,12 +99,12 @@ export async function action({ request, context }: ActionFunctionArgs) {
 						`${issue.path?.join(".") || "field"}: ${issue.message}`,
 				)
 				.join(", ");
-			return json(
+			return data(
 				{ success: false, error: `Validation Error: ${issueMessages}` },
 				{ status: 400 },
 			);
 		}
-		return json(
+		return data(
 			{ success: false, error: "An unexpected error occurred." },
 			{ status: 500 },
 		);

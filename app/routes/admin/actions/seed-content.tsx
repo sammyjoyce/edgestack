@@ -1,6 +1,6 @@
 // app/routes/admin/actions/seed-content.tsx
 import type { ActionFunctionArgs } from "react-router";
-import { json, redirect } from "react-router";
+import { data, redirect } from "react-router";
 import { getAllContent, updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 
@@ -15,11 +15,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
 	const token = getSessionCookie(request);
 	const secret = context.cloudflare?.env?.JWT_SECRET || context.env?.JWT_SECRET;
 	if (!token || !secret || !(await verify(token, secret))) {
-		return json({ success: false, error: "Unauthorized" }, { status: 401 });
+		return data({ success: false, error: "Unauthorized" }, { status: 401 });
 	}
 
 	if (request.method !== "POST") {
-		return json({ error: "Invalid method. Please use POST." }, { status: 405 });
+		return data({ error: "Invalid method. Please use POST." }, { status: 405 });
 	}
 
 	try {
@@ -29,7 +29,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 		);
 
 		if (missingKeys.length === 0) {
-			return json({
+			return data({
 				success: true,
 				message: "Default content already exists. No action taken.",
 			});
@@ -48,13 +48,13 @@ export async function action({ request, context }: ActionFunctionArgs) {
 		// Optionally, redirect back to admin dashboard or return success
 		// For now, returning a success message. A redirect might be better UX.
 		// throw redirect("/admin");
-		return json({
+		return data({
 			success: true,
 			message: `Successfully seeded ${missingKeys.length} missing content items.`,
 		});
 	} catch (error: any) {
 		console.error("[Seed Content Action Error]:", error);
-		return json(
+		return data(
 			{ success: false, error: "Failed to seed default content." },
 			{ status: 500 },
 		);

@@ -20,7 +20,7 @@ function cn(...classes: (string | undefined)[]) {
  */
 export interface PillProps {
 	status?: PillStatus;
-	variant?: "default" | "outline" | "secondary";
+	variant?: "default" | "outline" | "secondary" | "neutral";
 	children: ReactNode;
 	className?: string;
 }

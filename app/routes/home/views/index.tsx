@@ -35,49 +35,50 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 
 export function HomeRoute(): JSX.Element {
 	// Use useOutletContext with Awaited<ReturnType> to unwrap the Promise
-	const { content = {}, projects = [] } =
+	const { content: rawContent, projects = [] } =
 		useOutletContext<Awaited<ReturnType<typeof parentLoader>>>();
+	const content = (rawContent ?? {}) as Record<string, string>;
 
 	// Section mapping
 	const sectionBlocks: Record<string, JSX.Element> = {
 		hero: (
 			<Hero
 				key="hero"
-				title={content?.hero_title ?? "Building Dreams, Creating Spaces"}
+				title={content.hero_title ?? "Building Dreams, Creating Spaces"}
 				subtitle={
-					content?.hero_subtitle ??
+					content.hero_subtitle ??
 					"Your trusted partner in construction and renovation."
 				}
-				imageUrl={content?.hero_image_url ?? "/assets/rozelle.jpg"}
+				imageUrl={content.hero_image_url ?? "/assets/rozelle.jpg"}
 			/>
 		),
 		services: (
 			<OurServices
 				key="services"
-				introTitle={content?.services_intro_title ?? "Our Services"}
+				introTitle={content.services_intro_title ?? "Our Services"}
 				introText={
-					content?.services_intro_text ??
+					content.services_intro_text ??
 					"We offer a wide range of construction services."
 				}
 				servicesData={[
 					{
-						title: content?.service_1_title ?? "Kitchens",
-						image: content?.service_1_image ?? "/assets/pic09-By9toE8x.png",
+						title: content.service_1_title ?? "Kitchens",
+						image: content.service_1_image ?? "/assets/pic09-By9toE8x.png",
 						link: "#contact",
 					},
 					{
-						title: content?.service_2_title ?? "Bathrooms",
-						image: content?.service_2_image ?? "/assets/pic06-BnCQnmx7.png",
+						title: content.service_2_title ?? "Bathrooms",
+						image: content.service_2_image ?? "/assets/pic06-BnCQnmx7.png",
 						link: "#contact",
 					},
 					{
-						title: content?.service_3_title ?? "Roofing",
-						image: content?.service_3_image ?? "/assets/pic13-C3BImLY9.png",
+						title: content.service_3_title ?? "Roofing",
+						image: content.service_3_image ?? "/assets/pic13-C3BImLY9.png",
 						link: "#contact",
 					},
 					{
-						title: content?.service_4_title ?? "Renovations",
-						image: content?.service_4_image ?? "/assets/pic04-CxD2NUJX.png",
+						title: content.service_4_title ?? "Renovations",
+						image: content.service_4_image ?? "/assets/pic04-CxD2NUJX.png",
 						link: "#contact",
 					},
 				]}
@@ -86,9 +87,9 @@ export function HomeRoute(): JSX.Element {
 		projects: (
 			<RecentProjects
 				key="projects"
-				introTitle={content?.projects_intro_title ?? "Recent Projects"}
+				introTitle={content.projects_intro_title ?? "Recent Projects"}
 				introText={
-					content?.projects_intro_text ??
+					content.projects_intro_text ??
 					"Take a look at some of our recent work."
 				}
 				projects={projects}
@@ -97,9 +98,9 @@ export function HomeRoute(): JSX.Element {
 		about: (
 			<AboutUs
 				key="about"
-				title={content?.about_title ?? "About Us"}
-				text={content?.about_text ?? "Learn more about our company and values."}
-				imageUrl={content?.about_image_url ?? "/assets/rozelle.jpg"}
+				title={content.about_title ?? "About Us"}
+				text={content.about_text ?? "Learn more about our company and values."}
+				imageUrl={content.about_image_url ?? "/assets/rozelle.jpg"}
 			/>
 		),
 		contact: <ContactUs key="contact" content={content} />,
@@ -107,7 +108,7 @@ export function HomeRoute(): JSX.Element {
 
 	// Determine order
 	const DEFAULT_ORDER = ["hero", "services", "projects", "about", "contact"];
-	const orderString = content?.home_sections_order as string | undefined;
+	const orderString = content.home_sections_order as string | undefined;
 	const order = orderString
 		? orderString.split(",").filter((id) => id in sectionBlocks)
 		: DEFAULT_ORDER;
