@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, redirect, useNavigate, useActionData } from "react-router"; // Added useActionData
 import type { ActionFunctionArgs } from "react-router";
+import type { NewProject } from "~/database/schema"; // Import NewProject type
 import { createProject } from "~/routes/common/db"; // Import createProject
 import { validateProjectInsert } from "~/database/valibot-validation"; // Import validation
 import RichTextField from "../../components/RichTextField";

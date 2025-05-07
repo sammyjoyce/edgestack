@@ -3,6 +3,9 @@ import { Form, Link, useLoaderData } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
 import { Button } from "../../components/ui/Button";
+import type { Project } from "~/database/schema";
+import { deleteProject, getAllProjects } from "~/routes/common/db";
+import { Button } from "../../components/ui/Button";
 // Define return types for loader and action
 type ProjectsLoaderData = {
 	projects: Project[];
@@ -18,6 +21,7 @@ type ProjectsActionData = {
 // Loader to fetch all projects - Return plain objects for type safety
 export async function loader({ request, context }: LoaderFunctionArgs) {
 	// Auth check (redundant with layout loader but good practice)
+	// Auth check (redundant with layout loader but good practice)
 	const unauthorized = () => {
 		return { projects: [], error: "Unauthorized" } as const;
 	};
@@ -31,7 +35,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 	}
 
 	try {
-		const { getAllProjects } = await import("~/routes/common/db");
 		const projects = await getAllProjects(context.db);
 		return { projects } as const;
 	} catch (error) {
@@ -45,6 +48,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
 
+	// Auth check
 	// Auth check
 	const unauthorized = () => {
 		return { success: false, error: "Unauthorized" } as const;
@@ -69,7 +73,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
 		}
 
 		try {
-			const { deleteProject } = await import("~/routes/common/db");
 			await deleteProject(context.db, projectId);
 			return { success: true, projectId } as const;
 		} catch (error: unknown) {
