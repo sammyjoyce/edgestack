@@ -105,7 +105,7 @@ export function ServicesSectionEditor({
 	}, [imageUploading, statusTexts]);
 
 	return (
-		<div className="overflow-hidden bg-screen-light sm:rounded-lg shadow-xs border border-neutral-light">
+		<div className="overflow-hidden bg-gray-50 sm:rounded-lg shadow-[var(--shadow-input-default)] border border-gray-200">
 			<div className="px-4 py-5 sm:p-6">
 				<h2 className="text-xl font-semibold text-foreground-light mb-6">
 					Services Section
@@ -123,7 +123,7 @@ export function ServicesSectionEditor({
 							id="services_intro_title"
 							rows={2}
 							defaultValue={initialContent.services_intro_title || ""}
-							className="block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary text-sm text-foreground-light bg-screen-light"
+							className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm"
 							onBlur={handleBlur}
 						/>
 						<label
@@ -157,7 +157,7 @@ export function ServicesSectionEditor({
 									id={field.titleKey}
 									rows={2}
 									defaultValue={initialContent[field.titleKey] || ""}
-									className="block w-full rounded-md border-neutral-light shadow-sm focus:border-primary focus:ring-primary text-sm text-foreground-light bg-screen-light"
+									className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm"
 									onBlur={handleBlur}
 								/>
 								<label

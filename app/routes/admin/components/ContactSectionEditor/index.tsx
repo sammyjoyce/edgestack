@@ -102,7 +102,7 @@ export function ContactSectionEditor({
 	// );
 
 	return (
-		<section className="bg-white rounded-lg shadow-xs border border-gray-200 p-6">
+		<section className="bg-gray-50 rounded-lg shadow-[var(--shadow-input-default)] border border-gray-200 p-6">
 			{/* Adjusted shadow/border/padding */}
 			<h2 className="text-xl font-semibold text-gray-900 mb-6">
 				{/* Use semibold, increased margin */}
@@ -133,7 +133,7 @@ export function ContactSectionEditor({
 								rows={rows}
 								defaultValue={initialContent[key] || ""}
 								placeholder={placeholder}
-								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+								className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-indigo-500 focus:ring-indigo-500 text-sm"
 							/>
 						) : (
 							<input
@@ -142,7 +142,7 @@ export function ContactSectionEditor({
 								id={key}
 								defaultValue={initialContent[key] || ""}
 								placeholder={placeholder}
-								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+								className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-indigo-500 focus:ring-indigo-500 text-sm"
 							/>
 						)}
 					</div>

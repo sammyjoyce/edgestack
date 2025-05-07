@@ -80,7 +80,7 @@ export function AboutSectionEditor({
 							id="about_title"
 							rows={2}
 							defaultValue={initialContent.about_title || ""}
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm" /* Standard input */
+							className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm"
 							onBlur={handleBlur}
 						/>
 						<label

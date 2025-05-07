@@ -115,7 +115,7 @@ export function ProjectsIndexRoute() {
 					No projects found. Add your first project!
 				</p>
 			) : (
-				<div className="bg-white shadow-xs border border-gray-200 overflow-hidden rounded-lg">
+				<div className="bg-gray-50 shadow-[var(--shadow-input-default)] border border-gray-200 overflow-hidden rounded-lg">
 					<ul className="divide-y divide-gray-200">
 						{projects.map((project) => (
 							<li
