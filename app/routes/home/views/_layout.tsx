@@ -106,10 +106,13 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 	}
 
 	// Ensure full page loads always revalidate
-	const isFullPageLoad = !currentUrl.href || currentUrl.href === "";
-	if (isFullPageLoad) {
-		return true;
-	}
+	// const isFullPageLoad = !currentUrl.href || currentUrl.href === "";
+	// if (isFullPageLoad) {
+	// 	return true;
+	// }
+	// Note: Initial loads (full page loads) inherently run loaders.
+	// shouldRevalidate is primarily for client-side transitions and explicit revalidations.
+	// The defaultShouldRevalidate behavior generally handles this correctly.
 
 	// Default to internal React Router behavior
 	return defaultShouldRevalidate;

@@ -332,43 +332,45 @@ export default function AdminDashboard({ initialContent }: AdminDashboardProps):
 					</button>
 				</div>
 
-				{/* Direct test form for content updates */}
-				<div className="bg-gray-50 p-4 border rounded mb-4">
-					<h3 className="text-lg font-medium mb-2">
-						Debug Tool: Direct Content Update
-					</h3>
-					<form
-						method="post"
-						action="/admin"
-						className="flex flex-col space-y-2"
-						onSubmit={(e) => {
-							console.log("Direct form submitted!");
-						}}
-					>
-						<input type="hidden" name="intent" value="updateTextContent" />
-						<div>
-							<label
-								htmlFor="debug_hero_title"
-								className="block text-sm font-medium text-gray-700"
-							>
-								Hero Title Direct Update
-							</label>
-							<input
-								type="text"
-								id="debug_hero_title"
-								name="hero_title"
-								defaultValue="Direct Update Test"
-								className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-							/>
-						</div>
-						<button
-							type="submit"
-							className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 self-start"
+				{/* Direct test form for content updates - Conditionally render for development */}
+				{process.env.NODE_ENV === "development" && (
+					<div className="bg-gray-50 p-4 border rounded mb-4">
+						<h3 className="text-lg font-medium mb-2">
+							Debug Tool: Direct Content Update
+						</h3>
+						<form
+							method="post"
+							action="/admin"
+							className="flex flex-col space-y-2"
+							onSubmit={(e) => {
+								console.log("Direct form submitted!");
+							}}
 						>
-							Save Content Directly
-						</button>
-					</form>
-				</div>
+							<input type="hidden" name="intent" value="updateTextContent" />
+							<div>
+								<label
+									htmlFor="debug_hero_title"
+									className="block text-sm font-medium text-gray-700"
+								>
+									Hero Title Direct Update
+								</label>
+								<input
+									type="text"
+									id="debug_hero_title"
+									name="hero_title"
+									defaultValue="Direct Update Test"
+									className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+								/>
+							</div>
+							<button
+								type="submit"
+								className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 self-start"
+							>
+								Save Content Directly
+							</button>
+						</form>
+					</div>
+				)}
 
 				{/* Render the Tabs component */}
 				<Tabs
