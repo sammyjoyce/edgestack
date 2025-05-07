@@ -2,8 +2,7 @@ import React from "react"; // Ensure React is imported for JSX
 import { Link, useFetcher, useLoaderData } from "react-router";
 import type { Tab } from "~/routes/common/components/ui/Tabs"; // Import Tab type
 // per l’inferenza di useLoaderData
-import { loader as adminIndexLoader } from "~/routes/admin/views/index";
-
+import { dummyAdminLoader } from "~/routes/admin/views/index";
 
 // Validation
 // import { validateErrorResponse } from "~/database/valibot-validation"; // Not used directly here
@@ -29,9 +28,10 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ initialContent }: AdminDashboardProps): React.JSX.Element {
 	// Use type inference with the imported loader type
-	const loaderData = useLoaderData<typeof adminIndexLoader>();
+	const loaderData = useLoaderData<typeof dummyAdminLoader>();
 	// Use initialContent prop if provided, otherwise fallback to loaderData
-	const content = initialContent || (loaderData?.content as Record<string, string> | undefined);
+	// TEMP: For dummy loader, just use initialContent or undefined
+	const content = initialContent;
 
 	// ... rest of the component remains unchanged ...
 

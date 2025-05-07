@@ -9,7 +9,7 @@
 		"preview": "bun run build && vite preview",
 		"deploy": "bun run build && wrangler deploy",
 		"db:generate": "dotenv -- drizzle-kit generate",
-		"db:migrate": "wrangler d1 migrations apply --local DB",
+		"db:migrate": "wrangler d1 migrations apply lush-content-db --local",
 		"db:migrate-production": "dotenv -- drizzle-kit migrate",
 		"db:seed-remote": "bun run ./scripts/run-seed.ts",
 		"cf-typegen": "wrangler types",
