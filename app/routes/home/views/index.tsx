@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import { useOutletContext } from "react-router";
 import RecentProjects from "~/routes/common/components/RecentProjects";
 // Import parent route loader function for typing
-import type { loader as parentLoader } from "~/routes/home/routes/_layout";
+import type { loader as parentLoader } from "~/routes/home/views/_layout";
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Hero from "../components/Hero";
