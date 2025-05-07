@@ -1,5 +1,5 @@
-import clsx from "clsx"; // For combining class names
-import { motion } from "framer-motion"; // Use framer-motion
+import clsx from "clsx";
+import { motion } from "framer-motion";
 import type React from "react";
 import { useState } from "react";
 
@@ -38,13 +38,14 @@ export const Tabs = ({
 		setActive(newTabs[0]);
 	};
 
-	const [hovering, setHovering] = useState(false);
+	// Helper for active state
+	const isActive = (tab: Tab) => tab.value === active.value;
 
 	return (
 		<>
 			<div
 				className={cn(
-					"flex flex-row items-center justify-start [perspective:1000px] relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-full border-b border-gray-200 pb-2", // Added border and padding
+					"flex flex-row items-center justify-start relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-full border-b border-neutral-300 pb-px",
 					containerClassName,
 				)}
 			>
@@ -54,41 +55,24 @@ export const Tabs = ({
 						onClick={() => {
 							moveSelectedTabToTop(idx);
 						}}
-						onMouseEnter={() => setHovering(true)}
-						onMouseLeave={() => setHovering(false)}
 						className={cn(
-							"relative px-4 py-2 rounded-full text-sm font-medium", // Adjusted size
-							tabClassName,
+							"relative px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors duration-150 ease-in-out border-b-2",
+							isActive(tab)
+								? activeTabClassName || "text-primary border-primary"
+								: tabClassName ||
+								  "text-neutral-600 hover:text-foreground border-transparent hover:border-neutral-400",
 						)}
-						style={{
-							transformStyle: "preserve-3d",
-						}}
+						type="button"
 					>
-						{active.value === tab.value && (
-							<motion.div
-								layoutId="clickedbutton"
-								transition={{ type: "spring", bounce: 0.12, duration: 0.5 }}
-								className={cn(
-									"absolute inset-0 bg-gray-100 border border-gray-300 rounded-full", // Adjusted active style
-									activeTabClassName,
-								)}
-							/>
-						)}
-
-						<span className="relative block text-gray-700 hover:text-black">
-							{/* Adjusted text color */}
-							{tab.title}
-						</span>
+						<span className="relative block">{tab.title}</span>
 					</button>
 				))}
 			</div>
-			{/* Ensure FadeInDiv receives the active prop */}
 			<FadeInDiv
 				tabs={tabs}
-				active={active} // Pass active state
+				active={active}
 				key={active.value}
-				hovering={hovering}
-				className={cn("mt-8", contentClassName)} // Reduced margin-top
+				className={cn("mt-6", contentClassName)}
 			/>
 		</>
 	);
@@ -97,38 +81,26 @@ export const Tabs = ({
 export const FadeInDiv = ({
 	className,
 	tabs,
-	active, // Receive active state
-	hovering,
+	active,
 }: {
 	className?: string;
 	key?: string;
 	tabs: Tab[];
-	active: Tab; // Add active prop type
-	hovering?: boolean;
+	active: Tab;
 }) => {
-	// Use the passed 'active' state to determine the active tab
-	const isActive = (tab: Tab) => {
-		return tab.value === active.value;
-	};
+	const isActive = (tab: Tab) => tab.value === active.value;
 	return (
 		<div className="relative w-full h-full">
-			{tabs.map((tab, idx) => (
+			{tabs.map((tab) => (
 				<motion.div
 					key={tab.value}
 					layoutId={tab.value}
 					style={{
-						scale: 1 - idx * 0.1,
-						top: hovering ? idx * -50 : 0,
-						zIndex: -idx,
-						opacity: idx < 3 ? 1 - idx * 0.1 : 0,
+						display: isActive(tab) ? "block" : "none",
 					}}
-					animate={{
-						y: isActive(tab) ? [0, 15, 0] : 0,
-					}}
-					className={cn("w-full h-full absolute top-0 left-0", className)}
+					className={cn("w-full h-full", className)}
 				>
-					{/* Render content only for the active tab for simplicity, or adjust logic if needed */}
-					{isActive(tab) ? tab.content : null}
+					{tab.content}
 				</motion.div>
 			))}
 		</div>
