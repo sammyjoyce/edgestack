@@ -10,6 +10,12 @@ import * as schema from "~/database/schema";
 export async function getAllContent(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Record<string, string>> {
+	// DEBUG: Log when content is being retrieved
+	console.log(
+		"[Content Retrieval] Getting all content from database at:",
+		new Date().toISOString(),
+	);
+
 	// Add return type
 	const results = await db
 		.select()
@@ -19,14 +25,33 @@ export async function getAllContent(
 			asc(schema.content.key), // deterministic fallback
 		)
 		.all();
+
+	// DEBUG: Log the content keys that were retrieved
+	console.log(
+		"[Content Retrieval] Retrieved",
+		results.length,
+		"content items with keys:",
+		results.map((r) => r.key).join(", "),
+	);
+
 	// Transform array of objects to a single object with key-value pairs
-	return results.reduce(
+	const contentMap = results.reduce(
 		(acc, { key, value }) => {
 			acc[key] = value;
 			return acc;
 		},
 		{} as Record<string, string>,
 	);
+
+	// DEBUG: Log specific content values for debugging
+	if (contentMap.hero_title) {
+		console.log(
+			"[Content Retrieval] Hero title content:",
+			contentMap.hero_title,
+		);
+	}
+
+	return contentMap;
 }
 
 // Update or insert content values (upsert)
@@ -41,6 +66,32 @@ export async function updateContent(
 		string | (Partial<Omit<NewContent, "key">> & { value: string })
 	>,
 ): Promise<any[]> {
+	// DEBUG: Log content updates with timestamp
+	console.log(
+		"[Content Update] Content update requested at:",
+		new Date().toISOString(),
+	);
+	console.log(
+		"[Content Update] Keys to update:",
+		Object.keys(updates).join(", "),
+	);
+
+	// DEBUG: Log all update values in detail
+	Object.entries(updates).forEach(([key, value]) => {
+		const valueToStore = typeof value === "string" ? value : value.value;
+		console.log(
+			`[Content Update] Key: ${key}, Value to store: "${valueToStore}"`,
+		);
+
+		// Special focus on hero_title
+		if (key === "hero_title") {
+			console.log("[Content Update] *** HERO TITLE UPDATE DETECTED ***");
+			console.log(
+				`[Content Update] Updating hero_title to: "${valueToStore}" (type: ${typeof valueToStore})`,
+			);
+		}
+	});
+
 	// Use Promise<any[]> as a more general type for batch results
 	// Use D1Result<unknown>[] as return type
 	const batch = Object.entries(updates).map(([key, raw]) => {
@@ -55,13 +106,23 @@ export async function updateContent(
 				set: { ...data, updatedAt: new Date() }, // D1 doesn't support Date directly, will be converted
 			});
 	});
+
 	// Use db.batch() for potentially better performance with D1
 	// TODO: Fix batch execution for SQLite if needed. This assumes D1 context for now.
 	// The error TS2345 suggests `batch` items are not compatible with db.batch's expected input.
 	// For SQLite, db.batch expects string[] or PreparedQuery[].
 	// This might need individual execution or prepared statements.
 	// Returning Promise<any[]> for now to resolve immediate TS error.
-	return db.batch(batch as any); // Use 'as any' to bypass the complex type error for now
+	const result = await db.batch(batch as any); // Use 'as any' to bypass the complex type error for now
+
+	// DEBUG: Log update results
+	console.log(
+		"[Content Update] Update completed, affected",
+		result.length,
+		"records",
+	);
+
+	return result;
 }
 
 // --- Project CRUD Functions ---

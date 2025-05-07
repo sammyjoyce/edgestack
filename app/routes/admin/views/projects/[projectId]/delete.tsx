@@ -2,12 +2,12 @@ import React from "react";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
-import { Button } from "~/routes/common/components/ui/Button";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById } from "~/routes/common/db";
 import { deleteProject } from "~/routes/common/db"; // Import deleteProject
 // Import generated types from the .react-router directory
 import type { Route } from "../../../../../../.react-router/types/app/routes/admin/routes/projects/[projectId]/+types/delete";
+import { Button } from "../../../components/ui/Button";
+import { FadeIn } from "../../../components/ui/FadeIn";
 
 // Return plain objects for type safety
 export async function loader({ params, context }: Route.LoaderArgs) {

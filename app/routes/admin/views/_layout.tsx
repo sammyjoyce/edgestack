@@ -57,6 +57,11 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	return { isAuthenticated: loggedIn };
 };
 
+// Add no-op action to layout to handle form submissions and prevent missing action errors
+export const action = async ({ request, context }: Route.ActionArgs) => {
+	return null;
+};
+
 interface NavItem {
 	name: string;
 	href: To | string; // Use To for internal, string for external

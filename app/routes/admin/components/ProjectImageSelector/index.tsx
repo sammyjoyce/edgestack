@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useFetcher } from "react-router";
 import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";
-import { Button } from "~/routes/common/components/ui/Button";
+import { Button } from "~/routes/admin/components/ui/Button";
 import type { StoredImage } from "~/utils/upload.server";
 
 interface ProjectImageSelectorProps {
@@ -72,7 +72,7 @@ export function ProjectImageSelector({
 				<div>
 					<Drawer.Root open={isOpen} onOpenChange={setIsOpen}>
 						<Drawer.Trigger asChild>
-							<Button variant="secondary" type="button" className="w-full">
+							<Button invert type="button" className="w-full">
 								Choose from Existing Images
 							</Button>
 						</Drawer.Trigger>

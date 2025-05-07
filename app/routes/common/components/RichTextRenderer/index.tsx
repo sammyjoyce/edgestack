@@ -31,7 +31,7 @@ interface SerializedListNode extends SerializedLexicalNode {
 import type React from "react";
 import { Fragment } from "react";
 // Optional: If you want to render internal links using react-router
-// import { Link as RouterLink } from "react-router-dom";
+// import { Link as RouterLink } from "react-router";
 
 interface Props {
 	json: string;

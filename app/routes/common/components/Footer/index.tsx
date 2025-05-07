@@ -178,7 +178,7 @@ export default function Footer(): React.JSX.Element {
 					</motion.div>
 				</div>
 				<div className="mt-8 border-gray-800 border-t pt-8 md:flex md:items-center md:justify-between">
-					<p className="text-[11px] text-gray-400 leading-none">
+					<p className="text-[11px] text-gray-400 leading-relaxed">
 						&copy; {currentYear} Lush Constructions. All rights reserved.
 						<br />
 						NSW Builder License: 4632530

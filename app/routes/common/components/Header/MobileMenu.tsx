@@ -3,8 +3,9 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
 import type { JSX, MouseEvent } from "react";
 import { NavLink } from "react-router";
-import type { MenuItem, MenuItemRoute } from ".";
+import type { MenuItem } from ".";
 import { Button } from "../ui/Button";
+import { useMenuItemInfo } from "./useMenuItemInfo";
 
 /* ─── Props ──────────────────────────────────────── */
 
@@ -17,11 +18,6 @@ interface MobileMenuProps {
 		sectionId: string,
 	) => void;
 }
-
-/* ─── Type guard ─────────────────────────────────── */
-
-const isRoute = (i: MenuItem): i is MenuItemRoute =>
-	"isRouteLink" in i && i.isRouteLink === true;
 
 /* ─── Component ──────────────────────────────────── */
 
@@ -70,30 +66,55 @@ export default function MobileMenu({
 				</div>
 
 				<nav className="mt-6 space-y-6">
-					{menuItems.map((item) =>
-						isRoute(item) ? (
-							<NavLink
-								key={item.name}
-								to={item.path}
-								onClick={onClose}
-								className="block rounded-full px-5 py-2 text-base font-semibold text-gray-300 transition hover:bg-gray-900/50 hover:text-gray-100"
-							>
-								{item.name}
-							</NavLink>
-						) : (
+					{menuItems.map((item) => {
+						const { isRoute, rawPath, isHomeWithHash, hashPart, anchorHref } =
+							useMenuItemInfo(item);
+
+						if (isRoute) {
+							if (isHomeWithHash) {
+								return (
+									<a
+										key={item.name}
+										href={`#${hashPart}`}
+										onClick={(e: MouseEvent<HTMLAnchorElement>) => {
+											scrollToSection(e, hashPart);
+											onClose();
+										}}
+										className="block rounded-full px-5 py-2 text-base font-semibold text-gray-300 transition hover:bg-gray-900/50 hover:text-gray-100"
+									>
+										{item.name}
+									</a>
+								);
+							}
+
+							return (
+								<NavLink
+									key={item.name}
+									to={rawPath}
+									onClick={onClose}
+									className="block rounded-full px-5 py-2 text-base font-semibold text-gray-300 transition hover:bg-gray-900/50 hover:text-gray-100"
+								>
+									{item.name}
+								</NavLink>
+							);
+						}
+
+						return (
 							<a
 								key={item.name}
-								href={typeof item.path === "string" ? item.path : "#"}
+								href={anchorHref}
 								onClick={(e) => {
-									const path = typeof item.path === "string" ? item.path : "#";
-									scrollToSection(e, path.replace(/^#/, ""));
+									if (anchorHref.startsWith("#")) {
+										scrollToSection(e, anchorHref.replace(/^#/, ""));
+									}
+									onClose();
 								}}
 								className="block rounded-full px-5 py-2 text-base font-semibold text-gray-300 transition hover:bg-gray-900/50 hover:text-gray-100"
 							>
 								{item.name}
 							</a>
-						),
-					)}
+						);
+					})}
 					<Button to="tel:0404289437" invert className="w-full">
 						Call Us · 0404 289 437
 					</Button>

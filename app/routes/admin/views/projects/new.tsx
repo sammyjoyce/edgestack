@@ -1,10 +1,10 @@
 import React from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import type { ActionFunctionArgs } from "react-router";
-import { Button } from "~/routes/common/components/ui/Button";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { createProject } from "~/routes/common/db"; // Import createProject
 import RichTextField from "../../components/RichTextField";
+import { Button } from "../../components/ui/Button";
+import { FadeIn } from "../../components/ui/FadeIn";
 // Import generated types if available (assuming generouted)
 import type { Route } from "./+types/new"; // Adjust path if needed
 

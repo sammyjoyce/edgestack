@@ -123,10 +123,12 @@ export default function ContactUs({ content = {} }: ContactUsProps) {
 						</div>
 					</dl>
 
-					<div className="mt-8 space-y-1 text-[11px] text-gray-400 leading-none">
-						<p className="font-medium">ABN: {abn}</p>
-						<p className="font-medium">ACN: {acn}</p>
-						<p className="font-medium">License Number: {license}</p>
+					<div className="mt-8 space-y-1 text-[11px] text-gray-400 leading-normal">
+						<p className="font-medium whitespace-pre-line">ABN: {abn}</p>
+						<p className="font-medium whitespace-pre-line">ACN: {acn}</p>
+						<p className="font-medium whitespace-pre-line">
+							License Number: {license}
+						</p>
 					</div>
 
 					<div className="mt-10">

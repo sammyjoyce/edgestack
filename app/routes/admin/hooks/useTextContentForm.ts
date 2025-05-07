@@ -117,7 +117,7 @@ export function useTextContentForm({
 					data.append(name, value);
 					isSubmittingRef.current = true; // Set submitting flag
 					// Use typed path for action
-					fetcher.submit(data, { method: "post", action: "/admin" });
+					fetcher.submit(data, { method: "post", action: "/admin" }); // Explicitly use /admin
 					setFeedback(`Saving '${labelForKey(name)}'...`); // Use label for feedback
 					setErrors((prev) => {
 						const next = { ...prev };
@@ -196,7 +196,7 @@ export function useTextContentForm({
 
 			isSubmittingRef.current = true; // Set submitting flag
 			// Use typed path for action
-			fetcher.submit(data, { method: "post", action: "/admin" });
+			fetcher.submit(data, { method: "post", action: "/admin" }); // Explicitly use /admin
 			setFeedback("Saving changes...");
 			// Update the 'saved' fields state after successful manual save intention
 			setFields(pendingFields);
