@@ -18,10 +18,11 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 	const parentLayoutData = parentLayoutMatch?.data as
 		| Awaited<ReturnType<typeof parentLoader>>
 		| undefined;
+	const c = parentLayoutData?.content as Record<string, string> | undefined;
 	const pageTitle =
-		parentLayoutData?.content?.meta_title ?? "Lush Constructions";
+		c?.["meta_title"] ?? "Lush Constructions";
 	const pageDescription =
-		parentLayoutData?.content?.meta_description ??
+		c?.["meta_description"] ??
 		"High-Quality Solutions for Home & Office Improvement";
 
 	return [
