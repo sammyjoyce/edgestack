@@ -17,9 +17,9 @@ export default defineConfig({
     },
   },
   plugins: [
+    tsconfigPaths(),
+    reactRouter(),
     cloudflare({ viteEnvironment: { name: "ssr" } }),
     tailwindcss(),
-    reactRouter(),
-    tsconfigPaths(),
   ],
 });
