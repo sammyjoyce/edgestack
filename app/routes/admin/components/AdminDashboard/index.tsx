@@ -2,7 +2,7 @@ import React from "react"; // Ensure React is imported for JSX
 import { Link, useFetcher, useLoaderData } from "react-router";
 import type { Tab } from "~/routes/common/components/ui/Tabs"; // Import Tab type
 // per l’inferenza di useLoaderData
-import { loader as adminIndexLoader } from "~/routes/admin/views";
+import { loader as adminIndexLoader } from "~/routes/admin/views/index";
 
 
 // Validation
