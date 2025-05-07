@@ -4,7 +4,7 @@ CREATE TABLE `media` (
 	`alt` text,
 	`width` integer,
 	`height` integer,
-	`created_at` integer DEFAULT '"2025-04-28T15:47:31.305Z"'
+	`created_at` integer DEFAULT (strftime('%s', 'now'))
 );
 --> statement-breakpoint
 CREATE TABLE `projects` (
@@ -17,8 +17,8 @@ CREATE TABLE `projects` (
 	`published` integer DEFAULT true,
 	`is_featured` integer DEFAULT false,
 	`sort_order` integer DEFAULT 0,
-	`created_at` integer DEFAULT '"2025-04-28T15:47:31.305Z"',
-	`updated_at` integer DEFAULT '"2025-04-28T15:47:31.305Z"'
+	`created_at` integer DEFAULT (strftime('%s', 'now')),
+	`updated_at` integer DEFAULT (strftime('%s', 'now'))
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `projects_slug_unique` ON `projects` (`slug`);--> statement-breakpoint
@@ -28,4 +28,4 @@ ALTER TABLE `content` ADD `type` text DEFAULT 'text' NOT NULL;--> statement-brea
 ALTER TABLE `content` ADD `media_id` integer REFERENCES media(id);--> statement-breakpoint
 ALTER TABLE `content` ADD `sort_order` integer DEFAULT 0;--> statement-breakpoint
 ALTER TABLE `content` ADD `metadata` text;--> statement-breakpoint
-ALTER TABLE `content` ADD `updated_at` integer DEFAULT '"2025-04-28T15:47:31.304Z"';
+ALTER TABLE `content` ADD `updated_at` integer DEFAULT (strftime('%s', 'now'));
