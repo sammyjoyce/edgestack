@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Link, useLoaderData } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
-import { Button } from "~/routes/common/components/ui/Button";
+import { Button } from "../../components/ui/Button";
 // Define return types for loader and action
 type ProjectsLoaderData = {
 	projects: Project[];

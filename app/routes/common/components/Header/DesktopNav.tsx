@@ -1,6 +1,7 @@
 import type { JSX, MouseEvent } from "react";
-import type { MenuItem, MenuItemAnchor, MenuItemRoute, Path } from ".";
+import type { MenuItem } from ".";
 import { Button } from "../ui/Button";
+import { useMenuItemInfo } from "./useMenuItemInfo";
 
 /* ─── Props ──────────────────────────────────────── */
 
@@ -9,37 +10,40 @@ export interface DesktopNavProps {
 	scrollToSection: (e: MouseEvent<HTMLAnchorElement>, id: string) => void;
 }
 
-/* ─── Type guards ────────────────────────────────── */
-
-const isRoute = (i: MenuItem): i is MenuItemRoute =>
-	"isRouteLink" in i && i.isRouteLink === true;
-
-const isAnchorPath = (p: Path): p is `#${string}` | `http${string}` =>
-	typeof p === "string";
-
 /* ─── Helpers ────────────────────────────────────── */
 
 function LinkButton(
-	item: MenuItemRoute | MenuItemAnchor,
+	item: MenuItem,
 	scrollTo: DesktopNavProps["scrollToSection"],
 ) {
-	if (isRoute(item)) {
+	const { isRoute, rawPath, isHomeWithHash, hashPart, anchorHref } =
+		useMenuItemInfo(item);
+
+	if (isRoute) {
+		if (isHomeWithHash) {
+			return (
+				<Button
+					key={item.name}
+					href={`#${hashPart}`}
+					onClick={(e: MouseEvent<HTMLAnchorElement>) => scrollTo(e, hashPart)}
+				>
+					{item.name}
+				</Button>
+			);
+		}
+
 		return (
-			<Button key={item.name} to={item.path}>
+			<Button key={item.name} to={rawPath}>
 				{item.name}
 			</Button>
 		);
 	}
 
-	// anchor / external:
-	const href = item.path;
-	const id =
-		isAnchorPath(href) && href.startsWith("#") ? href.slice(1) : undefined;
-
+	const id = anchorHref.startsWith("#") ? anchorHref.slice(1) : undefined;
 	return (
 		<Button
 			key={item.name}
-			href={href}
+			href={anchorHref}
 			onClick={
 				id ? (e: MouseEvent<HTMLAnchorElement>) => scrollTo(e, id) : undefined
 			}

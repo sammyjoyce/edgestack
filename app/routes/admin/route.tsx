@@ -5,10 +5,14 @@ import {
 	HomeIcon,
 } from "@heroicons/react/24/outline";
 import type React from "react";
-import { NavLink, Outlet, type To, redirect } from "react-router";
-import { data, useFetcher } from "react-router";
-// Using standard types instead of generated types
-import type { LoaderFunction } from "react-router";
+import {
+	type LoaderFunction,
+	NavLink,
+	Outlet,
+	type To,
+	redirect,
+	useFetcher,
+} from "react-router";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 
 // Define explicit loader signature

@@ -1,6 +1,6 @@
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { type JSX, type MouseEvent, useCallback, useState } from "react";
-import { NavLink, type To } from "react-router";
+import { NavLink, type To, useNavigate } from "react-router";
 import { Button } from "../ui/Button";
 import DesktopNav from "./DesktopNav";
 import MobileMenu from "./MobileMenu";
@@ -27,27 +27,49 @@ export type MenuItem = MenuItemRoute | MenuItemAnchor;
 /* ─── Data (readonly for cheap re-renders) ───────── */
 
 const MENU_ITEMS: readonly MenuItem[] = [
-	{ name: "Home", path: "#hero" },
-	{ name: "Our Services", path: "#services" },
+	{ name: "Home", path: "/", isRouteLink: true },
+	{ name: "Our Services", path: "/#services", isRouteLink: true },
 	{ name: "Projects", path: "/projects", isRouteLink: true },
-	{ name: "About Us", path: "#about" },
-	{ name: "Contact Us", path: "#contact" },
+	{ name: "About Us", path: "/#about", isRouteLink: true },
+	{ name: "Contact Us", path: "/#contact", isRouteLink: true },
 ] as const;
 
 /* ─── Component ──────────────────────────────────── */
 
 export default function Header(): JSX.Element {
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const navigate = useNavigate();
 
+	/**
+	 * Handle navigation to section either by:
+	 * 1. Scrolling to the element if we're already on the home page
+	 * 2. Navigating to the home page with a hash if we're on another page
+	 */
 	const scrollToSection = useCallback(
 		(e: MouseEvent<HTMLAnchorElement>, id: string) => {
 			e.preventDefault();
-			document
-				.getElementById(id.replace(/^#/, ""))
-				?.scrollIntoView({ behavior: "smooth" });
+
+			// Clean the ID by removing the # if present
+			const cleanId = id.replace(/^#/, "");
+
+			// Get the current path to determine if we're on the home page
+			const currentPath = window.location.pathname;
+
+			if (currentPath === "/") {
+				// If we're on the home page, scroll directly to the element
+				const element = document.getElementById(cleanId);
+				if (element) {
+					element.scrollIntoView({ behavior: "smooth" });
+				}
+			} else {
+				// If we're on another page, navigate to home with hash
+				// This will put the hash in the URL and React Router will handle it
+				navigate(`/#${cleanId}`);
+			}
+
 			setMobileOpen(false);
 		},
-		[],
+		[navigate],
 	);
 
 	return (

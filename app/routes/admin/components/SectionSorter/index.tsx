@@ -52,7 +52,7 @@ export default function SectionSorter({
 	});
 
 	// Live‑region status for screen readers
-	const [statusMsg, setStatusMsg] = useState<string>("");
+	const [statusMessage, setStatusMessage] = useState<string>("");
 
 	/* --- Sensors ----------------------------------------------------------- */
 	const sensors = useSensors(
@@ -115,7 +115,7 @@ export default function SectionSorter({
 				aria-live="polite"
 				className="text-sm text-gray-600 h-5 mb-4"
 			>
-				{statusMsg}
+				{statusMessage}
 			</div>
 			<DndContext
 				sensors={sensors}
@@ -137,7 +137,7 @@ export default function SectionSorter({
 								label={s.label}
 								index={idx}
 								total={sections.length}
-								updateStatus={setStatusMsg}
+								updateStatus={setStatusMessage}
 							/>
 						))}
 					</ul>

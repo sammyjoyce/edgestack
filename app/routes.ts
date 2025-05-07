@@ -1,41 +1,36 @@
-import {
-	type RouteConfig,
-	type RouteConfigEntry,
-	index,
-	route,
-} from "@react-router/dev/routes";
+import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 // Define routes using the new architecture with module-by-route pattern
 export default [
 	// Home routes
-	route("", "routes/home/routes/_layout.tsx", [
-		index("routes/home/routes/index.tsx"),
+	route("", "routes/home/views/_layout.tsx", [
+		index("routes/home/views/index.tsx"),
 	]),
 
 	// Projects routes
-	route("projects", "routes/projects/routes/_layout.tsx", [
-		index("routes/projects/routes/index.tsx"),
-		route(":projectId", "routes/projects/routes/[projectId].tsx"),
+	route("projects", "routes/projects/views/_layout.tsx", [
+		index("routes/projects/views/index.tsx"),
+		route(":projectId", "routes/projects/views/[projectId].tsx"),
 	]),
 
 	// Admin login route (outside the admin layout with sidebar)
-	route("admin/login", "routes/admin/routes/login.tsx"),
+	route("admin/login", "routes/admin/views/login.tsx"),
 
 	// Admin routes with sidebar layout (excludes login)
-	route("admin", "routes/admin/routes/_layout.tsx", [
-		index("routes/admin/routes/index.tsx"),
-		route("logout", "routes/admin/routes/logout.tsx"),
-		route("upload", "routes/admin/routes/upload.tsx"),
-		route("projects", "routes/admin/routes/projects/_layout.tsx", [
-			index("routes/admin/routes/projects/index.tsx"),
-			route("new", "routes/admin/routes/projects/new.tsx"),
+	route("admin", "routes/admin/views/_layout.tsx", [
+		index("routes/admin/views/index.tsx"),
+		route("logout", "routes/admin/views/logout.tsx"),
+		route("upload", "routes/admin/views/upload.tsx"),
+		route("projects", "routes/admin/views/projects/_layout.tsx", [
+			index("routes/admin/views/projects/index.tsx"),
+			route("new", "routes/admin/views/projects/new.tsx"),
 			route(
 				":projectId/edit",
-				"routes/admin/routes/projects/[projectId]/edit.tsx",
+				"routes/admin/views/projects/[projectId]/edit.tsx",
 			),
 			route(
 				":projectId/delete",
-				"routes/admin/routes/projects/[projectId]/delete.tsx",
+				"routes/admin/views/projects/[projectId]/delete.tsx",
 			),
 		]),
 	]),

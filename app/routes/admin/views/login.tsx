@@ -6,7 +6,6 @@ import {
 	useActionData,
 	// useLoaderData, // Not needed if loader only redirects or returns null
 } from "react-router";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import {
 	COOKIE_MAX_AGE,
 	COOKIE_NAME,
@@ -14,6 +13,7 @@ import {
 	sign,
 	verify,
 } from "~/routes/common/utils/auth";
+import { FadeIn } from "../components/ui/FadeIn";
 // Import generated types from proper path
 import type { Route } from "./+types/login";
 

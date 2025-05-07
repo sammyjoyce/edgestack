@@ -2,9 +2,9 @@ import React from "react"; // Ensure React is imported for JSX
 import { Link, useFetcher, useLoaderData } from "react-router";
 import type { Tab } from "~/routes/common/components/ui/Tabs"; // Import Tab type
 
-// Import the admin route file for its types
-import { action as adminAction } from "~/routes/admin/routes/index";
-import { action as uploadAction } from "~/routes/admin/routes/upload";
+// Import the action types instead of the actions themselves
+import type { action as adminActionType } from "~/routes/admin/routes/index";
+import type { action as uploadActionType } from "~/routes/admin/routes/upload";
 
 // Types
 // Import the specific loader type
@@ -13,11 +13,11 @@ import type { loader as adminIndexLoader } from "~/routes/admin/routes/index";
 // Validation
 // import { validateErrorResponse } from "~/database/valibot-validation"; // Not used directly here
 
-import { Button } from "~/routes/common/components/ui/Button";
+import { Button } from "~/routes/admin/components/ui/Button";
 // UI primitives
-import { Container } from "~/routes/common/components/ui/Container";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
+import { Container } from "~/routes/admin/components/ui/Container";
+import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
+import { SectionIntro } from "~/routes/admin/components/ui/SectionIntro";
 import { Tabs } from "~/routes/common/components/ui/Tabs"; // Import Tabs component
 
 import { AboutSectionEditor } from "~/routes/admin/components/AboutSectionEditor";
@@ -313,18 +313,87 @@ export default function AdminDashboard(): React.JSX.Element {
 		},
 	];
 
+	// Function to view the site with cache bypass using a hard refresh
+	// This opens the main site in a new tab, ensuring a fresh page load
+	const viewLiveSite = () => {
+		// Use window.open to force a complete page reload
+		window.open("/", "_blank");
+	};
+
 	return (
 		<Container className="mt-8">
 			{/* Adjusted container */}
-			<SectionIntro title="Home Page Editor" className="mb-8" />
-			{/* Adjusted margin */}
-			{/* Render the Tabs component */}
-			<Tabs
-				tabs={tabs}
-				containerClassName="mb-8" // Add margin below tabs
-				// Apply consistent styling to content area if needed, or let individual components handle it
-				// contentClassName="bg-white p-6 rounded-lg shadow-xs border border-gray-200"
-			/>
+			<div className="flex flex-col space-y-4">
+				<div className="flex justify-between items-center">
+					<h2 className="text-2xl font-bold">{"Home Page Editor"}</h2>
+					<button
+						onClick={() => window.open("/", "_blank")}
+						className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="h-4 w-4 mr-2"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={2}
+								d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+							/>
+						</svg>
+						View Live Site
+					</button>
+				</div>
+
+				{/* Direct test form for content updates */}
+				<div className="bg-gray-50 p-4 border rounded mb-4">
+					<h3 className="text-lg font-medium mb-2">
+						Debug Tool: Direct Content Update
+					</h3>
+					<form
+						method="post"
+						action="/admin"
+						className="flex flex-col space-y-2"
+						onSubmit={(e) => {
+							console.log("Direct form submitted!");
+						}}
+					>
+						<input type="hidden" name="intent" value="updateTextContent" />
+						<div>
+							<label
+								htmlFor="debug_hero_title"
+								className="block text-sm font-medium text-gray-700"
+							>
+								Hero Title Direct Update
+							</label>
+							<input
+								type="text"
+								id="debug_hero_title"
+								name="hero_title"
+								defaultValue="Direct Update Test"
+								className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+							/>
+						</div>
+						<button
+							type="submit"
+							className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 self-start"
+						>
+							Save Content Directly
+						</button>
+					</form>
+				</div>
+
+				{/* Render the Tabs component */}
+				<Tabs
+					tabs={tabs}
+					containerClassName="mb-8" // Add margin below tabs
+					// Apply consistent styling to content area if needed, or let individual components handle it
+					// contentClassName="bg-white p-6 rounded-lg shadow-xs border border-gray-200"
+				/>
+			</div>
 		</Container>
 	);
 }

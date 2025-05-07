@@ -30,11 +30,31 @@ export function HeroSectionEditor({
 	const handleBlur = React.useCallback(
 		(e: React.FocusEvent<HTMLTextAreaElement>) => {
 			const { name, value } = e.currentTarget;
+
+			// Debug log
+			console.log(
+				`[HeroSectionEditor] handleBlur triggered for ${name} with value: "${value}"`,
+			);
+
+			// Create and populate form data
 			const formData = new FormData();
-			formData.append("intent", "updateTextContent"); // Add intent
+			formData.append("intent", "updateTextContent");
 			formData.append(name, value);
-			// Use typed action path
-			fetcher.submit(formData, { method: "post", action: "/admin" });
+
+			console.log(
+				`[HeroSectionEditor] Submitting form with intent: updateTextContent, ${name}: "${value}"`,
+			);
+
+			// Submit form with explicit method and action
+			try {
+				fetcher.submit(formData, {
+					method: "post",
+					action: "/admin",
+				});
+				console.log("[HeroSectionEditor] Form submitted successfully");
+			} catch (error) {
+				console.error("[HeroSectionEditor] Error submitting form:", error);
+			}
 		},
 		[fetcher],
 	);

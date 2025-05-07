@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { validateContentInsert } from "~/database/valibot-validation";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import {
@@ -13,6 +12,7 @@ import {
 import type { Route } from "../../../../.react-router/types/app/routes/admin/routes/+types/upload";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
+import { FadeIn } from "../components/ui/FadeIn";
 
 export async function loader({ context, request }: Route.LoaderArgs) {
 	// Authentication check

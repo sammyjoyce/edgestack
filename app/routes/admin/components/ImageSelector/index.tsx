@@ -4,7 +4,7 @@ import { useFetcher } from "react-router";
 import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";
 import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
-import { Button } from "~/routes/common/components/ui/Button";
+import { Button } from "~/routes/admin/components/ui/Button";
 import type { StoredImage } from "~/utils/upload.server";
 
 interface ImageSelectorProps {
@@ -61,12 +61,7 @@ export function ImageSelector({
 			<div className="flex justify-center mt-2 w-full">
 				<Drawer.Root open={isOpen} onOpenChange={setIsOpen}>
 					<Drawer.Trigger asChild>
-						<Button
-							variant="secondary"
-							size="sm"
-							type="button"
-							className="w-full"
-						>
+						<Button invert type="button" className="w-full">
 							Browse Existing Images
 						</Button>
 					</Drawer.Trigger>
