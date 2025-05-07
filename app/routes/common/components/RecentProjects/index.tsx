@@ -65,7 +65,7 @@ export default function RecentProjects({
 											{project.title}
 										</h3>
 										<ConditionalRichTextRenderer
-											text={project.description}
+											text={project.description ? String(project.description) : null}
 											fallbackClassName="mb-4 text-base text-gray-700 md:mb-6 md:text-lg"
 											fallbackTag="p"
 										/>
