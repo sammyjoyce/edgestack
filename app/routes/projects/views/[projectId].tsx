@@ -12,60 +12,45 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		// Return directly without the data helper
-		return { project: null, error: "Invalid Project ID" };
+		throw data({ message: "Invalid Project ID" }, { status: 400 });
 	}
 
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			// Return directly without the data helper
-			return { project: null, error: "Project not found" };
+			throw data({ message: "Project not found" }, { status: 404 });
 		}
 		// Return directly without the data helper
 		return { project };
 	} catch (error: any) {
 		console.error("Error loading project details:", error);
 		// Return error data directly
-		return {
-			project: null,
-			error: error.message || "Failed to load project details",
-		};
+		throw data(
+			{ message: error.message || "Failed to load project details" },
+			{ status: 500 },
+		);
 	}
 };
 
 export function ProjectDetailRoute() {
 	// Use type inference with the loader function
-	const { project, error } = useLoaderData<typeof loader>();
+	// Error and !project cases are now handled by ErrorBoundary if loader throws
+	const { project } = useLoaderData<typeof loader>();
 
-	// Handle loader errors
-	if (error) {
-		return (
-			<div className="py-16 bg-white text-center">
-				<h2 className="text-2xl font-semibold text-red-700 mb-4">
-					Error Loading Project
-				</h2>
-				<p className="text-gray-500 mb-6">{error}</p>
-				<Link
-					to="/projects"
-					className="inline-block text-blue-600 hover:underline"
-				>
-					← Back to Projects
-				</Link>
-			</div>
-		);
-	}
-
-	// Handle case where project is null (valid state if not found, but loader returns 404)
-	// This case might not be reachable if loader always throws or returns error data on failure.
+	// This check might be redundant if loader always throws for !project
+	// and caught by an ErrorBoundary. If project can be legitimately null
+	// in a success scenario (not an error/not found), this check is needed.
+	// Based on the loader logic, !project should result in a 404 throw.
 	if (!project) {
+		// This part might be unreachable if ErrorBoundary catches all !project cases.
+		// For robustness, or if there's a path where project is null without error, keep it.
 		return (
 			<div className="py-16 bg-white text-center">
 				<h2 className="text-2xl font-semibold text-gray-700 mb-4">
-					Project Not Found
+					Project Data Unavailable
 				</h2>
 				<p className="text-gray-500 mb-6">
-					The project data could not be loaded.
+					The project data could not be loaded or found.
 				</p>
 				<Link
 					to="/projects"

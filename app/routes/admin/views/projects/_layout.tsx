@@ -17,14 +17,10 @@ export async function loader({
 	request,
 	context,
 }: Route.LoaderArgs): Promise<ProjectsLoaderData> {
-	const unauthorized = () => {
-		return { projects: [], error: "Unauthorized" };
-	};
-
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		return unauthorized();
+		throw redirect("/admin/login"); // Or throw data({ error: "Unauthorized" }, { status: 401 })
 	}
 
 	try {
@@ -32,7 +28,7 @@ export async function loader({
 		return { projects };
 	} catch (error) {
 		console.error("Failed to load projects:", error);
-		return { projects: [], error: "Failed to load projects" };
+		throw data({ projects: [], error: "Failed to load projects" }, { status: 500 });
 	}
 }
 

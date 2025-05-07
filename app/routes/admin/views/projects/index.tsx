@@ -19,17 +19,13 @@ type ProjectsActionData = {
 // Loader to fetch all projects - Return plain objects for type safety
 export async function loader({ request, context }: Route.LoaderArgs) {
 	// Auth check (redundant with layout loader but good practice)
-	// Auth check (redundant with layout loader but good practice)
-	const unauthorized = () => {
-		return { projects: [], error: "Unauthorized" } as const;
-	};
-
 	const { getSessionCookie, verify } =
 		await import("~/routes/common/utils/auth");
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		return unauthorized();
+		// Prefer throwing a redirect or a data response for auth failures
+		throw redirect("/admin/login"); // Or: throw data({ error: "Unauthorized" }, { status: 401 });
 	}
 
 	try {
