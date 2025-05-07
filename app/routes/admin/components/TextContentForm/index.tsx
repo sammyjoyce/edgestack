@@ -143,15 +143,15 @@ export function TextContentForm({
 			ref={ref}
 			method="post"
 			aria-label="Text Content Editor"
-			className="flex flex-col gap-6 bg-gray-50 border border-gray-200 rounded-lg shadow-[var(--shadow-input-default)] p-6"
+			className="flex flex-col gap-6 bg-white border border-neutral-200 rounded-lg shadow-block p-6"
 			onSubmit={handleSave}
 		>
-			<div className="flex items-center gap-4 mb-2">
-				<h2 className="text-xl font-semibold text-gray-900">Text Content</h2>
+			<div className="flex flex-wrap items-center justify-between gap-4 mb-2">
+				<h3 className="text-lg font-semibold text-foreground">Text Content</h3>
 				<div className="flex items-center gap-2 ml-auto">
 					<label
 						htmlFor="auto-save-toggle"
-						className="text-sm font-medium text-gray-700 flex items-center"
+						className="text-sm font-medium text-foreground flex items-center"
 					>
 						Auto-save
 						<input
@@ -159,7 +159,7 @@ export function TextContentForm({
 							type="checkbox"
 							checked={autoSave}
 							onChange={(e) => setAutoSave(e.target.checked)}
-							className="ml-2 accent-primary"
+							className="ml-2 h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary"
 							aria-checked={autoSave}
 							aria-label="Toggle auto-save on or off"
 						/>
@@ -168,11 +168,11 @@ export function TextContentForm({
 			</div>
 			<div
 				aria-live="polite"
-				className="min-h-[2.25rem] mb-2 text-sm flex items-center"
+				className="min-h-[2.5rem] mb-2 text-sm flex items-center"
 				role="status"
 			>
 				{isSubmitting ? (
-					<Pill variant="secondary">
+					<Pill variant="neutral" className="bg-gray-100 text-gray-700">
 						<PillStatusComponent>
 							<ArrowPathIcon className="size-3 animate-spin" />
 							Saving...
@@ -181,10 +181,10 @@ export function TextContentForm({
 				) : fetcher.data?.success ? (
 					<Pill
 						variant="outline"
-						className="border-emerald-200 bg-emerald-50 text-emerald-700"
+						className="border-green-300 bg-green-50 text-green-700"
 					>
 						<PillStatusComponent>
-							<CheckCircleIcon className="size-3 text-emerald-500" />
+							<CheckCircleIcon className="size-4 text-green-500" />
 							Saved
 						</PillStatusComponent>
 						{fetcher.data.message || "Changes saved successfully."}
@@ -192,10 +192,10 @@ export function TextContentForm({
 				) : fetcher.data?.error ? (
 					<Pill
 						variant="outline"
-						className="border-red-200 bg-red-50 text-red-700"
+						className="border-red-300 bg-red-50 text-red-700"
 					>
 						<PillStatusComponent>
-							<XCircleIcon className="size-3 text-red-500" />
+							<XCircleIcon className="size-4 text-red-500" />
 							Error
 						</PillStatusComponent>
 						{fetcher.data.error || "An error occurred."}
@@ -203,10 +203,10 @@ export function TextContentForm({
 				) : feedback?.toLowerCase().includes("validation") ? (
 					<Pill
 						variant="outline"
-						className="border-amber-200 bg-amber-50 text-amber-700"
+						className="border-yellow-300 bg-yellow-50 text-yellow-700"
 					>
 						<PillStatusComponent>
-							<ExclamationTriangleIcon className="size-3 text-amber-500" />
+							<ExclamationTriangleIcon className="size-4 text-yellow-500" />
 							Validation Error
 						</PillStatusComponent>
 						{feedback}
@@ -214,25 +214,27 @@ export function TextContentForm({
 				) : feedback && feedback === "Changes reverted." ? (
 					<Pill
 						variant="outline"
-						className="border-primary/30 bg-primary/10 text-primary"
+						className="border-blue-300 bg-blue-50 text-blue-700"
 					>
 						<PillStatusComponent>
-							<InformationCircleIcon className="size-3 text-primary" />
+							<InformationCircleIcon className="size-4 text-blue-500" />
 							Info
 						</PillStatusComponent>
 						{feedback}
 					</Pill>
 				) : null}
 			</div>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
 				{textFields.map(({ key, label, rows, help, isRichText }) => (
 					<div className="flex flex-col gap-1" key={key}>
 						<label
 							htmlFor={key}
-							className="block text-sm font-medium text-gray-700 mb-1"
+							className="block text-sm font-medium text-foreground mb-1"
 						>
 							{label}
-							{help && <Tooltip id={`help-${key}`}>{help}</Tooltip>}
+							{help && (
+								<span className="ml-1 text-xs text-neutral-500">({help})</span>
+							)}
 						</label>
 						{isRichText ? (
 							<RichTextField
@@ -250,13 +252,13 @@ export function TextContentForm({
 								value={fields[key] ?? ""}
 								onBlur={handleBlur}
 								onChange={handleChange}
-								className={`block w-full rounded-md bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm ${
-									errors[key] ? "border-red-500" : "border-gray-300"
+								className={`block w-full rounded-md bg-white shadow-input-default focus:border-primary focus:ring-1 focus:ring-primary text-sm p-2.5 ${
+									errors[key] ? "border-red-500 ring-red-500" : "border-neutral-300"
 								}`}
 							/>
 						)}
 						{errors[key] && (
-							<span className="text-xs text-red-600 mt-1" role="alert">
+							<span className="text-xs text-red-500 mt-1" role="alert">
 								{errors[key]}
 							</span>
 						)}
@@ -264,10 +266,10 @@ export function TextContentForm({
 				))}
 			</div>
 			{!autoSave && (
-				<div className="flex gap-2 mt-4">
+				<div className="flex gap-3 mt-6 pt-6 border-t border-neutral-200">
 					<Button
 						type="submit"
-						className="bg-primary text-white hover:bg-primary/90"
+						variant="primary"
 						aria-label="Save changes"
 					>
 						Save
@@ -275,7 +277,7 @@ export function TextContentForm({
 					<Button
 						type="button"
 						onClick={handleUndo}
-						variant="secondary"
+						variant="neutral"
 						aria-label="Undo changes"
 					>
 						Undo
