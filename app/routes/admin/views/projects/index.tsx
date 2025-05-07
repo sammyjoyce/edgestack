@@ -34,10 +34,10 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
 	try {
 		const projects = await getAllProjects(context.db);
-		return { projects } as const;
+		return { projects };
 	} catch (error) {
 		console.error("Failed to load projects:", error);
-		return { projects: [], error: "Failed to load projects" } as const;
+		throw data({ message: "Failed to load projects" }, { status: 500 });
 	}
 }
 
@@ -49,7 +49,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 	// Auth check
 	// Auth check
 	const unauthorized = () => {
-		return { success: false, error: "Unauthorized" } as const;
+		return data({ success: false, error: "Unauthorized" }, { status: 401 });
 	};
 	const { getSessionCookie, verify } =
 		await import("~/routes/common/utils/auth");
@@ -63,37 +63,31 @@ export async function action({ request, context }: Route.ActionArgs) {
 	if (intent === "deleteProject") {
 		const projectIdStr = formData.get("projectId")?.toString();
 		if (!projectIdStr) {
-			return { success: false, error: "Missing project ID" } as const;
+			return data({ success: false, error: "Missing project ID" }, { status: 400 });
 		}
 		const projectId = Number(projectIdStr);
 		if (Number.isNaN(projectId)) {
-			return { success: false, error: "Invalid project ID" } as const;
+			return data({ success: false, error: "Invalid project ID" }, { status: 400 });
 		}
 
 		try {
 			await deleteProject(context.db, projectId);
-			return { success: true, projectId } as const;
+			return data({ success: true, projectId });
 		} catch (error: unknown) {
 			console.error("Failed to delete project:", error);
-			return {
-				success: false,
-				error:
-					(error instanceof Error
-						? error.message
-						: "Failed to delete project") || "Failed to delete project",
-			} as const;
+			const message = error instanceof Error ? error.message : "Failed to delete project";
+			return data({ success: false, error: message }, { status: 500 });
 		}
 	}
 
 	// Handle unknown intent
-	return { success: false, error: "Unknown intent" } as const;
+	return data({ success: false, error: "Unknown intent" }, { status: 400 });
 }
 
 export function ProjectsIndexRoute() {
 	// Use type inference with explicit error handling
-	const loaderData = useLoaderData<typeof loader>();
-	const projects = loaderData.projects;
-	const error = "error" in loaderData ? loaderData.error : undefined;
+	// Error case is now handled by ErrorBoundary if loader throws
+	const { projects } = useLoaderData<typeof loader>();
 
 	return (
 		<div>
@@ -106,16 +100,7 @@ export function ProjectsIndexRoute() {
 				</Button>
 			</div>
 
-			{error && (
-				<div
-					className="p-4 mb-6 text-sm text-red-700 rounded-lg bg-red-100 border border-red-200"
-					role="alert"
-				>
-					{error}
-				</div>
-			)}
-
-			{projects.length === 0 && !error ? (
+			{projects.length === 0 ? (
 				<p className="text-base text-gray-600">
 					No projects found. Add your first project!
 				</p>

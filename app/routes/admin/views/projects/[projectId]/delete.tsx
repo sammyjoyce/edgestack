@@ -13,18 +13,21 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		return { project: null, error: "Invalid Project ID" };
+		throw data({ message: "Invalid Project ID" }, { status: 400 });
 	}
 
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			return { project: null, error: "Project not found" };
+			throw data({ message: "Project not found" }, { status: 404 });
 		}
 		return { project };
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		return { project: null, error: error.message || "Failed to load project" };
+		throw data(
+			{ message: error.message || "Failed to load project" },
+			{ status: 500 },
+		);
 	}
 }
 
@@ -38,57 +41,57 @@ export async function action({
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		return { success: false, error: "Invalid Project ID" };
+		return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
 	}
 
 	const formData = await request.formData();
 	const confirmDelete = formData.get("confirmDelete") === "true";
 
 	if (!confirmDelete) {
-		return { success: false, error: "Deletion was not confirmed" };
+		return data({ success: false, error: "Deletion was not confirmed" }, { status: 400 });
 	}
 
 	try {
 		await deleteProject(context.db, projectId);
-
-		// Redirect to projects list after successful deletion
 		return redirect("/admin/projects");
 	} catch (error: any) {
 		console.error("Error deleting project:", error);
-		return {
-			success: false,
-			error: error.message || "Failed to delete project",
-		};
+		return data(
+			{ success: false, error: error.message || "Failed to delete project" },
+			{ status: 500 },
+		);
 	}
 }
 
 export function DeleteProjectRoute() {
-	// Use type inference for useLoaderData
-	const { project, error } = useLoaderData<typeof loader>();
+	// Error and !project cases are now handled by ErrorBoundary if loader throws
+	const { project } = useLoaderData<typeof loader>();
 	const navigate = useNavigate();
 
-	if (error || !project) {
-		return (
-			<div className="rounded-md bg-red-50 p-4 mb-6">
-				<div className="flex">
-					<div className="ml-3">
-						<h3 className="text-sm font-medium text-red-800">
-							{error || "Failed to load project"}
-						</h3>
-						<div className="mt-4">
-							<Button
-								type="button"
-								onClick={() => navigate("/admin/projects")}
-								className="text-sm"
-							>
-								Return to Projects
-							</Button>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
+	// This check might be redundant if loader always throws for !project
+	if (!project) {
+        // This case should ideally be caught by an ErrorBoundary if loader throws a 404
+        return (
+            <div className="rounded-md bg-red-50 p-4 mb-6">
+                <div className="flex">
+                    <div className="ml-3">
+                        <h3 className="text-sm font-medium text-red-800">
+                            Project not found or could not be loaded.
+                        </h3>
+                        <div className="mt-4">
+                            <Button
+                                type="button"
+                                onClick={() => navigate("/admin/projects")}
+                                className="text-sm"
+                            >
+                                Return to Projects
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
 	return (
 		<FadeIn>

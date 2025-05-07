@@ -49,17 +49,17 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		};
 	} catch (error) {
 		console.error("Error fetching data from D1:", error);
-		// Consider throwing an error or returning a structured error response
-		return {
-			content: {},
-			projects: [],
-			error: "Failed to load layout data",
-		};
+		// Throw an error to be caught by the ErrorBoundary
+		throw data(
+			{ message: "Failed to load layout data" },
+			{ status: 500 },
+		);
 	}
 }
 
 export function HomeLayout() {
 	// Use type inference with the generated types
+	// Error case is now handled by ErrorBoundary
 	const loaderData = useLoaderData<typeof loader>();
 
 	return (

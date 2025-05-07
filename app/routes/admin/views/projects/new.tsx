@@ -65,15 +65,15 @@ export async function action({
 						`${issue.path?.map((p:any) => p.key).join(".") || "field"}: ${issue.message}`,
 				)
 				.join("; ");
-			return {
-				success: false,
-				error: `Validation Error: ${issueMessages}`,
-			};
+			return data(
+				{ success: false, error: `Validation Error: ${issueMessages}` },
+				{ status: 400 },
+			);
 		}
-		return {
-			success: false,
-			error: error.message || "Failed to create project",
-		};
+		return data(
+			{ success: false, error: error.message || "Failed to create project" },
+			{ status: 500 },
+		);
 	}
 }
 

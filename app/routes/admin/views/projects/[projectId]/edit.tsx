@@ -104,7 +104,7 @@ export async function action({
 		}
 
 		if (!title) {
-			return { success: false, error: "Title is required" };
+			return data({ success: false, error: "Title is required" }, { status: 400 });
 		}
 
 		// Validate and update the project
@@ -126,43 +126,47 @@ export async function action({
 		}
 
 		// Update the project in the database
-		await updateProject(context.db, projectId, projectData);
+		const updated = await updateProject(context.db, projectId, projectData);
+
+		if (!updated) {
+			return data({ success: false, error: "Failed to update project, project might not exist or update failed." }, { status: 500 });
+		}
 
 		// Redirect to projects list after successful update
 		return redirect("/admin/projects");
 	} catch (error: any) {
 		console.error("Error updating project:", error);
-		return {
-			success: false,
-			error: error.message || "Failed to update project",
-		} as const;
+		return data(
+			{ success: false, error: error.message || "Failed to update project" },
+			{ status: 500 },
+		);
 	}
 }
 
 export default function Component() {
-	// Use type inference with explicit error handling
-	const loaderData = useLoaderData<typeof loader>();
-	const project = loaderData.project;
-	const error = "error" in loaderData ? loaderData.error : undefined;
+	// Error and !project cases are now handled by ErrorBoundary if loader throws
+	const { project } = useLoaderData<typeof loader>();
 
-	if (error || !project) {
-		return (
-			<FadeIn>
-				<h1 className="text-2xl font-semibold text-gray-800 mb-6">
-					Edit Project
-				</h1>
-				<div
-					className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
-					role="alert"
-				>
-					Error: {error || "Failed to load project"}
-				</div>
-				<Link to="/admin/projects" className="text-primary hover:underline">
-					← Back to Projects
-				</Link>
-			</FadeIn>
-		);
-	}
+	// This check might be redundant if loader always throws for !project
+	if (!project) {
+        // This case should ideally be caught by an ErrorBoundary if loader throws a 404
+        return (
+            <FadeIn>
+                <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+                    Edit Project
+                </h1>
+                <div
+                    className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
+                    role="alert"
+                >
+                    Error: Project not found or could not be loaded.
+                </div>
+                <Link to="/admin/projects" className="text-primary hover:underline">
+                    ← Back to Projects
+                </Link>
+            </FadeIn>
+        );
+    }
 
 	return (
 		<FadeIn>
