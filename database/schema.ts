@@ -11,7 +11,7 @@ export const content = sqliteTable("content", {
 	mediaId: integer("media_id").references(() => media.id), // Optional FK to media
 	sortOrder: integer("sort_order").default(0).notNull(), // For ordered blocks
 	metadata: text("metadata", { mode: "json" }), // JSON blob for extras
-	updatedAt: integer("updated_at", { mode: "timestamp" }).default(new Date()).$onUpdate(() => new Date()), // Last update timestamp
+	updatedAt: integer("updated_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now'))`).$onUpdate(() => new Date()), // Last update timestamp
 });
 
 // Type for content entry
@@ -27,7 +27,7 @@ export const media = sqliteTable("media", {
 	height: integer("height"), // px (optional)
 	// Use sql('CURRENT_TIMESTAMP') for default insertion time in SQLite
 	createdAt: integer("created_at", { mode: "timestamp" }).default(
-		sql`(CURRENT_TIMESTAMP)`
+		sql`(strftime('%s', 'now'))`
 	),
 });
 
@@ -47,11 +47,11 @@ export const projects = sqliteTable("projects", {
 	sortOrder: integer("sort_order").default(0).notNull(), // Order on home page
 	// Use sql('CURRENT_TIMESTAMP') for default insertion time in SQLite
 	createdAt: integer("created_at", { mode: "timestamp" }).default(
-		sql`(CURRENT_TIMESTAMP)`
+		sql`(strftime('%s', 'now'))`
 	),
 	// $onUpdate is a Drizzle runtime feature, does not set DB trigger
 	updatedAt: integer("updated_at", { mode: "timestamp" })
-		.default(sql`(CURRENT_TIMESTAMP)`)
+		.default(sql`(strftime('%s', 'now'))`)
 		.$onUpdate(() => new Date()), // Timestamp for last update
 });
 
