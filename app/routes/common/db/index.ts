@@ -4,36 +4,39 @@ import type { NewContent, NewProject, Project } from "~/database/schema";
 import * as schema from "~/database/schema";
 
 /**
- * DIAGNOSTIC V4: Use raw SQL for D1 to test if Drizzle is the problem.
- * This version uses db.execute() to directly run SQL for hero_title.
+ * DIAGNOSTIC V3.1: Use Drizzle query builder, but explicitly read-then-write for each key.
+ * This version fetches all content rows and builds a Record<string, string> map.
  */
 export async function getAllContent(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Record<string, string>> {
 	console.log(
-		"[Content Retrieval - DIAGNOSTIC V4] Getting hero_title from database at:",
+		"[Content Retrieval - DIAGNOSTIC V3.1] Fetching all content rows at:",
 		new Date().toISOString(),
 	);
 
-	// Use raw SQL to bypass Drizzle's query builder
-	const sql = `SELECT key, value FROM content WHERE key = ? LIMIT 1;`;
-	const result = await db.execute(sql, ["hero_title"]);
+	const rows = await db.select().from(schema.content).all();
+	console.log(
+		`[Content Retrieval - DIAGNOSTIC V3.1] Retrieved ${rows.length} rows from content table.`,
+	);
 
-	if (result && Array.isArray(result.rows) && result.rows.length > 0) {
-		const row = result.rows[0];
-		console.log(
-			`[Content Retrieval - DIAGNOSTIC V4] Retrieved hero_title: '${row.value}'`,
-		);
-		return { hero_title: row.value };
+	const contentMap: Record<string, string> = {};
+	for (const row of rows) {
+		if (typeof row.key === "string" && typeof row.value === "string") {
+			contentMap[row.key] = row.value;
+		}
 	}
-
-	console.log("[Content Retrieval - DIAGNOSTIC V4] hero_title not found.");
-	return {};
+	console.log(
+		`[Content Retrieval - DIAGNOSTIC V3.1] Mapped ${Object.keys(contentMap).length} keys:`,
+		Object.keys(contentMap),
+	);
+	return contentMap;
 }
 
 /**
- * DIAGNOSTIC V4: Use raw SQL for D1 to test if Drizzle is the problem.
- * This version uses db.execute() to directly run SQL for hero_title.
+ * DIAGNOSTIC V3.1: Use Drizzle query builder, but explicitly read-then-write for each key.
+ * For each update, check if the key exists; if so, update, else insert.
+ * Insert uses explicit field values and schema defaults.
  */
 export async function updateContent(
 	db: DrizzleD1Database<typeof schema>,
@@ -42,40 +45,81 @@ export async function updateContent(
 		string | (Partial<Omit<NewContent, "key">> & { value: string })
 	>,
 ): Promise<D1Result<unknown>[]> {
-	const testKey = "hero_title";
-	const testValue = `Test Update @ ${new Date().toLocaleTimeString()}`;
+	const results: D1Result<unknown>[] = [];
+	for (const [key, valueOrObj] of Object.entries(updates)) {
+		const dataToSet =
+			typeof valueOrObj === "string"
+				? { value: valueOrObj }
+				: valueOrObj;
 
-	console.log(
-		`[Content Update - DIAGNOSTIC V4] Attempting to update/insert ONLY '${testKey}' to '${testValue}' at:`,
-		new Date().toISOString(),
-	);
+		// Always require value to be a string
+		if (typeof dataToSet.value !== "string") {
+			console.warn(
+				`[Content Update - DIAGNOSTIC V3.1] Skipping key '${key}' because value is not a string.`,
+			);
+			continue;
+		}
 
-	// Log all incoming updates for context, even though we're ignoring them for the DB op
-	console.log(
-		"[Content Update - DIAGNOSTIC V4] Received updates object (for context only):",
-		JSON.stringify(updates, null, 2),
-	);
+		// Check if the key exists
+		const existing = await db
+			.select()
+			.from(schema.content)
+			.where(eq(schema.content.key, key))
+			.get();
 
-	// Use raw SQL for upsert (insert or update)
-	const sql = `
-		INSERT INTO content (key, value, updatedAt)
-		VALUES (?, ?, ?)
-		ON CONFLICT(key) DO UPDATE SET value = excluded.value, updatedAt = excluded.updatedAt;
-	`;
-	const now = new Date().toISOString();
-
-	try {
-		const result = await db.execute(sql, [testKey, testValue, now]);
-		console.log(
-			"[Content Update - DIAGNOSTIC V4] Operation for hero_title completed. Result:",
-			JSON.stringify(result, null, 2),
-		);
-		return [result]; // Return as an array to match original signature
-	} catch (error) {
-		console.error("[Content Update - DIAGNOSTIC V4] Error during DB operation for hero_title:", error);
-		const errorResult = { success: false, error: String(error), meta: { error: String(error) } } as unknown as D1Result<unknown>;
-		return [errorResult];
+		const now = new Date();
+		if (existing) {
+			// Update only the provided fields
+			const updatePayload: Partial<NewContent> = {
+				value: dataToSet.value,
+				updatedAt: now,
+			};
+			if ("type" in dataToSet && typeof dataToSet.type === "string") {
+				updatePayload.type = dataToSet.type;
+			}
+			if ("sortOrder" in dataToSet && typeof dataToSet.sortOrder === "number") {
+				updatePayload.sortOrder = dataToSet.sortOrder;
+			}
+			console.log(
+				`[Content Update - DIAGNOSTIC V3.1] Updating existing key '${key}' with:`,
+				updatePayload,
+			);
+			const result = await db
+				.update(schema.content)
+				.set(updatePayload)
+				.where(eq(schema.content.key, key))
+				.run();
+			console.log(
+				`[Content Update - DIAGNOSTIC V3.1] D1 result for UPDATE '${key}':`,
+				{ success: result.success, changes: result.changes, rows_written: result.meta?.rows_written },
+			);
+			results.push(result);
+		} else {
+			// Insert with all required fields, using schema defaults if not provided
+			const insertValue: NewContent = {
+				key,
+				value: dataToSet.value,
+				type: "type" in dataToSet && typeof dataToSet.type === "string" ? dataToSet.type : "text",
+				sortOrder: "sortOrder" in dataToSet && typeof dataToSet.sortOrder === "number" ? dataToSet.sortOrder : 0,
+				createdAt: now,
+				updatedAt: now,
+			};
+			console.log(
+				`[Content Update - DIAGNOSTIC V3.1] Inserting new key '${key}' with:`,
+				insertValue,
+			);
+			const result = await db
+				.insert(schema.content)
+				.values(insertValue)
+				.run();
+			console.log(
+				`[Content Update - DIAGNOSTIC V3.1] D1 result for INSERT '${key}':`,
+				{ success: result.success, changes: result.changes, rows_written: result.meta?.rows_written },
+			);
+			results.push(result);
+		}
 	}
+	return results;
 }
 
 // --- Project CRUD Functions ---
