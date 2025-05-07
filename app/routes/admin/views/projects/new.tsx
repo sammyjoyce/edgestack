@@ -26,25 +26,31 @@ export async function action({
 	const title = formData.get("title")?.toString() ?? "";
 	const description = formData.get("description")?.toString() ?? "";
 	const details = formData.get("details")?.toString() ?? "";
-	const imageUrl = formData.get("imageUrl")?.toString() || null; // Ensure null if empty
+	const imageUrl = formData.get("imageUrl")?.toString() || null;
 	const isFeatured = formData.has("isFeatured");
 	const sortOrderString = formData.get("sortOrder")?.toString();
-	const sortOrder = sortOrderString ? Number.parseInt(sortOrderString, 10) : 0;
+	// Ensure sortOrder is a number, default to 0 if not provided or invalid
+	const sortOrder = (sortOrderString && !Number.isNaN(parseInt(sortOrderString, 10))) ? Number.parseInt(sortOrderString, 10) : 0;
+
 
 	const projectData = {
 		title,
-		description,
-		details,
-		imageUrl,
+		description, // Pass as is, schema defines it as nullable text
+		details,     // Pass as is, schema defines it as nullable text
+		imageUrl,    // Already null if empty
 		isFeatured,
 		sortOrder,
+		// createdAt and updatedAt are handled by Drizzle/DB defaults or application logic in createProject
 	};
 
 	try {
 		// Validate data using Valibot schema
+		// Valibot expects all fields defined in the schema unless they are optional.
+		// Ensure projectData aligns with what projectInsertSchema expects.
+		// projectInsertSchema is derived from NewProject, where id, createdAt, updatedAt might be optional due to DB defaults.
 		validateProjectInsert(projectData);
 
-		await createProject(context.db, projectData);
+		await createProject(context.db, projectData as Omit<NewProject, "id" | "createdAt" | "updatedAt">);
 
 		// Redirect to projects list after successful creation
 		return redirect("/admin/projects");
@@ -54,10 +60,10 @@ export async function action({
 		if (error.issues && Array.isArray(error.issues)) {
 			const issueMessages = error.issues
 				.map(
-					(issue: any) =>
-						`${issue.path?.join(".") || "field"}: ${issue.message}`,
+					(issue: any) => // Consider typing 'issue' more strictly if possible
+						`${issue.path?.map((p:any) => p.key).join(".") || "field"}: ${issue.message}`,
 				)
-				.join(", ");
+				.join("; ");
 			return {
 				success: false,
 				error: `Validation Error: ${issueMessages}`,
