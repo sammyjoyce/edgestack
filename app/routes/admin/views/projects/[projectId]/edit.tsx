@@ -133,7 +133,7 @@ export async function action({
 			return data({
 				success: false,
 				error: "Title is required",
-			} as const;
+			});
 		}
 
 		// Update the project in the database
