@@ -75,7 +75,7 @@ export function HeroSectionEditor({
 	}, [imageUploading, uploadStatus]);
 
 	return (
-		<div className="overflow-hidden bg-white sm:rounded-lg shadow-xs border border-gray-200">
+		<div className="overflow-hidden bg-gray-50 sm:rounded-lg shadow-[var(--shadow-input-default)] border border-gray-200">
 			{/* Use white bg, adjusted shadow/border */}
 			<div className="px-4 py-5 sm:p-6">
 				<h2 className="text-xl font-semibold text-gray-900 mb-6">
@@ -97,7 +97,7 @@ export function HeroSectionEditor({
 							id="hero_title"
 							rows={2}
 							defaultValue={initialContent.hero_title || ""}
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm" /* Standard input */
+							className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm"
 							onBlur={handleBlur}
 						/>
 						<label
@@ -111,7 +111,7 @@ export function HeroSectionEditor({
 							id="hero_subtitle"
 							rows={3}
 							defaultValue={initialContent.hero_subtitle || ""}
-							className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm" /* Standard input */
+							className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm"
 							onBlur={handleBlur}
 						/>
 					</div>

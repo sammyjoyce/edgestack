@@ -82,7 +82,7 @@ export function NewProjectRoute() {
 
 				<Form
 					method="post"
-					className="flex flex-col gap-6 bg-white p-6 rounded-lg shadow-xs border border-gray-200"
+					className="flex flex-col gap-6 bg-gray-50 p-6 rounded-lg shadow-[var(--shadow-input-default)] border border-gray-200"
 				>
 					<div>
 						<label
