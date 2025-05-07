@@ -6,7 +6,7 @@ import type { loader as parentLoader } from "~/routes/projects/views/_layout";
 // Import generated Route type for this route
 import type { Route } from "./+types/index";
 
-export function ProjectsIndexRoute() {
+export default function ProjectsIndexRoute() {
 	// Use context from parent with proper typing
 	const { content, projects = [] } =
 		useOutletContext<Awaited<ReturnType<typeof parentLoader>>>();
@@ -22,6 +22,3 @@ export function ProjectsIndexRoute() {
 		/>
 	);
 }
-
-// Default export for backwards compatibility
-export default ProjectsIndexRoute;

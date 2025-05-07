@@ -13,7 +13,7 @@ import type { Route } from "./+types/index";
 export const meta: Route.MetaFunction = ({ matches }) => {
 	// Access loader data safely from parent layout match using the correct type (Awaited to unwrap the Promise)
 	const parentLayoutMatch = matches.find(
-		(match) => match?.id === "modules/home/routes/_layout",
+		(match) => match?.id === "routes/home/views/_layout",
 	);
 	const parentLayoutData = parentLayoutMatch?.data as
 		| Awaited<ReturnType<typeof parentLoader>>
