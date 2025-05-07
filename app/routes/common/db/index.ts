@@ -3,33 +3,38 @@ import type { DrizzleD1Database, D1Result } from "drizzle-orm/d1";
 import type { NewContent, NewProject, Project } from "~/database/schema";
 import * as schema from "~/database/schema";
 
-// DIAGNOSTIC V3: Simplify getAllContent to focus on hero_title
+/**
+ * DIAGNOSTIC V4: Use raw SQL for D1 to test if Drizzle is the problem.
+ * This version uses db.execute() to directly run SQL for hero_title.
+ */
 export async function getAllContent(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Record<string, string>> {
 	console.log(
-		"[Content Retrieval - DIAGNOSTIC V3] Getting hero_title from database at:",
+		"[Content Retrieval - DIAGNOSTIC V4] Getting hero_title from database at:",
 		new Date().toISOString(),
 	);
 
-	const heroTitleEntry = await db
-		.select({ key: schema.content.key, value: schema.content.value })
-		.from(schema.content)
-		.where(eq(schema.content.key, "hero_title"))
-		.get();
+	// Use raw SQL to bypass Drizzle's query builder
+	const sql = `SELECT key, value FROM content WHERE key = ? LIMIT 1;`;
+	const result = await db.execute(sql, ["hero_title"]);
 
-	if (heroTitleEntry) {
+	if (result && Array.isArray(result.rows) && result.rows.length > 0) {
+		const row = result.rows[0];
 		console.log(
-			`[Content Retrieval - DIAGNOSTIC V3] Retrieved hero_title: '${heroTitleEntry.value}'`,
+			`[Content Retrieval - DIAGNOSTIC V4] Retrieved hero_title: '${row.value}'`,
 		);
-		return { hero_title: heroTitleEntry.value };
+		return { hero_title: row.value };
 	}
-	
-	console.log("[Content Retrieval - DIAGNOSTIC V3] hero_title not found.");
+
+	console.log("[Content Retrieval - DIAGNOSTIC V4] hero_title not found.");
 	return {};
 }
 
-// DIAGNOSTIC V3: Simplify updateContent to focus on hero_title
+/**
+ * DIAGNOSTIC V4: Use raw SQL for D1 to test if Drizzle is the problem.
+ * This version uses db.execute() to directly run SQL for hero_title.
+ */
 export async function updateContent(
 	db: DrizzleD1Database<typeof schema>,
 	updates: Record<
@@ -41,58 +46,33 @@ export async function updateContent(
 	const testValue = `Test Update @ ${new Date().toLocaleTimeString()}`;
 
 	console.log(
-		`[Content Update - DIAGNOSTIC V3] Attempting to update/insert ONLY '${testKey}' to '${testValue}' at:`,
+		`[Content Update - DIAGNOSTIC V4] Attempting to update/insert ONLY '${testKey}' to '${testValue}' at:`,
 		new Date().toISOString(),
 	);
-	
+
 	// Log all incoming updates for context, even though we're ignoring them for the DB op
 	console.log(
-		"[Content Update - DIAGNOSTIC V3] Received updates object (for context only):",
+		"[Content Update - DIAGNOSTIC V4] Received updates object (for context only):",
 		JSON.stringify(updates, null, 2),
 	);
 
-	const existing = await db
-		.select({ value: schema.content.value }) // Only select necessary field
-		.from(schema.content)
-		.where(eq(schema.content.key, testKey))
-		.get();
-
-	let operationPromise: Promise<D1Result<unknown>>;
-
-	if (existing) {
-		console.log(`[Content Update - DIAGNOSTIC V3] Updating existing key: '${testKey}' to value: '${testValue}'`);
-		operationPromise = db
-			.update(schema.content)
-			.set({ value: testValue, updatedAt: new Date() }) // Only update value and updatedAt
-			.where(eq(schema.content.key, testKey))
-			.run();
-	} else {
-		console.log(`[Content Update - DIAGNOSTIC V3] Inserting new key: '${testKey}' with value: '${testValue}'`);
-		// For insert, ensure all non-nullable fields without defaults are provided.
-		// Assuming 'page', 'section', 'type', 'mediaId', 'sortOrder' are nullable or have defaults.
-		const insertValue: typeof schema.content.$inferInsert = {
-			key: testKey,
-			value: testValue,
-			// page: undefined, // or some default if required and not nullable
-			// section: undefined, // or some default
-			// type: undefined, // or some default
-			// mediaId: undefined, // or null if nullable
-			// sortOrder: undefined, // or some default
-			updatedAt: new Date(),
-			// createdAt will use schema default
-		};
-		operationPromise = db.insert(schema.content).values(insertValue).run();
-	}
+	// Use raw SQL for upsert (insert or update)
+	const sql = `
+		INSERT INTO content (key, value, updatedAt)
+		VALUES (?, ?, ?)
+		ON CONFLICT(key) DO UPDATE SET value = excluded.value, updatedAt = excluded.updatedAt;
+	`;
+	const now = new Date().toISOString();
 
 	try {
-		const result = await operationPromise;
+		const result = await db.execute(sql, [testKey, testValue, now]);
 		console.log(
-			"[Content Update - DIAGNOSTIC V3] Operation for hero_title completed. Result:",
+			"[Content Update - DIAGNOSTIC V4] Operation for hero_title completed. Result:",
 			JSON.stringify(result, null, 2),
 		);
 		return [result]; // Return as an array to match original signature
 	} catch (error) {
-		console.error("[Content Update - DIAGNOSTIC V3] Error during DB operation for hero_title:", error);
+		console.error("[Content Update - DIAGNOSTIC V4] Error during DB operation for hero_title:", error);
 		const errorResult = { success: false, error: String(error), meta: { error: String(error) } } as unknown as D1Result<unknown>;
 		return [errorResult];
 	}
