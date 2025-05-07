@@ -1,5 +1,5 @@
 import { asc, desc, eq } from "drizzle-orm"; // Use direct import
-import type { DrizzleD1Database } from "drizzle-orm/d1"; // Remove D1Result for now
+import type { DrizzleD1Database, D1Result } from "drizzle-orm/d1"; // Import D1Result
 import type { NewContent, NewProject, Project } from "~/database/schema"; // Import asc for ordering // Import Project types
 import * as schema from "~/database/schema";
 
@@ -54,18 +54,20 @@ export async function getAllContent(
 	return contentMap;
 }
 
-// Update or insert content values (upsert)
-// Accepts either:
-//   { key1: "plain-value" }
-//   { key2: { value: "value", page: "home", section: "hero", type: "text", mediaId: 3 } }
-// so admin UIs can gradually move to the richer payload.
+/**
+ * Update or insert content values (upsert).
+ * Accepts either:
+ *   { key1: "plain-value" }
+ *   { key2: { value: "value", page: "home", section: "hero", type: "text", mediaId: 3 } }
+ * so admin UIs can gradually move to the richer payload.
+ */
 export async function updateContent(
 	db: DrizzleD1Database<typeof schema>,
 	updates: Record<
 		string,
 		string | (Partial<Omit<NewContent, "key">> & { value: string })
 	>,
-): Promise<any[]> {
+): Promise<D1Result<unknown>[]> {
 	// DEBUG: Log content updates with timestamp
 	console.log(
 		"[Content Update] Content update requested at:",
@@ -92,34 +94,28 @@ export async function updateContent(
 		}
 	});
 
-	// Use Promise<any[]> as a more general type for batch results
-	// Use D1Result<unknown>[] as return type
-	const batch = Object.entries(updates).map(([key, raw]) => {
+	const promises = Object.entries(updates).map(async ([key, raw]) => {
 		const data = typeof raw === "string" ? ({ value: raw } as const) : raw;
 
 		const insertValue: typeof schema.content.$inferInsert = { key, ...data };
+		// Execute each query individually using .run() for D1 insert/update
 		return db
 			.insert(schema.content)
 			.values(insertValue)
 			.onConflictDoUpdate({
 				target: schema.content.key,
-				set: { ...data, updatedAt: new Date() }, // D1 doesn't support Date directly, will be converted
-			});
+				set: { ...data, updatedAt: new Date() },
+			})
+			.run();
 	});
 
-	// Use db.batch() for potentially better performance with D1
-	// TODO: Fix batch execution for SQLite if needed. This assumes D1 context for now.
-	// The error TS2345 suggests `batch` items are not compatible with db.batch's expected input.
-	// For SQLite, db.batch expects string[] or PreparedQuery[].
-	// This might need individual execution or prepared statements.
-	// Returning Promise<any[]> for now to resolve immediate TS error.
-	const result = await db.batch(batch as any); // Use 'as any' to bypass the complex type error for now
+	const result = await Promise.all(promises);
 
 	// DEBUG: Log update results
 	console.log(
 		"[Content Update] Update completed, affected",
-		result.length,
-		"records",
+		result.length, // This will be the number of operations attempted
+		"records. Individual results:", result,
 	);
 
 	return result;
