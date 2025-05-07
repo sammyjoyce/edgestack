@@ -14,8 +14,6 @@ type ProjectsActionData = {
 	error?: string;
 	projectId?: number;
 };
-import { deleteProject, getAllProjects } from "~/routes/common/db"; // Import DB functions
-import { getSessionCookie, verify } from "~/routes/common/utils/auth"; // Import auth utils
 
 // Loader to fetch all projects - Return plain objects for type safety
 export async function loader({ request, context }: LoaderFunctionArgs) {
@@ -24,6 +22,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 		return { projects: [], error: "Unauthorized" } as const;
 	};
 
+	const { getSessionCookie, verify } =
+		await import("~/routes/common/utils/auth");
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -31,6 +31,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 	}
 
 	try {
+		const { getAllProjects } = await import("~/routes/common/db");
 		const projects = await getAllProjects(context.db);
 		return { projects } as const;
 	} catch (error) {
@@ -48,6 +49,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
 	const unauthorized = () => {
 		return { success: false, error: "Unauthorized" } as const;
 	};
+	const { getSessionCookie, verify } =
+		await import("~/routes/common/utils/auth");
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -66,6 +69,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 		}
 
 		try {
+			const { deleteProject } = await import("~/routes/common/db");
 			await deleteProject(context.db, projectId);
 			return { success: true, projectId } as const;
 		} catch (error: unknown) {

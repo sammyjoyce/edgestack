@@ -3,7 +3,6 @@ import type { LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
-import { getAllContent, getAllProjects } from "~/routes/common/db";
 import { ProjectsErrorBoundary } from "../components/ProjectsErrorBoundary";
 // Import generated Route type for type safety
 import type { Route } from "./+types/_layout";
@@ -19,6 +18,8 @@ export const loader = async ({
 	context,
 }: LoaderFunctionArgs): Promise<ProjectsLayoutLoaderData> => {
 	try {
+		const { getAllContent, getAllProjects } =
+			await import("~/routes/common/db");
 		const content = await getAllContent(context.db);
 		const projects = await getAllProjects(context.db);
 		// Return data directly without helper for clearer typing
