@@ -19,7 +19,21 @@ export async function getAllContent(
 		
 		const contentMap: Record<string, string> = {};
 		for (const row of rows) {
-			contentMap[row.key] = String(row.value ?? ""); 
+			// row.value is parsed by Drizzle from the JSON string in DB
+			if (typeof row.value === 'string') {
+				contentMap[row.key] = row.value;
+			} else if (row.value !== null && row.value !== undefined) {
+				// For non-string JSON types (numbers, booleans) that are simple, String() is okay.
+				// For objects/arrays, this might not be the desired string representation.
+				if (typeof row.value === 'object') {
+					// This warning helps identify if complex objects are being unexpectedly stringified.
+					console.warn(`[db/getAllContent] Content value for key '${row.key}' is an object/array and will be coerced to string. Review if this is intended. Value: ${JSON.stringify(row.value)}`);
+				}
+				contentMap[row.key] = String(row.value);
+			} else {
+				// Handle null or undefined parsed JSON value, defaulting to empty string.
+				contentMap[row.key] = ""; 
+			}
 		}
 		return contentMap;
 
