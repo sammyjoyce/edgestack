@@ -29,7 +29,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 	const items = await getAllContent(context.db);
 
 	// Content is fetched. Seeding is now handled by a separate action.
-	return json({ content: items }); // 200 + proper header
+	return data<{ content: Record<string, string> }>({
+		content: items,
+	});
 }
 
 /* ---------------- ACTION ---------------- */
