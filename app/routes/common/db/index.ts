@@ -1,7 +1,8 @@
 import { asc, desc, eq, sql } from "drizzle-orm";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
 import type { BatchItem, BatchResponse } from "drizzle-orm/batch";
-import type { D1Result } from "@cloudflare/workers-types";
+// D1Result is not directly used for db.batch return type, BatchResponse is.
+// D1Result might be relevant for individual .run() calls if needed.
 import type { NewContent, NewProject, Project } from "~/database/schema";
 import * as schema from "~/database/schema";
 import { validateProjectUpdate, validateContentUpdate } from "~/database/valibot-validation";

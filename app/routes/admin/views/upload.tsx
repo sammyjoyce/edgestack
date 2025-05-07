@@ -74,17 +74,17 @@ export async function action({ request, context }: Route.ActionArgs) {
 					// Operations within transaction
 					const mediaToDelete = await tx.select({ id: schema.media.id }).from(schema.media).where(eq(schema.media.url, fullUrl)).get();
 					
-					await tx.delete(schema.media).where(eq(schema.media.url, fullUrl));
+					await tx.delete(schema.media).where(eq(schema.media.url, fullUrl)).run();
 
-					if (mediaToDelete) {
+					if (mediaToDelete?.id) {
 						await tx.update(schema.content)
 							.set({ mediaId: null, value: "" }) // Clear link and value
-							.where(eq(schema.content.mediaId, mediaToDelete.id));
+							.where(eq(schema.content.mediaId, mediaToDelete.id)).run();
 					}
 					// Fallback: also clear content if it directly stores the URL in 'value'
 					await tx.update(schema.content)
 						.set({ value: "", mediaId: null }) // Ensure mediaId is also cleared here
-						.where(eq(schema.content.value, fullUrl));
+						.where(eq(schema.content.value, fullUrl)).run();
 				});
 				// Note: The above operations are atomic. If updateContent also needs to be part of this specific transaction,
 				// it would need to be refactored to accept `tx` and perform its operations using `tx`.
@@ -181,11 +181,11 @@ export async function action({ request, context }: Route.ActionArgs) {
 					// Decide if this error should prevent content update or just be logged
 					// For now, we'll proceed to update content with URL only if media insert fails
 					// Throwing error here will rollback the transaction.
-					throw dbError;
+					throw dbError; 
 				}
 				
 				// Now update content with the publicUrl and newMediaId (if available)
-				// Pass context.db to updateContent as it likely expects the main D1Database instance
+				// updateContent uses batch internally, which should be called on the main db instance, not a transaction tx.
 				await updateContent(context.db, { [key]: { value: publicUrl, mediaId: newMediaId } });
 			});
 
