@@ -1,63 +1,35 @@
-import { asc, desc, eq } from "drizzle-orm"; // Use direct import
-import type { DrizzleD1Database, D1Result } from "drizzle-orm/d1"; // Import D1Result
-import type { NewContent, NewProject, Project } from "~/database/schema"; // Import asc for ordering // Import Project types
+import { asc, desc, eq } from "drizzle-orm";
+import type { DrizzleD1Database, D1Result } from "drizzle-orm/d1";
+import type { NewContent, NewProject, Project } from "~/database/schema";
 import * as schema from "~/database/schema";
 
-// Remove duplicate import: import type { Content, NewContent, Project, NewProject } from "../../database/schema";
-
-// Utility functions for working with content
-// Retrieves all content as an object keyed by 'key'
+// DIAGNOSTIC V3: Simplify getAllContent to focus on hero_title
 export async function getAllContent(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Record<string, string>> {
-	// DEBUG: Log when content is being retrieved
 	console.log(
-		"[Content Retrieval] Getting all content from database at:",
+		"[Content Retrieval - DIAGNOSTIC V3] Getting hero_title from database at:",
 		new Date().toISOString(),
 	);
 
-	// Add return type
-	const results = await db
-		.select()
+	const heroTitleEntry = await db
+		.select({ key: schema.content.key, value: schema.content.value })
 		.from(schema.content)
-		.orderBy(
-			asc(schema.content.sortOrder), // honour CMS ordering first
-			asc(schema.content.key), // deterministic fallback
-		)
-		.all();
+		.where(eq(schema.content.key, "hero_title"))
+		.get();
 
-	// DEBUG: Log the content keys that were retrieved
-	console.log(
-		"[Content Retrieval] Retrieved",
-		results.length,
-		"content items with keys:",
-		results.map((r) => r.key).join(", "),
-	);
-
-	// Transform array of objects to a single object with key-value pairs
-	const contentMap = results.reduce(
-		(acc, { key, value }) => {
-			acc[key] = value;
-			return acc;
-		},
-		{} as Record<string, string>,
-	);
-
-	// DEBUG: Log specific content values for debugging
-	if (contentMap.hero_title) {
+	if (heroTitleEntry) {
 		console.log(
-			"[Content Retrieval] Hero title content:",
-			contentMap.hero_title,
+			`[Content Retrieval - DIAGNOSTIC V3] Retrieved hero_title: '${heroTitleEntry.value}'`,
 		);
+		return { hero_title: heroTitleEntry.value };
 	}
-
-	return contentMap;
+	
+	console.log("[Content Retrieval - DIAGNOSTIC V3] hero_title not found.");
+	return {};
 }
 
-/**
- * Update or insert content values (upsert) - DIAGNOSTIC V2.
- * This version does a SELECT first, then UPDATE or INSERT as needed.
- */
+// DIAGNOSTIC V3: Simplify updateContent to focus on hero_title
 export async function updateContent(
 	db: DrizzleD1Database<typeof schema>,
 	updates: Record<
@@ -65,75 +37,72 @@ export async function updateContent(
 		string | (Partial<Omit<NewContent, "key">> & { value: string })
 	>,
 ): Promise<D1Result<unknown>[]> {
+	const testKey = "hero_title";
+	const testValue = `Test Update @ ${new Date().toLocaleTimeString()}`;
+
 	console.log(
-		"[Content Update - DIAGNOSTIC V2] Content update requested at:",
+		`[Content Update - DIAGNOSTIC V3] Attempting to update/insert ONLY '${testKey}' to '${testValue}' at:`,
 		new Date().toISOString(),
 	);
+	
+	// Log all incoming updates for context, even though we're ignoring them for the DB op
 	console.log(
-		"[Content Update - DIAGNOSTIC V2] Keys to update:",
-		Object.keys(updates).join(", "),
+		"[Content Update - DIAGNOSTIC V3] Received updates object (for context only):",
+		JSON.stringify(updates, null, 2),
 	);
 
-	const promises = Object.entries(updates).map(async ([key, raw]) => {
-		const dataToSet = typeof raw === "string" ? { value: raw } : raw;
-		// Ensure 'value' is always present in dataToSet for the update/insert
-		if (typeof dataToSet.value !== 'string') {
-			console.error(`[Content Update - DIAGNOSTIC V2] Invalid data for key ${key}: 'value' is missing or not a string.`);
-			// Return a D1Result-like object indicating failure for this specific key
-			return { success: false, meta: { error: `Invalid data for key ${key}` }, error: `Invalid data for key ${key}` } as unknown as D1Result<unknown>;
-		}
+	const existing = await db
+		.select({ value: schema.content.value }) // Only select necessary field
+		.from(schema.content)
+		.where(eq(schema.content.key, testKey))
+		.get();
 
-		console.log(
-			`[Content Update - DIAGNOSTIC V2] Processing key: ${key}, value: "${dataToSet.value}"`,
-		);
+	let operationPromise: Promise<D1Result<unknown>>;
 
-		const existing = await db
-			.select({ value: schema.content.value }) // Only select necessary field
-			.from(schema.content)
-			.where(eq(schema.content.key, key))
-			.get();
-
-		if (existing) {
-			console.log(`[Content Update - DIAGNOSTIC V2] Updating existing key: ${key}`);
-			return db
-				.update(schema.content)
-				.set({ ...dataToSet, updatedAt: new Date() })
-				.where(eq(schema.content.key, key))
-				.run();
-		}
-		
-		console.log(`[Content Update - DIAGNOSTIC V2] Inserting new key: ${key}`);
-		// Ensure all required fields for insert are present, or have defaults in schema
+	if (existing) {
+		console.log(`[Content Update - DIAGNOSTIC V3] Updating existing key: '${testKey}' to value: '${testValue}'`);
+		operationPromise = db
+			.update(schema.content)
+			.set({ value: testValue, updatedAt: new Date() }) // Only update value and updatedAt
+			.where(eq(schema.content.key, testKey))
+			.run();
+	} else {
+		console.log(`[Content Update - DIAGNOSTIC V3] Inserting new key: '${testKey}' with value: '${testValue}'`);
+		// For insert, ensure all non-nullable fields without defaults are provided.
+		// Assuming 'page', 'section', 'type', 'mediaId', 'sortOrder' are nullable or have defaults.
 		const insertValue: typeof schema.content.$inferInsert = {
-			key,
-			value: dataToSet.value, // Explicitly use value from dataToSet
-			page: dataToSet.page,
-			section: dataToSet.section,
-			type: dataToSet.type, // Will use schema default if undefined
-			mediaId: dataToSet.mediaId,
-			sortOrder: dataToSet.sortOrder, // Will use schema default if undefined
-			// createdAt is handled by schema default
+			key: testKey,
+			value: testValue,
+			// page: undefined, // or some default if required and not nullable
+			// section: undefined, // or some default
+			// type: undefined, // or some default
+			// mediaId: undefined, // or null if nullable
+			// sortOrder: undefined, // or some default
 			updatedAt: new Date(),
+			// createdAt will use schema default
 		};
-		return db.insert(schema.content).values(insertValue).run();
-	});
+		operationPromise = db.insert(schema.content).values(insertValue).run();
+	}
 
-	const results = await Promise.all(promises);
-
-	console.log(
-		"[Content Update - DIAGNOSTIC V2] All operations completed. Results:",
-		results,
-	);
-	return results;
+	try {
+		const result = await operationPromise;
+		console.log(
+			"[Content Update - DIAGNOSTIC V3] Operation for hero_title completed. Result:",
+			JSON.stringify(result, null, 2),
+		);
+		return [result]; // Return as an array to match original signature
+	} catch (error) {
+		console.error("[Content Update - DIAGNOSTIC V3] Error during DB operation for hero_title:", error);
+		const errorResult = { success: false, error: String(error), meta: { error: String(error) } } as unknown as D1Result<unknown>;
+		return [errorResult];
+	}
 }
 
 // --- Project CRUD Functions ---
-
-// Get all projects, ordered by sortOrder and creation date
+// (Keep existing getAllProjects, getFeaturedProjects, getProjectById, createProject, updateProject, deleteProject functions as they are)
 export async function getAllProjects(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Project[]> {
-	// Order by sortOrder ascending, then createdAt descending as a fallback
 	return db
 		.select()
 		.from(schema.projects)
@@ -141,7 +110,6 @@ export async function getAllProjects(
 		.all();
 }
 
-// Get only featured projects, ordered by sortOrder and creation date
 export async function getFeaturedProjects(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Project[]> {
@@ -149,34 +117,30 @@ export async function getFeaturedProjects(
 		.select()
 		.from(schema.projects)
 		.where(eq(schema.projects.isFeatured, true))
-		.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt)) // Order by sortOrder, then creation date
+		.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt))
 		.all();
 }
 
-// Get a single project by its ID
 export async function getProjectById(
 	db: DrizzleD1Database<typeof schema>,
 	id: number,
 ): Promise<Project | undefined> {
-	// D1 .get() returns T | undefined
 	const result = await db
 		.select()
 		.from(schema.projects)
 		.where(eq(schema.projects.id, id))
 		.get();
-	return result; // Return undefined if not found (D1 behavior)
+	return result;
 }
 
-// Create a new project - Ensure isFeatured and sortOrder are handled
 export async function createProject(
 	db: DrizzleD1Database<typeof schema>,
-	projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">, // Use Omit for clarity
+	projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">,
 ): Promise<Project> {
-	// Ensure timestamps and defaults are set if not provided
 	const dataWithDefaults: NewProject = {
 		...projectData,
 		isFeatured: projectData.isFeatured ?? false,
-		sortOrder: projectData.sortOrder ?? 0, // Default sort order might need adjustment based on desired behavior
+		sortOrder: projectData.sortOrder ?? 0,
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	};
@@ -188,17 +152,13 @@ export async function createProject(
 	return result;
 }
 
-// Update an existing project - Ensure isFeatured and sortOrder can be updated
 export async function updateProject(
 	db: DrizzleD1Database<typeof schema>,
 	id: number,
 	projectData: Partial<Omit<NewProject, "id" | "createdAt">>,
 ): Promise<Project | undefined> {
-	// D1 .get() returns T | undefined
-	// Update the 'updatedAt' timestamp
 	const dataWithTimestamp = {
 		...projectData,
-		// Explicitly handle boolean conversion if needed, depending on form data
 		isFeatured: projectData.isFeatured,
 		sortOrder: projectData.sortOrder,
 		updatedAt: new Date(),
@@ -209,21 +169,16 @@ export async function updateProject(
 		.where(eq(schema.projects.id, id))
 		.returning()
 		.get();
-	return result; // Return undefined if update failed or ID not found
+	return result;
 }
 
-// Delete a project by its ID
 export async function deleteProject(
 	db: DrizzleD1Database<typeof schema>,
 	id: number,
 ): Promise<{ success: boolean; meta?: unknown }> {
-	// D1 run() returns D1Result
 	const result = await db
 		.delete(schema.projects)
 		.where(eq(schema.projects.id, id))
 		.run();
-	// D1 run() result includes success and meta
 	return { success: result.success, meta: result.meta };
 }
-
-// For more patterns, see: https://orm.drizzle.team/docs/querying
