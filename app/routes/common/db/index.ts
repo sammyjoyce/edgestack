@@ -10,11 +10,14 @@ export async function getAllContent(
 ): Promise<Record<string, string>> {
 	const functionTimestamp = new Date().toISOString();
 	console.log(
-		`[Content Retrieval - DIAGNOSTIC V4] Fetching all content rows via db.all(sql\`...\`) at: ${functionTimestamp}`,
+		`[Content Retrieval - DIAGNOSTIC V4] Fetching all content rows via Drizzle query builder at: ${functionTimestamp}`,
 	);
 
 	try {
-		const rows: Array<{ key: string; value: string | null }> = await db.all(sql`SELECT key, value FROM content`);
+		const rows = await db
+			.select({ key: schema.content.key, value: schema.content.value })
+			.from(schema.content)
+			.all();
 		
 		console.log(
 			`[Content Retrieval - DIAGNOSTIC V4] Retrieved ${rows.length} rows from content table at ${new Date().toISOString()}.`,
@@ -25,9 +28,9 @@ export async function getAllContent(
 
 		const contentMap: Record<string, string> = {};
 		for (const row of rows) {
-			if (row && typeof row.key === "string") {
-				contentMap[row.key] = row.value === null ? "" : row.value; // Handle null values explicitly
-			}
+			// schema.content.value is NOT NULL, so row.value should not be null.
+			// If it were nullable, `row.value === null ? "" : row.value` would be appropriate.
+			contentMap[row.key] = row.value; 
 		}
 		console.log(
 			`[Content Retrieval - DIAGNOSTIC V4] Mapped ${Object.keys(contentMap).length} keys at ${new Date().toISOString()}:`,
@@ -123,12 +126,13 @@ export async function updateContent(
 				target: schema.content.key,
 				set: setDataPayload,
 			});
-		promises.push(upsertStatement.run());
+		promises.push(upsertStatement); // Add the statement itself, not its execution result
 	}
 
 	// Execute all upsert statements in a single batch
 	try {
-		const results = await db.batch(promises);
+		// D1Result type for batch is D1Result<unknown>[]
+		const results: D1Result<unknown>[] = await db.batch(promises);
 		console.log(
 			`[Content Update - DIAGNOSTIC V4] Batch operations completed at ${new Date().toISOString()}. Results:`,
 			results.map(r => ({ success: r.success, error: r.error, changes: r.meta?.changes, written: r.meta?.rows_written })),
@@ -137,7 +141,7 @@ export async function updateContent(
 	} catch (batchError) {
 		console.error(`[Content Update - DIAGNOSTIC V4] Error during batch operation:`, batchError);
 		// Construct a D1Result-like array for consistent return type
-		return updates.map(() => ({ success: false, error: String(batchError), meta: { error: String(batchError) } } as unknown as D1Result<unknown>));
+		return updates.map(() => ({ success: false, error: String(batchError), meta: { error: String(batchError) } as any } as D1Result<unknown>));
 	}
 }
 
