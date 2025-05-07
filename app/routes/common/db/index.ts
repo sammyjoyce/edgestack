@@ -35,8 +35,8 @@ export async function updateContent(
 		string,
 		string | (Partial<Omit<NewContent, "key">> & { value: string })
 	>,
-): Promise<D1Result<unknown>[]> {
-	const promises: Promise<D1Result<unknown>>[] = [];
+): Promise<BatchResponse> { // Correct return type
+	const statements: BatchItem<"sqlite">[] = []; // Collect Drizzle statements
 
 	for (const [key, valueOrObj] of Object.entries(updates)) {
 		const dataToSet =
@@ -48,8 +48,7 @@ export async function updateContent(
 			console.warn(
 				`Skipping content update for key '${key}' because value is not a string. Value: ${JSON.stringify(dataToSet.value)}`,
 			);
-			const skippedResult: D1Result<unknown> = { success: false, meta: { error: `Value for key ${key} not a string` } as any, error: `Value for key ${key} not a string` };
-			promises.push(Promise.resolve(skippedResult));
+			// Skip adding this item to the batch if its value is not a string
 			continue;
 		}
 
@@ -93,15 +92,21 @@ export async function updateContent(
 				target: schema.content.key,
 				set: setDataPayload,
 			});
-		promises.push(upsertStatement);
+		statements.push(upsertStatement); // Add the Drizzle statement object
 	}
 
 	try {
-		const results: D1Result<unknown>[] = await db.batch(promises);
+		if (statements.length === 0) {
+			// Return an empty BatchResponse if there are no statements to execute
+			return Promise.resolve([] as unknown as BatchResponse);
+		}
+		// db.batch expects a non-empty array of Drizzle statement instances
+		const results = await db.batch(statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]]);
 		return results;
 	} catch (batchError) {
 		console.error(`Error during batch content update:`, batchError);
-		return updates.map(() => ({ success: false, error: String(batchError), meta: { error: String(batchError) } as any } as D1Result<unknown>));
+		// Rethrow or handle as appropriate for your application
+		throw batchError;
 	}
 }
 
