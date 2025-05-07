@@ -118,7 +118,7 @@ export function ImageUploadSection({
 		<section
 			id="image-uploads"
 			ref={ref}
-			className="bg-white border border-gray-200 rounded-lg shadow-xs p-6 mt-8"
+			className="bg-gray-50 border border-gray-200 rounded-lg shadow-[var(--shadow-input-default)] p-6 mt-8"
 			aria-labelledby="image-uploads-heading"
 		>
 			<SectionIntro title="Image Uploads" className="mb-4" />

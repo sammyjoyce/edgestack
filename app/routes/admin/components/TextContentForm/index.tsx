@@ -143,7 +143,7 @@ export function TextContentForm({
 			ref={ref}
 			method="post"
 			aria-label="Text Content Editor"
-			className="flex flex-col gap-6 bg-white border border-gray-200 rounded-lg shadow-xs p-6"
+			className="flex flex-col gap-6 bg-gray-50 border border-gray-200 rounded-lg shadow-[var(--shadow-input-default)] p-6"
 			onSubmit={handleSave}
 		>
 			<div className="flex items-center gap-4 mb-2">
@@ -247,10 +247,10 @@ export function TextContentForm({
 								rows={rows}
 								aria-label={label}
 								aria-describedby={help ? `help-${key}` : undefined}
-								value={fields[key] ?? ""} // Use fields directly from hook
+								value={fields[key] ?? ""}
 								onBlur={handleBlur}
 								onChange={handleChange}
-								className={`block w-full rounded-md shadow-sm focus:border-primary focus:ring-primary text-sm ${
+								className={`block w-full rounded-md bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm ${
 									errors[key] ? "border-red-500" : "border-gray-300"
 								}`}
 							/>
