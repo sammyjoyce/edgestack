@@ -11,8 +11,7 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text"; // Import heading and quote nodes
 import type { EditorState, LexicalEditor } from "lexical"; // Import LexicalEditor
 
-import type React from "react";
-import { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react"; // Import React
 import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
 
 /**
