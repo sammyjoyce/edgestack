@@ -34,11 +34,11 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 
 	// Provide clear error if JWT_SECRET is missing
 	if (!jwtSecret) {
-		return {
+		return data({
 			success: false,
 			error:
 				"JWT_SECRET not configured. Please set JWT_SECRET in your environment variables.",
-		};
+		}, { status: 500 });
 	}
 
 	// Use optional chaining to access potentially undefined properties
@@ -48,11 +48,11 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		env && "ADMIN_PASSWORD" in env ? (env.ADMIN_PASSWORD as string) : undefined;
 
 	if (!adminUsername || !adminPassword) {
-		return {
+		return data({
 			success: false,
 			error:
 				"Admin credentials not configured. Please set ADMIN_USERNAME and ADMIN_PASSWORD in your environment variables.",
-		};
+		}, { status: 500 });
 	}
 
 	// Check against environment variable credentials
@@ -73,10 +73,10 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 	}
 
 	// Return error data directly
-	return {
+	return data({
 		success: false,
 		error: "Invalid username or password",
-	};
+	}, { status: 400 });
 };
 
 // Add loader to check authentication status before rendering the login page

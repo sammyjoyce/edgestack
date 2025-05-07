@@ -41,6 +41,7 @@ export function ImageUploadSection({
 		url?: string;
 		key?: string;
 		error?: string;
+		action?: "upload" | "select" | "delete"; // Add action to discriminate fetcher.data
 	};
 	const fetchers = imageFields.map(() => useFetcher<UploadActionReturn>());
 	// Create refs for each file input
@@ -84,35 +85,27 @@ export function ImageUploadSection({
 		fetchers.forEach((fetcher, idx) => {
 			if (fetcher.state === "idle" && fetcher.data) {
 				// Check fetcher.data structure based on AdminActionResponse
-				if ("success" in fetcher.data && fetcher.data.success) {
+				if (fetcher.data?.success) {
 					const inputRef = fileInputRefs[idx].current;
-					if (inputRef) {
+					if (inputRef && fetcher.data.action === "upload") { // Only clear input on successful upload
 						inputRef.value = "";
 					}
 					setStatusTexts((prev) => {
 						const next = [...prev];
-						next[idx] = `${imageFields[idx].label} uploaded successfully!`;
+						next[idx] = `${imageFields[idx].label} ${fetcher.data.action || 'operation'} successful!`;
 						return next;
 					});
-				} else if (
-					fetcher.data &&
-					typeof fetcher.data === "object" &&
-					fetcher.data &&
-					typeof fetcher.data === "object" &&
-					"error" in fetcher.data
-				) {
+				} else if (fetcher.data?.error) {
 					// Handle error response with inferred type
-					const errorData = fetcher.data;
 					setStatusTexts((prev) => {
 						const next = [...prev];
-						// Use optional chaining and provide a default message
-						next[idx] = errorData?.error ?? "Upload failed";
+						next[idx] = fetcher.data?.error ?? "Operation failed";
 						return next;
 					});
 				}
 			}
 		});
-	}, [fetchers]);
+	}, [fetchers, fileInputRefs]);
 
 	return (
 		<section

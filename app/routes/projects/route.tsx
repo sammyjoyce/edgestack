@@ -27,23 +27,16 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
 	} catch (error) {
 		console.error("Failed to fetch content or projects:", error);
 		// Return plain object for error
-		return {
-			content: {} as Record<string, string>,
-			projects: [] as Project[],
-			error: "Failed to load projects data", // Add error field if needed
-		};
-		// Consider throwing a response for errors to be caught by an ErrorBoundary
 		// throw new Response("Failed to load projects data", { status: 500 });
+		throw data(
+			{ message: "Failed to load projects data" },
+			{ status: 500 },
+		);
 	}
 };
 
 export default function Projects() {
-	const { content, projects, error } = useLoaderData<typeof loader>();
-
-	if (error) {
-		// Handle error display, or let an ErrorBoundary catch it if thrown
-		return <div>Error loading projects: {error}</div>;
-	}
+	const { content, projects } = useLoaderData<typeof loader>();
 
 	return (
 		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">

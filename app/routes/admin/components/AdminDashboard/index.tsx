@@ -33,18 +33,19 @@ export default function AdminDashboard({ initialContent }: AdminDashboardProps):
 		error?: string;
 		url?: string;
 		message?: string;
+		action?: "upload" | "select" | "delete"; // For uploadFetcher
 	};
 
 	// Use React Router 7's built-in type inference - no explicit type parameters
 	// This lets React Router handle the complex type relationships correctly
-	const heroFetcher = useFetcher();
-	const introFetcher = useFetcher();
-	const servicesFetcher = useFetcher();
-	const aboutFetcher = useFetcher();
-	const contactFetcher = useFetcher();
-	const sorterFetcher = useFetcher();
-	const projectsFetcher = useFetcher();
-	const uploadFetcher = useFetcher();
+	const heroFetcher = useFetcher<ActionData>();
+	const introFetcher = useFetcher<ActionData>();
+	const servicesFetcher = useFetcher<ActionData>();
+	const aboutFetcher = useFetcher<ActionData>();
+	const contactFetcher = useFetcher<ActionData>();
+	const sorterFetcher = useFetcher<ActionData>();
+	const projectsFetcher = useFetcher<ActionData>();
+	const uploadFetcher = useFetcher<ActionData>();
 
 	// Access content safely, handle null/error case
 	const safeContent =
@@ -90,19 +91,12 @@ export default function AdminDashboard({ initialContent }: AdminDashboardProps):
 				encType: "multipart/form-data",
 			});
 			// Use the fetcher instance's data with safer access
-			const uploadData = fetcherInstance.data as ActionData | undefined;
-			if (
-				uploadData &&
-				"success" in uploadData &&
-				uploadData.success &&
-				"url" in uploadData &&
-				uploadData.url
-			) {
-				setUrl(uploadData.url);
+			if (fetcherInstance.data?.success && fetcherInstance.data.url) {
+				setUrl(fetcherInstance.data.url);
 			}
 			setUploading(false);
 		},
-		[], // No dependency on fetcher needed here anymore
+		[], 
 	);
 
 	const handleHeroImageUpload = (file: File) =>

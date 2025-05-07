@@ -29,20 +29,17 @@ export async function loader({ context, request }: Route.LoaderArgs) {
 		return { images };
 	} catch (error: any) {
 		console.error("Error listing images:", error);
-		return { images: [], error: error.message || "Failed to list images" };
+		throw data(
+			{ images: [], error: error.message || "Failed to list images" },
+			{ status: 500 },
+		);
 	}
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
-	const unauthorized = () => ({
-		success: false,
-		error: "Unauthorized",
-	});
+	const unauthorized = () => data({ success: false, error: "Unauthorized" }, { status: 401 });
 
-	const badRequest = (msg: string) => ({
-		success: false,
-		error: msg,
-	});
+	const badRequest = (msg: string) => data({ success: false, error: msg }, { status: 400 });
 
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -64,7 +61,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 				const r2Deleted = await deleteStoredImage(filename, context);
 				if (!r2Deleted) {
-					return { success: false, error: "Failed to delete image from storage." };
+					return data({ success: false, error: "Failed to delete image from storage." }, { status: 500 });
 				}
 
 				const publicUrlBase = context.cloudflare?.env?.PUBLIC_R2_URL || "/assets";
@@ -86,11 +83,8 @@ export async function action({ request, context }: Route.ActionArgs) {
 						.set({ value: "", mediaId: null }) // Ensure mediaId is also cleared here
 						.where(eq(schema.content.value, fullUrl)).run();
 				});
-				// Note: The above operations are atomic. If updateContent also needs to be part of this specific transaction,
-				// it would need to be refactored to accept `tx` and perform its operations using `tx`.
-				// For now, `updateContent` will run in its own transaction(s) if it uses `db.batch` or individual `db.insert/update`.
 
-				return { success: true, action: "delete", filename };
+				return data({ success: true, action: "delete", filename });
 			}
 
 			// Handle image selection (updating content with existing image URL)
@@ -109,10 +103,10 @@ export async function action({ request, context }: Route.ActionArgs) {
 				try {
 					validateContentInsert({ key, value: imageUrl });
 				} catch (e: any) {
-					return {
+					return data({
 						success: false,
 						error: `Validation failed for key '${key}': ${e.message || e}`,
-					};
+					}, { status: 400 });
 				}
 				
 				// updateContent uses batch internally. To ensure atomicity with media selection,
@@ -143,7 +137,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 							},
 						});
 				});
-				return { success: true, url: imageUrl, key, action: "select" };
+				return data({ success: true, url: imageUrl, key, action: "select" });
 			}
 
 			// Handle image upload (existing functionality)
@@ -166,17 +160,17 @@ export async function action({ request, context }: Route.ActionArgs) {
 			// Use the helper function for upload with type assertion for consistency
 			const publicUrl = await handleImageUpload(file, key, context);
 			if (!publicUrl || typeof publicUrl !== "string") {
-				return badRequest("Failed to upload image");
+				return badRequest("Failed to upload image"); // This already returns data() with 400
 			}
 
 			// Validate the publicUrl for content.value
 			try {
 				validateContentInsert({ key, value: publicUrl });
 			} catch (e: any) {
-				return {
+				return data({
 					success: false,
 					error: `Validation failed for key '${key}' (URL): ${e.message || e}`,
-				};
+				}, { status: 400 });
 			}
 			
 			const mediaAltText = file.name;
@@ -229,17 +223,17 @@ export async function action({ request, context }: Route.ActionArgs) {
 					});
 			});
 
-			return { success: true, url: publicUrl, key, action: "upload" };
+			return data({ success: true, url: publicUrl, key, action: "upload" });
 		} catch (error: any) {
 			console.error("Upload error or action processing error:", error);
-			return {
+			return data({
 				success: false,
 				error: error.message || "An unexpected error occurred",
-			};
+			}, { status: 500 });
 		}
 	}
 
-	return badRequest("Method not allowed");
+	return data({ success: false, error: "Method not allowed" }, { status: 405 });
 }
 
 export default function UploadRoute() {
