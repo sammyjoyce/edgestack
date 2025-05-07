@@ -25,28 +25,23 @@ export async function action({
 	const title = formData.get("title")?.toString() ?? "";
 	const description = formData.get("description")?.toString() ?? "";
 	const details = formData.get("details")?.toString() ?? "";
-	const imageUrl = formData.get("imageUrl") as string | undefined; // Allow undefined
+	const imageUrl = formData.get("imageUrl")?.toString() || null; // Ensure null if empty
 	const isFeatured = formData.has("isFeatured");
-	const sortOrder =
-		Number.parseInt(formData.get("sortOrder") as string, 10) || 0;
+	const sortOrderString = formData.get("sortOrder")?.toString();
+	const sortOrder = sortOrderString ? Number.parseInt(sortOrderString, 10) : 0;
 
 	const projectData = {
 		title,
-		description: description || "",
-		details: details || "",
-		imageUrl: imageUrl || null, // Use null if empty
+		description,
+		details,
+		imageUrl,
 		isFeatured,
 		sortOrder,
 	};
 
 	try {
-		// Basic validation
-		if (!title.trim()) {
-			return {
-				success: false,
-				error: "Title is required",
-			};
-		}
+		// Validate data using Valibot schema
+		validateProjectInsert(projectData);
 
 		await createProject(context.db, projectData);
 
@@ -54,6 +49,19 @@ export async function action({
 		return redirect("/admin/projects");
 	} catch (error: any) {
 		console.error("Error creating project:", error);
+		// Check for Valibot validation error structure
+		if (error.issues && Array.isArray(error.issues)) {
+			const issueMessages = error.issues
+				.map(
+					(issue: any) =>
+						`${issue.path?.join(".") || "field"}: ${issue.message}`,
+				)
+				.join(", ");
+			return {
+				success: false,
+				error: `Validation Error: ${issueMessages}`,
+			};
+		}
 		return {
 			success: false,
 			error: error.message || "Failed to create project",
@@ -63,6 +71,7 @@ export async function action({
 
 export function NewProjectRoute() {
 	const navigate = useNavigate();
+	const actionData = useActionData<typeof action>();
 
 	return (
 		<FadeIn>
@@ -79,6 +88,15 @@ export function NewProjectRoute() {
 						Cancel
 					</Button>
 				</div>
+
+				{actionData?.error && (
+					<div
+						className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg border border-red-200"
+						role="alert"
+					>
+						{actionData.error}
+					</div>
+				)}
 
 				<Form
 					method="post"
