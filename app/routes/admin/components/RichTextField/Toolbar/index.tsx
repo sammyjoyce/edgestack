@@ -21,13 +21,7 @@ import {
 	type TextFormatType,
 	UNDO_COMMAND,
 } from "lexical";
-import {
-	type JSX,
-	type ReactNode,
-	useCallback,
-	useEffect,
-	useState,
-} from "react";
+// Removed duplicate React import block
 
 // Simple divider component
 function Divider() {
