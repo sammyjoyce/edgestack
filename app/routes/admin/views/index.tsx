@@ -17,18 +17,51 @@ const DEBUG = process.env.NODE_ENV === "development"; // Or use context.cloudfla
 
 /* ---------------- LOADER ---------------- */
 export async function loader({ request, context }: LoaderFunctionArgs) {
-	const token = getSessionCookie(request);
-	// Assuming context.env is available from Cloudflare Pages/Workers bindings
-	const secret = context.cloudflare?.env?.JWT_SECRET || context.env?.JWT_SECRET;
-	if (!token || !secret || !(await verify(token, secret))) {
-		throw redirect("/admin/login"); // 302 by default
+	// AGGRESSIVE DEBUGGING FOR ENV
+	console.log("[ADMIN LOADER] Initiating loader.");
+	console.log(
+		"[ADMIN LOADER] Raw context.cloudflare:",
+		JSON.stringify(context.cloudflare, null, 2),
+	);
+	if (context.cloudflare?.env) {
+		console.log(
+			"[ADMIN LOADER] Raw context.cloudflare.env:",
+			JSON.stringify(context.cloudflare.env, null, 2),
+		);
+	} else {
+		console.log(
+			"[ADMIN LOADER] context.cloudflare.env is undefined or context.cloudflare is undefined.",
+		);
 	}
 
-	// Content seeding should be moved to a migration or a separate one-time action.
-	// For now, we'll keep the read part and assume content exists or is handled elsewhere.
-	const items = await getAllContent(context.db);
+	const token = getSessionCookie(request);
+	const secret = context.cloudflare?.env?.JWT_SECRET;
 
-	// Content is fetched. Seeding is now handled by a separate action.
+	console.log(
+		`[ADMIN LOADER] JWT_SECRET value retrieved: ${
+			secret ? "'********'" : "undefined or empty"
+		}`,
+	);
+
+	if (!secret) {
+		console.error(
+			"[ADMIN LOADER] JWT_SECRET is missing or empty from context.cloudflare.env. Ensure it's set in your .dev.vars and accessible to the server build.",
+		);
+		// This error will propagate and cause a 500 if not caught by an ErrorBoundary higher up for this specific case.
+		throw new Error(
+			"Server configuration error: JWT_SECRET is not available or empty. Check server logs.",
+		);
+	}
+
+	if (!token || !(await verify(token, secret))) {
+		console.log(
+			"[ADMIN LOADER] Token verification failed or token missing. Redirecting to login.",
+		);
+		throw redirect("/admin/login");
+	}
+
+	console.log("[ADMIN LOADER] Authentication successful. Fetching content.");
+	const items = await getAllContent(context.db);
 	return data<{ content: Record<string, string> }>({
 		content: items,
 	});
