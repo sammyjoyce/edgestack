@@ -38,14 +38,14 @@ export default function AdminDashboard({ initialContent }: AdminDashboardProps):
 
 	// Use React Router 7's built-in type inference - no explicit type parameters
 	// This lets React Router handle the complex type relationships correctly
-	const heroFetcher = useFetcher<ActionData>();
-	const introFetcher = useFetcher<ActionData>();
-	const servicesFetcher = useFetcher<ActionData>();
-	const aboutFetcher = useFetcher<ActionData>();
-	const contactFetcher = useFetcher<ActionData>();
-	const sorterFetcher = useFetcher<ActionData>();
-	const projectsFetcher = useFetcher<ActionData>();
-	const uploadFetcher = useFetcher<ActionData>();
+	const heroFetcher = useFetcher<typeof adminIndexAction>();
+	const introFetcher = useFetcher<typeof adminIndexAction>();
+	const servicesFetcher = useFetcher<typeof adminIndexAction>();
+	const aboutFetcher = useFetcher<typeof adminIndexAction>();
+	const contactFetcher = useFetcher<typeof adminIndexAction>();
+	const sorterFetcher = useFetcher<typeof adminIndexAction>();
+	const projectsFetcher = useFetcher<typeof adminIndexAction>();
+	const uploadFetcher = useFetcher<typeof adminUploadAction>();
 
 	// Access content safely, handle null/error case
 	const safeContent =

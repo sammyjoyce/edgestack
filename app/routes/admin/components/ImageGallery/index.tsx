@@ -13,7 +13,9 @@ interface ImageGalleryProps {
 
 export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 	const { images = [] } = useLoaderData<typeof uploadRouteLoader>();
-	const fetcher = useFetcher<typeof uploadRouteAction>();
+	// Define a more specific type for the fetcher data if needed, or use a general one if actions are consistent
+	type GalleryActionData = { success?: boolean; error?: string; action?: string; filename?: string; url?: string; key?: string; };
+	const fetcher = useFetcher<GalleryActionData>();
 	const [selectedImage, setSelectedImage] = useState<StoredImage | null>(null);
 
 	// Format the date for display

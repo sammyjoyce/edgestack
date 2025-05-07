@@ -11,6 +11,7 @@ import {
 import { HomeErrorBoundary } from "../components/HomeErrorBoundary";
 // Import generated Route type for type safety
 import type { Route } from "./+types/_layout";
+import { data } from "react-router";
 
 type HomeLayoutLoaderData = {
 	content: Record<string, string>;

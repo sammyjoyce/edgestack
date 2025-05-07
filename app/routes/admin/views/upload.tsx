@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { eq } from "drizzle-orm";
+import { eq, data } from "drizzle-orm";
 import * as schema from "~/database/schema";
 import { validateContentInsert } from "~/database/valibot-validation";
 import { updateContent } from "~/routes/common/db";
