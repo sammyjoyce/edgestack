@@ -2,7 +2,7 @@ import React from "react";
 import { useOutletContext } from "react-router";
 import RecentProjects from "~/routes/common/components/RecentProjects";
 // Import the parent layout's loader for type inference
-import type { loader as parentLoader } from "~/routes/projects/routes/_layout";
+import type { loader as parentLoader } from "~/routes/projects/views/_layout";
 // Import generated Route type for this route
 import type { Route } from "./+types/index";
 
