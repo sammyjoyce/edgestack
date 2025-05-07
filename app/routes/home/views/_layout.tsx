@@ -1,8 +1,4 @@
-import { Outlet, useLoaderData } from "react-router";
-import type {
-	LoaderFunctionArgs,
-	ShouldRevalidateFunction,
-} from "react-router";
+import { Outlet, useLoaderData, type ShouldRevalidateFunction } from "react-router";
 // Still need the Project type for internal typing
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
@@ -27,17 +23,10 @@ type HomeLayoutLoaderData = {
 	};
 };
 
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
 	try {
-		// DEBUG: Log loader execution with timestamp and request URL
-		const timestamp = new Date().toISOString();
-		console.log("[Home Layout Loader] Executing at:", timestamp);
-		console.log("[Home Layout Loader] Request URL:", request.url);
-
 		// Load all content
-		console.log("[Home Layout Loader] Loading content from database...");
 		const content = await getAllContent(context.db);
-		console.log("[Home Layout Loader] Content loaded successfully");
 
 		// Load featured projects
 		const featuredProjects = await getFeaturedProjects(context.db);
@@ -46,19 +35,21 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 		const projects = await getAllProjects(context.db);
 
 		// Create a cacheBuster value for debugging
+		const timestamp = new Date().toISOString();
 		const cacheBuster = `cache-${timestamp}`;
 
 		return {
 			content,
 			featuredProjects,
 			projects,
-			_debug: {
+			_debug: { // Consider removing debug info for production builds
 				cacheBuster,
 				timestamp,
 			},
 		};
 	} catch (error) {
 		console.error("Error fetching data from D1:", error);
+		// Consider throwing an error or returning a structured error response
 		return {
 			content: {},
 			projects: [],
@@ -96,56 +87,28 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 	actionResult,
 	defaultShouldRevalidate,
 }) => {
-	// DEBUG: Log detailed information about revalidation request
-	const timestamp = new Date().toISOString();
-	console.log("===== SHOULD REVALIDATE =====");
-	console.log(`[shouldRevalidate] Called at ${timestamp}`);
-	console.log(
-		`[shouldRevalidate] Current URL: ${currentUrl.pathname}${currentUrl.search}`,
-	);
-	console.log(
-		`[shouldRevalidate] Next URL: ${nextUrl.pathname}${nextUrl.search}`,
-	);
-	console.log(`[shouldRevalidate] Form Method: ${formMethod || "none"}`);
-	console.log(`[shouldRevalidate] Form Action: ${formAction || "none"}`);
-	console.log(
-		`[shouldRevalidate] Default would revalidate: ${defaultShouldRevalidate}`,
-	);
-
 	// Always revalidate after actions (form submissions)
 	if (formMethod && formMethod !== "GET") {
-		console.log("[shouldRevalidate] Revalidating due to form submission");
 		return true;
 	}
 
 	// Check for our custom cache-busting flag with timestamp value
 	if (nextUrl.searchParams.has("t")) {
-		console.log(
-			"[shouldRevalidate] Cache invalidation triggered via ?t parameter:",
-			nextUrl.searchParams.get("t"),
-		);
 		return true;
 	}
 
 	// Force revalidation if coming from admin path to ensure fresh content
 	const comingFromAdmin = currentUrl.pathname.includes("/admin");
 	if (comingFromAdmin) {
-		console.log(
-			"[shouldRevalidate] Forcing revalidation because navigation is from admin section",
-		);
 		return true;
 	}
 
 	// Ensure full page loads always revalidate
 	const isFullPageLoad = !currentUrl.href || currentUrl.href === "";
 	if (isFullPageLoad) {
-		console.log("[shouldRevalidate] Forcing revalidation for full page load");
 		return true;
 	}
 
-	console.log(
-		`[shouldRevalidate] Using default behavior: ${defaultShouldRevalidate}`,
-	);
 	// Default to internal React Router behavior
 	return defaultShouldRevalidate;
 };

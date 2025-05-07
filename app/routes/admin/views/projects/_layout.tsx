@@ -1,8 +1,8 @@
 import React from "react";
 import { Outlet, useLoaderData } from "react-router";
-import type { LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
 import { getAllProjects } from "~/routes/common/db";
+import type { Route } from "./+types/_layout";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import { AdminErrorBoundary } from "../../components/AdminErrorBoundary";
 import { FadeIn } from "../../components/ui/FadeIn";
@@ -16,7 +16,7 @@ type ProjectsLoaderData = {
 export async function loader({
 	request,
 	context,
-}: LoaderFunctionArgs): Promise<ProjectsLoaderData> {
+}: Route.LoaderArgs): Promise<ProjectsLoaderData> {
 	const unauthorized = () => {
 		return { projects: [], error: "Unauthorized" };
 	};
