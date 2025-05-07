@@ -6,8 +6,8 @@ import type { AppLoadContext } from "react-router";
 
 declare global {
   interface CloudflareEnvironment extends Env {
-    ADMIN_USERNAME?: string;
-    ADMIN_PASSWORD?: string;
+    ADMIN_USERNAME: string; // Must match Env from worker-configuration.d.ts
+    ADMIN_PASSWORD: string; // Must match Env from worker-configuration.d.ts
     ASSETS_BUCKET: R2Bucket; // Assuming ASSETS_BUCKET is always expected
     PUBLIC_R2_URL?: string;
     // JWT_SECRET is already in worker-configuration.d.ts Env

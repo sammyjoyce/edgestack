@@ -2,6 +2,7 @@ import type React from "react";
 import { useState } from "react";
 import {
 	Form,
+	data,
 	redirect,
 	useActionData,
 	// useLoaderData, // Not needed if loader only redirects or returns null
@@ -16,6 +17,9 @@ import {
 import { FadeIn } from "../components/ui/FadeIn";
 // Import generated types from proper path
 import type { Route } from "./+types/login";
+
+// Define a specific type for the data part of the action's return
+type LoginActionData = { success: false; error: string };
 
 // Use generated type without explicit return type annotation
 export const action = async ({ request, context }: Route.ActionArgs) => {
@@ -104,7 +108,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 export default function LoginRoute() {
 	// Use useActionData to get typed action data
-	const actionData = useActionData<typeof action>();
+	const actionData = useActionData<LoginActionData>();
 	const [error, setError] = useState<string | null>(actionData?.error || null);
 
 	// Always use actionData.error if present, else local error

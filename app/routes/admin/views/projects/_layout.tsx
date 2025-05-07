@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, useLoaderData } from "react-router";
+import { Outlet, useLoaderData, redirect, data } from "react-router";
 import type { Project } from "~/database/schema";
 import { getAllProjects } from "~/routes/common/db";
 import type { Route } from "./+types/_layout";

@@ -49,7 +49,7 @@ export async function updateContent(
 		string,
 		string | (Partial<Omit<NewContent, "key">> & { value: string })
 	>,
-): Promise<BatchResponse> { // Correct return type
+): Promise<D1Result<unknown>[]> { // Correct return type for D1 batch
 	const statements: BatchItem<"sqlite">[] = []; // Collect Drizzle statements
 
 	for (const [key, valueOrObj] of Object.entries(updates)) {
@@ -111,8 +111,8 @@ export async function updateContent(
 
 	try {
 		if (statements.length === 0) {
-			// Return an empty BatchResponse if there are no statements to execute
-			return Promise.resolve([] as unknown as BatchResponse);
+			// Return an empty array if there are no statements to execute
+			return Promise.resolve([]);
 		}
 		// db.batch expects a non-empty array of Drizzle statement instances
 		const results = await db.batch(statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]]);

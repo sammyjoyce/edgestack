@@ -1,12 +1,11 @@
-import { Outlet, useLoaderData } from "react-router";
+import { Outlet, useLoaderData, data } from "react-router";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
 // Import generated Route type for type safety
 import type { Route } from "./+types/_layout";
 import Header from "~/routes/common/components/Header";
 import { ProjectsErrorBoundary } from "../components/ProjectsErrorBoundary";
-// Import generated Route type for type safety
-import type { Route } from "./+types/_layout";
+// Removed duplicate import
 
 // Loader with generated type safety
 type ProjectsLayoutLoaderData = {

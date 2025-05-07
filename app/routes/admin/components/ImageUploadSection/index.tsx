@@ -36,14 +36,14 @@ export function ImageUploadSection({
 
 	// One fetcher per field, using the proper return type based on Route type
 	// We define the shape we expect the action to return based on the route's return type
-	type UploadActionReturn = {
-		success: boolean;
+	type UploadActionData = { // Renamed for clarity, matches usage elsewhere
+		success?: boolean; // Made optional to align with potential error states
 		url?: string;
 		key?: string;
 		error?: string;
 		action?: "upload" | "select" | "delete"; // Add action to discriminate fetcher.data
 	};
-	const fetchers = imageFields.map(() => useFetcher<UploadActionReturn>());
+	const fetchers = imageFields.map(() => useFetcher<UploadActionData>());
 	// Create refs for each file input
 	const fileInputRefs = imageFields.map(() => useRef<HTMLInputElement>(null));
 
@@ -51,7 +51,7 @@ export function ImageUploadSection({
 	const makeDropHandler = useCallback(
 		(
 			idx: number,
-			fetcher: ReturnType<typeof useFetcher<UploadActionReturn>>,
+			fetcher: ReturnType<typeof useFetcher<UploadActionData>>,
 			key: string,
 			label: string,
 		) =>
@@ -87,12 +87,12 @@ export function ImageUploadSection({
 				// Check fetcher.data structure based on AdminActionResponse
 				if (fetcher.data?.success) {
 					const inputRef = fileInputRefs[idx].current;
-					if (inputRef && fetcher.data.action === "upload") { // Only clear input on successful upload
+					if (inputRef && fetcher.data?.action === "upload") { // Only clear input on successful upload
 						inputRef.value = "";
 					}
 					setStatusTexts((prev) => {
 						const next = [...prev];
-						next[idx] = `${imageFields[idx].label} ${fetcher.data.action || 'operation'} successful!`;
+						next[idx] = `${imageFields[idx].label} ${fetcher.data?.action || 'operation'} successful!`;
 						return next;
 					});
 				} else if (fetcher.data?.error) {
