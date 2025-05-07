@@ -20,23 +20,20 @@ export async function seedDatabase(d1: D1Database) { // Changed parameter name f
   
   console.log("🌱 Starting database seed...");
 
-  // Check if content already exists to avoid duplication
-  const existingContent = await drizzleDb.select().from(schema.content).all();
-  if (existingContent.length > 0) {
-    console.log(`Found ${existingContent.length} existing content items. Skipping content seed.`);
-  } else {
-    console.log("Seeding content...");
-    await seedContent(drizzleDb);
-  }
+  // Wipe existing data
+  console.log("Wiping existing data...");
+  await drizzleDb.delete(schema.content).run();
+  await drizzleDb.delete(schema.projects).run();
+  await drizzleDb.delete(schema.media).run();
+  console.log("Data wiped.");
 
-  // Check if projects already exist to avoid duplication
-  const existingProjects = await drizzleDb.select().from(schema.projects).all();
-  if (existingProjects.length > 0) {
-    console.log(`Found ${existingProjects.length} existing projects. Skipping projects seed.`);
-  } else {
-    console.log("Seeding projects...");
-    await seedProjects(drizzleDb);
-  }
+  // Seed content
+  console.log("Seeding content...");
+  await seedContent(drizzleDb);
+
+  // Seed projects
+  console.log("Seeding projects...");
+  await seedProjects(drizzleDb);
 
   console.log("✅ Database seed completed successfully!");
 }
