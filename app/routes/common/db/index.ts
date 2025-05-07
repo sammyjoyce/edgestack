@@ -55,11 +55,8 @@ export async function getAllContent(
 }
 
 /**
- * Update or insert content values (upsert).
- * Accepts either:
- *   { key1: "plain-value" }
- *   { key2: { value: "value", page: "home", section: "hero", type: "text", mediaId: 3 } }
- * so admin UIs can gradually move to the richer payload.
+ * Update or insert content values (upsert) - DIAGNOSTIC V2.
+ * This version does a SELECT first, then UPDATE or INSERT as needed.
  */
 export async function updateContent(
 	db: DrizzleD1Database<typeof schema>,
@@ -68,57 +65,66 @@ export async function updateContent(
 		string | (Partial<Omit<NewContent, "key">> & { value: string })
 	>,
 ): Promise<D1Result<unknown>[]> {
-	// DEBUG: Log content updates with timestamp
 	console.log(
-		"[Content Update] Content update requested at:",
+		"[Content Update - DIAGNOSTIC V2] Content update requested at:",
 		new Date().toISOString(),
 	);
 	console.log(
-		"[Content Update] Keys to update:",
+		"[Content Update - DIAGNOSTIC V2] Keys to update:",
 		Object.keys(updates).join(", "),
 	);
 
-	// DEBUG: Log all update values in detail
-	Object.entries(updates).forEach(([key, value]) => {
-		const valueToStore = typeof value === "string" ? value : value.value;
+	const promises = Object.entries(updates).map(async ([key, raw]) => {
+		const dataToSet = typeof raw === "string" ? { value: raw } : raw;
+		// Ensure 'value' is always present in dataToSet for the update/insert
+		if (typeof dataToSet.value !== 'string') {
+			console.error(`[Content Update - DIAGNOSTIC V2] Invalid data for key ${key}: 'value' is missing or not a string.`);
+			// Return a D1Result-like object indicating failure for this specific key
+			return { success: false, meta: { error: `Invalid data for key ${key}` }, error: `Invalid data for key ${key}` } as unknown as D1Result<unknown>;
+		}
+
 		console.log(
-			`[Content Update] Key: ${key}, Value to store: "${valueToStore}"`,
+			`[Content Update - DIAGNOSTIC V2] Processing key: ${key}, value: "${dataToSet.value}"`,
 		);
 
-		// Special focus on hero_title
-		if (key === "hero_title") {
-			console.log("[Content Update] *** HERO TITLE UPDATE DETECTED ***");
-			console.log(
-				`[Content Update] Updating hero_title to: "${valueToStore}" (type: ${typeof valueToStore})`,
-			);
+		const existing = await db
+			.select({ value: schema.content.value }) // Only select necessary field
+			.from(schema.content)
+			.where(eq(schema.content.key, key))
+			.get();
+
+		if (existing) {
+			console.log(`[Content Update - DIAGNOSTIC V2] Updating existing key: ${key}`);
+			return db
+				.update(schema.content)
+				.set({ ...dataToSet, updatedAt: new Date() })
+				.where(eq(schema.content.key, key))
+				.run();
 		}
+		
+		console.log(`[Content Update - DIAGNOSTIC V2] Inserting new key: ${key}`);
+		// Ensure all required fields for insert are present, or have defaults in schema
+		const insertValue: typeof schema.content.$inferInsert = {
+			key,
+			value: dataToSet.value, // Explicitly use value from dataToSet
+			page: dataToSet.page,
+			section: dataToSet.section,
+			type: dataToSet.type, // Will use schema default if undefined
+			mediaId: dataToSet.mediaId,
+			sortOrder: dataToSet.sortOrder, // Will use schema default if undefined
+			// createdAt is handled by schema default
+			updatedAt: new Date(),
+		};
+		return db.insert(schema.content).values(insertValue).run();
 	});
 
-	const promises = Object.entries(updates).map(async ([key, raw]) => {
-		const data = typeof raw === "string" ? ({ value: raw } as const) : raw;
+	const results = await Promise.all(promises);
 
-		const insertValue: typeof schema.content.$inferInsert = { key, ...data };
-		// Execute each query individually using .run() for D1 insert/update
-		return db
-			.insert(schema.content)
-			.values(insertValue)
-			.onConflictDoUpdate({
-				target: schema.content.key,
-				set: { ...data, updatedAt: new Date() },
-			})
-			.run();
-	});
-
-	const result = await Promise.all(promises);
-
-	// DEBUG: Log update results
 	console.log(
-		"[Content Update] Update completed, affected",
-		result.length, // This will be the number of operations attempted
-		"records. Individual results:", result,
+		"[Content Update - DIAGNOSTIC V2] All operations completed. Results:",
+		results,
 	);
-
-	return result;
+	return results;
 }
 
 // --- Project CRUD Functions ---
