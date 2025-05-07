@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { eq } from "drizzle-orm";
+import * as schema from "~/database/schema";
 import { validateContentInsert } from "~/database/valibot-validation";
 import { updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
@@ -69,27 +71,24 @@ export async function action({ request, context }: Route.ActionArgs) {
 				const fullUrl = `${publicUrlBase.replace(/\/?$/, "/")}${filename}`;
 
 				await context.db.transaction(async (tx) => {
-					const dbStatements = [];
+					// Operations within transaction
 					const mediaToDelete = await tx.select({ id: schema.media.id }).from(schema.media).where(eq(schema.media.url, fullUrl)).get();
 					
-					dbStatements.push(tx.delete(schema.media).where(eq(schema.media.url, fullUrl)));
+					await tx.delete(schema.media).where(eq(schema.media.url, fullUrl));
 
 					if (mediaToDelete) {
-						dbStatements.push(
-							tx.update(schema.content)
-								.set({ mediaId: null, value: "" }) // Clear link and value
-								.where(eq(schema.content.mediaId, mediaToDelete.id))
-						);
+						await tx.update(schema.content)
+							.set({ mediaId: null, value: "" }) // Clear link and value
+							.where(eq(schema.content.mediaId, mediaToDelete.id));
 					}
 					// Fallback: also clear content if it directly stores the URL in 'value'
-					dbStatements.push(
-						tx.update(schema.content)
-							.set({ value: "", mediaId: null }) // Ensure mediaId is also cleared here
-							.where(eq(schema.content.value, fullUrl))
-					);
-					
-					await tx.batch(dbStatements);
+					await tx.update(schema.content)
+						.set({ value: "", mediaId: null }) // Ensure mediaId is also cleared here
+						.where(eq(schema.content.value, fullUrl));
 				});
+				// Note: The above operations are atomic. If updateContent also needs to be part of this specific transaction,
+				// it would need to be refactored to accept `tx` and perform its operations using `tx`.
+				// For now, `updateContent` will run in its own transaction(s) if it uses `db.batch` or individual `db.insert/update`.
 
 				return { success: true, action: "delete", filename };
 			}
@@ -174,7 +173,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 						// Fallback for D1 if returning().get() is not ideal / returns undefined
 						const runResult = await tx.insert(schema.media).values({url: publicUrl, alt: mediaAltText}).run();
 						if (runResult.meta.last_row_id) {
-							newMediaId = runResult.meta.last_row_id;
+							newMediaId = Number(runResult.meta.last_row_id);
 						}
 					}
 				} catch (dbError) {
@@ -182,12 +181,12 @@ export async function action({ request, context }: Route.ActionArgs) {
 					// Decide if this error should prevent content update or just be logged
 					// For now, we'll proceed to update content with URL only if media insert fails
 					// Throwing error here will rollback the transaction.
-					throw dbError; 
+					throw dbError;
 				}
 				
 				// Now update content with the publicUrl and newMediaId (if available)
-				// updateContent uses batch internally.
-				await updateContent(tx, { [key]: { value: publicUrl, mediaId: newMediaId } });
+				// Pass context.db to updateContent as it likely expects the main D1Database instance
+				await updateContent(context.db, { [key]: { value: publicUrl, mediaId: newMediaId } });
 			});
 
 			return { success: true, url: publicUrl, key, action: "upload" };

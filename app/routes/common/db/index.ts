@@ -1,5 +1,7 @@
 import { asc, desc, eq, sql } from "drizzle-orm";
-import type { DrizzleD1Database, D1Result } from "drizzle-orm/d1";
+import type { DrizzleD1Database } from "drizzle-orm/d1";
+import type { BatchItem, BatchResponse } from "drizzle-orm/batch";
+import type { D1Result } from "@cloudflare/workers-types";
 import type { NewContent, NewProject, Project } from "~/database/schema";
 import * as schema from "~/database/schema";
 import { validateProjectUpdate, validateContentUpdate } from "~/database/valibot-validation";
@@ -16,7 +18,7 @@ export async function getAllContent(
 		
 		const contentMap: Record<string, string> = {};
 		for (const row of rows) {
-			contentMap[row.key] = row.value; 
+			contentMap[row.key] = String(row.value ?? ""); 
 		}
 		return contentMap;
 
