@@ -24,7 +24,11 @@ export default defineConfig({
   plugins: [
     cloudflare({ viteEnvironment: { name: "ssr" } }),
     tailwindcss(),
-    reactRouter(),
+    reactRouter({
+      appDirectory: false, // Explicitly disable file-system routing via plugin
+      // Another attempt: tell it where the routes config is, maybe it stops scanning elsewhere
+      // routesConfig: "./app/routes.ts", 
+    }),
     tsconfigPaths(),
   ],
 });
