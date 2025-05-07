@@ -9,7 +9,7 @@
 		"preview": "bun run build && vite preview",
 		"deploy": "bun run build && wrangler deploy",
 		"db:generate": "dotenv -- drizzle-kit generate",
-		"db:reset-local": "rm -f .wrangler/state/v3/d1/89bb8c60-84fb-4f13-9320-e5cf623f4963/db.sqlite && mkdir -p .wrangler/state/v3/d1/89bb8c60-84fb-4f13-9320-e5cf623f4963",
+		"db:reset-local": "rm -rf .wrangler/state/v3/d1/89bb8c60-84fb-4f13-9320-e5cf623f4963 && mkdir -p .wrangler/state/v3/d1/89bb8c60-84fb-4f13-9320-e5cf623f4963",
 		"db:migrate": "bun run db:reset-local && wrangler d1 migrations apply lush-content-db --local",
 		"db:migrate-production": "dotenv -- drizzle-kit migrate",
 		"db:seed-remote": "bun run ./scripts/run-seed.ts",
