@@ -7,8 +7,7 @@ import { ProjectImageSelector } from "~/routes/admin/components/ProjectImageSele
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
-// Import generated types from the .react-router directory
-import type { Route } from "../../../../../../.react-router/types/app/routes/admin/routes/projects/[projectId]/+types/edit";
+import type { Route } from "./+types/edit";
 import { Button } from "../../../components/ui/Button";
 import { FadeIn } from "../../../components/ui/FadeIn";
 

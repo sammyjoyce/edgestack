@@ -1,7 +1,7 @@
 import React, { type JSX } from "react"; // Added React import for JSX
 // admin.route.tsx
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { json, redirect, useLoaderData } from "react-router-dom";
+import { json, redirect, useLoaderData } from "react-router";
 import { validateContentInsert } from "~/database/valibot-validation";
 import { getAllContent, updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";

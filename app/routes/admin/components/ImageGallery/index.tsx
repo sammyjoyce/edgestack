@@ -4,8 +4,7 @@ import { Drawer } from "vaul";
 import { Button } from "~/routes/common/components/ui/Button";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import type { StoredImage } from "~/utils/upload.server";
-import type { Route } from "../../../../../.react-router/types/app/routes/admin/routes/+types/upload";
-import type { action, loader } from "../../routes/upload";
+import type { action as uploadRouteAction, loader as uploadRouteLoader } from "~/routes/admin/views/upload";
 
 interface ImageGalleryProps {
 	onSelectImage?: (image: StoredImage) => void;
@@ -13,8 +12,8 @@ interface ImageGalleryProps {
 }
 
 export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
-	const { images = [] } = useLoaderData<typeof loader>();
-	const fetcher = useFetcher<typeof action>();
+	const { images = [] } = useLoaderData<typeof uploadRouteLoader>();
+	const fetcher = useFetcher<typeof uploadRouteAction>();
 	const [selectedImage, setSelectedImage] = useState<StoredImage | null>(null);
 
 	// Format the date for display
@@ -85,7 +84,7 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 					</div>
 
 					<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-						{images.map((image) => (
+						{images.map((image: StoredImage) => (
 							<FadeIn key={image.name}>
 								<div className="relative group overflow-hidden border border-gray-200 rounded-lg">
 									<img

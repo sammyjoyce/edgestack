@@ -8,8 +8,7 @@ import {
 	handleImageUpload,
 	listStoredImages,
 } from "~/utils/upload.server";
-// Import the properly generated types
-import type { Route } from "../../../../.react-router/types/app/routes/admin/routes/+types/upload";
+import type { Route } from "./+types/upload";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
 import { FadeIn } from "../components/ui/FadeIn";

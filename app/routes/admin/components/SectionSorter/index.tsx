@@ -17,7 +17,7 @@ import { CSS } from "@dnd-kit/utilities";
 import React, { useEffect, useState, useCallback } from "react";
 import type { FetcherWithComponents } from "react-router";
 // Import the specific action type
-import type { action as adminIndexAction } from "~/routes/admin/routes/index";
+import type { action as adminIndexAction } from "~/routes/admin/views/index";
 
 type Section = { id: string; label: string };
 

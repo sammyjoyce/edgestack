@@ -3,7 +3,7 @@ import type { FetcherWithComponents } from "react-router";
 
 import RichTextField from "~/routes/admin/components/RichTextField";
 // Import the specific action type
-import type { action as adminIndexAction } from "~/routes/admin/routes/index";
+import type { action as adminIndexAction } from "~/routes/admin/views/index";
 
 interface ContactSectionEditorProps {
 	fetcher: FetcherWithComponents<typeof adminIndexAction>; // Use inferred type

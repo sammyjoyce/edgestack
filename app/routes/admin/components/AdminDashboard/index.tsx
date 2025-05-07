@@ -15,9 +15,9 @@ import type { loader as adminIndexLoader } from "~/routes/admin/routes/index";
 
 import { Button } from "~/routes/admin/components/ui/Button";
 // UI primitives
-import { Container } from "~/routes/admin/components/ui/Container";
+import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
-import { SectionIntro } from "~/routes/admin/components/ui/SectionIntro";
+import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 import { Tabs } from "~/routes/common/components/ui/Tabs"; // Import Tabs component
 
 import { AboutSectionEditor } from "~/routes/admin/components/AboutSectionEditor";
@@ -28,13 +28,17 @@ import { ImageUploadSection } from "~/routes/admin/components/ImageUploadSection
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { ServicesSectionEditor } from "~/routes/admin/components/ServicesSectionEditor";
 
-// Helper functionality moved to util function if needed
+interface AdminDashboardProps {
+	initialContent: Record<string, string> | undefined;
+}
 
-export default function AdminDashboard(): React.JSX.Element {
+export default function AdminDashboard({ initialContent }: AdminDashboardProps): React.JSX.Element {
 	// Use type inference with the imported loader type
 	const loaderData = useLoaderData<typeof adminIndexLoader>();
-	// Access content safely with proper typing
-	const content = loaderData?.content as Record<string, string> | undefined;
+	// Use initialContent prop if provided, otherwise fallback to loaderData
+	const content = initialContent || (loaderData?.content as Record<string, string> | undefined);
+
+	// ... rest of the component remains unchanged ...
 
 	// Define the shape that we know is returned by the actions
 	type ActionData = {

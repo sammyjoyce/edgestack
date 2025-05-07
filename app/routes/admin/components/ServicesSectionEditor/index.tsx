@@ -4,8 +4,8 @@ import type { FetcherWithComponents } from "react-router";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField"; // Import RichTextField
 // Import the specific action types
-import type { action as adminIndexAction } from "~/routes/admin/routes/index";
-import type { action as adminUploadAction } from "~/routes/admin/routes/upload";
+import type { action as adminIndexAction } from "~/routes/admin/views/index";
+import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 
 interface ServiceField {
 	titleKey: string;

@@ -93,7 +93,6 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 	formAction,
 	formData,
 	formEncType,
-	jsonData,
 	actionResult,
 	defaultShouldRevalidate,
 }) => {

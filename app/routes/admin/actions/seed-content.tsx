@@ -1,6 +1,6 @@
 // app/routes/admin/actions/seed-content.tsx
 import type { ActionFunctionArgs } from "react-router";
-import { json, redirect } from "react-router-dom";
+import { json, redirect } from "react-router";
 import { getAllContent, updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 
