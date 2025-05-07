@@ -38,25 +38,21 @@ export async function loader({ context }: Route.LoaderArgs) {
 			getFeaturedProjects(context.db),
 		]);
 		return { content, projects };
-	} catch (error) {
+	} catch (error: any) {
 		console.error("Error fetching data from D1:", error);
-		// Consider throwing an error or returning a structured error response
-		return {
-			content: {} as Record<string, string>,
-			projects: [] as Project[],
-			error: "Failed to load home page data",
-		};
+		// Throw an error response to be caught by the ErrorBoundary
+		throw data(
+			{ message: error.message || "Failed to load home page data" },
+			{ status: 500 },
+		);
 	}
 }
 
 export default function HomeRoute(): JSX.Element {
 	// Use type inference for useLoaderData
-	const { content, projects, error } = useLoaderData<typeof loader>();
+	// Error case is now handled by ErrorBoundary if loader throws
+	const { content, projects } = useLoaderData<typeof loader>();
 
-	if (error) {
-		// Handle error display
-		return <div>Error loading home page: {error}</div>;
-	}
 	// Type assert content to have string keys and values
 	const typedContent = content as Record<string, string>;
 

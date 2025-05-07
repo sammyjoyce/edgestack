@@ -120,9 +120,17 @@ export async function action({
 			sortOrder,
 		};
 
-		// Basic validation - since validateProjectUpdate is not found
+		// Validate project data before updating
+		try {
+			validateProjectUpdate(projectData);
+		} catch (validationError: any) {
+			console.error("Project validation failed:", validationError);
+			// Consider extracting Valibot error messages like in new.tsx if desired
+			return data({ success: false, error: validationError.message || "Validation failed" }, { status: 400 });
+		}
+
 		if (!title.trim()) {
-			return {
+			return data({
 				success: false,
 				error: "Title is required",
 			} as const;
