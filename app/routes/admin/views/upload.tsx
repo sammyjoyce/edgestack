@@ -115,10 +115,33 @@ export async function action({ request, context }: Route.ActionArgs) {
 					};
 				}
 				
-				// updateContent uses batch internally, so a separate transaction here is fine.
+				// updateContent uses batch internally. To ensure atomicity with media selection,
+				// we perform the content update within the same transaction.
 				await context.db.transaction(async (tx) => {
-					const mediaRecord = await tx.select({ id: schema.media.id }).from(schema.media).where(eq(schema.media.url, imageUrl)).get();
-					await updateContent(tx, { [key]: { value: imageUrl, mediaId: mediaRecord?.id ?? null } });
+					const mediaRecord = await tx
+						.select({ id: schema.media.id })
+						.from(schema.media)
+						.where(eq(schema.media.url, imageUrl))
+						.get();
+
+					const contentKeyVal = {
+						key,
+						value: imageUrl,
+						mediaId: mediaRecord?.id ?? null,
+					};
+					validateContentInsert(contentKeyVal); // Validate before db operation
+
+					await tx
+						.insert(schema.content)
+						.values(contentKeyVal)
+						.onConflictDoUpdate({
+							target: schema.content.key,
+							set: {
+								value: imageUrl,
+								mediaId: mediaRecord?.id ?? null,
+								updatedAt: new Date(),
+							},
+						});
 				});
 				return { success: true, url: imageUrl, key, action: "select" };
 			}
@@ -181,12 +204,29 @@ export async function action({ request, context }: Route.ActionArgs) {
 					// Decide if this error should prevent content update or just be logged
 					// For now, we'll proceed to update content with URL only if media insert fails
 					// Throwing error here will rollback the transaction.
-					throw dbError; 
+					throw dbError;
 				}
-				
+
 				// Now update content with the publicUrl and newMediaId (if available)
-				// updateContent uses batch internally, which should be called on the main db instance, not a transaction tx.
-				await updateContent(context.db, { [key]: { value: publicUrl, mediaId: newMediaId } });
+				// Perform content update within the same transaction for atomicity.
+				const contentKeyVal = {
+					key,
+					value: publicUrl,
+					mediaId: newMediaId,
+				};
+				validateContentInsert(contentKeyVal); // Validate before db operation
+
+				await tx
+					.insert(schema.content)
+					.values(contentKeyVal)
+					.onConflictDoUpdate({
+						target: schema.content.key,
+						set: {
+							value: publicUrl,
+							mediaId: newMediaId,
+							updatedAt: new Date(),
+						},
+					});
 			});
 
 			return { success: true, url: publicUrl, key, action: "upload" };

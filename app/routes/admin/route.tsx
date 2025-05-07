@@ -38,11 +38,11 @@ const navigation: NavItem[] = [
 	{ name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
 
-function classNames(
-	...classes: Array<string | boolean | null | undefined>
-): string {
-	return classes.filter(Boolean).join(" ");
-}
+// Using clsx which is available in the project (via cn utility in Button)
+// or install directly if not. For now, assuming it can be imported.
+// If not, the original classNames function is fine.
+// For this change, I'll assume clsx is preferred for consistency.
+import clsx from "clsx";
 
 export function Component() {
 	return (
@@ -72,7 +72,7 @@ export function Component() {
 												href={item.href as string} // Cast to string
 												target="_blank"
 												rel="noopener noreferrer"
-												className={classNames(
+												className={clsx(
 													"text-gray-400 hover:bg-gray-700 hover:text-white",
 													"group flex gap-x-3 rounded-md p-2 text-sm font-medium",
 												)}
@@ -89,7 +89,7 @@ export function Component() {
 												to={item.href as To} // Cast to To
 												end={item.href === "/admin"}
 												className={({ isActive }) =>
-													classNames(
+													clsx(
 														isActive
 															? "bg-gray-700 text-white" // Slightly lighter active bg
 															: "text-gray-400 hover:bg-gray-700 hover:text-white",

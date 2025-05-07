@@ -76,11 +76,8 @@ const navigation: NavItem[] = [
 	{ name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
 
-function classNames(
-	...classes: Array<string | boolean | null | undefined>
-): string {
-	return classes.filter(Boolean).join(" ");
-}
+// Using clsx for consistency
+import clsx from "clsx";
 
 export function Component() {
 	return (
@@ -109,7 +106,7 @@ export function Component() {
 												href={item.href.toString()}
 												target="_blank"
 												rel="noopener noreferrer"
-												className={classNames(
+												className={clsx(
 													"text-gray-400 hover:bg-gray-700 hover:text-white",
 													"group flex gap-x-3 rounded-md p-2 text-sm font-medium",
 												)}
@@ -126,7 +123,7 @@ export function Component() {
 												to={item.href as To} // Cast to To for NavLink
 												end={item.href === "/admin"} // Keep end prop for dashboard
 												className={({ isActive }) =>
-													classNames(
+													clsx(
 														isActive
 															? "bg-gray-700 text-white"
 															: "text-gray-400 hover:bg-gray-700 hover:text-white",
