@@ -34,6 +34,11 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 	});
 }
 
+// TEMPORARY: Dummy loader for build debugging
+export async function dummyAdminLoader() {
+  return { message: "dummy loader for admin index" };
+}
+
 /* ---------------- ACTION ---------------- */
 export async function action({ request, context }: ActionFunctionArgs) {
 	const token = getSessionCookie(request);
