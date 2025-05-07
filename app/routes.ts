@@ -1,12 +1,7 @@
-import {
-  flatRoutes,
-} from "@react-router/fs-routes";
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 // Define routes using the new architecture with module-by-route pattern
 export default [
-  ...(await flatRoutes({ appDirectory: "app/non-existent-directory" })),
-
 	// Home routes
 	route("", "routes/home/views/_layout.tsx", [
 		index("routes/home/views/index.tsx"),
