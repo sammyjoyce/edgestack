@@ -23,16 +23,16 @@ export async function getAllContent(
 			if (typeof row.value === 'string') {
 				contentMap[row.key] = row.value;
 			} else if (row.value !== null && row.value !== undefined) {
-				// For non-string JSON types (numbers, booleans) that are simple, String() is okay.
-				// For objects/arrays, this might not be the desired string representation.
-				if (typeof row.value === 'object') {
-					// This warning helps identify if complex objects are being unexpectedly stringified.
-					console.warn(`[db/getAllContent] Content value for key '${row.key}' is an object/array and will be coerced to string. Review if this is intended. Value: ${JSON.stringify(row.value)}`);
+				// For complex JSON types (objects/arrays), stringify them.
+				// For simple types (numbers, booleans), String() conversion is fine.
+				if (typeof row.value === 'object' || Array.isArray(row.value)) {
+					contentMap[row.key] = JSON.stringify(row.value);
+				} else {
+					contentMap[row.key] = String(row.value);
 				}
-				contentMap[row.key] = String(row.value);
 			} else {
 				// Handle null or undefined parsed JSON value, defaulting to empty string.
-				contentMap[row.key] = ""; 
+				contentMap[row.key] = "";
 			}
 		}
 		return contentMap;
@@ -73,7 +73,7 @@ export async function updateContent(
 		const sortOrder = dataToSet.sortOrder ?? undefined;
 		const mediaId = dataToSet.mediaId ?? null;
 		const metadata = typeof dataToSet.metadata === "string" ? dataToSet.metadata : null;
-		const currentTimestamp = new Date();
+		// const currentTimestamp = new Date(); // Rely on $onUpdate for updatedAt
 
 		const valuesPayload: schema.NewContent = {
 			key,
@@ -86,9 +86,9 @@ export async function updateContent(
 			metadata,
 		};
 
-		const setDataPayload: Partial<schema.Content> = {
+		const setDataPayload: Partial<Omit<schema.Content, "updatedAt">> = { // Omit updatedAt
 			value,
-			updatedAt: currentTimestamp,
+			// updatedAt: currentTimestamp, // Rely on $onUpdate
 		};
 		if (page !== undefined) setDataPayload.page = page;
 		if (section !== undefined) setDataPayload.section = section;
@@ -163,12 +163,11 @@ export async function createProject(
 	db: DrizzleD1Database<typeof schema>,
 	projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">,
 ): Promise<Project> {
-	const dataWithDefaults: NewProject = {
+	const dataWithDefaults: Omit<NewProject, "id" | "createdAt" | "updatedAt"> = {
 		...projectData,
 		isFeatured: projectData.isFeatured ?? false,
 		sortOrder: projectData.sortOrder ?? 0,
-		createdAt: new Date(),
-		updatedAt: new Date(),
+		// createdAt and updatedAt will be handled by Drizzle/DB defaults or $onUpdate
 	};
 	const result = await db
 		.insert(schema.projects)
@@ -186,15 +185,15 @@ export async function updateProject(
 	// Validate project data before updating
 	validateProjectUpdate(projectData);
 
-	const dataWithTimestamp = {
+	const dataToUpdate: Partial<Omit<NewProject, "id" | "createdAt" |"updatedAt">> = {
 		...projectData,
 		isFeatured: projectData.isFeatured, // Ensure boolean values are handled if undefined
 		sortOrder: projectData.sortOrder,
-		updatedAt: new Date(),
+		// updatedAt will be handled by Drizzle/DB $onUpdate
 	};
 	const result = await db
 		.update(schema.projects)
-		.set(dataWithTimestamp)
+		.set(dataToUpdate)
 		.where(eq(schema.projects.id, id))
 		.returning()
 		.get();
