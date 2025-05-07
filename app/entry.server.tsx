@@ -1,3 +1,4 @@
+import React from "react"; // Import React
 import { isbot } from "isbot";
 import { renderToReadableStream } from "react-dom/server";
 import type { AppLoadContext, EntryContext } from "react-router";

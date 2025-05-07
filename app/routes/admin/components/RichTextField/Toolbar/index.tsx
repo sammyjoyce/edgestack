@@ -6,6 +6,7 @@ import {
 	Bars3Icon,
 	BarsArrowDownIcon,
 } from "@heroicons/react/20/solid";
+import React, { type JSX, type ReactNode, useCallback, useEffect, useState } from "react"; // Import React and types
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
 import clsx from "clsx";

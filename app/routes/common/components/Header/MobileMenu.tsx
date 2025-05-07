@@ -1,7 +1,7 @@
+import React, { type JSX, type MouseEvent } from "react"; // Import React
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
-import type { JSX, MouseEvent } from "react";
 import { NavLink } from "react-router";
 import type { MenuItem } from ".";
 import { Button } from "../ui/Button";

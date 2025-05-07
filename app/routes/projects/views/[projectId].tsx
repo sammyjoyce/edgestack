@@ -34,10 +34,9 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 
 export function ProjectDetailRoute() {
 	// Use type inference with the loader function
-	// Error and !project cases are now handled by ErrorBoundary if loader throws
 	const { project } = useLoaderData<typeof loader>();
 
-	// The loader now guarantees that 'project' is available if no error was thrown.
+	// The loader guarantees that 'project' is available if no error was thrown.
 	// Error cases (including not found) are handled by the ErrorBoundary.
 	return (
 		<div className="py-16 bg-white">

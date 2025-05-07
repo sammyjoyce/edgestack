@@ -1,3 +1,4 @@
+import React from "react"; // Import React
 import { Outlet, useLoaderData, type ShouldRevalidateFunction } from "react-router";
 // Still need the Project type for internal typing
 import type { Project } from "~/database/schema";
