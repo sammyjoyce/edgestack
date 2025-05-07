@@ -2,6 +2,7 @@ import { asc, desc, eq, sql } from "drizzle-orm";
 import type { DrizzleD1Database, D1Result } from "drizzle-orm/d1";
 import type { NewContent, NewProject, Project } from "~/database/schema";
 import * as schema from "~/database/schema";
+import { validateProjectUpdate, validateContentUpdate } from "~/database/valibot-validation";
 
 // DIAGNOSTIC V4: Use Drizzle's sql template tag for direct interaction
 export async function getAllContent(
@@ -74,8 +75,9 @@ export async function updateContent(
 		}
 
 		const value = dataToSet.value;
-		const page = dataToSet.page ?? null;
-		const section = dataToSet.section ?? null;
+		// Ensure page, section, type are strings or null for SQL query
+		const page = typeof dataToSet.page === 'string' ? dataToSet.page : null;
+		const section = typeof dataToSet.section === 'string' ? dataToSet.section : null;
 		const type = dataToSet.type ?? "text";
 		const sortOrder = dataToSet.sortOrder ?? 0;
 		const mediaId = dataToSet.mediaId ?? null;
@@ -86,6 +88,8 @@ export async function updateContent(
 		const operationExecutionPromise = existingRowPromise.then(async (existingRow) => {
 			let operationPromise: Promise<D1Result<unknown>>;
 			if (existingRow) {
+				// Validate before updating existing content
+				validateContentUpdate(dataToSet);
 				console.log(
 					`[Content Update - DIAGNOSTIC V4] Updating existing key '${key}' to value: '${value}' at ${new Date().toISOString()}`,
 				);
@@ -93,6 +97,7 @@ export async function updateContent(
 					sql`UPDATE content SET value = ${value}, page = ${page}, section = ${section}, type = ${type}, sortOrder = ${sortOrder}, mediaId = ${mediaId}, updatedAt = ${updatedAt} WHERE key = ${key}`
 				);
 			} else {
+				// For new content, existing validation (validateContentInsert) should be handled by the caller
 				console.log(
 					`[Content Update - DIAGNOSTIC V4] Inserting new key '${key}' with value: '${value}' at ${new Date().toISOString()}`,
 				);
@@ -182,9 +187,12 @@ export async function updateProject(
 	id: number,
 	projectData: Partial<Omit<NewProject, "id" | "createdAt">>,
 ): Promise<Project | undefined> {
+	// Validate project data before updating
+	validateProjectUpdate(projectData);
+
 	const dataWithTimestamp = {
 		...projectData,
-		isFeatured: projectData.isFeatured,
+		isFeatured: projectData.isFeatured, // Ensure boolean values are handled if undefined
 		sortOrder: projectData.sortOrder,
 		updatedAt: new Date(),
 	};
