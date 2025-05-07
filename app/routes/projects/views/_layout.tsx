@@ -1,7 +1,8 @@
 import { Outlet, useLoaderData } from "react-router";
-import type { LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
+// Import generated Route type for type safety
+import type { Route } from "./+types/_layout";
 import Header from "~/routes/common/components/Header";
 import { ProjectsErrorBoundary } from "../components/ProjectsErrorBoundary";
 // Import generated Route type for type safety
@@ -16,7 +17,7 @@ type ProjectsLayoutLoaderData = {
 
 export const loader = async ({
 	context,
-}: LoaderFunctionArgs): Promise<ProjectsLayoutLoaderData> => {
+}: Route.LoaderArgs): Promise<ProjectsLayoutLoaderData> => {
 	try {
 		const { getAllContent, getAllProjects } =
 			await import("~/routes/common/db");

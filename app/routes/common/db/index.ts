@@ -8,43 +8,24 @@ import { validateProjectUpdate, validateContentUpdate } from "~/database/valibot
 export async function getAllContent(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Record<string, string>> {
-	const functionTimestamp = new Date().toISOString();
-	console.log(
-		`[Content Retrieval - DIAGNOSTIC V4] Fetching all content rows via Drizzle query builder at: ${functionTimestamp}`,
-	);
-
 	try {
 		const rows = await db
 			.select({ key: schema.content.key, value: schema.content.value })
 			.from(schema.content)
 			.all();
 		
-		console.log(
-			`[Content Retrieval - DIAGNOSTIC V4] Retrieved ${rows.length} rows from content table at ${new Date().toISOString()}.`,
-		);
-		if (rows.length > 0) {
-			console.log("[Content Retrieval - DIAGNOSTIC V4] First row:", JSON.stringify(rows[0]));
-		}
-
 		const contentMap: Record<string, string> = {};
 		for (const row of rows) {
-			// schema.content.value is NOT NULL, so row.value should not be null.
-			// If it were nullable, `row.value === null ? "" : row.value` would be appropriate.
 			contentMap[row.key] = row.value; 
 		}
-		console.log(
-			`[Content Retrieval - DIAGNOSTIC V4] Mapped ${Object.keys(contentMap).length} keys at ${new Date().toISOString()}:`,
-			Object.keys(contentMap),
-		);
 		return contentMap;
 
 	} catch (error) {
-		console.error(`[Content Retrieval - DIAGNOSTIC V4] Error fetching content at ${new Date().toISOString()}:`, error);
+		console.error(`Error fetching content:`, error);
 		return {};
 	}
 }
 
-// DIAGNOSTIC V4: Use Drizzle's sql template tag for direct interaction
 export async function updateContent(
 	db: DrizzleD1Database<typeof schema>,
 	updates: Record<
@@ -52,14 +33,6 @@ export async function updateContent(
 		string | (Partial<Omit<NewContent, "key">> & { value: string })
 	>,
 ): Promise<D1Result<unknown>[]> {
-	const functionTimestamp = new Date().toISOString();
-	console.log(
-		`[Content Update - DIAGNOSTIC V4] Content update requested at: ${functionTimestamp}`,
-	);
-	console.log(
-		`[Content Update - DIAGNOSTIC V4] Received updates (for context only): ${Object.keys(updates).join(", ")}`,
-	);
-
 	const promises: Promise<D1Result<unknown>>[] = [];
 
 	for (const [key, valueOrObj] of Object.entries(updates)) {
@@ -70,7 +43,7 @@ export async function updateContent(
 
 		if (typeof dataToSet.value !== "string") {
 			console.warn(
-				`[Content Update - DIAGNOSTIC V4] Skipping key '${key}' because value is not a string. Value: ${JSON.stringify(dataToSet.value)}`,
+				`Skipping content update for key '${key}' because value is not a string. Value: ${JSON.stringify(dataToSet.value)}`,
 			);
 			const skippedResult: D1Result<unknown> = { success: false, meta: { error: `Value for key ${key} not a string` } as any, error: `Value for key ${key} not a string` };
 			promises.push(Promise.resolve(skippedResult));
@@ -78,15 +51,14 @@ export async function updateContent(
 		}
 
 		const value = dataToSet.value;
-		const page = typeof dataToSet.page === "string" ? dataToSet.page : undefined; // Let Drizzle handle schema default
-		const section = typeof dataToSet.section === "string" ? dataToSet.section : undefined; // Let Drizzle handle schema default
-		const type = dataToSet.type ?? undefined; // Let Drizzle handle schema default
-		const sortOrder = dataToSet.sortOrder ?? undefined; // Let Drizzle handle schema default
-		const mediaId = dataToSet.mediaId ?? null; // Explicitly null if not provided
+		const page = typeof dataToSet.page === "string" ? dataToSet.page : undefined;
+		const section = typeof dataToSet.section === "string" ? dataToSet.section : undefined;
+		const type = dataToSet.type ?? undefined;
+		const sortOrder = dataToSet.sortOrder ?? undefined;
+		const mediaId = dataToSet.mediaId ?? null;
 		const metadata = typeof dataToSet.metadata === "string" ? dataToSet.metadata : null;
 		const currentTimestamp = new Date();
 
-		// Data for the VALUES clause of INSERT (needs to satisfy NewContent)
 		const valuesPayload: schema.NewContent = {
 			key,
 			value,
@@ -96,28 +68,20 @@ export async function updateContent(
 			sortOrder,
 			mediaId,
 			metadata,
-			// Drizzle's runtime default/hook handles updatedAt on insert if not provided
-			// For explicit control or if DB defaults are preferred, set it here.
-			// schema.content.updatedAt has a runtime default(new Date())
 		};
 
-		// Data for the SET clause of ON CONFLICT DO UPDATE
 		const setDataPayload: Partial<schema.Content> = {
 			value,
-			updatedAt: currentTimestamp, // Drizzle's $onUpdate will also set this
+			updatedAt: currentTimestamp,
 		};
 		if (page !== undefined) setDataPayload.page = page;
 		if (section !== undefined) setDataPayload.section = section;
 		if (type !== undefined) setDataPayload.type = type;
 		if (sortOrder !== undefined) setDataPayload.sortOrder = sortOrder;
-		if (mediaId !== undefined) setDataPayload.mediaId = mediaId; // handles null
+		if (mediaId !== undefined) setDataPayload.mediaId = mediaId;
 		if (metadata !== undefined) setDataPayload.metadata = metadata;
-
-
-		// Validate payloads (optional here if confident in data structure, but good for robustness)
-		// validateContentInsert(valuesPayload); // May need adjustment if Drizzle defaults are not part of schema
+		
 		validateContentUpdate(setDataPayload);
-
 
 		const upsertStatement = db
 			.insert(schema.content)
@@ -126,21 +90,14 @@ export async function updateContent(
 				target: schema.content.key,
 				set: setDataPayload,
 			});
-		promises.push(upsertStatement); // Add the statement itself, not its execution result
+		promises.push(upsertStatement);
 	}
 
-	// Execute all upsert statements in a single batch
 	try {
-		// D1Result type for batch is D1Result<unknown>[]
 		const results: D1Result<unknown>[] = await db.batch(promises);
-		console.log(
-			`[Content Update - DIAGNOSTIC V4] Batch operations completed at ${new Date().toISOString()}. Results:`,
-			results.map(r => ({ success: r.success, error: r.error, changes: r.meta?.changes, written: r.meta?.rows_written })),
-		);
 		return results;
 	} catch (batchError) {
-		console.error(`[Content Update - DIAGNOSTIC V4] Error during batch operation:`, batchError);
-		// Construct a D1Result-like array for consistent return type
+		console.error(`Error during batch content update:`, batchError);
 		return updates.map(() => ({ success: false, error: String(batchError), meta: { error: String(batchError) } as any } as D1Result<unknown>));
 	}
 }

@@ -1,7 +1,7 @@
-import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import { useLoaderData } from "react-router";
+import { useLoaderData, type MetaFunction } from "react-router";
 
 import type { JSX } from "react";
+import type { Route } from "./+types/route";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import RecentProjects from "~/routes/common/components/RecentProjects";
@@ -11,15 +11,6 @@ import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import Hero from "./components/Hero";
 import OurServices from "./components/OurServices";
-// Type for Cloudflare environment with proper DB access
-type LoaderContext = LoaderFunctionArgs & {
-	context: {
-		db: unknown;
-		cloudflare?: {
-			env?: unknown;
-		};
-	};
-};
 import type { Project } from "~/database/schema"; // Ensure Project is imported
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -40,7 +31,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 // Return a plain object for better type inference
-export async function loader({ context }: LoaderContext) {
+export async function loader({ context }: Route.LoaderArgs) {
 	try {
 		const [content, projects] = await Promise.all([
 			getAllContent(context.db),
@@ -49,6 +40,7 @@ export async function loader({ context }: LoaderContext) {
 		return { content, projects };
 	} catch (error) {
 		console.error("Error fetching data from D1:", error);
+		// Consider throwing an error or returning a structured error response
 		return {
 			content: {} as Record<string, string>,
 			projects: [] as Project[],
@@ -59,7 +51,12 @@ export async function loader({ context }: LoaderContext) {
 
 export default function HomeRoute(): JSX.Element {
 	// Use type inference for useLoaderData
-	const { content, projects } = useLoaderData<typeof loader>();
+	const { content, projects, error } = useLoaderData<typeof loader>();
+
+	if (error) {
+		// Handle error display
+		return <div>Error loading home page: {error}</div>;
+	}
 	// Type assert content to have string keys and values
 	const typedContent = content as Record<string, string>;
 

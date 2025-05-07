@@ -1,11 +1,9 @@
 import React from "react";
 import { Form, Link, useLoaderData } from "react-router";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
 import { Button } from "../../components/ui/Button";
-import type { Project } from "~/database/schema";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
-import { Button } from "../../components/ui/Button";
+import type { Route } from "./+types/index";
 // Define return types for loader and action
 type ProjectsLoaderData = {
 	projects: Project[];
@@ -19,7 +17,7 @@ type ProjectsActionData = {
 };
 
 // Loader to fetch all projects - Return plain objects for type safety
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
 	// Auth check (redundant with layout loader but good practice)
 	// Auth check (redundant with layout loader but good practice)
 	const unauthorized = () => {
@@ -44,7 +42,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 }
 
 // Action to handle project management - Return plain objects for type safety
-export async function action({ request, context }: ActionFunctionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
 

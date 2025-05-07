@@ -6,17 +6,16 @@ import {
 } from "@heroicons/react/24/outline";
 import type React from "react";
 import {
-	type LoaderFunction,
 	NavLink,
 	Outlet,
 	type To,
 	redirect,
-	useFetcher,
 } from "react-router";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
+import type { Route } from "./+types/route";
 
 // Define explicit loader signature
-export const loader: LoaderFunction = async ({ request, context }) => {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {

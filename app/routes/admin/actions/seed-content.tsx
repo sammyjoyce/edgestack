@@ -1,7 +1,7 @@
 // app/routes/admin/actions/seed-content.tsx
-import type { ActionFunctionArgs } from "react-router";
 import { data, redirect } from "react-router";
 import { getAllContent, updateContent } from "~/routes/common/db";
+import type { Route } from "./+types/seed-content";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 
 const DEFAULT_CONTENT = {
@@ -10,10 +10,10 @@ const DEFAULT_CONTENT = {
 	home_sections_order: "hero,services,projects,about,contact",
 } as const;
 
-export async function action({ request, context }: ActionFunctionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
 	// Authentication Check
 	const token = getSessionCookie(request);
-	const secret = context.cloudflare?.env?.JWT_SECRET || context.env?.JWT_SECRET;
+	const secret = context.cloudflare?.env?.JWT_SECRET;
 	if (!token || !secret || !(await verify(token, secret))) {
 		return data({ success: false, error: "Unauthorized" }, { status: 401 });
 	}
