@@ -113,21 +113,47 @@ export async function action({ request, context }: Route.ActionArgs) {
 				return badRequest("Failed to upload image");
 			}
 
-			// Validate before updating content DB
+			// Validate the publicUrl for content.value
 			try {
 				validateContentInsert({ key, value: publicUrl });
 			} catch (e: any) {
 				return {
 					success: false,
-					error: `Validation failed for key '${key}': ${e.message || e}`,
+					error: `Validation failed for key '${key}' (URL): ${e.message || e}`,
 				};
 			}
+			
+			const mediaAltText = file.name; 
+			
+			// Insert media and get its ID
+			let newMediaId: number | null = null;
+			try {
+				const mediaInsertResult = await context.db.insert(schema.media).values({
+					url: publicUrl,
+					alt: mediaAltText,
+				}).returning({ id: schema.media.id }).get();
 
-			await updateContent(context.db, { [key]: publicUrl });
+				if (mediaInsertResult) {
+					newMediaId = mediaInsertResult.id;
+				} else {
+					// Fallback for D1 if returning().get() is not ideal / returns undefined
+					const runResult = await context.db.insert(schema.media).values({url: publicUrl, alt: mediaAltText}).run();
+					if (runResult.meta.last_row_id) {
+						newMediaId = runResult.meta.last_row_id;
+					}
+				}
+			} catch (dbError) {
+				console.error("Error inserting into media table:", dbError);
+				// Decide if this error should prevent content update or just be logged
+				// For now, we'll proceed to update content with URL only if media insert fails
+			}
+			
+			// Now update content with the publicUrl and newMediaId (if available)
+			await updateContent(context.db, { [key]: { value: publicUrl, mediaId: newMediaId } });
 
 			return { success: true, url: publicUrl, key, action: "upload" };
 		} catch (error: any) {
-			console.error("Upload error:", error);
+			console.error("Upload error or action processing error:", error);
 			return {
 				success: false,
 				error: error.message || "An unexpected error occurred",
