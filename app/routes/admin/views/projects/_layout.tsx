@@ -32,7 +32,7 @@ export async function loader({
 	}
 }
 
-export function ProjectsLayout() {
+export default function ProjectsLayout() {
 	const loaderData = useLoaderData<typeof loader>();
 	return (
 		<FadeIn>
@@ -46,4 +46,3 @@ export function ErrorBoundary() {
 }
 
 // Default export for React Router 7 conventions
-export default ProjectsLayout;
