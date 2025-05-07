@@ -1,8 +1,7 @@
 import React from "react";
 import type { FetcherWithComponents } from "react-router";
-// Import the specific action types
-import type { action as adminIndexAction } from "~/routes/admin/routes/index";
-import type { action as adminUploadAction } from "~/routes/admin/routes/upload";
+import type { action as adminIndexAction } from "~/routes/admin/views/index";
+import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 

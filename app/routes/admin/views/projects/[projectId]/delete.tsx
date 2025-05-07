@@ -4,8 +4,7 @@ import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
 import { getProjectById } from "~/routes/common/db";
 import { deleteProject } from "~/routes/common/db"; // Import deleteProject
-// Import generated types from the .react-router directory
-import type { Route } from "../../../../../../.react-router/types/app/routes/admin/routes/projects/[projectId]/+types/delete";
+import type { Route } from "./+types/delete";
 import { Button } from "../../../components/ui/Button";
 import { FadeIn } from "../../../components/ui/FadeIn";
 
