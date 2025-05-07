@@ -1,3 +1,4 @@
+import React from "react"; // Import React
 import { type MetaFunction, Outlet, data, useLoaderData } from "react-router";
 
 import type { Project } from "~/database/schema";

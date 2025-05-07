@@ -1,7 +1,7 @@
 import clsx from "clsx"; // Use direct import
-import type React from "react"; // Import React
+import React from "react"; // Import React
 
-import { Border } from "~/routes/common/components/ui/Border"; // Corrected path
+import { Border } from "~/routes/common/components/ui/Border";
 
 // Removed ImageProps and Image import from 'next/image'
 

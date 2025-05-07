@@ -64,7 +64,6 @@ export async function action({
 }
 
 export function DeleteProjectRoute() {
-	// Error and !project cases are now handled by ErrorBoundary if loader throws
 	const { project } = useLoaderData<typeof loader>();
 	const navigate = useNavigate();
 

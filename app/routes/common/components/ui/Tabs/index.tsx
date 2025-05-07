@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import type React from "react";
-import { useState } from "react";
+import React, { useState } from "react"; // Import React
 
 // Basic cn utility function (replace with your preferred library if available)
 function cn(...inputs: (string | undefined | null | boolean)[]) {

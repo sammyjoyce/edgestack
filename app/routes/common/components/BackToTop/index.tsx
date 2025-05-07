@@ -1,3 +1,5 @@
+import React from "react"; // Import React
+
 function BackToTop() {
 	return (
 		<button

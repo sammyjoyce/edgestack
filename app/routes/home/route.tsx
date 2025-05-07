@@ -13,9 +13,9 @@ import Hero from "./components/Hero";
 import OurServices from "./components/OurServices";
 import type { Project } from "~/database/schema"; // Ensure Project is imported
 
-export const meta: MetaFunction<typeof loader> = ({ data: loaderData }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	// Access loader data safely. The loader ensures 'content' is an object.
-	const content = loaderData?.content ?? {};
+	const content = data?.content ?? {};
 	const pageTitle = content.meta_title ?? "Lush Constructions";
 	const pageDescription =
 		content.meta_description ??

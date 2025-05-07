@@ -1,4 +1,4 @@
-import type { JSX } from "react";
+import React, { type JSX } from "react"; // Import React
 import { useOutletContext } from "react-router";
 import RecentProjects from "~/routes/common/components/RecentProjects";
 // Import parent route loader function for typing
