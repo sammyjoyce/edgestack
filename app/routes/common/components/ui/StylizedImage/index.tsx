@@ -1,6 +1,7 @@
 import clsx from "clsx"; // Use direct import
-import type React from "react"; // Import React
-import { useId } from "react";
+import React, { useId } from "react"; // Import React
+import type { HTMLMotionProps } from "framer-motion"; // Keep this if motion props are directly used, otherwise can be part of ...rest
+import { motion } from "framer-motion";
 
 const shapes = [
 	{

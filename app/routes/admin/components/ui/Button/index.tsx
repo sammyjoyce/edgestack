@@ -4,8 +4,7 @@ import type {
 	ElementType,
 	ForwardedRef,
 } from "react";
-import type React from "react";
-import { forwardRef } from "react";
+import React, { forwardRef } from "react"; // Import React
 import { Link, type To } from "react-router";
 import { twMerge } from "tailwind-merge";
 

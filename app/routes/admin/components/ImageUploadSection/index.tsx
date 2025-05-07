@@ -1,5 +1,4 @@
-import type React from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react"; // Import React
 import { useFetcher } from "react-router";
 // Define action response type structure
 // This aligns with what the upload action returns without needing direct imports

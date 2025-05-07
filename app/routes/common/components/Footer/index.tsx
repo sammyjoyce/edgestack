@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import type React from "react";
-import { useMemo } from "react";
+import React, { useMemo } from "react"; // Import React
+import type { JSX } from "react"; // Import JSX type
 
 const navigation = [
 	{
@@ -54,8 +54,8 @@ const navigation = [
 
 const socialLinks = navigation[0].social;
 
-export default function Footer(): React.JSX.Element {
-	// Changed to React.JSX.Element
+export default function Footer(): JSX.Element {
+	// Changed to JSX.Element
 	const currentYear = useMemo(() => new Date().getFullYear(), []);
 	return (
 		<motion.footer

@@ -2,10 +2,10 @@ import React from "react";
 import { redirect } from "react-router";
 import { COOKIE_NAME } from "~/routes/common/utils/auth";
 // Import generated types from the correct path
-import type { Route } from "./+types/logout";
+import type { Route } from "./+types/logout"; // Ensure this path is correct
 
 // Use the generated type with the proper format
-export const loader = async (): Promise<Response> => {
+export const loader = async (): Promise<Response> => { // Explicit Promise<Response>
 	// Create response with typed redirect to login
 	const response = redirect("/admin/login");
 

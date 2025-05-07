@@ -1,12 +1,13 @@
 import {
 	ArrowPathIcon,
 	CheckCircleIcon,
+	ArrowPathIcon,
+	CheckCircleIcon,
 	ExclamationTriangleIcon,
 	InformationCircleIcon,
 	XCircleIcon,
 } from "@heroicons/react/20/solid";
-import type React from "react";
-import { useRef } from "react";
+import React, { useRef } from "react"; // Import React
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";
@@ -115,8 +116,8 @@ export function TextContentForm({
 	fetcher,
 	initialContent,
 	formRef,
-}: TextContentFormProps): React.ReactElement {
-	// Use React.ReactElement
+}: TextContentFormProps): JSX.Element {
+	// Use JSX.Element
 	const localFormRef = useRef<HTMLFormElement>(null);
 	const ref = formRef || localFormRef;
 

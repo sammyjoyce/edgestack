@@ -1,4 +1,4 @@
-import React, { type JSX, useState, useEffect } from "react";
+import React, { type JSX, useState, useEffect, useCallback } from "react"; // Added useCallback
 import type { FetcherWithComponents } from "react-router";
 
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";

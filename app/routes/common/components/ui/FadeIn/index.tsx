@@ -1,6 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion"; // Use direct import
-import type React from "react"; // Import React
-import { createContext, useContext } from "react";
+import React, { createContext, useContext } from "react"; // Import React
 
 const FadeInStaggerContext = createContext(false);
 

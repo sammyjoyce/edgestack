@@ -68,31 +68,8 @@ export function DeleteProjectRoute() {
 	const { project } = useLoaderData<typeof loader>();
 	const navigate = useNavigate();
 
-	// This check might be redundant if loader always throws for !project
-	if (!project) {
-        // This case should ideally be caught by an ErrorBoundary if loader throws a 404
-        return (
-            <div className="rounded-md bg-red-50 p-4 mb-6">
-                <div className="flex">
-                    <div className="ml-3">
-                        <h3 className="text-sm font-medium text-red-800">
-                            Project not found or could not be loaded.
-                        </h3>
-                        <div className="mt-4">
-                            <Button
-                                type="button"
-                                onClick={() => navigate("/admin/projects")}
-                                className="text-sm"
-                            >
-                                Return to Projects
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
+	// The loader guarantees 'project' is available if no error was thrown.
+	// Error cases (including not found) are handled by the ErrorBoundary.
 	return (
 		<FadeIn>
 			<div className="flex flex-col gap-8">
