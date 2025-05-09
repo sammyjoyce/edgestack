@@ -44,11 +44,6 @@ const navigation: NavItem[] = [
 // For this change, I'll assume clsx is preferred for consistency.
 import clsx from "clsx";
 
-// Add an empty action to enable POST submissions to this route
-export const action = async () => {
-  // You can implement admin dashboard POST logic here later
-  return null;
-};
 
 export function Component() {
 	return (
