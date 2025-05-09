@@ -1,3 +1,5 @@
+import { assert } from "./assert";
+
 // ────────────────────────────────────────────────────────────────────────────
 // Auth helpers for the admin area
 // - HMAC‑based session cookie signing / verification
@@ -74,4 +76,18 @@ export function getSessionCookie(req: Request): string | null {
 		if (rawName === COOKIE_NAME) return decodeURIComponent(rawVal ?? "");
 	}
 	return null;
+}
+
+/**
+ * TigerStyle: DRY admin authentication check.
+ * Throws Response(401) if not authenticated.
+ */
+export async function requireAdmin(request: Request, context: any): Promise<void> {
+	assert(request instanceof Request, "requireAdmin: request must be a Request");
+	assert(context && typeof context === "object", "requireAdmin: context must be an object");
+	const sessionValue = getSessionCookie(request);
+	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
+		throw new Response("Unauthorized", { status: 401 });
+	}
 }
