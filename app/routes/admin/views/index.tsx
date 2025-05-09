@@ -4,6 +4,7 @@ import type { Route } from "./+types/index";
 import { getAllContent, updateContent, updateProject } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import AdminDashboard from "../components/AdminDashboard";
+import invariant from "tiny-invariant";
 
 const DEFAULT_CONTENT = {
 	hero_title: "Building Dreams, Creating Spaces",
@@ -14,33 +15,36 @@ const DEFAULT_CONTENT = {
 const DEBUG = process.env.NODE_ENV === "development"; // Or use context.cloudflare.env.DEBUG
 
 /* ---------------- LOADER ---------------- */
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader(
+	{ request, context }: Route.LoaderArgs
+): Promise<{ content: Record<string, string> }> {
+	invariant(request instanceof Request, "loader: request must be a Request");
+	invariant(context && context.db, "loader: missing DB in context");
 	const token = getSessionCookie(request);
 	const secret = context.cloudflare?.env?.JWT_SECRET;
 
-	if (!secret) {
-		console.error(
-			"[ADMIN LOADER] JWT_SECRET is missing. Ensure it's set in .dev.vars.",
-		);
-		throw new Error("Server configuration error: JWT_SECRET is not available.");
-	}
-
+	invariant(secret, "loader: JWT_SECRET is required in context");
 	if (!token || !(await verify(token, secret))) {
 		throw redirect("/admin/login");
 	}
 
 	const items = await getAllContent(context.db);
-	// Return plain object
+	invariant(items && typeof items === "object", "loader: items must be an object");
 	return { content: items };
 }
 
 
 /* ---------------- ACTION ---------------- */
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action(
+	{ request, context }: Route.ActionArgs
+): Promise<Response> {
+	invariant(request instanceof Request, "action: request must be a Request");
+	invariant(context && context.db, "action: missing DB in context");
 	try {
 		const token = getSessionCookie(request);
 		const secret = context.cloudflare?.env?.JWT_SECRET;
-		if (!token || !secret || !(await verify(token, secret))) {
+		invariant(secret, "action: JWT_SECRET is required in context");
+		if (!token || !(await verify(token, secret))) {
 			throw new Response("Unauthorized", { status: 401 });
 		}
 
@@ -48,60 +52,35 @@ export async function action({ request, context }: Route.ActionArgs) {
 			return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
 		}
 		const formData = await request.formData();
-		console.log('[ADMIN ACTION] Form submission received', formData);
-		
+
 		const intent = formData.get('intent');
 		if (intent === 'updateTextContent') {
-			console.log('[ADMIN ACTION] Processing text content update');
 			const updates: Record<string, string> = {};
 			for (const [key, value] of formData.entries()) {
 				if (key !== 'intent' && typeof value === 'string') {
-					console.log(`[ADMIN ACTION] Processing form field: ${key}=${value}`);
 					updates[key] = value;
 				}
 			}
-			
-			if (Object.keys(updates).length > 0) {
-				console.log('[ADMIN ACTION] Saving content updates to database:', Object.keys(updates));
-				await updateContent(context.db, updates);
-				console.log('[ADMIN ACTION] Content updates saved successfully');
-				// Use a timestamp as a cache-busting query param for revalidation
-				const revalidateParam = `revalidate=true&t=${Date.now()}`;
-				return redirect(`/?${revalidateParam}`);
-			} else {
-				console.log('[ADMIN ACTION] No valid updates found in form data');
-				return new Response(JSON.stringify({ error: 'No updates provided' }), { status: 400 });
-			}
+			invariant(Object.keys(updates).length > 0, "action: No updates provided");
+			await updateContent(context.db, updates);
+			invariant(true, "action: reached end of updateTextContent branch");
+			const revalidateParam = `revalidate=true&t=${Date.now()}`;
+			return redirect(`/?${revalidateParam}`);
 		} else {
-			// Handle project updates or other form submissions
-			console.log('[ADMIN ACTION] Processing non-content update, possibly project edit');
 			const updates: Record<string, string> = {};
 			for (const [key, value] of formData.entries()) {
-				console.log(`[ADMIN ACTION] Processing form field: ${key}=${value}`);
 				if (typeof value === 'string') {
 					updates[key] = value;
 				}
 			}
-			
-			if (Object.keys(updates).length > 0) {
-				console.log('[ADMIN ACTION] Saving updates to database:', Object.keys(updates));
-				// Here we would call a different function to handle project updates
-				// For now, we'll log and redirect
-				// await updateProject(context.db, updates); // This function needs to be implemented
-				console.log('[ADMIN ACTION] Project updates would be saved here');
-				const revalidateParam = `revalidate=true&t=${Date.now()}`;
-				return redirect(`/admin/projects?${revalidateParam}`);
-			} else {
-				console.log('[ADMIN ACTION] No valid updates found in form data');
-				return new Response(JSON.stringify({ error: 'No updates provided' }), { status: 400 });
-			}
+			invariant(Object.keys(updates).length > 0, "action: No updates provided");
+			// Here we would call a different function to handle project updates
+			const revalidateParam = `revalidate=true&t=${Date.now()}`;
+			return redirect(`/admin/projects?${revalidateParam}`);
 		}
 	} catch (error: unknown) {
-		console.error('[ADMIN ACTION] Error processing updates:', error);
-		if (error instanceof Error) {
-			console.error('[ADMIN ACTION] Error message:', error.message);
-			console.error('[ADMIN ACTION] Error stack:', error.stack);
-		}
+		const err = error instanceof Error ? error : new Error(String(error));
+		console.error('[ADMIN ACTION] Error processing updates:', err);
 		return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
 	}
 }
@@ -113,17 +92,6 @@ function logFormSubmission(formData: FormData) {
 
 export default function AdminIndexRoute(): JSX.Element {
 	const { content } = useLoaderData<typeof loader>();
-	const navigation = useNavigation();
-	const isLoading = navigation.state === 'loading' || navigation.state === 'submitting';
-	const fetcher = useFetcher();
-
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    logFormSubmission(formData);
-    fetcher.submit(formData, { method: 'post', action: '/admin' });
-  };
-
 	return (
 		<main id="admin-dashboard-main" aria-label="Admin Dashboard">
 			<AdminDashboard initialContent={content} />
