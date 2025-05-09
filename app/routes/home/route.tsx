@@ -12,7 +12,7 @@ import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import Hero from "./components/Hero";
 import OurServices from "./components/OurServices";
-import type { Project } from "~/database/schema"; 
+import type { Project } from "../../../database/schema"; 
 import invariant from "tiny-invariant";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

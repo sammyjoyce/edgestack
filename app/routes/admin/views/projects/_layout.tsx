@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useLoaderData, redirect } from "react-router";
-import type { Project } from "~/database/schema";
+import type { Project } from "../../../../../database/schema";
 import { getAllProjects } from "~/routes/common/db";
 import type { Route } from "./+types/_layout";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";

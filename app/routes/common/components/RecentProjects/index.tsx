@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import React from "react";
 import { Link, type To } from "react-router"; // Import To type
-import type { Project } from "~/database/schema";
+import type { Project } from "../../../../database/schema";
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; // Import the new component
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
