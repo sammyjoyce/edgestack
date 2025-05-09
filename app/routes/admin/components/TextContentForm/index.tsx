@@ -11,6 +11,7 @@ import React, { type JSX, useRef } from "react"; // Import React and JSX type
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";
+import { Label, Textarea } from "~/routes/common/components/ui";
 import { Button } from "~/routes/common/components/ui/Button";
 import { Pill, PillStatusComponent } from "~/routes/common/components/ui/Pill";
 
@@ -228,15 +229,12 @@ export function TextContentForm({
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
 				{textFields.map(({ key, label, rows, help, isRichText }) => (
 					<div className="flex flex-col gap-1" key={key}>
-						<label
-							htmlFor={key}
-							className="block text-sm font-medium text-foreground mb-1"
-						>
+						<Label htmlFor={key}>
 							{label}
 							{help && (
 								<span className="ml-1 text-xs text-neutral-500">({help})</span>
 							)}
-						</label>
+						</Label>
 						{isRichText ? (
 							<RichTextField
 								name={key}
@@ -244,7 +242,7 @@ export function TextContentForm({
 								disabled={isSubmitting}
 							/>
 						) : (
-							<textarea
+							<Textarea
 								name={key}
 								id={key}
 								rows={rows}
@@ -253,9 +251,7 @@ export function TextContentForm({
 								value={fields[key] ?? ""}
 								onBlur={handleBlur}
 								onChange={handleChange}
-								className={`block w-full rounded-md bg-white shadow-input-default focus:border-primary focus:ring-1 focus:ring-primary text-sm p-2.5 ${
-									errors[key] ? "border-red-500 ring-red-500" : "border-neutral-300"
-								}`}
+								className={errors[key] ? "border-red-500" : undefined}
 							/>
 						)}
 						{errors[key] && (
@@ -268,19 +264,10 @@ export function TextContentForm({
 			</div>
 			{!autoSave && (
 				<div className="flex gap-3 mt-6 pt-6 border-t border-neutral-200">
-					<Button
-						type="submit"
-						variant="primary"
-						aria-label="Save changes"
-					>
+					<Button type="submit" variant="primary">
 						Save
 					</Button>
-					<Button
-						type="button"
-						onClick={handleUndo}
-						variant="neutral"
-						aria-label="Undo changes"
-					>
+					<Button type="button" variant="neutral" onClick={handleUndo}>
 						Undo
 					</Button>
 				</div>

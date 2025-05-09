@@ -14,6 +14,8 @@ import {
 	verify,
 } from "~/routes/common/utils/auth";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import { Label, Input } from "~/routes/common/components/ui";
+import { Button } from "~/routes/common/components/ui/Button";
 // Import generated types from proper path
 import type { Route } from "./+types/login";
 
@@ -179,50 +181,31 @@ export default function LoginRoute() {
 							)}
 
 							<div>
-								<label
-									htmlFor="username"
-									className="block text-sm font-medium text-gray-700"
-								>
-									Username
-								</label>
-								<div className="mt-1">
-									<input
-										id="username"
-										name="username"
-										type="text"
-										autoComplete="username"
-										required
-										className="block w-full appearance-none rounded-md border border-gray-300 bg-white px-3 py-2 placeholder-gray-400 shadow-[var(--shadow-input-default)] focus:border-primary focus:outline-none focus:ring-primary"
-									/>
-								</div>
+								<Label htmlFor="username">Username</Label>
+								<Input
+									id="username"
+									name="username"
+									type="text"
+									autoComplete="username"
+									required
+								/>
 							</div>
 
 							<div>
-								<label
-									htmlFor="password"
-									className="block text-sm font-medium text-gray-700"
-								>
-									Password
-								</label>
-								<div className="mt-1">
-									<input
-										id="password"
-										name="password"
-										type="password"
-										autoComplete="current-password"
-										required
-										className="block w-full appearance-none rounded-md border border-gray-300 bg-white px-3 py-2 placeholder-gray-400 shadow-[var(--shadow-input-default)] focus:border-primary focus:outline-none focus:ring-primary"
-									/>
-								</div>
+								<Label htmlFor="password">Password</Label>
+								<Input
+									id="password"
+									name="password"
+									type="password"
+									autoComplete="current-password"
+									required
+								/>
 							</div>
 
 							<div>
-								<button
-									type="submit"
-									className="flex w-full justify-center rounded-md border border-transparent bg-primary py-3 px-4 text-sm font-semibold text-white shadow-[var(--shadow-button-primary-default)] active:shadow-[var(--shadow-button-primary-active)] hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-								>
+								<Button type="submit" variant="primary" block>
 									Sign in
-								</button>
+								</Button>
 							</div>
 						</Form>
 					</div>
