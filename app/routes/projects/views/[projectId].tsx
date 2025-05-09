@@ -12,13 +12,13 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		throw data({ message: "Invalid Project ID" }, { status: 400 });
+		throw new Error("Invalid Project ID");
 	}
 
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw data({ message: "Project not found" }, { status: 404 });
+			throw new Error("Project not found");
 		}
 		// Return directly without the data helper
 		return { project };
