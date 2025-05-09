@@ -3,8 +3,10 @@ import {
 	DocumentDuplicateIcon,
 	FolderIcon,
 	HomeIcon,
+	Bars3Icon,
 } from "@heroicons/react/24/outline";
-import React from "react"; // Import React
+import { Dialog } from "@headlessui/react";
+import React, { useState } from "react";
 import { NavLink, Outlet, type To, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { updateContent } from "~/routes/common/db";
@@ -111,9 +113,88 @@ import clsx from "clsx";
 
 
 export function Component() {
+	const [mobileOpen, setMobileOpen] = useState(false);
+
 	return (
-		<div className="min-h-screen flex bg-gray-50">
-			<aside className="flex w-72 flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 py-4 border-r border-gray-200 shadow-md">
+		<div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
+			{/* Mobile header */}
+			<header className="lg:hidden flex items-center justify-between bg-gray-900 px-4 py-3">
+				<button onClick={() => setMobileOpen(true)} className="text-white">
+					<Bars3Icon className="size-6" />
+				</button>
+				<img src="/assets/logo_284x137-KoakP1Oi.png" alt="Logo" className="h-8" />
+			</header>
+
+			{/* Mobile sidebar drawer */}
+			<Dialog open={mobileOpen} onClose={() => setMobileOpen(false)}>
+				<Dialog.Overlay className="fixed inset-0 bg-black/50 lg:hidden" />
+				<Dialog.Panel className="fixed inset-y-0 left-0 w-64 bg-gray-900 p-4 lg:hidden">
+					{/* copy your existing <aside> link list here verbatim */}
+					<div className="flex h-16 shrink-0 items-center border-b border-gray-800 mb-2 pb-2">
+						<img
+							src="/assets/logo_284x137-KoakP1Oi.png"
+							alt="LUSH CONSTRUCTIONS"
+							className="h-8 w-auto mx-auto"
+						/>
+					</div>
+					<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
+						Admin Menu
+					</div>
+					<hr className="border-gray-700 mb-2" />
+					<nav className="flex flex-1 flex-col">
+						<ul className="flex flex-1 flex-col gap-y-7">
+							<li>
+								<ul className="-mx-2 space-y-1">
+									{navigation.map((item) => (
+										<li key={item.name}>
+											{item.name === "Live Site" ? (
+												<a
+													href={item.href as string}
+													target="_blank"
+													rel="noopener noreferrer"
+													className={clsx(
+														"text-gray-400 hover:bg-gray-700 hover:text-white",
+														"group flex gap-x-3 rounded-md p-2 text-sm font-medium",
+													)}
+												>
+													<item.icon
+														aria-hidden="true"
+														className="size-5 shrink-0"
+													/>
+													{item.name}
+												</a>
+											) : (
+												<NavLink
+													to={item.href as To}
+													end={item.href === "/admin"}
+													className={({ isActive }) =>
+														clsx(
+															isActive
+																? "bg-gray-700 text-white"
+																: "text-gray-400 hover:bg-gray-700 hover:text-white",
+															"group flex gap-x-3 rounded-md p-2 text-sm font-medium",
+														)
+													}
+													onClick={() => setMobileOpen(false)}
+												>
+													<item.icon
+														aria-hidden="true"
+														className="size-5 shrink-0"
+													/>
+													{item.name}
+												</NavLink>
+											)}
+										</li>
+									))}
+								</ul>
+							</li>
+						</ul>
+					</nav>
+				</Dialog.Panel>
+			</Dialog>
+
+			{/* Desktop sidebar */}
+			<aside className="hidden lg:flex w-72 flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 py-4">
 				<div className="flex h-16 shrink-0 items-center border-b border-gray-800 mb-2 pb-2">
 					<img
 						src="/assets/logo_284x137-KoakP1Oi.png"
@@ -121,7 +202,6 @@ export function Component() {
 						className="h-8 w-auto mx-auto"
 					/>
 				</div>
-				{/* Standardize admin label */}
 				<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
 					Admin Menu
 				</div>
@@ -133,9 +213,8 @@ export function Component() {
 								{navigation.map((item) => (
 									<li key={item.name}>
 										{item.name === "Live Site" ? (
-											// Use standard anchor for external/non-router link
 											<a
-												href={item.href as string} // Cast to string
+												href={item.href as string}
 												target="_blank"
 												rel="noopener noreferrer"
 												className={clsx(
@@ -150,22 +229,21 @@ export function Component() {
 												{item.name}
 											</a>
 										) : (
-											// Use NavLink for internal routes with typed 'to'
 											<NavLink
-												to={item.href as To} // Cast to To
+												to={item.href as To}
 												end={item.href === "/admin"}
 												className={({ isActive }) =>
 													clsx(
 														isActive
-															? "bg-gray-700 text-white" // Slightly lighter active bg
+															? "bg-gray-700 text-white"
 															: "text-gray-400 hover:bg-gray-700 hover:text-white",
-														"group flex gap-x-3 rounded-md p-2 text-sm font-medium", // Use text-sm and font-medium
+														"group flex gap-x-3 rounded-md p-2 text-sm font-medium",
 													)
 												}
 											>
 												<item.icon
 													aria-hidden="true"
-													className="size-5 shrink-0" // Slightly smaller icon
+													className="size-5 shrink-0"
 												/>
 												{item.name}
 											</NavLink>
@@ -177,8 +255,8 @@ export function Component() {
 					</ul>
 				</nav>
 			</aside>
-			<div className="w-px bg-gray-200" />
-			<main className="flex-1 px-8 py-8">
+
+			<main className="flex-1 px-4 py-6 lg:px-8 lg:py-8 overflow-auto">
 				<Outlet />
 			</main>
 		</div>
