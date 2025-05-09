@@ -1,7 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react"; // Import React
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useFetcher } from "react-router";
-// Define action response type structure
-// This aligns with what the upload action returns without needing direct imports
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { GrayscaleTransitionImage } from "~/routes/common/components/ui/GrayscaleTransitionImage";
@@ -16,9 +14,138 @@ const imageFields = [
 	{ key: "service_4_image", label: "Service 4 Image" },
 ];
 
+type UploadActionData = {
+	success?: boolean;
+	url?: string;
+	key?: string;
+	error?: string;
+	action?: "upload" | "select" | "delete";
+};
+
+function isUploadResponse(data: unknown): data is UploadActionData {
+	return (
+		typeof data === "object" &&
+		data !== null &&
+		("success" in data || "error" in data)
+	);
+}
+
 interface ImageUploadSectionProps {
 	initialContent: Record<string, string>;
 	sectionRef?: React.RefObject<HTMLDivElement>;
+}
+
+function SingleImageUpload({
+	keyName,
+	label,
+	initialValue,
+	fetcher,
+	fileInputRef,
+	statusText,
+	setStatusText,
+}: {
+	keyName: string;
+	label: string;
+	initialValue: string;
+	fetcher: ReturnType<typeof useFetcher<UploadActionData>>;
+	fileInputRef: React.RefObject<HTMLInputElement>;
+	statusText: string;
+	setStatusText: (v: string) => void;
+}) {
+	const makeDropHandler = useCallback(
+		(files: File[]) => {
+			const [file] = files;
+			if (!file) return;
+
+			const formData = new FormData();
+			formData.append("intent", "uploadImage");
+			formData.append("image", file);
+			formData.append("key", keyName);
+
+			fetcher.submit(formData, {
+				method: "post",
+				action: "/admin/upload",
+				encType: "multipart/form-data",
+			});
+
+			setStatusText(`Uploading ${label}…`);
+		},
+		[fetcher, keyName, label, setStatusText],
+	);
+
+	useEffect(() => {
+		if (fetcher.state === "idle" && isUploadResponse(fetcher.data)) {
+			if (fetcher.data.success && fetcher.data.action === "upload") {
+				if (fileInputRef.current) fileInputRef.current.value = "";
+				setStatusText(`${label} upload successful!`);
+			} else if (fetcher.data.error) {
+				setStatusText(fetcher.data.error);
+			}
+		}
+	}, [fetcher, label, setStatusText, fileInputRef]);
+
+	return (
+		<FadeIn>
+			<fetcher.Form
+				method="post"
+				action="/admin/upload"
+				encType="multipart/form-data"
+				className="flex flex-col items-center gap-2 pt-4"
+				aria-describedby={`help-${keyName}`}
+			>
+				<label
+					htmlFor={`${keyName}_input`}
+					className="block text-sm font-medium text-gray-700 mb-1 self-start"
+				>
+					{label}
+					<span
+						id={`help-${keyName}`}
+						className="ml-1 text-xs text-gray-500"
+						role="tooltip"
+					>
+						Upload or drag and drop an image for the {label.toLowerCase()}.
+					</span>
+				</label>
+				<ImageSelector
+					fileInputRef={fileInputRef}
+					onDrop={makeDropHandler}
+					disabled={fetcher.state === "submitting"}
+					uploading={fetcher.state === "submitting"}
+					imageUrl={
+						(isUploadResponse(fetcher.data) && fetcher.data.success && fetcher.data.url) ||
+						initialValue ||
+						""
+					}
+					label={label}
+					className="w-full"
+					fieldKey={keyName}
+				/>
+				<input type="hidden" name="key" value={keyName} />
+				<div
+					className="text-sm text-gray-600 h-5 mt-2"
+					role="status"
+					aria-live="polite"
+				>
+					{statusText}
+				</div>
+				<GrayscaleTransitionImage
+					id={`${keyName}_preview`}
+					src={
+						(isUploadResponse(fetcher.data) && fetcher.data.success && fetcher.data.url) ||
+						initialValue ||
+						""
+					}
+					alt={`${label} Preview`}
+					className="rounded border border-gray-200 mt-2 max-w-full w-48 h-auto object-cover bg-gray-100"
+				/>
+				{isUploadResponse(fetcher.data) && fetcher.data.error && (
+					<div className="text-red-600 mt-2 text-xs" role="alert">
+						{fetcher.data.error}
+					</div>
+				)}
+			</fetcher.Form>
+		</FadeIn>
+	);
 }
 
 export function ImageUploadSection({
@@ -28,83 +155,12 @@ export function ImageUploadSection({
 	const localRef = useRef<HTMLDivElement>(null);
 	const ref = sectionRef || localRef;
 
-	// Status text for each upload (mirrors imageFields order)
 	const [statusTexts, setStatusTexts] = useState<string[]>(
 		Array(imageFields.length).fill(""),
 	);
 
-	// One fetcher per field, using the proper return type based on Route type
-	// We define the shape we expect the action to return based on the route's return type
-	type UploadActionData = { // Renamed for clarity, matches usage elsewhere
-		success?: boolean; // Made optional to align with potential error states
-		url?: string;
-		key?: string;
-		error?: string;
-		action?: "upload" | "select" | "delete"; // Add action to discriminate fetcher.data
-	};
 	const fetchers = imageFields.map(() => useFetcher<UploadActionData>());
-	// Create refs for each file input
 	const fileInputRefs = imageFields.map(() => useRef<HTMLInputElement>(null));
-
-	// Type the fetcher argument with proper type
-	const makeDropHandler = useCallback(
-		(
-			idx: number,
-			fetcher: ReturnType<typeof useFetcher<UploadActionData>>,
-			key: string,
-			label: string,
-		) =>
-			(files: File[]) => {
-				const [file] = files;
-				if (!file) return;
-
-				const formData = new FormData();
-				formData.append("intent", "uploadImage"); // Add intent
-				formData.append("image", file);
-				formData.append("key", key);
-
-				// Use typed action path for the upload route
-				fetcher.submit(formData, {
-					method: "post",
-					action: "/admin/upload",
-					encType: "multipart/form-data",
-				});
-
-				setStatusTexts((prev) => {
-					const next = [...prev];
-					next[idx] = `Uploading ${label}…`;
-					return next;
-				});
-			},
-		[],
-	);
-
-	// Effect to clear file input on successful upload
-	useEffect(() => {
-		fetchers.forEach((fetcher, idx) => {
-			if (fetcher.state === "idle" && fetcher.data) {
-				// Check fetcher.data structure based on AdminActionResponse
-				if (fetcher.data?.success) {
-					const inputRef = fileInputRefs[idx].current;
-					if (inputRef && fetcher.data?.action === "upload") { // Only clear input on successful upload
-						inputRef.value = "";
-					}
-					setStatusTexts((prev) => {
-						const next = [...prev];
-						next[idx] = `${imageFields[idx].label} ${fetcher.data?.action || 'operation'} successful!`;
-						return next;
-					});
-				} else if (fetcher.data?.error) {
-					// Handle error response with inferred type
-					setStatusTexts((prev) => {
-						const next = [...prev];
-						next[idx] = fetcher.data?.error ?? "Operation failed";
-						return next;
-					});
-				}
-			}
-		});
-	}, [fetchers, fileInputRefs]);
 
 	return (
 		<section
@@ -115,85 +171,24 @@ export function ImageUploadSection({
 		>
 			<SectionIntro title="Image Uploads" className="mb-4" />
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-				{imageFields.map(({ key, label }, idx) => {
-					const fetcher = fetchers[idx];
-					return (
-						<FadeIn key={key}>
-							<fetcher.Form
-								method="post"
-								action="/admin/upload"
-								encType="multipart/form-data"
-								className="flex flex-col items-center gap-2 pt-4"
-								aria-describedby={`help-${key}`}
-							>
-								<label
-									htmlFor={`${key}_input`}
-									className="block text-sm font-medium text-gray-700 mb-1 self-start"
-								>
-									{label}
-									<span
-										id={`help-${key}`}
-										className="ml-1 text-xs text-gray-500"
-										role="tooltip"
-									>
-										Upload or drag and drop an image for the
-										{label.toLowerCase()}.
-									</span>
-								</label>
-								<ImageSelector
-									fileInputRef={
-										fileInputRefs[idx] as React.RefObject<HTMLInputElement>
-									}
-									onDrop={makeDropHandler(idx, fetcher, key, label)}
-									disabled={fetcher.state === "submitting"}
-									uploading={fetcher.state === "submitting"}
-									imageUrl={fetcher.data?.url || initialContent[key] || ""}
-									label={label}
-									className="w-full" // Ensure zone takes width
-									fieldKey={key} // Pass the field key for selecting existing images
-								/>
-								<input type="hidden" name="key" value={key} />
-								{/* Removed the redundant submit button */}
-								{/* <Button type="submit" aria-label={`Upload ${label}`} onClick={() =>
-                    setStatusTexts((prev) => {
-                      const next = [...prev];
-                      next[idx] = `Uploading ${label}…`;
-                      return next;
-                    })
-                  }
-                >
-                  {fetcher.state === "submitting"
-                    ? `Uploading...`
-                    : `Upload ${label}` // Button removed
-                </Button> */}
-								<div
-									className="text-sm text-gray-600 h-5 mt-2" // Add margin top
-									role="status"
-									aria-live="polite"
-								>
-									{statusTexts[idx]}
-								</div>
-								{/* Use fetcher.data with inferred type */}
-								<GrayscaleTransitionImage
-									id={`${key}_preview`}
-									src={
-										(fetcher.data?.success ? fetcher.data.url : undefined) ||
-										initialContent[key] ||
-										""
-									}
-									alt={`${label} Preview`}
-									className="rounded border border-gray-200 mt-2 max-w-full w-48 h-auto object-cover bg-gray-100" // Added border color
-								/>
-								{/* Removed redundant image display, GrayscaleTransitionImage handles preview */}
-								{fetcher.data?.error && (
-									<div className="text-red-600 mt-2 text-xs" role="alert">
-										{fetcher.data.error}
-									</div>
-								)}
-							</fetcher.Form>
-						</FadeIn>
-					);
-				})}
+				{imageFields.map(({ key, label }, idx) => (
+					<SingleImageUpload
+						key={key}
+						keyName={key}
+						label={label}
+						initialValue={initialContent[key] || ""}
+						fetcher={fetchers[idx]}
+						fileInputRef={fileInputRefs[idx]}
+						statusText={statusTexts[idx]}
+						setStatusText={(v) =>
+							setStatusTexts((prev) => {
+								const next = [...prev];
+								next[idx] = v;
+								return next;
+							})
+						}
+					/>
+				))}
 			</div>
 		</section>
 	);

@@ -1,5 +1,6 @@
 import React from "react";
-import { Link, isRouteErrorResponse, useRouteError } from "react-router";
+import { isRouteErrorResponse, useRouteError } from "react-router";
+import { SharedErrorBoundary } from "~/routes/common/components/ErrorBoundary";
 
 export function AdminErrorBoundary() {
 	const error = useRouteError();
@@ -17,26 +18,11 @@ export function AdminErrorBoundary() {
 	}
 
 	return (
-		<div className="flex items-center justify-center min-h-[75vh]">
-			<div className="p-8 bg-white rounded-lg shadow-xs border border-gray-200 max-w-md w-full">
-				<h1 className="text-2xl font-bold text-red-600 mb-3">{title}</h1>
-				<p className="text-gray-600 mb-6">{message}</p>
-				<div className="flex flex-col gap-4">
-					<Link
-						to="/admin"
-						className="px-4 py-2 bg-primary text-white rounded-md text-center hover:bg-primary/90 transition-colors"
-					>
-						Return to Admin Dashboard
-					</Link>
-					<button
-						type="button"
-						onClick={() => window.location.reload()}
-						className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition-colors"
-					>
-						Retry
-					</button>
-				</div>
-			</div>
-		</div>
+		<SharedErrorBoundary
+			title={title}
+			message={message}
+			homeHref="/admin"
+			homeLabel="Return to Admin Dashboard"
+		/>
 	);
 }

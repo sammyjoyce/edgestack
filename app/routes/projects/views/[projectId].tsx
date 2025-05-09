@@ -4,27 +4,20 @@ import type { Project } from "~/database/schema";
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById } from "~/routes/common/db";
-// Import generated Route type
+import { assert } from "~/routes/common/utils/assert";
 import type { Route } from "./+types/[projectId]";
 
 // Loader using the generated type for params and context
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
+	assert(typeof params.projectId === "string", "params.projectId must be a string");
 	const projectId = Number(params.projectId);
-
-	if (Number.isNaN(projectId)) {
-		throw new Error("Invalid Project ID");
-	}
+	assert(!Number.isNaN(projectId), "projectId must be a valid number");
 
 	try {
 		const project = await getProjectById(context.db, projectId);
-		if (!project) {
-			throw new Error("Project not found");
-		}
-		// Return directly without the data helper
+		assert(project && typeof project === "object" && project.id != null, "loader must return a project");
 		return { project };
 	} catch (error: any) {
-		console.error("Error loading project details:", error);
-		// Return error data directly
 		throw data(
 			{ message: error.message || "Failed to load project details" },
 			{ status: 500 },
