@@ -1,4 +1,4 @@
-import { type RouteConfig, index, route, layout } from "@react-router/dev/routes";
+import { type RouteConfig, index, route, layout, prefix } from "@react-router/dev/routes";
 
 // Define routes using the new architecture with module-by-route pattern
 export default [
@@ -14,21 +14,24 @@ export default [
 		route(":projectId", "routes/projects/views/[projectId].tsx"),
 	]),
 
-	// Admin login is standalone (no sidebar layout)
-	route("admin/login", "./routes/admin/views/login.tsx"),
+	// All admin routes under the "/admin" URL
+	prefix("admin", [
+		// First mount the login page before the sidebar
+		route("login", "./routes/admin/views/login.tsx"),
 
-	// All other /admin routes rendered into the sidebar‐layout at ./routes/admin/route.tsx
-	layout("./routes/admin/route.tsx", [
-		index("./routes/admin/views/index.tsx"),
-		route("logout", "./routes/admin/views/logout.tsx"),
-		route("upload", "./routes/admin/views/upload.tsx"),
+		// Everything else lives in the sidebar‐layout
+		layout("./routes/admin/route.tsx", [
+			index("./routes/admin/views/index.tsx"),
+			route("logout", "./routes/admin/views/logout.tsx"),
+			route("upload", "./routes/admin/views/upload.tsx"),
 
-		// Projects section uses its own nested layout
-		layout("./routes/admin/views/projects/_layout.tsx", [
-			index("./routes/admin/views/projects/index.tsx"),
-			route("new", "./routes/admin/views/projects/new.tsx"),
-			route(":projectId/edit", "./routes/admin/views/projects/[projectId]/edit.tsx"),
-			route(":projectId/delete", "./routes/admin/views/projects/[projectId]/delete.tsx"),
+			// Projects section with its own nested layout
+			layout("./routes/admin/views/projects/_layout.tsx", [
+				index("./routes/admin/views/projects/index.tsx"),
+				route("new", "./routes/admin/views/projects/new.tsx"),
+				route(":projectId/edit", "./routes/admin/views/projects/[projectId]/edit.tsx"),
+				route(":projectId/delete", "./routes/admin/views/projects/[projectId]/delete.tsx"),
+			]),
 		]),
 	]),
 ] satisfies RouteConfig;
