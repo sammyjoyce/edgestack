@@ -5,7 +5,7 @@ import type { Project } from "../../../../../../database/schema";
 import { deleteProject, getProjectById } from "~/routes/common/db"; // Import deleteProject and getProjectById statically
 import type { Route } from "./+types/delete";
 import { Button } from "../../../components/ui/Button";
-import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
+import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 
 // Return plain objects for type safety
 export async function loader({ params, context }: Route.LoaderArgs) {
