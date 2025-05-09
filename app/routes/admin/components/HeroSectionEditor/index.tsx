@@ -4,6 +4,7 @@ import type { action as adminIndexAction } from "~/routes/admin/views/index";
 import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
+import RichTextField from "~/routes/admin/components/RichTextField";
 
 interface HeroSectionEditorProps {
 	// Use a union type with inferred action types
@@ -101,13 +102,13 @@ export function HeroSectionEditor({
 					>
 						Hero Subtitle
 					</label>
-					<textarea
+					<RichTextField
 						name="hero_subtitle"
-						id="hero_subtitle"
-						rows={3}
-						defaultValue={initialContent.hero_subtitle || ""}
-						className="block w-full rounded-md border-neutral-300 bg-white shadow-input-default focus:border-primary focus:ring-1 focus:ring-primary text-sm p-2.5"
-						onBlur={handleBlur}
+						initialJSON={initialContent.hero_subtitle || ""}
+						disabled={
+							fetcher.state === "submitting" ||
+							fetcher.state === "loading"
+						}
 					/>
 				</div>
 				<div className="flex flex-col items-start justify-start pt-1">
