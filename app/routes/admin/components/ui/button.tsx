@@ -21,6 +21,14 @@ const styles = {
   // The box-shadows are complex and would ideally be part of a theme or utility classes.
   // For now, we'll use simpler shadows or rely on direct Tailwind shadow classes.
   color: {
+    ghost: [
+      'bg-transparent text-foreground shadow-none',
+      'hover:bg-zinc-100 dark:hover:bg-zinc-800'
+    ],
+    outline: [
+      'bg-transparent text-foreground border border-foreground shadow-none',
+      'hover:bg-foreground hover:text-white'
+    ],
     primary: [
       'text-white bg-primary',
       'shadow-[inset_1px_1px_1px_#ffffffd4,inset_-1px_-1px_1px_#0000003b,0.44px_0.44px_0.62px_-1px_#00000042,1.21px_1.21px_1.71px_-1.5px_#0000003f,2.65px_2.65px_3.75px_-2.25px_#0000003b,5.9px_5.9px_8.34px_-3px_#00000031,10px_10px_21.21px_-3.75px_#0000003b,-0.5px_-0.5px_0_0_#952b0087]',
@@ -60,68 +68,95 @@ const styles = {
   // which primarily uses a 'color' prop with predefined values.
 }
 
-// Updated ButtonProps to match openai-fm's Button component props
-interface ButtonProps {
+export interface ButtonProps {
   children: React.ReactNode;
   className?: string;
-  variant?: keyof typeof styles.color;
-  color?: keyof typeof styles.color; // alias for backward compatibility
+  /** new variants for outline/ghost calls */
+  variant?: keyof typeof styles.color | 'ghost' | 'outline';
+  /** alias */
+  color?: keyof typeof styles.color;
+  /** you were sprinkling `as={…}` in dozens of places */
+  as?: React.ElementType;
+  /** many files pass `invert` today */
+  invert?: boolean;
+  /** some calls pass `size="sm"` etc */
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   type?: 'button' | 'submit' | 'reset';
   selected?: boolean;
   disabled?: boolean;
-  block?: boolean; // New prop from openai-fm
-  onClick?: (evt: React.MouseEvent<HTMLElement>) => void; // Adjusted event type
+  block?: boolean;
+  onClick?: (evt: React.MouseEvent<HTMLElement>) => void;
   href?: string;
   target?: '_blank';
   ['aria-label']?: string;
 }
 
-export const Button = forwardRef(function Button(
-  { variant = 'default', color, className, children, selected, block, type, ...props }: ButtonProps,
-  ref: React.ForwardedRef<HTMLElement>
+export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
+  {
+    as,
+    variant,
+    color,
+    invert,
+    size,
+    className,
+    children,
+    selected,
+    block,
+    type = 'button',
+    href,
+    target,
+    onClick,
+    ...props
+  }: ButtonProps,
+  ref
 ) {
-  // Removed outline and plain logic, defaulting to 'color' prop based styling
-  const key = variant || color || 'default';
-  const colorClasses = styles.color[key] || styles.color.default;
+  // figure out which color‐style to use (including our new ghost/outline)
+  const key = variant ?? color ?? 'default';
+  const colorClasses =
+    styles.color[key as keyof typeof styles.color] || styles.color.default;
+
+  // optional size helper
+  const sizeMap: Record<string,string> = {
+    xs: 'px-2 py-1 text-xs',
+    sm: 'px-2.5 py-1 text-sm',
+    md: 'px-3 py-2 text-base',
+    lg: 'px-4 py-2.5 text-base',
+  };
+
   let classes = clsx(
     className,
     styles.base,
     colorClasses,
-    block ? 'w-full' : 'flex-1', // Apply w-full if block is true, else flex-1 like openai-fm
-    selected && 'data-selected', // Add data-selected attribute if selected
+    size ? sizeMap[size] : null,
+    invert && 'invert',
+    block ? 'w-full' : 'inline-flex',
+    selected && 'data-selected'
   );
 
   const commonProps = {
-    ref: ref as any, // Simplified ref handling
+    ref,
     className: classes,
     'data-selected': selected ? '' : undefined,
     'data-disabled': props.disabled ? '' : undefined,
     'aria-label': props['aria-label'],
-    onClick: props.disabled ? undefined : props.onClick,
-    onKeyDown: props.disabled ? undefined : (e: React.KeyboardEvent<HTMLElement>) => {
-      if (['Enter', ' '].includes(e.key)) {
-        props.onClick?.(e as unknown as React.MouseEvent<HTMLElement>);
-      }
-    },
-    role: 'button',
-    tabIndex: props.disabled ? -1 : 0,
-    type: type, // Add type attribute
+    onClick: props.disabled ? undefined : onClick,
   };
 
-  if ('href' in props && props.href) {
-    return (
-      <Link href={props.href} target={props.target} {...commonProps} {...props}>
-        {children}
-      </Link>
-    );
-  }
+  // Pick element: explicit `as`, then `href`→<Link>, otherwise headless Button
+  const Component = as ?? (href ? Link : Headless.Button);
 
   return (
-    <Headless.Button {...commonProps} {...props}>
+    <Component
+      {...commonProps}
+      {...props}
+      href={href}
+      target={target}
+      type={Component === Headless.Button ? type : undefined}
+    >
       {children}
-    </Headless.Button>
+    </Component>
   );
-})
+});
 
 // TouchTarget can be kept if needed, or removed if not part of openai-fm style
 export function TouchTarget({ children }: { children: React.ReactNode }) {
