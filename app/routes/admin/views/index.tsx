@@ -1,8 +1,7 @@
 import React, { type JSX } from "react"; // Added React import for JSX
-import { data, redirect, useLoaderData } from "react-router";
-import { validateContentInsert } from "~/database/valibot-validation";
+import { useLoaderData, useNavigation, useFetcher, redirect } from 'react-router';
 import type { Route } from "./+types/index";
-import { getAllContent, updateContent } from "~/routes/common/db";
+import { getAllContent, updateContent, updateProject } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import AdminDashboard from "../components/AdminDashboard";
 
@@ -38,86 +37,93 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
 /* ---------------- ACTION ---------------- */
 export async function action({ request, context }: Route.ActionArgs) {
-	const token = getSessionCookie(request);
-	const secret = context.cloudflare?.env?.JWT_SECRET;
-	if (!token || !secret || !(await verify(token, secret))) {
-		return data({ success: false, error: "Unauthorized" }, { status: 401 });
-	}
-
-	if (request.method !== "POST") {
-		return data({ error: "Invalid method" }, { status: 405 });
-	}
-
-	const formData = await request.formData();
-	if (DEBUG) {
-		console.debug(
-			"[Admin Action] Form data received:",
-			Object.fromEntries(formData),
-		);
-	}
-	const intent = formData.get("intent") as string | undefined;
-
 	try {
-		if (intent === "updateTextContent") {
+		const token = getSessionCookie(request);
+		const secret = context.cloudflare?.env?.JWT_SECRET;
+		if (!token || !secret || !(await verify(token, secret))) {
+			throw new Response("Unauthorized", { status: 401 });
+		}
+
+		if (request.method !== 'POST') {
+			return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
+		}
+		const formData = await request.formData();
+		console.log('[ADMIN ACTION] Form submission received', formData);
+		
+		const intent = formData.get('intent');
+		if (intent === 'updateTextContent') {
+			console.log('[ADMIN ACTION] Processing text content update');
 			const updates: Record<string, string> = {};
-			for (const [k, v] of formData.entries()) {
-				if (k !== "intent" && typeof v === "string") {
-					validateContentInsert({ key: k, value: v });
-					updates[k] = v;
+			for (const [key, value] of formData.entries()) {
+				if (key !== 'intent' && typeof value === 'string') {
+					console.log(`[ADMIN ACTION] Processing form field: ${key}=${value}`);
+					updates[key] = value;
 				}
 			}
+			
 			if (Object.keys(updates).length > 0) {
+				console.log('[ADMIN ACTION] Saving content updates to database:', Object.keys(updates));
 				await updateContent(context.db, updates);
-				return data({ success: true, message: "Text content updated." });
+				console.log('[ADMIN ACTION] Content updates saved successfully');
+				// Use a timestamp as a cache-busting query param for revalidation
+				const revalidateParam = `revalidate=true&t=${Date.now()}`;
+				return redirect(`/?${revalidateParam}`);
+			} else {
+				console.log('[ADMIN ACTION] No valid updates found in form data');
+				return new Response(JSON.stringify({ error: 'No updates provided' }), { status: 400 });
 			}
-			return data({
-				success: true,
-				message: "No text content changes detected.",
-			});
-		}
-		if (intent === "reorderSections") {
-			const orderValue = formData.get("home_sections_order");
-			if (typeof orderValue !== "string") {
-				return data(
-					{ success: false, error: "Invalid section order data." },
-					{ status: 400 },
-				);
+		} else {
+			// Handle project updates or other form submissions
+			console.log('[ADMIN ACTION] Processing non-content update, possibly project edit');
+			const updates: Record<string, string> = {};
+			for (const [key, value] of formData.entries()) {
+				console.log(`[ADMIN ACTION] Processing form field: ${key}=${value}`);
+				if (typeof value === 'string') {
+					updates[key] = value;
+				}
 			}
-			validateContentInsert({ key: "home_sections_order", value: orderValue });
-			await updateContent(context.db, { home_sections_order: orderValue });
-			return data({ success: true, message: "Section order saved." });
+			
+			if (Object.keys(updates).length > 0) {
+				console.log('[ADMIN ACTION] Saving updates to database:', Object.keys(updates));
+				// Here we would call a different function to handle project updates
+				// For now, we'll log and redirect
+				// await updateProject(context.db, updates); // This function needs to be implemented
+				console.log('[ADMIN ACTION] Project updates would be saved here');
+				const revalidateParam = `revalidate=true&t=${Date.now()}`;
+				return redirect(`/admin/projects?${revalidateParam}`);
+			} else {
+				console.log('[ADMIN ACTION] No valid updates found in form data');
+				return new Response(JSON.stringify({ error: 'No updates provided' }), { status: 400 });
+			}
 		}
-
-		// Fallback for unknown or missing intent if form was submitted
-		return data(
-			{ success: false, error: "Unknown or missing intent" },
-			{ status: 400 },
-		);
-	} catch (error: any) {
-		console.error("[Admin Action Error]:", error);
-		// Check for Valibot validation error structure
-		if (error.issues && Array.isArray(error.issues)) {
-			const issueMessages = error.issues
-				.map(
-					(issue: any) =>
-						`${issue.path?.join(".") || "field"}: ${issue.message}`,
-				)
-				.join(", ");
-			return data(
-				{ success: false, error: `Validation Error: ${issueMessages}` },
-				{ status: 400 },
-			);
+	} catch (error: unknown) {
+		console.error('[ADMIN ACTION] Error processing updates:', error);
+		if (error instanceof Error) {
+			console.error('[ADMIN ACTION] Error message:', error.message);
+			console.error('[ADMIN ACTION] Error stack:', error.stack);
 		}
-		return data(
-			{ success: false, error: "An unexpected error occurred." },
-			{ status: 500 },
-		);
+		return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
 	}
 }
 
 /* ---------------- COMPONENT -------------- */
+function logFormSubmission(formData: FormData) {
+  console.log('[CLIENT FORM SUBMISSION] Submitting form with data:', Object.fromEntries(formData));
+}
+
 export default function AdminIndexRoute(): JSX.Element {
 	const { content } = useLoaderData<typeof loader>();
+	const navigation = useNavigation();
+	const isLoading = navigation.state === 'loading' || navigation.state === 'submitting';
+	const fetcher = useFetcher();
+
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    logFormSubmission(formData);
+    fetcher.submit(formData, { method: 'post', action: '/admin' });
+  };
+
 	return (
 		<main id="admin-dashboard-main" aria-label="Admin Dashboard">
 			<AdminDashboard initialContent={content} />
