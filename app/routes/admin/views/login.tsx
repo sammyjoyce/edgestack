@@ -130,8 +130,8 @@ export default function LoginRoute() {
 	const [password, setPassword] = useState("");
 
 	return (
-		<FadeIn className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-			<div className="w-full max-w-md space-y-8 rounded-lg border border-gray-200 p-8 shadow-md dark:border-gray-700 dark:bg-gray-800">
+		<FadeIn className="flex min-h-screen flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+			<div className="w-full max-w-md space-y-8 rounded-lg border border-gray-200 bg-white p-8 shadow-md dark:border-gray-700 dark:bg-gray-800">
 				<div className="text-center">
 					<h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 						Admin Login
@@ -184,7 +184,7 @@ export default function LoginRoute() {
 					)}
 
 					<div>
-						<Button type="submit" className="w-full">
+						<Button type="submit" variant="primary" className="w-full">
 							Sign in
 						</Button>
 					</div>
