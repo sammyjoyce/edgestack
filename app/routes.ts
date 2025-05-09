@@ -15,7 +15,7 @@ export default [
 	]),
 
 	// All admin routes under the "/admin" URL
-	prefix("admin", [
+	...prefix("admin", [
 		// First mount the login page before the sidebar
 		route("login", "./routes/admin/views/login.tsx"),
 
