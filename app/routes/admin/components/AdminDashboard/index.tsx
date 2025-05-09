@@ -3,10 +3,10 @@ import { Link, useFetcher } from "react-router";
 import type { Tab } from "~/routes/common/components/ui/Tabs";
 
 import { Button } from "~/routes/admin/components/ui/Button";
-import { Container } from "~/routes/common/components/ui/Container";
+import { Container } from "~/routes/admin/components/ui/Container";
 import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
-import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
-import { Tabs } from "~/routes/common/components/ui/Tabs"; // Import Tabs component
+import { SectionIntro } from "~/routes/admin/components/ui/SectionIntro";
+import { Tabs } from "~/routes/admin/components/ui/Tabs"; // Import Tabs component
 
 import { AboutSectionEditor } from "~/routes/admin/components/AboutSectionEditor";
 import { ContactSectionEditor } from "~/routes/admin/components/ContactSectionEditor";

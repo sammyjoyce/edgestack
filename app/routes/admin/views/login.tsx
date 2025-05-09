@@ -13,9 +13,9 @@ import {
 	sign,
 	verify,
 } from "~/routes/common/utils/auth";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
 
-import { Button } from "~/routes/common/components/ui/Button";
+import { Button } from "~/routes/admin/components/ui/Button";
 // Import generated types from proper path
 import type { Route } from "./+types/login";
 import { Fieldset } from "../components/ui/fieldset";

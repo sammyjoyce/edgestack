@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useFetcher } from "react-router";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
 import { GrayscaleTransitionImage } from "~/routes/common/components/ui/GrayscaleTransitionImage";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 
