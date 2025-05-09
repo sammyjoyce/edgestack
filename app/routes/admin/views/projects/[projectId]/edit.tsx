@@ -9,7 +9,7 @@ import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
 import type { Route } from "./+types/edit";
 import { Button } from "../../../components/ui/Button";
-import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
+import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 
 // Define return types for loader and action
 type ProjectLoaderData = {

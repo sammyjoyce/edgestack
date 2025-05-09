@@ -12,7 +12,7 @@ import {
 import type { Route } from "./+types/upload";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
-import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
+import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { schema } from "../../../../database/schema";
 import { data } from "react-router";
 
