@@ -1,5 +1,6 @@
 import { useLoaderData, type MetaFunction } from "react-router"; 
 
+const DEBUG = process.env.NODE_ENV !== "production";
 import type { JSX } from "react";
 import type { Route } from "./+types/route";
 import Footer from "~/routes/common/components/Footer";
@@ -12,6 +13,7 @@ import ContactUs from "./components/ContactUs";
 import Hero from "./components/Hero";
 import OurServices from "./components/OurServices";
 import type { Project } from "~/database/schema"; 
+import invariant from "tiny-invariant";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	// Access loader data safely. The loader ensures 'content' is an object.
@@ -30,26 +32,35 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	];
 };
 
-// Return a plain object for better type inference
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader(
+  { request, context }: Route.LoaderArgs
+): Promise<{ content: Record<string, string>; projects: Project[]; revalidatedAt?: number }> {
+  invariant(request instanceof Request, "loader: request must be a Request");
+  invariant(context && context.db, "loader: missing DB in context");
   const url = new URL(request.url);
   const revalidate = url.searchParams.get('revalidate') === 'true';
-  console.log('[HOME LOADER] Revalidation requested:', revalidate);
-  
+  if (DEBUG) console.log('[HOME LOADER] Revalidation requested:', revalidate);
+
   let content: Record<string, string> = {};
   let projects: Project[] = [];
   try {
     content = await getAllContent(context.db);
     projects = await getFeaturedProjects(context.db);
-    console.log('[HOME LOADER] Content keys loaded:', Object.keys(content));
-    console.log('[HOME LOADER] Project count:', projects.length);
+    if (DEBUG) {
+      console.log('[HOME LOADER] Content keys loaded:', Object.keys(content));
+      console.log('[HOME LOADER] Project count:', projects.length);
+    }
   } catch (error: unknown) {
-    console.error('[HOME LOADER] Error fetching data:', error);
-    if (error instanceof Error) {
-      console.error('[HOME LOADER] Error message:', error.message);
-      console.error('[HOME LOADER] Error stack:', error.stack);
+    if (DEBUG) {
+      console.error('[HOME LOADER] Error fetching data:', error);
+      if (error instanceof Error) {
+        console.error('[HOME LOADER] Error message:', error.message);
+        console.error('[HOME LOADER] Error stack:', error.stack);
+      }
     }
   }
+  invariant(typeof content === "object", "loader: content must be an object");
+  invariant(Array.isArray(projects), "loader: projects must be an array");
   // Return a plain object without headers
   return {
     content,
@@ -60,10 +71,13 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
 export default function HomeRoute(): JSX.Element {
   const { content, projects, revalidatedAt } = useLoaderData<typeof loader>();
-  console.log('[HOME ROUTE] Revalidated at:', revalidatedAt);
-  
+  if (DEBUG) console.log('[HOME ROUTE] Revalidated at:', revalidatedAt);
+
+  invariant(typeof content === "object", "HomeRoute: content must be an object");
+  invariant(Array.isArray(projects), "HomeRoute: projects must be an array");
+
   const typedContent = content as unknown as Record<string, string>;
-  
+
   const order = [
     "hero",
     "services",
@@ -71,6 +85,9 @@ export default function HomeRoute(): JSX.Element {
     "about",
     "contact"
   ];
+
+  invariant(Array.isArray(order), "HomeRoute: order must be an array");
+  invariant(order.every((id) => typeof id === "string"), "HomeRoute: all order ids must be strings");
 
   const sectionBlocks: Record<string, JSX.Element> = {
     hero: (
@@ -143,6 +160,8 @@ export default function HomeRoute(): JSX.Element {
       <ContactUs key="contact" content={typedContent} />
     )
   };
+
+  invariant(typeof sectionBlocks === "object", "HomeRoute: sectionBlocks must be an object");
 
   return (
     <div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
