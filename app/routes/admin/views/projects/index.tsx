@@ -1,8 +1,11 @@
 import React from "react";
+import invariant from "tiny-invariant";
 import { Form, Link, useLoaderData, redirect } from "react-router";
 import type { Project } from "~/database/schema";
 import { Button } from "../../components/ui/Button";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
+import { Heading, Text } from "~/routes/common/components/ui/text";
+import { Fieldset, Legend } from "~/routes/common/components/ui/fieldset";
 import type { Route } from "./+types/index";
 // Define return types for loader and action
 type ProjectsLoaderData = {
@@ -81,25 +84,25 @@ export async function action({ request, context }: Route.ActionArgs) {
 }
 
 export function ProjectsIndexRoute() {
-	// Use type inference with explicit error handling
-	// Error case is now handled by ErrorBoundary if loader throws
 	const { projects } = useLoaderData<typeof loader>();
 
+	// TigerStyle runtime assertions
+	invariant(Array.isArray(projects), "ProjectsIndexRoute: loader must return an array of projects");
+	invariant(typeof projects.length === "number", "ProjectsIndexRoute: projects must have a length property");
+
 	return (
-		<div>
-			<div className="flex justify-between items-center mb-8">
-				<h1 className="text-2xl font-semibold text-gray-900">
-					Manage Projects
-				</h1>
-				<Button as={Link} to="/admin/projects/new" className="text-sm">
+		<>
+			<Fieldset className="mb-8">
+				<Legend>
+					<Heading level={1}>Manage Projects</Heading>
+				</Legend>
+				<Button as={Link} to="/admin/projects/new" className="ml-auto">
 					Add New Project
 				</Button>
-			</div>
+			</Fieldset>
 
 			{projects.length === 0 ? (
-				<p className="text-base text-gray-600">
-					No projects found. Add your first project!
-				</p>
+				<Text>No projects found. Add your first project!</Text>
 			) : (
 				<div className="bg-gray-50 shadow-[var(--shadow-input-default)] border border-gray-200 overflow-hidden rounded-lg">
 					<ul className="divide-y divide-gray-200">
@@ -110,21 +113,20 @@ export function ProjectsIndexRoute() {
 							>
 								<div className="flex items-center justify-between gap-4">
 									<div className="flex-1 min-w-0">
-										<Link
-											to={`/admin/projects/${project.id}/edit`}
-											className="text-base font-semibold text-primary truncate hover:underline"
-										>
-											{project.title}
-										</Link>
-										<p className="text-sm text-gray-600 truncate mt-1">
+										<Heading level={2} as="span" className="text-base font-semibold text-primary truncate hover:underline">
+											<Link to={`/admin/projects/${project.id}/edit`}>
+												{project.title}
+											</Link>
+										</Heading>
+										<Text className="text-sm text-gray-600 truncate mt-1">
 											{project.description || "No description"}
-										</p>
+										</Text>
 									</div>
 									<div className="ml-4 shrink-0 flex items-center gap-3">
 										<Button
 											as={Link}
 											to={`/admin/projects/${project.id}/edit`}
-											className="text-xs px-3 py-1"
+											className="text-xs"
 										>
 											Edit
 										</Button>
@@ -141,7 +143,8 @@ export function ProjectsIndexRoute() {
 											/>
 											<Button
 												type="submit"
-												className="text-xs px-3 py-1 bg-red-600 text-white hover:bg-red-700"
+												variant="danger"
+												className="text-xs"
 											>
 												Delete
 											</Button>
@@ -153,7 +156,7 @@ export function ProjectsIndexRoute() {
 					</ul>
 				</div>
 			)}
-		</div>
+		</>
 	);
 }
 
