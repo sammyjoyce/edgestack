@@ -16,6 +16,12 @@ import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 // Import generated Route type for this route
 import type { Route } from "./+types/_layout";
+import adminThemeStylesheet from "../../admin-theme.css?url";
+
+// Only include the admin theme stylesheet for admin routes
+export const links: Route.LinksFunction = () => [
+  { rel: "stylesheet", href: adminThemeStylesheet },
+];
 
 // Define loader with the generated LoaderArgs type
 export const loader = async ({ request, context }: Route.LoaderArgs) => {

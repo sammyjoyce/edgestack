@@ -2,7 +2,6 @@ import type React from "react";
 import { useState } from "react";
 import {
 	Form,
-	data,
 	redirect,
 	useActionData,
 	// useLoaderData, // Not needed if loader only redirects or returns null
@@ -14,7 +13,7 @@ import {
 	sign,
 	verify,
 } from "~/routes/common/utils/auth";
-import { FadeIn } from "../components/ui/FadeIn";
+import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 // Import generated types from proper path
 import type { Route } from "./+types/login";
 
@@ -38,11 +37,10 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 
 	// Provide clear error if JWT_SECRET is missing
 	if (!jwtSecret) {
-		return data({
-			success: false,
-			error:
-				"JWT_SECRET not configured. Please set JWT_SECRET in your environment variables.",
-		}, { status: 500 });
+		throw new Response(
+			"JWT_SECRET not configured. Please set JWT_SECRET in your environment variables.",
+			{ status: 500 }
+		);
 	}
 
 	// Use optional chaining to access potentially undefined properties
@@ -52,11 +50,10 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		env && "ADMIN_PASSWORD" in env ? (env.ADMIN_PASSWORD as string) : undefined;
 
 	if (!adminUsername || !adminPassword) {
-		return data({
-			success: false,
-			error:
-				"Admin credentials not configured. Please set ADMIN_USERNAME and ADMIN_PASSWORD in your environment variables.",
-		}, { status: 500 });
+		throw new Response(
+			"Admin credentials not configured. Please set ADMIN_USERNAME and ADMIN_PASSWORD in your environment variables.",
+			{ status: 500 }
+		);
 	}
 
 	// Check against environment variable credentials
@@ -77,10 +74,10 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 	}
 
 	// Return error data directly
-	return data({
+	return {
 		success: false,
-		error: "Invalid username or password",
-	}, { status: 400 });
+		error: "Invalid username or password"
+	};
 };
 
 // Add loader to check authentication status before rendering the login page

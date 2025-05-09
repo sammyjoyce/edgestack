@@ -1,4 +1,4 @@
-import React from "react"; // Import React
+import React, { type JSX } from "react"; // Import React
 // Define props interface
 import { Button } from "~/routes/common/components/ui/Button";
 

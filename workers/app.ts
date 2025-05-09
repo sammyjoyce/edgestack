@@ -1,3 +1,4 @@
+/// <reference types="../worker-configuration" />
 import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
 import { createRequestHandler } from "react-router";
 import * as schema from "../database/schema";

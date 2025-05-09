@@ -7,7 +7,7 @@ import {
 	InformationCircleIcon,
 	XCircleIcon,
 } from "@heroicons/react/20/solid";
-import React, { useRef } from "react"; // Import React
+import React, { type JSX, useRef } from "react"; // Import React and JSX type
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";

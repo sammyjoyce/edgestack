@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
 
 @theme {
@@ -47,22 +46,7 @@
 	--color-screen-dark: hsl(0, 0%, 26%);
 	/* --- END NEW THEME COLORS --- */
 
-	--shadow-openai:
-		inset 1px 1px 1px 0 rgb(255 255 255), inset -1px -1px 1px 0 rgb(
-			0 0 0 / 0.15
-		), 0.444584px 0.444584px 0.628737px -1px rgb(0 0 0 / 0.26), 1.21072px 1.21072px 1.71222px -1.5px rgb(
-			0 0 0 / 0.247
-		), 2.6583px 2.6583px 3.75941px -2.25px rgb(0 0 0 / 0.23), 5.90083px 5.90083px 8.34503px -3px rgb(
-			0 0 0 / 0.192
-		), 10px 10px 21.2132px -3.75px rgb(0 0 0 / 0.056), -0.5px -0.5px 0px 0px rgb(
-			0 0 0 / 0.05
-		);
-	--shadow-openai-active:
-		inset 0.5px 0.5px 1px #fff, inset -0.5px -0.5px 1px rgb(0 0 0 / 0.26), 0.222px 0.222px 0.314px -0.5px rgb(
-			0 0 0 / 0.03
-		), 0.605px 0.605px 0.856px -1px rgb(0 0 0 / 0.28), 1.329px 1.329px 1.88px -1.5px rgb(
-			0 0 0 / 0.4
-		);
+
 }
 
 /*

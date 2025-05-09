@@ -10,22 +10,18 @@ interface UseMenuItemInfoResult {
 }
 
 export function useMenuItemInfo(item: MenuItem): UseMenuItemInfoResult {
-	return useMemo<UseMenuItemInfoResult>(() => {
-		const isBrowser = typeof window !== "undefined";
-		const isRoute = "isRouteLink" in item && item.isRouteLink === true;
-		const rawPath = isRoute && typeof item.path === "string" ? item.path : "";
+	const isRoute = "isRouteLink" in item && item.isRouteLink === true;
+	const rawPath = isRoute && typeof item.path === "string" ? item.path : "";
 
-		const isHomeWithHash =
-			isRoute &&
-			rawPath.startsWith("/") &&
-			rawPath.includes("#") &&
-			isBrowser &&
-			window.location.pathname === "/";
+	// SSR-safe: don't use window or isBrowser in render logic
+	const isHomeWithHash =
+		isRoute &&
+		rawPath.startsWith("/") &&
+		rawPath.includes("#");
 
-		const hashPart = isHomeWithHash ? rawPath.split("#")[1] : "";
-		const anchorHref =
-			!isRoute && typeof item.path === "string" ? item.path : "";
+	const hashPart = isHomeWithHash ? rawPath.split("#")[1] : "";
+	const anchorHref =
+		!isRoute && typeof item.path === "string" ? item.path : "";
 
-		return { isRoute, rawPath, isHomeWithHash, hashPart, anchorHref };
-	}, [item]);
+	return { isRoute, rawPath, isHomeWithHash, hashPart, anchorHref };
 }

@@ -1,6 +1,6 @@
 // @ts-ignore
 import { D1Database } from "@cloudflare/workers-types";
-import { drizzle } from "drizzle-orm/d1";
+import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
 import { eq } from "drizzle-orm";
 import * as schema from "./schema";
 import type { NewContent, NewProject } from "./schema";

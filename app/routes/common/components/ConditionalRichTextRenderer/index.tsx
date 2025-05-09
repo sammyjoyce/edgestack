@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"; // Import React and Fragment
+import React, { Fragment, type JSX } from "react"; // Import React and Fragment
 import RichTextRenderer from "~/routes/common/components/RichTextRenderer";
 
 interface ConditionalRichTextRendererProps {

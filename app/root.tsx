@@ -5,26 +5,21 @@ import {
 	Scripts,
 	ScrollRestoration,
 	isRouteErrorResponse,
+	useMatches,
 } from "react-router";
 import React from "react"; // Import React
 
 import type { Route } from "./+types/root";
+// Import global error logger for client-side diagnostics
+import "./global-error-logger";
 import stylesheet from "./app.css?url";
 import adminThemeStylesheet from "./admin-theme.css?url";
 
 export const links: Route.LinksFunction = () => [
-	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
-	{
-		rel: "preconnect",
-		href: "https://fonts.gstatic.com",
-		crossOrigin: "anonymous",
-	},
-	{
-		rel: "stylesheet",
-		href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap",
-	},
-	{ rel: "stylesheet", href: stylesheet },
-	{ rel: "stylesheet", href: adminThemeStylesheet },
+  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" },
+  { rel: "stylesheet", href: stylesheet },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -50,6 +45,7 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+	console.error("[ErrorBoundary] Caught error:", error);
 	let message = "Oops!";
 	let details = "An unexpected error occurred.";
 	let stack: string | undefined;
@@ -60,10 +56,12 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 			error.status === 404
 				? "The requested page could not be found."
 				: error.statusText || details;
-		// import.meta.env.DEV is used here only for local dev error overlays. Do not use for runtime config/secrets.
 	} else if (import.meta.env.DEV && error && error instanceof Error) {
 		details = error.message;
 		stack = error.stack;
+	} else if (error && typeof error === "object") {
+		// Show stringified error for non-Error objects
+		details = `Non-Error thrown: ${JSON.stringify(error)}`;
 	}
 
 	return (

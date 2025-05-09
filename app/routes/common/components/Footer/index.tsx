@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useMemo } from "react"; // Import React
-import type { JSX } from "react"; // Import JSX type
+import React, { type JSX, useMemo } from "react"; // Import React and JSX type
 
 const navigation = [
 	{

@@ -4,6 +4,20 @@ import { renderToReadableStream } from "react-dom/server";
 import type { AppLoadContext, EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 
+// React Router will call this if exported, for all uncaught errors in loaders, actions, etc.
+export function handleError(error: unknown, { request, params, context }: any) {
+	console.error('[React Router handleError]', {
+		errorType: typeof error,
+		errorInstance: error instanceof Error,
+		errorString: String(error),
+		errorJson: (() => { try { return JSON.stringify(error); } catch { return null; } })(),
+		error,
+		requestUrl: request?.url,
+		params,
+		context,
+	});
+}
+
 export default async function handleRequest(
 	request: Request,
 	responseStatusCode: number,

@@ -9,7 +9,7 @@ declare global {
     ADMIN_USERNAME: string; // Must match Env from worker-configuration.d.ts
     ADMIN_PASSWORD: string; // Must match Env from worker-configuration.d.ts
     ASSETS_BUCKET: R2Bucket; // Assuming ASSETS_BUCKET is always expected
-    PUBLIC_R2_URL?: string;
+    PUBLIC_R2_URL: string; // Must match Env from worker-configuration.d.ts
     // JWT_SECRET is already in worker-configuration.d.ts Env
   }
 }
