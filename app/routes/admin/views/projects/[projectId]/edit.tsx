@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Link, redirect, useLoaderData } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 // The validateProjectUpdate function is not found, we'll implement inline validation
-import type { Project } from "~/database/schema";
+import type { Project } from "../../../../../database/schema";
 import { ProjectImageSelector } from "~/routes/admin/components/ProjectImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { getProjectById, updateProject } from "~/routes/common/db";
