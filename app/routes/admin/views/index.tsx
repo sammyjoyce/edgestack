@@ -6,8 +6,8 @@ import type { Route } from "./+types/index";
 import { getAllContent, updateContent, updateProject } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import AdminDashboard from "../components/AdminDashboard";
-import { Heading, Text } from "~/routes/common/components/ui/text";
-import { Fieldset, Legend } from "~/routes/common/components/ui/fieldset";
+import { Heading, Text } from "../components/ui/text";
+import { Fieldset, Legend } from "../components/ui/fieldset";
 
 const DEFAULT_CONTENT = {
 	hero_title: "Building Dreams, Creating Spaces",
