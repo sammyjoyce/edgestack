@@ -1,4 +1,5 @@
 import React, { type JSX } from "react"; // Added React import for JSX
+const DEBUG = process.env.NODE_ENV !== "production";
 import { useLoaderData, useNavigation, useFetcher, redirect } from 'react-router';
 import type { Route } from "./+types/index";
 import { getAllContent, updateContent, updateProject } from "~/routes/common/db";
@@ -30,6 +31,7 @@ export async function loader(
 
 	const items = await getAllContent(context.db);
 	invariant(items && typeof items === "object", "loader: items must be an object");
+	if (DEBUG) console.log('[ADMIN LOADER] Loaded content keys:', Object.keys(items));
 	return { content: items };
 }
 
@@ -62,9 +64,11 @@ export async function action(
 				}
 			}
 			invariant(Object.keys(updates).length > 0, "action: No updates provided");
+			if (DEBUG) console.log('[ADMIN ACTION] updateTextContent updates:', updates);
 			await updateContent(context.db, updates);
 			invariant(true, "action: reached end of updateTextContent branch");
 			const revalidateParam = `revalidate=true&t=${Date.now()}`;
+			invariant(typeof revalidateParam === "string", "action: revalidateParam must be a string");
 			return redirect(`/?${revalidateParam}`);
 		} else {
 			const updates: Record<string, string> = {};
@@ -74,13 +78,15 @@ export async function action(
 				}
 			}
 			invariant(Object.keys(updates).length > 0, "action: No updates provided");
+			if (DEBUG) console.log('[ADMIN ACTION] other updates:', updates);
 			// Here we would call a different function to handle project updates
 			const revalidateParam = `revalidate=true&t=${Date.now()}`;
+			invariant(typeof revalidateParam === "string", "action: revalidateParam must be a string");
 			return redirect(`/admin/projects?${revalidateParam}`);
 		}
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
-		console.error('[ADMIN ACTION] Error processing updates:', err);
+		if (DEBUG) console.error('[ADMIN ACTION] Error processing updates:', err);
 		return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
 	}
 }

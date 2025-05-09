@@ -1,4 +1,5 @@
 import React, { type JSX } from "react"; // Import React
+const DEBUG = process.env.NODE_ENV !== "production";
 import { useOutletContext } from "react-router";
 import RecentProjects from "~/routes/common/components/RecentProjects";
 // Import parent route loader function for typing
@@ -7,6 +8,7 @@ import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
+import invariant from "tiny-invariant";
 
 export const meta: any = ({ matches }: { matches: any[] }) => { // Adjusted type for meta function and matches
 	// Access loader data safely from parent layout match using the correct type (Awaited to unwrap the Promise)
@@ -37,6 +39,11 @@ export function HomeRoute(): JSX.Element {
 	const { content: rawContent, projects = [] } =
 		useOutletContext<Awaited<ReturnType<typeof parentLoader>>>();
 	const content = (rawContent ?? {}) as Record<string, string>;
+
+	invariant(typeof content === "object", "HomeRoute: content must be an object");
+	invariant(Array.isArray(projects), "HomeRoute: projects must be an array");
+
+	if (DEBUG) console.log('[HOME ROUTE] Rendering with content keys:', Object.keys(content));
 
 	// Section mapping
 	const sectionBlocks: Record<string, JSX.Element> = {
@@ -111,6 +118,9 @@ export function HomeRoute(): JSX.Element {
 	const order = orderString
 		? orderString.split(",").filter((id) => id in sectionBlocks)
 		: DEFAULT_ORDER;
+
+	invariant(Array.isArray(order), "HomeRoute: order must be an array");
+	invariant(order.every((id) => typeof id === "string"), "HomeRoute: all order ids must be strings");
 
 	return <>{order.map((id) => sectionBlocks[id])}</>;
 }
