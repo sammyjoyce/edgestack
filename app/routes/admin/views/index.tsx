@@ -13,7 +13,7 @@ const DEFAULT_CONTENT = {
 	home_sections_order: "hero,services,projects,about,contact",
 } as const;
 
-const DEBUG = process.env.NODE_ENV === "development"; // Or use context.cloudflare.env.DEBUG
+// Remove duplicate DEBUG declaration
 
 /* ---------------- LOADER ---------------- */
 export async function loader(
