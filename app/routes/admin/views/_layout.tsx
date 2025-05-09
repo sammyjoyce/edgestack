@@ -3,10 +3,8 @@ import {
 	DocumentDuplicateIcon,
 	FolderIcon,
 	HomeIcon,
-	Bars3Icon,
 } from "@heroicons/react/24/outline";
-import { Dialog } from "@headlessui/react";
-import React, { useState } from "react";
+import React from "react";
 import {
 	NavLink,
 	Outlet,
@@ -19,6 +17,7 @@ import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 // Import generated Route type for this route
 import type { Route } from "./+types/_layout";
 import adminThemeStylesheet from "../../admin-theme.css?url";
+import { SidebarLayout } from "~/routes/admin/components/ui/sidebar-layout";
 
 // Only include the admin theme stylesheet for admin routes
 export const links: Route.LinksFunction = () => [
@@ -84,157 +83,68 @@ const navigation: NavItem[] = [
 	{ name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
 
-// Using clsx for consistency
-import clsx from "clsx";
-
-export function Component() {
-	const [mobileOpen, setMobileOpen] = useState(false);
+export default function Component() {
+	const sidebarNav = (
+		<nav className="flex h-full flex-col bg-gray-900 px-6 py-4">
+			<div className="flex h-16 items-center border-b border-gray-800 mb-2 pb-2">
+				<img
+					src="/assets/logo_284x137-KoakP1Oi.png"
+					alt="LUSH CONSTRUCTIONS"
+					className="h-8 mx-auto"
+				/>
+			</div>
+			<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
+				Admin Menu
+			</div>
+			<hr className="border-gray-700 mb-2" />
+			<ul className="flex flex-1 flex-col gap-y-4">
+				{navigation.map((item) => (
+					<li key={item.name}>
+						{item.name === "Live Site" ? (
+							<a
+								href={item.href as string}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="group flex items-center gap-x-3 rounded-md p-2 text-sm font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+							>
+								<item.icon aria-hidden="true" className="size-5 shrink-0" />
+								{item.name}
+							</a>
+						) : (
+							<NavLink
+								to={item.href as To}
+								end={item.href === "/admin"}
+								className={({ isActive }) =>
+									`group flex items-center gap-x-3 rounded-md p-2 text-sm font-medium ${
+										isActive
+											? "bg-gray-700 text-white"
+											: "text-gray-400 hover:bg-gray-700 hover:text-white"
+									}`
+								}
+							>
+								<item.icon aria-hidden="true" className="size-5 shrink-0" />
+								{item.name}
+							</NavLink>
+						)}
+					</li>
+				))}
+			</ul>
+		</nav>
+	);
 
 	return (
-		<div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
-			{/* Mobile header */}
-			<header className="lg:hidden flex items-center justify-between bg-gray-900 px-4 py-3">
-				<button onClick={() => setMobileOpen(true)} className="text-white">
-					<Bars3Icon className="size-6" />
-				</button>
-				<img src="/assets/logo_284x137-KoakP1Oi.png" alt="Logo" className="h-8" />
-			</header>
-
-			{/* Mobile drawer */}
-			<Dialog open={mobileOpen} onClose={() => setMobileOpen(false)}>
-				<Dialog.Overlay className="fixed inset-0 bg-black/50 lg:hidden" />
-				<Dialog.Panel className="fixed inset-y-0 left-0 w-64 bg-gray-900 p-4 lg:hidden">
-					<div className="flex h-16 shrink-0 items-center border-b border-gray-800 mb-2 pb-2">
-						<img
-							src="/assets/logo_284x137-KoakP1Oi.png"
-							alt="LUSH CONSTRUCTIONS"
-							className="h-8 w-auto mx-auto"
-						/>
-					</div>
-					<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
-						Admin Menu
-					</div>
-					<hr className="border-gray-700 mb-2" />
-					<nav className="flex flex-1 flex-col">
-						<ul className="flex flex-1 flex-col gap-y-7">
-							<li>
-								<ul className="-mx-2 flex flex-col gap-1">
-									{navigation.map((item) => (
-										<li key={item.name}>
-											{item.name === "Live Site" ? (
-												<a
-													href={item.href.toString()}
-													target="_blank"
-													rel="noopener noreferrer"
-													className={clsx(
-														"text-gray-400 hover:bg-gray-700 hover:text-white",
-														"group flex gap-x-3 rounded-md p-2 text-sm font-medium",
-													)}
-												>
-													<item.icon
-														aria-hidden="true"
-														className="size-5 shrink-0"
-													/>
-													{item.name}
-												</a>
-											) : (
-												<NavLink
-													to={item.href as To}
-													end={item.href === "/admin"}
-													className={({ isActive }) =>
-														clsx(
-															isActive
-																? "bg-gray-700 text-white"
-																: "text-gray-400 hover:bg-gray-700 hover:text-white",
-															"group flex gap-x-3 rounded-md p-2 text-sm font-medium",
-														)
-													}
-													onClick={() => setMobileOpen(false)}
-												>
-													<item.icon
-														aria-hidden="true"
-														className="size-5 shrink-0"
-													/>
-													{item.name}
-												</NavLink>
-											)}
-										</li>
-									))}
-								</ul>
-							</li>
-						</ul>
-					</nav>
-				</Dialog.Panel>
-			</Dialog>
-
-			{/* Desktop sidebar */}
-			<aside className="hidden lg:flex w-72 flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 py-4">
-				<div className="flex h-16 shrink-0 items-center border-b border-gray-800 mb-2 pb-2">
-					<img
-						src="/assets/logo_284x137-KoakP1Oi.png"
-						alt="LUSH CONSTRUCTIONS"
-						className="h-8 w-auto mx-auto"
-					/>
-				</div>
-				<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
-					Admin Menu
-				</div>
-				<hr className="border-gray-700 mb-2" />
-				<nav className="flex flex-1 flex-col">
-					<ul className="flex flex-1 flex-col gap-y-7">
-						<li>
-							<ul className="-mx-2 flex flex-col gap-1">
-								{navigation.map((item) => (
-									<li key={item.name}>
-										{item.name === "Live Site" ? (
-											<a
-												href={item.href.toString()}
-												target="_blank"
-												rel="noopener noreferrer"
-												className={clsx(
-													"text-gray-400 hover:bg-gray-700 hover:text-white",
-													"group flex gap-x-3 rounded-md p-2 text-sm font-medium",
-												)}
-											>
-												<item.icon
-													aria-hidden="true"
-													className="size-5 shrink-0"
-												/>
-												{item.name}
-											</a>
-										) : (
-											<NavLink
-												to={item.href as To}
-												end={item.href === "/admin"}
-												className={({ isActive }) =>
-													clsx(
-														isActive
-															? "bg-gray-700 text-white"
-															: "text-gray-400 hover:bg-gray-700 hover:text-white",
-														"group flex gap-x-3 rounded-md p-2 text-sm font-medium",
-													)
-												}
-											>
-												<item.icon
-													aria-hidden="true"
-													className="size-5 shrink-0"
-												/>
-												{item.name}
-											</NavLink>
-										)}
-									</li>
-								))}
-							</ul>
-						</li>
-					</ul>
-				</nav>
-			</aside>
-
-			<main className="flex-1 px-4 py-6 lg:px-8 lg:py-8 overflow-auto">
-				{/* Pass loader data to Outlet context and use error boundary */}
-				<Outlet context={useLoaderData<typeof loader>()} />
-			</main>
-		</div>
+		<SidebarLayout
+			navbar={
+				<img
+					src="/assets/logo_284x137-KoakP1Oi.png"
+					alt="Logo"
+					className="h-8"
+				/>
+			}
+			sidebar={sidebarNav}
+		>
+			<Outlet context={useLoaderData<typeof loader>()} />
+		</SidebarLayout>
 	);
 }
 
@@ -243,4 +153,3 @@ export function ErrorBoundary() {
 }
 
 // Default export for React Router 7 conventions
-export default Component;
