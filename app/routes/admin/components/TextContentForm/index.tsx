@@ -11,7 +11,9 @@ import React, { type JSX, useRef } from "react"; // Import React and JSX type
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";
-import { Label, Textarea } from "~/routes/common/components/ui";
+// Pull Label from the shared fieldset, Textarea from the admin ui folder
+import { Label } from "~/routes/common/components/ui/fieldset";
+import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { Button } from "~/routes/common/components/ui/Button";
 import { Pill, PillStatusComponent } from "~/routes/common/components/ui/Pill";
 
