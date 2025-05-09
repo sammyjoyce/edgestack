@@ -37,11 +37,22 @@ function bytesToHex(buf: ArrayBuffer): string {
 		.join("");
 }
 
+function toHex(buf: Uint8Array): string {
+	return [...buf]
+		.map((b) => b.toString(16).padStart(2, "0"))
+		.join("");
+}
+
 /** Sign a session payload (`value`) with the given `secret`. */
 export async function sign(value: string, secret: string): Promise<string> {
-	const key = await getKey(secret);
-	const mac = await crypto.subtle.sign("HMAC", key, enc.encode(value));
-	return `${value}.${bytesToHex(mac)}`;
+	try {
+		const key = await getKey(secret);
+		const mac = await crypto.subtle.sign("HMAC", key, enc.encode(value));
+		return `${value}.${toHex(new Uint8Array(mac))}`;
+	} catch (error) {
+		console.error("[AUTH] Error during signing:", error);
+		throw new Error("Failed to sign session token");
+	}
 }
 
 /** Verify a signed cookie string and return the original value if valid, else `false`. */

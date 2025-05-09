@@ -1,12 +1,13 @@
 import React from "react";
 import invariant from "tiny-invariant";
 import { Form, Link, useLoaderData, redirect } from "react-router";
-import type { Project } from "~/database/schema";
+import type { Project } from "../../../../../database/schema";
 import { Button } from "../../components/ui/Button";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
-import { Heading, Text } from "../../components/ui/text";
+import { Text } from "../../components/ui/text";
 import { Fieldset, Legend } from "../../components/ui/fieldset";
 import type { Route } from "./+types/index";
+import { Heading } from "../../components/ui/heading";
 // Define return types for loader and action
 type ProjectsLoaderData = {
 	projects: Project[];
@@ -86,9 +87,9 @@ export async function action({ request, context }: Route.ActionArgs) {
 export function ProjectsIndexRoute() {
 	const { projects } = useLoaderData<typeof loader>();
 
-	// TigerStyle runtime assertions
-	invariant(Array.isArray(projects), "ProjectsIndexRoute: loader must return an array of projects");
-	invariant(typeof projects.length === "number", "ProjectsIndexRoute: projects must have a length property");
+	// TigerStyle runtime assertions with detailed error messages
+	invariant(Array.isArray(projects), "ProjectsIndexRoute: loader must return an array of projects. Check loader implementation.");
+	invariant(typeof projects.length === "number", "ProjectsIndexRoute: projects must have a length property. Data returned from loader is invalid.");
 
 	return (
 		<>
@@ -96,64 +97,92 @@ export function ProjectsIndexRoute() {
 				<Legend>
 					<Heading level={1}>Manage Projects</Heading>
 				</Legend>
-				<Button as={Link} to="/admin/projects/new" className="ml-auto">
+				<Button as={Link} href="/admin/projects/new" className="ml-auto">
 					Add New Project
 				</Button>
 			</Fieldset>
 
 			{projects.length === 0 ? (
-				<Text>No projects found. Add your first project!</Text>
+				<div className="rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
+					{/* <FolderIcon className="mx-auto h-12 w-12 text-gray-400" /> */}
+					<Text className="mt-2 text-lg font-medium text-gray-900">No projects</Text>
+					<Text className="mt-1 text-gray-500">
+						Get started by creating a new project using the button above.
+					</Text>
+				</div>
 			) : (
-				<div className="bg-gray-50 shadow-[var(--shadow-input-default)] border border-gray-200 overflow-hidden rounded-lg">
-					<ul className="divide-y divide-gray-200">
-						{projects.map((project) => (
-							<li
-								key={project.id}
-								className="px-6 py-5 hover:bg-gray-50 transition-colors duration-150"
-							>
-								<div className="flex items-center justify-between gap-4">
-									<div className="flex-1 min-w-0">
-										<Heading level={2} as="span" className="text-base font-semibold text-primary truncate hover:underline">
-											<Link to={`/admin/projects/${project.id}/edit`}>
-												{project.title}
-											</Link>
-										</Heading>
-										<Text className="text-sm text-gray-600 truncate mt-1">
-											{project.description || "No description"}
-										</Text>
-									</div>
-									<div className="ml-4 shrink-0 flex items-center gap-3">
-										<Button
-											as={Link}
+				<div className="overflow-hidden rounded-md border border-gray-200 shadow-sm dark:border-gray-700 dark:bg-gray-800/50">
+					<table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
+						<thead className="bg-gray-50 dark:bg-gray-900/30">
+							<tr>
+								<th
+									scope="col"
+									className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+								>
+									Name
+								</th>
+								<th
+									scope="col"
+									className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+								>
+									Description
+								</th>
+								<th
+									scope="col"
+									className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+								>
+									Featured
+								</th>
+								<th scope="col" className="relative px-6 py-3">
+									<span className="sr-only">Edit</span>
+								</th>
+								<th scope="col" className="relative px-6 py-3">
+									<span className="sr-only">Delete</span>
+								</th>
+							</tr>
+						</thead>
+						<tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+							{projects.map((project) => (
+								<tr
+									key={project.id}
+									className="hover:bg-gray-50 dark:hover:bg-gray-700/30"
+								>
+									<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+										{project.title}
+									</td>
+									<td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
+										{project.description || "-"}
+									</td>
+									<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+										{project.isFeatured ? (
+											<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+												Featured
+											</span>
+										) : (
+											"-"
+										)}
+									</td>
+									<td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+										<Link
 											to={`/admin/projects/${project.id}/edit`}
-											className="text-xs"
+											className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
 										>
 											Edit
-										</Button>
-										<Form method="post" replace>
-											<input
-												type="hidden"
-												name="intent"
-												value="deleteProject"
-											/>
-											<input
-												type="hidden"
-												name="projectId"
-												value={project.id}
-											/>
-											<Button
-												type="submit"
-												variant="danger"
-												className="text-xs"
-											>
+										</Link>
+									</td>
+									<td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+										<Form method="post" onSubmit={(e) => confirm("Are you sure you want to delete this project?") || e.preventDefault()}>
+											<input type="hidden" name="intent" value="deleteProject" />
+											<input type="hidden" name="projectId" value={project.id} />
+											<Button type="submit" variant="danger" size="sm">
 												Delete
 											</Button>
 										</Form>
-									</div>
-								</div>
-							</li>
-						))}
-					</ul>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
 				</div>
 			)}
 		</>

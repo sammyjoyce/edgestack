@@ -4,15 +4,11 @@
   "name": "lush",
   "main": "./workers/app.ts",
   "account_id": "427aa00a5888cad78805c7128db1f817",
-  "compatibility_date": "2025-05-09",
+  "compatibility_date": "2025-05-07",
   "assets": {
     "directory": "./build/client/"
   },
   "workers_dev": true,
-  "build": {
-    "command": "bun install && bun run build",
-    "cwd": "."
-  },
   "vars": {
     "CLOUDFLARE_ACCOUNT_ID": "427aa00a5888cad78805c7128db1f817",
     "CLOUDFLARE_DATABASE_ID": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
@@ -52,7 +48,7 @@
     "production": {
       "name": "lush-production",
       "account_id": "427aa00a5888cad78805c7128db1f817",
-      "compatibility_date": "2025-05-09",
+      "compatibility_date": "2025-05-07",
       "vars": {
         "CLOUDFLARE_ACCOUNT_ID": "427aa00a5888cad78805c7128db1f817",
         "CLOUDFLARE_DATABASE_ID": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
