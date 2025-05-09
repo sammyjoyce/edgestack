@@ -1,11 +1,13 @@
-import React, { type JSX } from "react"; // Added React import for JSX
+import React, { type JSX } from "react";
+import invariant from "tiny-invariant";
 const DEBUG = process.env.NODE_ENV !== "production";
 import { useLoaderData, useNavigation, useFetcher, redirect } from 'react-router';
 import type { Route } from "./+types/index";
 import { getAllContent, updateContent, updateProject } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import AdminDashboard from "../components/AdminDashboard";
-import invariant from "tiny-invariant";
+import { Heading, Text } from "~/routes/common/components/ui/text";
+import { Fieldset, Legend } from "~/routes/common/components/ui/fieldset";
 
 const DEFAULT_CONTENT = {
 	hero_title: "Building Dreams, Creating Spaces",
@@ -98,8 +100,18 @@ function logFormSubmission(formData: FormData) {
 
 export default function AdminIndexRoute(): JSX.Element {
 	const { content } = useLoaderData<typeof loader>();
+
+	// TigerStyle runtime assertions
+	invariant(content && typeof content === "object", "AdminIndexRoute: loader must return content object");
+	invariant("hero_title" in content, "AdminIndexRoute: content must have hero_title key");
+
 	return (
 		<main id="admin-dashboard-main" aria-label="Admin Dashboard">
+			<Fieldset>
+				<Legend>
+					<Heading level={1}>Admin Dashboard</Heading>
+				</Legend>
+			</Fieldset>
 			<AdminDashboard initialContent={content} />
 		</main>
 	);
