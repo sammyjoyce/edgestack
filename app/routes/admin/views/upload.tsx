@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { type JSX, useState } from "react";
 import { eq } from "drizzle-orm";
-import { data } from "react-router";
 import * as schema from "~/database/schema";
 import { validateContentInsert } from "~/database/valibot-validation";
 import { updateContent } from "~/routes/common/db";
@@ -14,7 +13,7 @@ import {
 import type { Route } from "./+types/upload";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
-import { FadeIn } from "../components/ui/FadeIn";
+import { FadeIn } from "../../common/components/ui/FadeIn";
 
 export async function loader({ context, request }: Route.LoaderArgs) {
 	// Authentication check
@@ -30,7 +29,7 @@ export async function loader({ context, request }: Route.LoaderArgs) {
 		return { images };
 	} catch (error: any) {
 		console.error("Error listing images:", error);
-		throw data(
+		throw new Error(
 			{ images: [], error: error.message || "Failed to list images" },
 			{ status: 500 },
 		);
@@ -38,9 +37,9 @@ export async function loader({ context, request }: Route.LoaderArgs) {
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
-	const unauthorized = () => data({ success: false, error: "Unauthorized" }, { status: 401 });
+	const unauthorized = () => { throw new Response("Unauthorized", { status: 401 }); };
 
-	const badRequest = (msg: string) => data({ success: false, error: msg }, { status: 400 });
+	const badRequest = (msg: string) => { throw new Response(msg, { status: 400 }); };
 
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -62,7 +61,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 				const r2Deleted = await deleteStoredImage(filename, context);
 				if (!r2Deleted) {
-					return data({ success: false, error: "Failed to delete image from storage." }, { status: 500 });
+					throw new Response("Failed to delete image from storage.", { status: 500 });
 				}
 
 				const publicUrlBase = context.cloudflare?.env?.PUBLIC_R2_URL || "/assets";
@@ -199,7 +198,11 @@ export async function action({ request, context }: Route.ActionArgs) {
 					// Decide if this error should prevent content update or just be logged
 					// For now, we'll proceed to update content with URL only if media insert fails
 					// Throwing error here will rollback the transaction.
-					throw dbError;
+					if (dbError instanceof Error) {
+						throw dbError;
+					} else {
+						throw new Error(typeof dbError === "string" ? dbError : JSON.stringify(dbError));
+					}
 				}
 
 				// Now update content with the publicUrl and newMediaId (if available)

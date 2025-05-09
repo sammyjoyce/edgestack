@@ -1,11 +1,11 @@
 import React from "react";
-import { Outlet, useLoaderData, redirect, data } from "react-router";
+import { Outlet, useLoaderData, redirect } from "react-router";
 import type { Project } from "~/database/schema";
 import { getAllProjects } from "~/routes/common/db";
 import type { Route } from "./+types/_layout";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import { AdminErrorBoundary } from "../../components/AdminErrorBoundary";
-import { FadeIn } from "../../components/ui/FadeIn";
+import { FadeIn } from "../../../common/components/ui/FadeIn";
 // Define the loader data type
 type ProjectsLoaderData = {
 	projects: Project[];
@@ -20,7 +20,7 @@ export async function loader({
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		throw redirect("/admin/login"); // Or throw data({ error: "Unauthorized" }, { status: 401 })
+		throw redirect("/admin/login");
 	}
 
 	try {
@@ -28,7 +28,7 @@ export async function loader({
 		return { projects };
 	} catch (error) {
 		console.error("Failed to load projects:", error);
-		throw data({ projects: [], error: "Failed to load projects" }, { status: 500 });
+		throw new Error("Failed to load projects");
 	}
 }
 

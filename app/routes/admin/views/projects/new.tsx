@@ -6,7 +6,7 @@ import { createProject } from "~/routes/common/db"; // Import createProject
 import { validateProjectInsert } from "~/database/valibot-validation"; // Import validation
 import RichTextField from "../../components/RichTextField";
 import { Button } from "../../components/ui/Button";
-import { FadeIn } from "../../components/ui/FadeIn";
+import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 // Import generated types if available (assuming generouted)
 import type { Route } from "./+types/new"; // Adjust path if needed
 
@@ -65,15 +65,9 @@ export async function action({
 						`${issue.path?.map((p:any) => p.key).join(".") || "field"}: ${issue.message}`,
 				)
 				.join("; ");
-			return data(
-				{ success: false, error: `Validation Error: ${issueMessages}` },
-				{ status: 400 },
-			);
+			throw new Response(`Validation Error: ${issueMessages}`, { status: 400 });
 		}
-		return data(
-			{ success: false, error: error.message || "Failed to create project" },
-			{ status: 500 },
-		);
+		throw new Error(error.message || "Failed to create project");
 	}
 }
 

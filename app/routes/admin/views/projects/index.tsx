@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Link, useLoaderData, redirect, data } from "react-router";
+import { Form, Link, useLoaderData, redirect } from "react-router";
 import type { Project } from "~/database/schema";
 import { Button } from "../../components/ui/Button";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
@@ -25,7 +25,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
 		// Prefer throwing a redirect or a data response for auth failures
-		throw redirect("/admin/login"); // Or: throw data({ error: "Unauthorized" }, { status: 401 });
+		throw redirect("/admin/login"); // Or: throw new Error("Unauthorized");
 	}
 
 	try {
@@ -33,7 +33,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		return { projects };
 	} catch (error) {
 		console.error("Failed to load projects:", error);
-		throw data({ message: "Failed to load projects" }, { status: 500 });
+		throw new Error("Failed to load projects");
 	}
 }
 
@@ -45,7 +45,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 	// Auth check
 	// Auth check
 	const unauthorized = () => {
-		return data({ success: false, error: "Unauthorized" }, { status: 401 });
+		throw new Response("Unauthorized", { status: 401 });
 	};
 	const { getSessionCookie, verify } =
 		await import("~/routes/common/utils/auth");
@@ -59,25 +59,25 @@ export async function action({ request, context }: Route.ActionArgs) {
 	if (intent === "deleteProject") {
 		const projectIdStr = formData.get("projectId")?.toString();
 		if (!projectIdStr) {
-			return data({ success: false, error: "Missing project ID" }, { status: 400 });
+			throw new Response("Missing project ID", { status: 400 });
 		}
 		const projectId = Number(projectIdStr);
 		if (Number.isNaN(projectId)) {
-			return data({ success: false, error: "Invalid project ID" }, { status: 400 });
+			throw new Response("Invalid project ID", { status: 400 });
 		}
 
 		try {
 			await deleteProject(context.db, projectId);
-			return data({ success: true, projectId });
+			return { success: true, projectId };
 		} catch (error: unknown) {
 			console.error("Failed to delete project:", error);
 			const message = error instanceof Error ? error.message : "Failed to delete project";
-			return data({ success: false, error: message }, { status: 500 });
+			throw new Response(message, { status: 500 });
 		}
 	}
 
 	// Handle unknown intent
-	return data({ success: false, error: "Unknown intent" }, { status: 400 });
+	throw new Response("Unknown intent", { status: 400 });
 }
 
 export function ProjectsIndexRoute() {

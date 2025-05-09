@@ -8,7 +8,9 @@ export default {
       return new Response('Database seeded successfully!', { status: 200 });
     } catch (error) {
       console.error('Error seeding database:', error);
-      return new Response('Error seeding database: ' + error.message, { status: 500 });
+      // More robust error message handling
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return new Response('Error seeding database: ' + errorMessage, { status: 500 });
     }
   }
 };

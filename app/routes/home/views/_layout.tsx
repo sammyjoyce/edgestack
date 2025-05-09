@@ -10,8 +10,6 @@ import {
 	getFeaturedProjects,
 } from "~/routes/common/db";
 import { HomeErrorBoundary } from "../components/HomeErrorBoundary";
-// Import generated Route type for type safety
-import type { Route } from "./+types/_layout";
 import { data } from "react-router";
 
 type HomeLayoutLoaderData = {
@@ -25,7 +23,7 @@ type HomeLayoutLoaderData = {
 	};
 };
 
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ request, context }: any) { // Adjusted type for LoaderArgs
 	try {
 		// Load all content
 		const content = await getAllContent(context.db);
@@ -52,7 +50,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	} catch (error) {
 		console.error("Error fetching data from D1:", error);
 		// Throw an error to be caught by the ErrorBoundary
-		throw data(
+		throw new Error(
 			{ message: "Failed to load layout data" },
 			{ status: 500 },
 		);

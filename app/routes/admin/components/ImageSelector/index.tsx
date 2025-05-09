@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"; // Import React and useRef
+import React, { type JSX, useState, useRef } from "react"; // Import React and useRef
 import { useFetcher } from "react-router";
 import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";

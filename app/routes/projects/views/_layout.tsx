@@ -1,8 +1,6 @@
 import { Outlet, useLoaderData, data } from "react-router";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
-// Import generated Route type for type safety
-import type { Route } from "./+types/_layout";
 import Header from "~/routes/common/components/Header";
 import { ProjectsErrorBoundary } from "../components/ProjectsErrorBoundary";
 // Removed duplicate import
@@ -16,7 +14,7 @@ type ProjectsLayoutLoaderData = {
 
 export const loader = async ({
 	context,
-}: Route.LoaderArgs) => {
+}: any) => { // Adjusted type for LoaderArgs
 	try {
 		const { getAllContent, getAllProjects } =
 			await import("~/routes/common/db");
@@ -27,7 +25,7 @@ export const loader = async ({
 	} catch (error: any) {
 		console.error("Failed to fetch content or projects:", error);
 		// Throw data response for error handling by ErrorBoundary
-		throw data(
+		throw new Error(
 			{ message: error.message || "Failed to load projects layout data" },
 			{ status: 500 },
 		);
