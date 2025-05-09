@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import type { Project } from "~/database/schema";
+import type { Project } from "../../../../../../database/schema";
 import { deleteProject, getProjectById } from "~/routes/common/db"; // Import deleteProject and getProjectById statically
 import type { Route } from "./+types/delete";
 import { Button } from "../../../components/ui/Button";

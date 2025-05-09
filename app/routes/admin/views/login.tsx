@@ -14,205 +14,182 @@ import {
 	verify,
 } from "~/routes/common/utils/auth";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { Label, Input } from "~/routes/common/components/ui";
+
 import { Button } from "~/routes/common/components/ui/Button";
 // Import generated types from proper path
 import type { Route } from "./+types/login";
+import { Fieldset } from "../components/ui/fieldset";
+import { Label } from "../components/ui/fieldset";
+import { Input } from "../components/ui/input";
 
 // Define a specific type for the data part of the action's return
 type LoginActionData = { success: false; error: string };
 
 // Use generated type without explicit return type annotation
 export const action = async ({ request, context }: Route.ActionArgs) => {
-	// Debug log for env variables (redact actual secrets)
-	// NOTE: The 'env' object comes from Cloudflare context and may not be typed with ADMIN_USERNAME/PASSWORD in some environments.
-	const env = context.cloudflare?.env;
-	console.log("[ADMIN LOGIN] ENV:", {
-		JWT_SECRET: env?.JWT_SECRET ? "[set]" : "[missing]",
-		ADMIN_USERNAME: env?.ADMIN_USERNAME ? "[set]" : "[missing]",
-		ADMIN_PASSWORD: env?.ADMIN_PASSWORD ? "[set]" : "[missing]",
-	});
-	const formData = await request.formData();
-	const username = formData.get("username")?.toString() ?? "";
-	const password = formData.get("password")?.toString() ?? "";
-	const jwtSecret = env?.JWT_SECRET;
+	try {
+		const formData = await request.formData();
+		const username = formData.get("username")?.toString() ?? "";
+		const password = formData.get("password")?.toString() ?? "";
+		const env = context.cloudflare?.env;
+		const jwtSecret = env?.JWT_SECRET;
 
-	// Provide clear error if JWT_SECRET is missing
-	if (!jwtSecret) {
+		// Log environment variable access
+		console.log("[ADMIN LOGIN] Accessing environment variables:", {
+			adminUsernameDefined: !!env?.ADMIN_USERNAME,
+			adminPasswordDefined: !!env?.ADMIN_PASSWORD,
+			jwtSecretDefined: !!jwtSecret,
+		});
+
+		// Provide clear error if JWT_SECRET is missing
+		if (!jwtSecret) {
+			throw new Response(
+				"JWT_SECRET not configured. Please set JWT_SECRET in your environment variables.",
+				{ status: 500 }
+			);
+		}
+
+		// Directly access environment variables
+		const adminUsername = env?.ADMIN_USERNAME as string;
+		const adminPassword = env?.ADMIN_PASSWORD as string;
+
+		if (!adminUsername || !adminPassword) {
+			throw new Response(
+				"Admin credentials not configured. Please set ADMIN_USERNAME and ADMIN_PASSWORD in your environment variables.",
+				{ status: 500 }
+			);
+		}
+
+		// Check against environment variable credentials
+		if (username === adminUsername && password === adminPassword) {
+			// Create signed session token
+			const token = await sign(username, jwtSecret);
+
+			// Create response with typed redirect
+			const response = redirect("/admin");
+
+			// Set secure cookie with the token
+			response.headers.set(
+				"Set-Cookie",
+				`${COOKIE_NAME}=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${COOKIE_MAX_AGE}`,
+			);
+
+			return response;
+		}
+
+		// Return error data directly
+		return {
+			success: false,
+			error: "Invalid username or password"
+		};
+	} catch (error) {
+		console.error("[ADMIN LOGIN] Action Error:", error);
 		throw new Response(
-			"JWT_SECRET not configured. Please set JWT_SECRET in your environment variables.",
+			"Unexpected server error during login process. Please check logs for details.",
 			{ status: 500 }
 		);
 	}
-
-	// Use optional chaining to access potentially undefined properties
-	const adminUsername =
-		env && "ADMIN_USERNAME" in env ? (env.ADMIN_USERNAME as string) : undefined;
-	const adminPassword =
-		env && "ADMIN_PASSWORD" in env ? (env.ADMIN_PASSWORD as string) : undefined;
-
-	if (!adminUsername || !adminPassword) {
-		throw new Response(
-			"Admin credentials not configured. Please set ADMIN_USERNAME and ADMIN_PASSWORD in your environment variables.",
-			{ status: 500 }
-		);
-	}
-
-	// Check against environment variable credentials
-	if (username === adminUsername && password === adminPassword) {
-		// Create signed session token
-		const token = await sign(username, jwtSecret);
-
-		// Create response with typed redirect
-		const response = redirect("/admin");
-
-		// Set secure cookie with the token
-		response.headers.set(
-			"Set-Cookie",
-			`${COOKIE_NAME}=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${COOKIE_MAX_AGE}`,
-		);
-
-		return response;
-	}
-
-	// Return error data directly
-	return {
-		success: false,
-		error: "Invalid username or password"
-	};
 };
 
 // Add loader to check authentication status before rendering the login page
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
-	const sessionValue = getSessionCookie(request);
-	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+	try {
+		const sessionValue = getSessionCookie(request);
+		const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 
-	if (sessionValue && jwtSecret) {
-		try {
-			const isAuthenticated = await verify(sessionValue, jwtSecret);
-			if (isAuthenticated) {
-				// If already logged in, redirect to the admin dashboard
-				return redirect("/admin");
+		if (sessionValue && jwtSecret) {
+			try {
+				const isAuthenticated = await verify(sessionValue, jwtSecret);
+				if (isAuthenticated) {
+					// If already logged in, redirect to the admin dashboard
+					return redirect("/admin");
+				}
+			} catch (e) {
+				// Ignore verification errors, just means they aren't logged in
+				console.error("Login loader verification error:", e);
 			}
-		} catch (e) {
-			// Ignore verification errors, just means they aren't logged in
-			console.error("Login loader verification error:", e);
 		}
-	}
 
-	// If not logged in or verification fails, allow rendering the login page
-	// Returning null is standard practice here
-	return null;
+		// If not logged in or verification fails, allow rendering the login page
+		// Returning null is standard practice here
+		return null;
+	} catch (error) {
+		console.error("[ADMIN LOGIN] Loader Error:", error);
+		throw new Response(
+			"Unexpected server error during login loader process. Please check logs for details.",
+			{ status: 500 }
+		);
+	}
 };
 
 export default function LoginRoute() {
-	// Use useActionData to get typed action data
+	// Access action data with proper typing
 	const actionData = useActionData<LoginActionData>();
-	const [error, setError] = useState<string | null>(actionData?.error || null);
 
-	// Always use actionData.error if present, else local error
-	const effectiveError = actionData?.error ?? error;
-
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		const form = e.currentTarget;
-		const username = form.username.value;
-		const password = form.password.value;
-
-		if (!username || !password) {
-			e.preventDefault();
-			setError("Username and password are required");
-		} else {
-			setError(null);
-		}
-	};
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
 
 	return (
-		<div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
-			<FadeIn>
-				<div className="sm:mx-auto sm:w-full sm:max-w-md">
-					<img
-						className="mx-auto h-12 w-auto"
-						src="/assets/logo_284x137-KoakP1Oi.png"
-						alt="Lush Constructions"
-					/>
-					<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+		<FadeIn className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+			<div className="w-full max-w-md space-y-8 rounded-lg border border-gray-200 p-8 shadow-md dark:border-gray-700 dark:bg-gray-800">
+				<div className="text-center">
+					<h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 						Admin Login
-					</h2>
+					</h1>
+					<p className="mt-2 text-gray-600 dark:text-gray-300">
+						Sign in to your account
+					</p>
 				</div>
 
-				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-					<div className="bg-gray-50 py-8 px-4 shadow-[var(--shadow-input-default)] sm:rounded-lg sm:px-10 border border-gray-200">
-						<Form
-							method="post"
-							className="gap-6 flex flex-col"
-							onSubmit={handleSubmit}
-						>
-							{effectiveError && (
-								<div className="rounded-md bg-red-100 border border-red-400 p-4 mb-4">
-									<div className="flex items-center">
-										<svg
-											className="h-6 w-6 text-red-600 mr-2"
-											fill="none"
-											stroke="currentColor"
-											strokeWidth="2"
-											viewBox="0 0 24 24"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z"
-											/>
-										</svg>
-										<div>
-											<h3 className="text-base font-semibold text-red-800">
-												{effectiveError}
-											</h3>
-											{process.env.NODE_ENV === "development" && (
-												<p className="mt-1 text-xs text-red-700">
-													{effectiveError.includes("JWT_SECRET") &&
-														"Tip: Add JWT_SECRET=your_secret to your .dev.vars file."}
-													{effectiveError.includes("Admin credentials") &&
-														"Tip: Add ADMIN_USERNAME and ADMIN_PASSWORD to your .dev.vars file."}
-												</p>
-											)}
-										</div>
-									</div>
-								</div>
-							)}
+				<Form method="post" className="mt-8 space-y-6">
+					<input type="hidden" name="remember" defaultValue="true" />
+					<div className="space-y-4 rounded-md shadow-sm">
+						<Fieldset className="space-y-4">
+							<Label htmlFor="username">Username</Label>
+							<Input
+								id="username"
+								name="username"
+								type="text"
+								autoComplete="username"
+								required
+								placeholder="Admin username"
+								value={username}
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+									setUsername(e.target.value)
+								}
+								className="w-full"
+							/>
 
-							<div>
-								<Label htmlFor="username">Username</Label>
-								<Input
-									id="username"
-									name="username"
-									type="text"
-									autoComplete="username"
-									required
-								/>
-							</div>
-
-							<div>
-								<Label htmlFor="password">Password</Label>
-								<Input
-									id="password"
-									name="password"
-									type="password"
-									autoComplete="current-password"
-									required
-								/>
-							</div>
-
-							<div>
-								<Button type="submit" variant="primary" block>
-									Sign in
-								</Button>
-							</div>
-						</Form>
+							<Label htmlFor="password">Password</Label>
+							<Input
+								id="password"
+								name="password"
+								type="password"
+								autoComplete="current-password"
+								required
+								placeholder="Admin password"
+								value={password}
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+									setPassword(e.target.value)
+								}
+								className="w-full"
+							/>
+						</Fieldset>
 					</div>
-				</div>
-			</FadeIn>
-		</div>
+
+					{actionData && !actionData.success && (
+						<div className="rounded-md border-l-4 border-red-500 bg-red-100 p-3 dark:bg-red-900/30 dark:text-red-200">
+							<p className="text-sm font-medium">{actionData.error}</p>
+						</div>
+					)}
+
+					<div>
+						<Button type="submit" className="w-full">
+							Sign in
+						</Button>
+					</div>
+				</Form>
+			</div>
+		</FadeIn>
 	);
 }
-
-// No need for extra export as we're using default export directly
