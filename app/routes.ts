@@ -9,9 +9,9 @@ export default [
 	]),
 
 	// Projects routes
-	route("projects", "routes/projects/route.tsx", [
-		index("routes/projects/views/index.tsx"), // This can remain if route.tsx uses Outlet for index
-		route(":projectId", "routes/projects/views/[projectId].tsx"),
+	route("projects", "./routes/projects/route.tsx", [
+		index("./routes/projects/views/index.tsx"), // This can remain if route.tsx uses Outlet for index
+		route(":projectId", "./routes/projects/views/[projectId].tsx"),
 	]),
 
 	// All admin routes under the "/admin" URL
