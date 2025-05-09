@@ -7,7 +7,7 @@ import { createProject } from "~/routes/common/db";
 
 import type { Route } from "./+types/new";
 
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
 import { Heading } from "../../components/ui/heading";
 import { Fieldset, Label, Legend } from "../../components/ui/fieldset";
 import { Input } from "../../components/ui/input"
