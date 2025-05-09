@@ -7,10 +7,8 @@ import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
-// Import generated Route type from the proper location
-import type { Route } from "./+types/index";
 
-export const meta: Route.MetaFunction = ({ matches }) => {
+export const meta: any = ({ matches }: { matches: any[] }) => { // Adjusted type for meta function and matches
 	// Access loader data safely from parent layout match using the correct type (Awaited to unwrap the Promise)
 	const parentLayoutMatch = matches.find(
 		(match) => match?.id === "routes/home/views/_layout",
