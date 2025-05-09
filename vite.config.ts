@@ -3,8 +3,16 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import path from "path";
 
 export default defineConfig({
+  // map "~" → "./app"
+  resolve: {
+    alias: {
+      "~": path.resolve(__dirname, "app"),
+    },
+  },
+
   build: {
     rollupOptions: {
       output: {
@@ -17,7 +25,10 @@ export default defineConfig({
     },
   },
   plugins: [
-    tsconfigPaths(),
+    // point the plugin at your Cloudflare‐tsconfig so it picks up "~/*"
+    tsconfigPaths({
+      projects: [ path.resolve(__dirname, "tsconfig.cloudflare.json") ]
+    }),
     reactRouter(),
     cloudflare({
       viteEnvironment: { name: process.env.CLOUDFLARE_ENV || "ssr" },
