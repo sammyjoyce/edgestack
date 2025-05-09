@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { Drawer } from "vaul";
 import { Button } from "~/routes/admin/components/ui/Button";
-import { FadeIn } from "~/routes/admin/components/ui/FadeIn";
+import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import type { StoredImage } from "~/utils/upload.server";
 import type { action as uploadRouteAction, loader as uploadRouteLoader } from "~/routes/admin/views/upload";
 
