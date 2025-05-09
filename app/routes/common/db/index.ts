@@ -17,16 +17,25 @@ export async function getAllContent(
 			.from(schema.content)
 			.all();
 		
+		console.log("Raw database response for content:", JSON.stringify(rows, null, 2));
+		
 		const contentMap: Record<string, string> = {};
 		for (const row of rows) {
 			// row.value is parsed by Drizzle from the JSON string in DB
+			console.log(`Processing content key: ${row.key}, Raw value:`, row.value);
 			if (typeof row.value === 'string') {
+				// Treat as plain text unless later processing requires JSON parsing
 				contentMap[row.key] = row.value;
 			} else if (row.value !== null && row.value !== undefined) {
 				// For complex JSON types (objects/arrays), stringify them.
 				// For simple types (numbers, booleans), String() conversion is fine.
 				if (typeof row.value === 'object' || Array.isArray(row.value)) {
-					contentMap[row.key] = JSON.stringify(row.value);
+					try {
+						contentMap[row.key] = JSON.stringify(row.value);
+					} catch (jsonError) {
+						console.error(`Failed to stringify object for key ${row.key}:`, row.value);
+						contentMap[row.key] = JSON.stringify({ error: "Failed to stringify", originalValue: row.value });
+					}
 				} else {
 					contentMap[row.key] = String(row.value);
 				}
@@ -120,7 +129,11 @@ export async function updateContent(
 	} catch (batchError) {
 		console.error(`Error during batch content update:`, batchError);
 		// Rethrow or handle as appropriate for your application
-		throw batchError;
+		if (batchError instanceof Error) {
+			throw batchError;
+		} else {
+			throw new Error(typeof batchError === "string" ? batchError : JSON.stringify(batchError));
+		}
 	}
 }
 
