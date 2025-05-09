@@ -4,8 +4,8 @@ import { Form, Link, useLoaderData, redirect } from "react-router";
 import type { Project } from "~/database/schema";
 import { Button } from "../../components/ui/Button";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
-import { Heading, Text } from "~/routes/common/components/ui/text";
-import { Fieldset, Legend } from "~/routes/common/components/ui/fieldset";
+import { Heading, Text } from "../../components/ui/text";
+import { Fieldset, Legend } from "../../components/ui/fieldset";
 import type { Route } from "./+types/index";
 // Define return types for loader and action
 type ProjectsLoaderData = {
