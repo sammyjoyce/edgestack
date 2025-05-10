@@ -32,7 +32,10 @@ export function SectionIntro({
 							<span
 								className={clsx(
 									"mb-6 block font-display text-base font-semibold",
-									invert ? "text-white" : "text-neutral-950",
+									// If invert is true, text is light.
+									invert
+										? "text-white dark:text-neutral-950" // White on dark bg (light mode), Dark on light bg (dark mode, if section inverts)
+										: "text-neutral-950 dark:text-white" // Dark on light bg (light mode), White on dark bg (dark mode)
 								)}
 							>
 								{eyebrow}
@@ -46,7 +49,9 @@ export function SectionIntro({
 							smaller
 								? "text-2xl font-semibold"
 								: "text-4xl font-medium sm:text-5xl",
-							invert ? "text-white" : "text-neutral-950",
+							invert
+								? "text-white dark:text-neutral-950"
+								: "text-neutral-950 dark:text-white",
 						)}
 					>
 						{title}
@@ -56,7 +61,9 @@ export function SectionIntro({
 					<div
 						className={clsx(
 							"mt-6 text-xl",
-							invert ? "text-neutral-300" : "text-neutral-600",
+							invert
+								? "text-neutral-300 dark:text-neutral-700" // Lighter gray on dark bg (light mode), Mid-gray on light bg (dark mode, if section inverts)
+								: "text-neutral-600 dark:text-neutral-300" // Mid-gray on light bg (light mode), Lighter-gray on dark bg (dark mode)
 						)}
 					>
 						{children}

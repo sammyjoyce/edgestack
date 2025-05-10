@@ -1,3 +1,4 @@
+import clsx from "clsx"; // Ensure clsx is imported
 import React, { type JSX } from "react";
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; // Import the new component
 import { Button } from "~/routes/common/components/ui/Button";
@@ -16,6 +17,7 @@ interface OurServicesProps {
 	introTitle?: string;
 	introText?: string;
 	servicesData?: ServiceItem[];
+	theme?: 'light' | 'dark'; // Add theme prop
 }
 
 // Default hardcoded services
@@ -46,25 +48,35 @@ export default function OurServices({
 	introTitle = "Renovation and Extension Specialists",
 	introText,
 	servicesData,
+	theme = "light", // Default theme
 }: OurServicesProps): JSX.Element {
 	const defaultIntroText =
 		"Qualified & Professional Building Services from Start to Finish";
 	const services = servicesData ?? defaultServices;
 
 	return (
-		<div className="relative bg-white py-16 sm:py-24" id="services">
-			<div className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-gray-50" />
+		<div className={clsx(
+			"relative py-16 sm:py-24 bg-white dark:bg-gray-900",
+			theme === "dark" && "dark",
+		)} id="services">
+			<div className={clsx(
+				"absolute inset-x-0 top-0 h-40 bg-linear-to-b from-gray-50 dark:from-gray-800"
+			)} />
 
 			<Container>
 				<section className="mt-12 mb-6 sm:mt-16 sm:mb-8 lg:mt-20 lg:mb-10">
 					{/* Use props for intro title and text, with defaults */}
 					<SectionIntro centered title={introTitle}>
+						{/* SectionIntro will need its own theme prop or to inherit styles */}
 						<ConditionalRichTextRenderer
 							text={introText || defaultIntroText}
-							fallbackTag="p"
+							fallbackClassName="text-gray-700 dark:text-gray-300"
+							richTextClassName={clsx(theme === "dark" && "dark:prose-invert")}
+							fallbackTag="p" 
 						/>
 						<div className="mt-6 flex justify-center">
-							<Button to="#contact">Get Started</Button>
+							{/* Button's invert prop might need to be dynamic based on theme */}
+							<Button to="#contact" invert={theme === 'light'}>Get Started</Button>
 						</div>
 					</SectionIntro>
 				</section>
@@ -85,9 +97,10 @@ export default function OurServices({
 									</div>
 
 									{/* Service Info */}
+									{/* Overlay generally means light text is needed regardless of section theme */}
 									<div className="absolute inset-0 z-10 flex flex-col justify-end p-4 sm:p-6">
-										<div className="flex flex-col gap-2 sm:gap-3">
-											<h3 className="font-bold text-3xl text-white sm:text-4xl">
+										<div className="flex flex-col gap-2 text-white sm:gap-3">
+											<h3 className="font-bold text-3xl sm:text-4xl ">
 												{service.title}
 											</h3>
 											<a

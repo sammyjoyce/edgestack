@@ -17,12 +17,14 @@ export async function getAllContent(
 	assert(db, "getAllContent: db is required");
 	try {
 		const rows = await db
-			.select({ key: schema.content.key, value: schema.content.value })
+			// Select the theme along with key and value
+			.select({ key: schema.content.key, value: schema.content.value, theme: schema.content.theme })
 			.from(schema.content)
 			.all();
 
 		const contentMap: Record<string, string> = {};
 		for (const row of rows) {
+			// Store the main value
 			if (typeof row.value === "string") {
 				// Explicitly treat as plain text, no JSON parsing
 				contentMap[row.key] = row.value;
@@ -42,6 +44,9 @@ export async function getAllContent(
 			} else {
 				contentMap[row.key] = "";
 			}
+			// Store the theme for the content key, using a suffix convention
+			// e.g., if row.key is 'hero_title', its theme is stored as 'hero_title_theme'
+			contentMap[`${row.key}_theme`] = row.theme ?? 'light';
 		}
 		assert(typeof contentMap === "object", "getAllContent: must return object");
 		return contentMap;
@@ -61,18 +66,23 @@ export async function updateContent(
 	const statements: BatchItem<"sqlite">[] = []; // Collect Drizzle statements
 
 	for (const [key, valueOrObj] of Object.entries(updates)) {
+		// If the key is a theme key (e.g., "hero_title_theme"), update the theme column for the base key.
+		if (key.endsWith("_theme")) {
+			const baseKey = key.replace("_theme", "");
+			const themeValue = typeof valueOrObj === 'string' ? valueOrObj as 'light' | 'dark' : 'light';
+			// Ensure the themeValue is one of the allowed enum values before setting
+			if (themeValue === 'light' || themeValue === 'dark') {
+				statements.push(db.update(schema.content).set({ theme: themeValue }).where(eq(schema.content.key, baseKey)));
+			} else {
+				// Optionally log a warning or handle invalid theme value
+				console.warn(`Invalid theme value '${themeValue}' for key '${baseKey}_theme'. Defaulting to 'light'.`);
+				statements.push(db.update(schema.content).set({ theme: 'light' }).where(eq(schema.content.key, baseKey)));
+			}
+			continue; // Move to next update
+		}
+
 		const dataToSet =
 			typeof valueOrObj === "string" ? { value: valueOrObj } : valueOrObj;
-
-		if (typeof dataToSet.value !== "string") {
-			if (process.env.NODE_ENV !== "production") {
-				console.warn(
-					`Skipping content update for key '${key}' because value is not a string. Value: ${JSON.stringify(dataToSet.value)}`,
-				);
-			}
-			// Skip adding this item to the batch if its value is not a string
-			continue;
-		}
 
 		const value = dataToSet.value;
 		const page =
@@ -82,8 +92,10 @@ export async function updateContent(
 		const type = dataToSet.type ?? undefined;
 		const sortOrder = dataToSet.sortOrder ?? undefined;
 		const mediaId = dataToSet.mediaId ?? null;
-		const metadata =
-			typeof dataToSet.metadata === "string" ? dataToSet.metadata : null;
+		const metadata = typeof dataToSet.metadata === "string" ? dataToSet.metadata : null;		
+		// Theme for non-theme-specific keys will use the default or existing value in the DB.
+		// The theme property on dataToSet (if it exists for a non-theme key) will be used.
+		const theme = dataToSet.theme as 'light' | 'dark' | undefined;
 		// const currentTimestamp = new Date(); // Rely on $onUpdate for updatedAt
 
 		const valuesPayload: schema.NewContent = {
@@ -95,6 +107,7 @@ export async function updateContent(
 			sortOrder,
 			mediaId,
 			metadata,
+			theme: theme,
 		};
 
 		const setDataPayload: Partial<Omit<schema.Content, "updatedAt">> = {
@@ -108,6 +121,8 @@ export async function updateContent(
 		if (sortOrder !== undefined) setDataPayload.sortOrder = sortOrder;
 		if (mediaId !== undefined) setDataPayload.mediaId = mediaId;
 		if (metadata !== undefined) setDataPayload.metadata = metadata;
+		// Only set theme if it's explicitly part of dataToSet for a main content key
+		if (theme && (theme === 'light' || theme === 'dark')) setDataPayload.theme = theme;
 
 		// Validate before creating the statement
 		// This will throw if validation fails, and the error should be caught by the calling action.

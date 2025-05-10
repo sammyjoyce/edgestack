@@ -1,3 +1,4 @@
+import clsx from "clsx"; // Ensure clsx is imported
 import {
 	BuildingOffice2Icon,
 	ClockIcon,
@@ -11,9 +12,10 @@ import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalR
 // Remove the direct useLoaderData import - instead, take content as a prop
 interface ContactUsProps {
 	content?: Record<string, string>;
+	theme?: 'light' | 'dark'; // Add theme prop
 }
 
-export default function ContactUs({ content = {} }: ContactUsProps) {
+export default function ContactUs({ content = {}, theme = "light" }: ContactUsProps) {
 	// Extract values from content prop with fallbacks
 	const {
 		contact_headline: headline = "Ready to Start Your Project?",
@@ -37,7 +39,10 @@ export default function ContactUs({ content = {} }: ContactUsProps) {
 			whileInView={{ opacity: 1 }}
 			viewport={{ once: true }}
 			transition={{ duration: 0.8 }}
-			className="relative isolate overflow-hidden bg-black py-24 text-white sm:py-32"
+			className={clsx(
+				"relative isolate overflow-hidden py-24 sm:py-32 bg-black text-white dark:bg-gray-900 dark:text-white",
+				theme === "dark" && "dark", // This will make dark:bg-gray-900 apply if theme is dark
+			)}
 			id="contact"
 		>
 			<div className="-z-10 absolute inset-0 overflow-hidden">
@@ -50,28 +55,39 @@ export default function ContactUs({ content = {} }: ContactUsProps) {
 							clipPath:
 								"polygon(74.1% 56.1%, 100% 38.6%, 97.5% 73.3%, 85.5% 100%, 80.7% 98.2%, 72.5% 67.7%, 60.2% 37.8%, 52.4% 32.2%, 47.5% 41.9%, 45.2% 65.8%, 27.5% 23.5%, 0.1% 35.4%, 17.9% 0.1%, 27.6% 23.5%, 76.1% 2.6%, 74.1% 56.1%)",
 						}}
-						className="aspect-1155/678 w-xl bg-linear-to-br/oklch from-gray-800/20 to-gray-700/20 opacity-20"
+						className={clsx(
+							"aspect-1155/678 w-xl opacity-20 bg-linear-to-br/oklch from-gray-800/20 to-gray-700/20 dark:from-gray-700/20 dark:to-gray-600/20"
+						)}
 					/>
 				</div>
 			</div>
 			<div className="mx-auto max-w-6xl px-6 lg:px-8">
-				<div className="mx-auto max-w-2xl">
+				<div className="mx-auto max-w-2xl text-white dark:text-gray-100">
 					<h2 className="sr-only">Contact us</h2>
-					<p className="bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 bg-clip-text font-medium text-4xl text-transparent leading-tight tracking-[-1.43px] text-balance">
+					<p className={clsx(
+						"bg-clip-text font-medium text-4xl text-transparent leading-tight tracking-[-1.43px] text-balance",
+						"bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 dark:from-gray-100 dark:via-gray-200/80 dark:to-gray-300/50"
+					)}>
 						{headline}
 					</p>
 					<ConditionalRichTextRenderer
 						text={intro}
-						fallbackClassName="mt-6 text-[15px] text-gray-300 leading-normal"
-						// richTextClassName="prose prose-invert ..." // Optional styling for rich text
+						fallbackClassName={clsx(
+							"mt-6 text-[15px] leading-normal",
+							"text-gray-300 dark:text-gray-300"
+						)}
+						richTextClassName={clsx(theme === "dark" && "dark:prose-invert")}
 					/>
 
-					<dl className="mt-10 space-y-4 text-[15px] text-gray-300 leading-normal">
+					<dl className={clsx(
+						"mt-10 space-y-4 text-[15px] leading-normal",
+						"text-gray-300 dark:text-gray-300"
+					)}>
 						<div className="flex items-center gap-x-4">
 							<dt className="flex-none">
 								<span className="sr-only">Address</span>
 								<BuildingOffice2Icon
-									className="h-6 w-6 text-gray-300"
+									className="h-6 w-6 text-gray-400 dark:text-gray-300"
 									aria-hidden="true"
 								/>
 							</dt>
@@ -81,14 +97,14 @@ export default function ContactUs({ content = {} }: ContactUsProps) {
 							<dt className="flex-none">
 								<span className="sr-only">Telephone</span>
 								<PhoneIcon
-									className="h-6 w-6 text-gray-300"
+									className="h-6 w-6 text-gray-400 dark:text-gray-300"
 									aria-hidden="true"
 								/>
 							</dt>
 							<dd>
 								<a
 									href={`tel:${phone.replace(/\s/g, "")}`}
-									className="transition-all duration-300 ease-in-out hover:text-gray-100"
+									className="transition-all duration-300 ease-in-out hover:text-white dark:hover:text-gray-100"
 								>
 									{phone}
 								</a>
@@ -98,14 +114,14 @@ export default function ContactUs({ content = {} }: ContactUsProps) {
 							<dt className="flex-none">
 								<span className="sr-only">Email</span>
 								<EnvelopeIcon
-									className="h-6 w-6 text-gray-300"
+									className="h-6 w-6 text-gray-400 dark:text-gray-300"
 									aria-hidden="true"
 								/>
 							</dt>
 							<dd>
 								<a
 									href={`mailto:${email}`}
-									className="transition-all duration-300 ease-in-out hover:text-gray-100"
+									className="transition-all duration-300 ease-in-out hover:text-white dark:hover:text-gray-100"
 								>
 									{email}
 								</a>
@@ -115,24 +131,28 @@ export default function ContactUs({ content = {} }: ContactUsProps) {
 							<dt className="flex-none">
 								<span className="sr-only">Hours</span>
 								<ClockIcon
-									className="h-6 w-6 text-gray-300"
+									className="h-6 w-6 text-gray-400 dark:text-gray-300"
 									aria-hidden="true"
 								/>
 							</dt>
 							<dd className="whitespace-pre-line">{hours}</dd>
 						</div>
 					</dl>
-
-					<div className="mt-8 space-y-1 text-[11px] text-gray-400 leading-normal">
+					<div className={clsx(
+						"mt-8 space-y-1 text-[11px] leading-normal",
+						"text-gray-400 dark:text-gray-400"
+					)}>
 						<p className="font-medium whitespace-pre-line">ABN: {abn}</p>
 						<p className="font-medium whitespace-pre-line">ACN: {acn}</p>
 						<p className="font-medium whitespace-pre-line">
 							License Number: {license}
 						</p>
 					</div>
-
 					<div className="mt-10">
-						<h3 className="font-semibold text-[15px] text-gray-100 leading-normal">
+						<h3 className={clsx(
+							"font-semibold text-[15px] leading-normal",
+							"text-white dark:text-gray-100"
+						)}>
 							Follow Us
 						</h3>
 						<ul className="mt-4 flex gap-3">
@@ -141,7 +161,10 @@ export default function ContactUs({ content = {} }: ContactUsProps) {
 									href={instagram}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-800 text-gray-300 transition-all duration-300 ease-in-out hover:border-gray-700 hover:bg-gray-800/10 hover:text-gray-100"
+									className={clsx(
+										"flex h-10 w-10 items-center justify-center rounded-md border transition-all duration-300 ease-in-out",										
+										"border-gray-700 text-gray-400 hover:border-gray-600 hover:bg-gray-900/50 hover:text-white dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700/50 dark:hover:text-white"
+									)}
 								>
 									<span className="sr-only">Instagram</span>
 									<svg

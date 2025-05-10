@@ -39,16 +39,18 @@ export default [
 			route("upload", "./routes/admin/views/upload.tsx"),
 
 			// Projects sub-section, paths relative to /admin
-			route("projects", "./routes/admin/views/projects/index.tsx"), // Matches /admin/projects
-			route("projects/new", "./routes/admin/views/projects/new.tsx"), // Matches /admin/projects/new
-			route(
-				"projects/:projectId/edit",
-				"./routes/admin/views/projects/[projectId]/edit.tsx",
-			),
-			route(
-				"projects/:projectId/delete",
-				"./routes/admin/views/projects/[projectId]/delete.tsx",
-			),
+			route("projects", "./routes/admin/views/projects/index.tsx", [ // Matches /admin/projects
+				// Children of /admin/projects
+				route("new", "./routes/admin/views/projects/new.tsx"),
+				route(
+					":projectId/edit",
+					"./routes/admin/views/projects/[projectId]/edit.tsx",
+				),
+				route(
+					":projectId/delete",
+					"./routes/admin/views/projects/[projectId]/delete.tsx",
+				),
+			]),
 		]),
 	]),
 ] satisfies RouteConfig;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Link, redirect, useLoaderData, data } from "react-router";
+import { Form, Link, redirect, useLoaderData, data, Outlet, useLocation } from "react-router";
 import invariant from "tiny-invariant";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
@@ -84,6 +84,8 @@ export async function action({
 
 export default function AdminProjectsIndexPage() {
 	const { projects } = useLoaderData<Route.LoaderData>(); // Or Route.LoaderData
+	const location = useLocation();
+	const isChildActive = location.pathname !== "/admin/projects" && location.pathname.startsWith("/admin/projects/");
 
 	// TigerStyle runtime assertions with detailed error messages
 	invariant(
@@ -101,12 +103,14 @@ export default function AdminProjectsIndexPage() {
 				<Legend>
 					<Heading level={1}>Manage Projects</Heading>
 				</Legend>
-				<Button as={Link} href="/admin/projects/new" className="ml-auto">
+				<Button as={Link} to="/admin/projects/new" className="ml-auto">
 					Add New Project
 				</Button>
 			</Fieldset>
 
-			{projects.length === 0 ? (
+			{isChildActive ? (
+				<Outlet />
+			) : projects.length === 0 ? (
 				<div className="rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
 					{/* <FolderIcon className="mx-auto h-12 w-12 text-gray-400" /> */}
 					<Text className="mt-2 text-lg font-medium text-gray-900">

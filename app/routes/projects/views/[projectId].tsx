@@ -1,5 +1,6 @@
+import clsx from "clsx"; // Ensure clsx is imported
 import React from "react";
-import { Link, data, useLoaderData } from "react-router";
+import { Link, data, useLoaderData, useOutletContext } from "react-router"; // Added useOutletContext
 import type { Project } from "~/database/schema";
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
@@ -31,46 +32,54 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 	}
 };
 
+import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout"; // Import parent loader type
+
 export function ProjectDetailRoute() {
 	// Use type inference with the loader function
 	const { project } = useLoaderData<typeof loader>();
+	// Get theme from parent layout context
+	const { content } = useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
+	const projectDetailTheme = content[`project_${project.id}_theme`] === 'dark' ? 'dark' : 'light';
+
 
 	// The loader guarantees that 'project' is available if no error was thrown.
 	// Error cases (including not found) are handled by the ErrorBoundary.
 	return (
-		<div className="py-16 bg-white">
+		<div className={clsx("py-16 bg-white dark:bg-gray-950", projectDetailTheme === "dark" && "dark")}>
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 				<FadeIn>
-					<article className="bg-gray-50 p-6 rounded-lg shadow-md">
+					<article className="bg-gray-50 p-6 rounded-lg shadow-md dark:bg-gray-800">
 						<img
 							src={project.imageUrl ?? "/assets/placeholder.png"}
 							alt={project.title}
-							className="w-full h-64 md:h-96 object-cover rounded-md mb-6 bg-gray-200"
+							className="w-full h-64 md:h-96 object-cover rounded-md mb-6 bg-gray-200 dark:bg-gray-700"
 						/>
-						<h2 className="text-3xl font-serif font-bold text-black mb-4">
+						<h2 className="text-3xl font-serif font-bold text-black dark:text-white mb-4">
 							{project.title}
 						</h2>
 						<ConditionalRichTextRenderer
 							text={project.description}
-							fallbackClassName="text-gray-700 text-lg mb-4"
+							fallbackClassName="text-gray-700 dark:text-gray-300 text-lg mb-4"
+							richTextClassName={clsx(projectDetailTheme === "dark" && "dark:prose-invert")}
 							fallbackTag="p"
 						/>
 						{project.details && (
-							<div className="prose prose-sm mt-4 mb-6">
-								<h3 className="font-semibold text-gray-800">Details:</h3>
+							<div className={clsx("prose prose-sm mt-4 mb-6", projectDetailTheme === "dark" && "dark:prose-invert")}>
+								<h3 className="font-semibold text-gray-800 dark:text-gray-200">Details:</h3>
 								<ConditionalRichTextRenderer
 									text={project.details}
-									fallbackClassName="text-gray-600"
+									fallbackClassName="text-gray-600 dark:text-gray-400"
+									richTextClassName={clsx(projectDetailTheme === "dark" && "dark:prose-invert")}
 									fallbackTag="div" // Use div if details might contain multiple paragraphs
 								/>
 							</div>
 						)}
-						<p className="text-gray-500 italic mb-6">
+						<p className="text-gray-500 dark:text-gray-400 italic mb-6">
 							Contact us for more information about similar projects.
 						</p>
 						<Link
 							to="/projects"
-							className="inline-block text-blue-600 hover:underline"
+							className="inline-block text-blue-600 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
 						>
 							← Back to Projects
 						</Link>
