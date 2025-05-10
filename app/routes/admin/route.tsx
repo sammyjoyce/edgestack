@@ -67,12 +67,14 @@ export async function action({
 			if (DEBUG)
 				console.log("[ADMIN ACTION] updateTextContent updates:", updates);
 			await updateContent(context.db, updates);
-			const revalidateParam = `revalidate=true&t=${Date.now()}`;
-			invariant(
-				typeof revalidateParam === "string",
-				"action: revalidateParam must be a string",
+			// Return a JSON response instead of redirecting
+			return new Response(
+				JSON.stringify({ success: true, message: "Content updated successfully." }),
+				{
+					status: 200,
+					headers: { "Content-Type": "application/json" },
+				},
 			);
-			return redirect(`/?${revalidateParam}`);
 		} catch (error: unknown) {
 			const err = error instanceof Error ? error : new Error(String(error));
 			if (DEBUG) console.error("[ADMIN ACTION] Error processing updates:", err);
