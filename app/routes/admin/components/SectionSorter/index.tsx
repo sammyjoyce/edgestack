@@ -50,12 +50,12 @@ export default function SectionSorter({
 	// Internal state for dnd-kit, derived from sectionDetailsOrdered and initialSectionsFromDb
     const [orderedItems, setOrderedItems] = React.useState<SectionDetail[]>(() => {
         const dbOrder = (initialSectionsFromDb || []).map(s => s.id);
-        return sectionDetailsOrdered.sort((a, b) => dbOrder.indexOf(a.id) - dbOrder.indexOf(b.id));
+        return (sectionDetailsOrdered || []).sort((a, b) => dbOrder.indexOf(a.id) - dbOrder.indexOf(b.id));
     });
 
 	React.useEffect(() => {
         const dbOrder = (initialSectionsFromDb || []).map(s => s.id);
-        const currentSortedDetails = [...sectionDetailsOrdered].sort((a,b) => dbOrder.indexOf(a.id) - dbOrder.indexOf(b.id));
+        const currentSortedDetails = [...(sectionDetailsOrdered || [])].sort((a,b) => dbOrder.indexOf(a.id) - dbOrder.indexOf(b.id));
         setOrderedItems(currentSortedDetails);
 	}, [initialSectionsFromDb, sectionDetailsOrdered]);
     
