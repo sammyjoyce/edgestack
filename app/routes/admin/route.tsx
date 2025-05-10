@@ -62,14 +62,6 @@ export async function action({
 }
 
 interface NavItem {
-	);
-	return data(
-		{ error: "Action not handled at this layout level. Target a specific resource route." },
-		{ status: 405 } // Method Not Allowed is appropriate
-	);
-}
-
-interface NavItem {
 	name: string;
 	href: To | string; // Use To for internal, string for external
 	icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
