@@ -4,11 +4,11 @@ import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { deleteProject, getProjectById } from "~/routes/common/db"; // Import deleteProject and getProjectById statically
 import type { Project } from "../../../../../../database/schema";
-import { Heading } from "../../../components/ui/Heading";
-import { Input } from "../../../components/ui/Input";
+import { Heading } from "../../../components/ui/heading";
+import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/fieldset";
-import { Text } from "../../../components/ui/Text";
-import { Button } from "../components/ui/button";
+import { Text } from "../../../components/ui/text";
+import { Button } from "../../../components/ui/button";
 import type { Route } from "./+types/delete";
 
 // Return plain objects for type safety
