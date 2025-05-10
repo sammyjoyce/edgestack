@@ -51,7 +51,7 @@ export async function loader({
 }
 
 // ... other imports
-import { validateContentInsert, validateContentUpdateMap } from "../../../../database/valibot-validation.js"; // Assuming a validation helper for maps
+import { validateContentInsert, validateContentUpdate } from "../../../../database/valibot-validation.js"; // Assuming a validation helper for maps
 import { ValiError } from "valibot";
     
 // ... (loader function remains the same)
@@ -182,8 +182,8 @@ export async function action({
 }
 
 /* ---------------- COMPONENT -------------- */
-export default function AdminIndexRoute(): JSX.Element {
-	const data = useLoaderData<typeof loader>();
+export function Component(): JSX.Element { // Renamed to Component and made a named export
+	const data = useLoaderData<typeof loader>(); // Assuming Route.LoaderData is equivalent to typeof loader
 
 	return (
 		<main id="admin-dashboard-main" aria-label="Admin Dashboard">

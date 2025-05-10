@@ -31,7 +31,7 @@ export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: stylesheet },
 ];
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export default function RootComponent() { // Renamed from Layout, made default
 	return (
 		<html lang="en">
 			<head>
@@ -41,39 +41,50 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 			<body>
-				{children}
+				<Outlet /> {/* Render Outlet directly */}
 				<ScrollRestoration />
 				<Scripts />
-				<HashScrollHandler /> {/* Add HashScrollHandler here */}
+				<HashScrollHandler />
 			</body>
 		</html>
 	);
 }
 
-export default function App() {
-	return <Outlet />;
-}
-
+// Update ErrorBoundary to return full HTML structure
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+	let title = "Error";
+	let message = "An unexpected error occurred.";
+	let stack: string | undefined;
+
 	if (isRouteErrorResponse(error)) {
-		return (
-			<>
-				<h1>
-					{error.status} {error.statusText}
-				</h1>
-				<p>{error.data}</p>
-			</>
-		);
+		title = `${error.status} ${error.statusText}`;
+		message = typeof error.data === 'string' ? error.data : JSON.stringify(error.data);
+	} else if (error instanceof Error) {
+		title = error.name || "Error";
+		message = error.message;
+		stack = error.stack;
 	}
-	if (error instanceof Error) {
-		return (
-			<div>
-				<h1>Error</h1>
-				<p>{error.message}</p>
-				<p>The stack trace is:</p>
-				<pre>{error.stack}</pre>
-			</div>
-		);
-	}
-	return <h1>Unknown Error</h1>;
+
+	return (
+		<html lang="en">
+			<head>
+				<meta charSet="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<title>{title}</title>
+				<Meta />
+				<Links />
+			</head>
+			<body>
+				<h1>{title}</h1>
+				<p>{message}</p>
+				{stack && (
+					<>
+						<p>The stack trace is:</p>
+						<pre>{stack}</pre>
+					</>
+				)}
+				<Scripts />
+			</body>
+		</html>
+	);
 }

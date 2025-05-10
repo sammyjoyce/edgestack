@@ -86,7 +86,7 @@ const navigation: NavItem[] = [
 	{ name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
 
-export default function Component() { // Renamed to Component
+export function Component() { // Ensure it's a named export "Component"
 	const navigationHook = useNavigation();
 	const loaderData = useLoaderData<Route.LoaderData>(); // Use inferred type or Route.LoaderData
 	const sidebarNav = (
