@@ -182,7 +182,7 @@ export async function action({
 }
 
 /* ---------------- COMPONENT -------------- */
-export function Component(): JSX.Element { // Renamed to Component and made a named export
+export default function AdminIndexPage(): JSX.Element {
 	const data = useLoaderData<typeof loader>(); // Assuming Route.LoaderData is equivalent to typeof loader
 
 	return (

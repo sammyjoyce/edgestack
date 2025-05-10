@@ -68,7 +68,7 @@ export async function action({
 	}
 }
 
-export function Component() { // Renamed to Component
+export default function DeleteProjectPage() {
 	const { project } = useLoaderData<Route.LoaderData>(); // Or Route.LoaderData
 	const navigate = useNavigate();
 
@@ -152,6 +152,3 @@ export function Component() { // Renamed to Component
 		</FadeIn>
 	);
 }
-
-// Default export for backwards compatibility if needed
-// export default Component;

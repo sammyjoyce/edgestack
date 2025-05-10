@@ -39,7 +39,7 @@ export default [
 			route("upload", "./routes/admin/views/upload.tsx"),
 
 			// Projects sub-section, paths relative to /admin
-			route("projects", "./routes/admin/views/projects/index.tsx", { index: true }), // Matches /admin/projects
+			route("projects", "./routes/admin/views/projects/index.tsx"), // Matches /admin/projects
 			route("projects/new", "./routes/admin/views/projects/new.tsx"), // Matches /admin/projects/new
 			route(
 				"projects/:projectId/edit",

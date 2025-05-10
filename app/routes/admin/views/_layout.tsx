@@ -86,7 +86,7 @@ const navigation: NavItem[] = [
 	{ name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
 
-export function Component() { // Ensure it's a named export "Component"
+export default function AdminLayout() {
 	const navigationHook = useNavigation();
 	const loaderData = useLoaderData<Route.LoaderData>(); // Use inferred type or Route.LoaderData
 	const sidebarNav = (
@@ -173,6 +173,3 @@ export function Component() { // Ensure it's a named export "Component"
 export function ErrorBoundary() {
 	return <AdminErrorBoundary />;
 }
-
-// Default export for React Router 7 conventions
-// export default Component; // No longer needed if Component is the default export name
