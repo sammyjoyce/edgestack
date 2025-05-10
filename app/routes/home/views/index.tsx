@@ -1,8 +1,8 @@
 import React, { type JSX } from "react";
 import { type MetaFunction, useOutletContext } from "react-router";
 const DEBUG = process.env.NODE_ENV !== "production";
-import { assert } from "~/routes/common/utils/assert";
 import RecentProjects from "~/routes/common/components/RecentProjects";
+import { assert } from "~/routes/common/utils/assert";
 import type { loader as parentLayoutLoader } from "~/routes/home/views/_layout";
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";

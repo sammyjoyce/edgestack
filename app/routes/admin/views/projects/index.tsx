@@ -2,19 +2,18 @@ import React from "react";
 import {
 	Form,
 	Link,
+	Outlet,
+	data,
 	redirect,
 	useLoaderData,
-	data,
-	Outlet,
 	useLocation,
 } from "react-router";
-import { assert } from "~/routes/common/utils/assert";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
+import { assert } from "~/routes/common/utils/assert";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import type { Project } from "../../../../../database/schema";
+import { PageHeader } from "../../components/ui/PageHeader";
 import { Button } from "../../components/ui/button";
-import { Fieldset, Legend } from "../../components/ui/fieldset";
-import { Heading } from "../../components/ui/heading";
 import { Text } from "../../components/ui/text";
 import type { Route } from "./+types/index";
 export async function loader({
@@ -91,14 +90,14 @@ export default function AdminProjectsIndexPage() {
 	);
 	return (
 		<>
-			<Fieldset className="mb-8">
-				<Legend>
-					<Heading level={1}>Manage Projects</Heading>
-				</Legend>
-				<Button as={Link} to="/admin/projects/new" className="ml-auto">
-					Add New Project
-				</Button>
-			</Fieldset>
+			<PageHeader
+				title="Manage Projects"
+				actions={
+					<Button as={Link} to="/admin/projects/new">
+						Add New Project
+					</Button>
+				}
+			/>
 			{isChildActive ? (
 				<Outlet />
 			) : projects.length === 0 ? (

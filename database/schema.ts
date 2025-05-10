@@ -1,4 +1,4 @@
-import { sql, relations } from "drizzle-orm"; // Add relations
+import { relations, sql } from "drizzle-orm"; // Add relations
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 export const content = sqliteTable("content", {
 	key: text("key").primaryKey().notNull(),

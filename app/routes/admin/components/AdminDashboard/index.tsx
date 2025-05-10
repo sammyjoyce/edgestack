@@ -1,8 +1,5 @@
 import React, { type JSX } from "react";
 import { Link, useFetcher } from "react-router";
-import { Container } from "~/routes/common/components/ui/Container";
-import { Button } from "../ui/button";
-import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 import { ImageUploadSection } from "~/routes/admin/components/ImageUploadSection";
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { AboutSectionEditor } from "~/routes/admin/components/sections/AboutSectionEditor";
@@ -11,18 +8,24 @@ import { HeroSectionEditor } from "~/routes/admin/components/sections/HeroSectio
 import { ServicesSectionEditor } from "~/routes/admin/components/sections/ServicesSectionEditor";
 import type { Route } from "~/routes/admin/views/+types/index";
 import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload";
+import { Container } from "~/routes/common/components/ui/Container";
+import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
+import { FormCard } from "../ui/FormCard";
+import { Button } from "../ui/button";
 
 type ActualIndexActionData = Route.ActionData;
 type ActualUploadActionData = UploadRoute.ActionData;
-import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
-import { Heading } from "../ui/heading";
 import type {
 	Section as SorterSection,
 	SectionTheme as SorterSectionTheme,
 } from "~/routes/admin/components/SectionSorter";
+import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
+import { Heading } from "../ui/heading";
 interface AdminDashboardProps {
 	initialContent: Record<string, string> | undefined;
 }
+import { PageHeader } from "../ui/PageHeader";
+
 export default function AdminDashboard({
 	initialContent,
 }: AdminDashboardProps): React.JSX.Element {
@@ -167,7 +170,8 @@ export default function AdminDashboard({
 			value: "order",
 			content: (
 				<SectionSorter
-					initialSections={sorterSections}
+					initialSectionsFromDb={sorterSections}
+					sectionDetailsOrdered={sorterSections}
 					orderFetcher={sorterFetcher}
 					themeUpdateFetcher={heroFetcher}
 				/>
@@ -203,7 +207,7 @@ export default function AdminDashboard({
 			title: "Projects Intro",
 			value: "projects",
 			content: (
-				<div className="p-6 bg-white rounded-lg shadow-xs border border-gray-200">
+				<FormCard>
 					<h2 className="text-xl font-semibold text-gray-900 mb-4">
 						Projects Section Intro
 					</h2>
@@ -325,7 +329,7 @@ export default function AdminDashboard({
 							Go to Projects Admin
 						</Button>
 					</div>
-				</div>
+				</FormCard>
 			),
 		},
 		{
@@ -354,6 +358,7 @@ export default function AdminDashboard({
 	];
 	return (
 		<Container className="mt-8">
+			<PageHeader title="Admin Dashboard" className="mb-4" />
 			<div className="flex flex-col space-y-4">
 				<div className="flex justify-between items-center">
 					<Heading level={2}>{"Home Page Editor"}</Heading>

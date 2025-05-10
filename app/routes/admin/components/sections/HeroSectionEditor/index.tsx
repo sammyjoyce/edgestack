@@ -1,7 +1,5 @@
 import React from "react";
 import type { FetcherWithComponents } from "react-router";
-import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
-import type { Route as AdminUploadRoute } from "~/routes/admin/views/+types/upload";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import {
@@ -11,6 +9,8 @@ import {
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
 import { Textarea } from "~/routes/admin/components/ui/textarea";
+import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
+import type { Route as AdminUploadRoute } from "~/routes/admin/views/+types/upload";
 import { Input } from "../../ui/input";
 const DEBUG = process.env.NODE_ENV !== "production";
 interface HeroSectionEditorProps {

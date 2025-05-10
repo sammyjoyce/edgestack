@@ -1,6 +1,6 @@
+import path from "path";
 import { Glob } from "bun";
 import fs from "fs/promises";
-import path from "path";
 const commentsToRemove: string[] = [
 	"
 	"

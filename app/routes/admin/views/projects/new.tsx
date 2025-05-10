@@ -1,22 +1,28 @@
 import React from "react";
-import { Form, redirect, useActionData, useNavigate, data } from "react-router";
+import { Form, redirect, useActionData, useNavigate } from "react-router";
 import type { ActionFunctionArgs } from "react-router";
-import { assert } from "~/routes/common/utils/assert";
+import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { createProject } from "~/routes/common/db";
+import { assert } from "~/routes/common/utils/assert";
 import type { NewProject } from "../../../../../database/schema";
 import { validateProjectInsert } from "../../../../../database/valibot-validation.js";
-import type { Route } from "./+types/new";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import { ProjectFormFields } from "../../components/ProjectFormFields";
+import { FormCard } from "../../components/ui/FormCard";
+import { PageHeader } from "../../components/ui/PageHeader";
+import { Alert, AlertDescription, AlertTitle } from "../../components/ui/alert";
 import { Button } from "../../components/ui/button";
-import { Fieldset, Label, Legend } from "../../components/ui/fieldset";
-import { Heading } from "../../components/ui/heading";
+import { Label } from "../../components/ui/fieldset";
 import { Input } from "../../components/ui/input";
 import { Text } from "../../components/ui/text";
 import { Textarea } from "../../components/ui/textarea";
+// Removed unused Route type import.
 export async function action({
 	request,
 	context,
-}: Route.ActionArgs): Promise<Response | Route.ActionData> {
+}: { request: Request; context: any }): Promise<
+	| Response
+	| { success: boolean; errors?: Record<string, string>; error?: string }
+> {
 	const formData = await request.formData();
 	const title = formData.get("title")?.toString() ?? "";
 	const description = formData.get("description")?.toString() ?? "";
@@ -55,21 +61,22 @@ export async function action({
 			}
 		}
 		if (Object.keys(errors).length > 0) {
-			return data(
-				{ success: false, errors, error: "Validation failed." },
-				{ status: 400 },
-			);
+			return { success: false, errors, error: "Validation failed." };
 		}
-		return data(
-			{ success: false, error: error.message || "Failed to create project" },
-			{ status: 500 },
-		);
+		return {
+			success: false,
+			error: error.message || "Failed to create project",
+		};
 	}
 }
 export default function NewProjectPage() {
 	const navigate = useNavigate();
-	const actionData = useActionData<typeof action>();
-	const errors = actionData?.errors as Record<string, string> | undefined;
+	const actionData = useActionData() as
+		| { success?: boolean; errors?: Record<string, string>; error?: string }
+		| undefined;
+	const errors = actionData?.errors;
+	const initial = {};
+	const handleCancel = () => navigate("/admin/projects");
 	assert(
 		typeof navigate === "function",
 		"NewProjectRoute: navigate must be a function",
@@ -80,92 +87,20 @@ export default function NewProjectPage() {
 	);
 	return (
 		<FadeIn>
-			<Fieldset className="mb-8">
-				<Legend>
-					<Heading level={1}>Add New Project</Heading>
-				</Legend>
-			</Fieldset>
-			{actionData?.error && !errors && (
-				<Text
-					className="p-4 mb-4 text-red-700 bg-red-100 rounded-lg border border-red-200"
-					role="alert"
-				>
+			<PageHeader title="Add New Project" />
+
+			{actionData && !actionData.success && actionData.error && !errors && (
+				<Alert variant="error" className="mb-4">
 					{actionData.error}
-				</Text>
+				</Alert>
 			)}
-			<Form method="post" className="space-y-6">
-				<Fieldset>
-					<Label htmlFor="title">Project Title</Label>
-					<Input
-						id="title"
-						name="title"
-						required
-						placeholder="Enter project title"
-						aria-invalid={!!errors?.title}
-						aria-describedby={errors?.title ? "title-error" : undefined}
-					/>
-					{errors?.title && (
-						<Text id="title-error" className="text-sm text-red-600">
-							{errors.title}
-						</Text>
-					)}
-				</Fieldset>
-				<Fieldset>
-					<Label htmlFor="description">Description</Label>
-					<Textarea
-						name="description"
-						id="description"
-						rows={4}
-						placeholder="Enter a short description"
-					/>
-				</Fieldset>
-				<Fieldset>
-					<Label htmlFor="details">Project Details</Label>
-					<Textarea
-						name="details"
-						id="details"
-						rows={4}
-						placeholder="Enter project details"
-					/>
-				</Fieldset>
-				<Fieldset>
-					<Label htmlFor="imageUrl">Image URL</Label>
-					<Input
-						id="imageUrl"
-						name="imageUrl"
-						placeholder="URL to project image (optional)"
-					/>
-					<a
-						href="https://vercel.com/import/project?template=https://github.com/sammyjoyce/lush"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="w-full flex items-center justify-center gap-2"
-					>
-						<span>Deploy to Vercel</span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							fill="none"
-							viewBox="0 0 20 20"
-							className="inline-block"
-						>
-							<title>Vercel Logo</title>
-							<path fill="currentColor" d="M10 2l7.071 12.25H2.929z" />
-						</svg>
-					</a>
-				</Fieldset>
-				<div className="flex justify-end gap-3 pt-4 border-t border-gray-200 mt-6">
-					<Button
-						type="button"
-						variant="secondary"
-						onClick={() => navigate("/admin/projects")}
-					>
-						Cancel
-					</Button>
-					<Button type="submit">Create Project</Button>
-				</div>
-			</Form>
+			<FormCard as="form" method="post" className="space-y-6">
+				<ProjectFormFields
+					initial={initial}
+					errors={errors}
+					onCancel={handleCancel}
+				/>
+			</FormCard>
 		</FadeIn>
 	);
 }

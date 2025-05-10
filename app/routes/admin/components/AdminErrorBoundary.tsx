@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouteError, isRouteErrorResponse } from "react-router";
+import { isRouteErrorResponse, useRouteError } from "react-router";
 import { SharedErrorBoundary } from "~/routes/common/components/ErrorBoundary";
 function AdminErrorBoundary() {
 	const error = useRouteError();

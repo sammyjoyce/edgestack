@@ -7,13 +7,6 @@ import {
 	BarsArrowDownIcon,
 } from "@heroicons/react/20/solid";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import React, {
-	type JSX,
-	type ReactNode,
-	useCallback,
-	useEffect,
-	useState,
-} from "react";
 import clsx from "clsx";
 import {
 	$getSelection,
@@ -26,6 +19,13 @@ import {
 	type TextFormatType,
 	UNDO_COMMAND,
 } from "lexical";
+import React, {
+	type JSX,
+	type ReactNode,
+	useCallback,
+	useEffect,
+	useState,
+} from "react";
 function Divider() {
 	return <div className="w-px h-5 bg-gray-300 mx-1" />;
 }

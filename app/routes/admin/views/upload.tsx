@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
 import React, { type JSX, useState } from "react";
-import { ValiError } from "valibot";
 import { data, redirect } from "react-router";
+import { ValiError } from "valibot";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
@@ -17,6 +17,8 @@ import * as FullSchema from "../../../../database/schema";
 import { validateContentInsert } from "../../../../database/valibot-validation.js";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
+import { FormCard } from "../components/ui/FormCard";
+import { PageHeader } from "../components/ui/PageHeader";
 import { Heading } from "../components/ui/heading";
 import { Input } from "../components/ui/input";
 import { Text } from "../components/ui/text";
@@ -281,14 +283,12 @@ export async function action({
 export default function Component() {
 	return (
 		<FadeIn>
-			<div className="flex flex-col gap-8">
-				<div>
-					<Heading level={1}>Image Management</Heading>
-					<Text className="mt-2 text-sm text-gray-500">
-						Upload new images or select from existing ones. Images will be
-						optimized and stored for use in your content.
-					</Text>
-				</div>
+			<FormCard>
+				<PageHeader title="Image Management" className="mb-2" actions={null} />
+				<Text className="block mb-6 text-sm text-gray-500 dark:text-gray-400">
+					Upload new images or select from existing ones. Images will be
+					optimized and stored for use in your content.
+				</Text>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 					<div>
 						<Heading level={2} className="mb-4">
@@ -303,7 +303,7 @@ export default function Component() {
 						<ImageGallery />
 					</div>
 				</div>
-			</div>
+			</FormCard>
 		</FadeIn>
 	);
 }

@@ -1,15 +1,15 @@
 import { asc, desc, eq, sql } from "drizzle-orm";
 import type { BatchItem, BatchResponse } from "drizzle-orm/batch";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
-import { validateContentUpdate } from "../../../../database/valibot-validation";
 import { assert } from "~/routes/common/utils/assert";
 import type {
+	Content, // Assuming Content type is needed
 	NewContent,
 	NewProject,
 	Project,
-	Content, // Assuming Content type is needed
 } from "../../../../database/schema";
 import * as schema from "../../../../database/schema";
+import { validateContentUpdate } from "../../../../database/valibot-validation";
 
 // Example: Prepare statement for getProjectById
 // This assumes 'db' will be passed in, and the prepared statement will be bound to that instance.

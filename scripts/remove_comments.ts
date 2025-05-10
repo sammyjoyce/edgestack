@@ -31,8 +31,8 @@
  *   bun scrub-comments.ts ./my-proj --keep-docs
  */
 
-import { readdir, readFile, writeFile } from "fs/promises";
-import { join, extname, relative } from "path";
+import { extname, join, relative } from "path";
+import { readFile, readdir, writeFile } from "fs/promises";
 import ignore from "ignore";
 
 /* ── CONFIGURATION ─────────────────────────────────────────────────────── */
@@ -126,7 +126,7 @@ try {
 
 /* ── TREE‑SITTER SETUP (OPTIONAL) ──────────────────────────────────────── */
 let Parser: any = null; // 'any' is acceptable here due to optional dynamic import
-let LANGUAGES: Record<string, any> = {}; // 'any' for Tree-sitter language objects
+const LANGUAGES: Record<string, any> = {}; // 'any' for Tree-sitter language objects
 
 if (USE_TREE_SITTER) {
 	try {

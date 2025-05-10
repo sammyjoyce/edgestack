@@ -1,104 +1,109 @@
 import React from "react";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+// Removed data import; use plain objects or throw new Response.
+import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+} from "~/routes/admin/components/ui/alert";
+import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { deleteProject, getProjectById } from "~/routes/common/db";
 import type { Project } from "../../../../../../database/schema";
-import { Heading } from "../../../components/ui/heading";
-import { Input } from "../../../components/ui/input";
-import { Label } from "../../../components/ui/fieldset";
-import { Text } from "../../../components/ui/text";
+import { FormCard } from "../../../components/ui/FormCard";
+import { PageHeader } from "../../../components/ui/PageHeader";
 import { Button } from "../../../components/ui/button";
-import type { Route } from "./+types/projectId/delete";
-import { data } from "react-router";
+import { Label } from "../../../components/ui/fieldset";
+import { Input } from "../../../components/ui/input";
+import { Text } from "../../../components/ui/text";
+// Removed missing Route type import.
 export async function loader({
 	params,
 	context,
-}: Route.LoaderArgs): Promise<Route.LoaderData | Response> {
+}: { params: { projectId: string }; context: any }): Promise<
+	{ project: Project } | Response
+> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
-		throw data({ error: "Invalid Project ID" }, { status: 400 });
+		throw new Response("Invalid Project ID", { status: 400 });
 	}
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw data({ error: "Project not found" }, { status: 404 });
+			throw new Response("Project not found", { status: 404 });
 		}
 		return { project };
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw data(
-			{ error: error.message || "Failed to load project" },
-			{ status: 500 },
-		);
+		throw new Response(error.message || "Failed to load project", {
+			status: 500,
+		});
 	}
 }
 export async function action({
 	request,
 	params,
 	context,
-}: Route.ActionArgs): Promise<Response | Route.ActionData> {
+}: { request: Request; params: { projectId: string }; context: any }): Promise<
+	Response | { success: boolean; error?: string }
+> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
-		return data(
-			{ success: false, error: "Invalid Project ID" },
-			{ status: 400 },
-		);
+		return { success: false, error: "Invalid Project ID" };
 	}
 	const formData = await request.formData();
 	const confirmDelete = formData.get("confirmDelete") === "true";
 	if (!confirmDelete) {
-		return data(
-			{ success: false, error: "Deletion was not confirmed" },
-			{ status: 400 },
-		);
+		return { success: false, error: "Deletion was not confirmed" };
 	}
 	try {
 		await deleteProject(context.db, projectId);
 		return redirect("/admin/projects");
 	} catch (error: any) {
 		console.error("Error deleting project:", error);
-		return data(
-			{ success: false, error: error.message || "Failed to delete project" },
-			{ status: 500 },
-		);
+		return {
+			success: false,
+			error: error.message || "Failed to delete project",
+		};
 	}
 }
 export default function DeleteProjectPage() {
-	const { project } = useLoaderData<typeof loader>();
+	const loaderData = useLoaderData() as { project?: Project };
+	const project = loaderData?.project;
 	const navigate = useNavigate();
 	return (
 		<FadeIn>
 			<div className="flex flex-col gap-8">
-				<div className="flex justify-between items-center">
-					<Heading level={1}>Delete Project</Heading>
-					<Button
-						variant="secondary"
-						onClick={() => navigate("/admin/projects")}
-						className="text-sm"
-					>
-						Cancel
-					</Button>
-				</div>
-				<div className="bg-gray-50 p-6 rounded-lg shadow-(--shadow-input-default) border border-gray-200">
-					<div className="rounded-md bg-yellow-50 p-4 mb-6">
-						<div className="flex">
-							<div className="ml-3">
-								<Heading level={3} className="text-yellow-800">
-									Warning: This action cannot be undone
-								</Heading>
-								<Text className="mt-2 text-sm text-yellow-700">
-									You are about to permanently delete the project "
-									{project!.title}". {}
-								</Text>
-							</div>
-						</div>
-					</div>
+				<PageHeader
+					title="Delete Project"
+					actions={
+						<Button
+							variant="secondary"
+							onClick={() => navigate("/admin/projects")}
+							className="text-sm"
+						>
+							Cancel
+						</Button>
+					}
+				/>
+				<FormCard>
+					<Alert variant="warning" className="mb-6">
+						<AlertTitle>Warning: This action cannot be undone</AlertTitle>
+						<AlertDescription>
+							You are about to permanently delete the project "
+							{project ? project.title : ""}".
+						</AlertDescription>
+					</Alert>
 					<div className="mb-6">
 						<Heading level={2} className="mb-2">
-							{project!.title} {}
+							{typeof project?.title === "string" ? project.title : ""}
 						</Heading>
-						<Text className="text-gray-600">{project!.description}</Text> {}
+						<Text className="text-gray-600">
+							{typeof project?.description === "string"
+								? project.description
+								: ""}
+						</Text>
 					</div>
 					<Form method="post" className="flex flex-col gap-6">
 						<div className="flex items-start">
@@ -136,7 +141,7 @@ export default function DeleteProjectPage() {
 							</Button>
 						</div>
 					</Form>
-				</div>
+				</FormCard>
 			</div>
 		</FadeIn>
 	);
