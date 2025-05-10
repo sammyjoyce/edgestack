@@ -2,7 +2,7 @@
 
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
-import type React from "react";
+import React from "react";
 import { Button } from "./button"; // Assuming Button is styled appropriately
 import { Link } from "./link"; // Assuming Link is styled appropriately
 

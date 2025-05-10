@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type React from "react"; // Added React import for React.ComponentPropsWithoutRef
+import React from "react"; // Added React import for React.ComponentPropsWithoutRef
 
 export function DescriptionList({
 	className,

@@ -2,8 +2,7 @@
 
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
-import type React from "react"; // Added React import
-import { Fragment } from "react";
+import React, { Fragment } from "react"; // Added React import
 
 const CheckIcon = () => (
 	<svg

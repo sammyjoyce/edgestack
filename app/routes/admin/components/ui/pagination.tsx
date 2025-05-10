@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type React from "react"; // Added React import
+import React from "react"; // Added React import
 import { Button } from "./button"; // Assuming Button is styled
 
 const ChevronLeftIcon = () => (

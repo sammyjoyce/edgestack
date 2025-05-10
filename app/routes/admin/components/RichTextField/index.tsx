@@ -12,7 +12,7 @@ import { HeadingNode, QuoteNode } from "@lexical/rich-text"; // Import heading a
 import type { EditorState, LexicalEditor } from "lexical"; // Import LexicalEditor
 
 import clsx from "clsx";
-import React, { type JSX, useCallback, useMemo, useRef } from "react"; // Import React
+import React, { type JSX, useCallback, useMemo, useRef } from "react"; 
 import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
 
 /**
