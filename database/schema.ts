@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { sql, relations } from "drizzle-orm"; // Add relations
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 export const content = sqliteTable("content", {
 	key: text("key").primaryKey().notNull(), 
@@ -47,8 +47,33 @@ export const projects = sqliteTable("projects", {
 });
 export type Project = typeof projects.$inferSelect;
 export type NewProject = typeof projects.$inferInsert;
+
+// Define relationships
+export const contentRelations = relations(content, ({ one }) => ({
+	media: one(media, {
+		fields: [content.mediaId],
+		references: [media.id],
+	}),
+}));
+
+export const mediaRelations = relations(media, ({ many }) => ({
+	contents: many(content),
+}));
+
+// Example: If projects can have associated media (e.g., a project cover image)
+// export const projectsRelations = relations(projects, ({ one, many }) => ({
+//   coverMedia: one(media, { // Assuming a direct foreign key in projects table like 'coverMediaId'
+//     fields: [projects.coverMediaId], // You would need to add coverMediaId to projects table
+//     references: [media.id]
+//   }),
+//   // Or if a project can have many media items through a join table, that would be more complex
+// }));
+
 export const schema = {
 	content,
 	projects,
 	media,
+	contentRelations, // Add relations to the exported schema
+	mediaRelations,
+	// projectsRelations, // Add if defined
 };
