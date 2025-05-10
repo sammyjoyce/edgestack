@@ -4,7 +4,7 @@ import {
 	createUpdateSchema,
 } from "drizzle-valibot";
 import { content, media, projects } from "./schema";
-import { number, object, string, enum_ as enumType, optional,picklist } from "valibot";
+import { number, object, string, picklist, optional, nullable } from "valibot"; // Removed enumType, added nullable
 const ThemeEnum = { Light: "light", Dark: "dark" } as const;
 type Theme = (typeof ThemeEnum)[keyof typeof ThemeEnum];
 export const errorResponseSchema = object({
