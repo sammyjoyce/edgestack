@@ -34,7 +34,7 @@ export function Dialog({
 		<Headless.Dialog {...props} onClose={onClose}>
 			<Headless.DialogBackdrop
 				transition
-				className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 ease-out data-[closed]:opacity-0"
+				className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 ease-out data-closed:opacity-0"
 			/>
 
 			<div className="fixed inset-0 w-screen overflow-y-auto p-4 flex items-center justify-center">
@@ -45,7 +45,7 @@ export function Dialog({
 						className,
 						sizes[size],
 						"w-full min-w-0 rounded-xl bg-white p-6 shadow-xl dark:bg-zinc-800 dark:ring-1 dark:ring-white/10",
-						"transition-all duration-300 ease-out data-[closed]:opacity-0 data-[closed]:scale-95 data-[enter]:opacity-100 data-[enter]:scale-100",
+						"transition-all duration-300 ease-out data-closed:opacity-0 data-closed:scale-95 data-enter:opacity-100 data-enter:scale-100",
 					)}
 				>
 					{children}

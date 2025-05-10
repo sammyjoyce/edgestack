@@ -165,7 +165,7 @@ export function TextContentForm({
 			</div>
 			<div
 				aria-live="polite"
-				className="min-h-[2.5rem] mb-2 text-sm flex items-center"
+				className="min-h-10 mb-2 text-sm flex items-center"
 				role="status"
 			>
 				{isSubmitting ? (

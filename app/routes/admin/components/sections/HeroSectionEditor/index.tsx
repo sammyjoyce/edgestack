@@ -126,7 +126,7 @@ export function HeroSectionEditor({
 					<output
 						id="hero-image-upload-status"
 						aria-live="polite"
-						className="text-sm text-neutral-600 mb-2 h-5 min-h-[1.25rem]"
+						className="text-sm text-neutral-600 mb-2 h-5 min-h-5"
 					>
 						{uploadStatus}
 					</output>

@@ -46,7 +46,7 @@ export const Textarea = forwardRef(function Textarea(
 					// Invalid state - simplified border for invalid state
 					"data-invalid:border-red-500 data-invalid:data-hover:border-red-500 dark:data-invalid:border-red-600 dark:data-invalid:data-hover:border-red-600",
 					// Disabled state - simplified border for disabled state
-					"disabled:border-zinc-950/20 dark:disabled:border-white/15 dark:disabled:bg-white/[2.5%] dark:data-hover:disabled:border-white/15",
+					"disabled:border-zinc-950/20 dark:disabled:border-white/15 dark:disabled:bg-white/2.5 dark:data-hover:disabled:border-white/15",
 					// Resizable
 					resizable ? "resize-y" : "resize-none",
 				])}

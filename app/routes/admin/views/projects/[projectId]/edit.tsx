@@ -181,7 +181,7 @@ export default function Component() {
 			<Form
 				method="post"
 				encType="multipart/form-data"
-				className="bg-gray-50 shadow-[var(--shadow-input-default)] border border-gray-200 rounded-lg p-6 flex flex-col gap-6"
+				className="bg-gray-50 shadow-(--shadow-input-default) border border-gray-200 rounded-lg p-6 flex flex-col gap-6"
 			>
 				<div>
 					<label
@@ -196,7 +196,7 @@ export default function Component() {
 						id="title"
 						required
 						defaultValue={project.title}
-						className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm"
+						className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
 					/>
 				</div>
 
@@ -261,7 +261,7 @@ export default function Component() {
 						id="sortOrder"
 						min="0"
 						defaultValue={project.sortOrder ?? 0}
-						className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm"
+						className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
 					/>
 				</div>
 

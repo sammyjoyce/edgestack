@@ -103,10 +103,10 @@ export function Listbox<TValue>({
 				transition
 				anchor="bottom start" // Simplified anchor
 				className={clsx(
-					"isolate z-10 mt-1 w-full min-w-[var(--button-width)] overflow-auto rounded-md bg-white p-1 shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-zinc-800 dark:ring-white/10",
+					"isolate z-10 mt-1 w-full min-w-(--button-width) overflow-auto rounded-md bg-white p-1 shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-zinc-800 dark:ring-white/10",
 					// Transitions
-					"transition ease-out duration-100 data-[closed]:transform data-[closed]:opacity-0 data-[closed]:scale-95",
-					"data-[enter]:transform data-[enter]:opacity-100 data-[enter]:scale-100",
+					"transition ease-out duration-100 data-closed:transform data-closed:opacity-0 data-closed:scale-95",
+					"data-enter:transform data-enter:opacity-100 data-enter:scale-100",
 				)}
 			>
 				{options}
@@ -176,7 +176,7 @@ export function ListboxDescription({
 			{...props}
 			className={clsx(
 				className,
-				"text-xs text-zinc-500 group-data-[focus]/option:text-primary-100 dark:text-zinc-400 dark:group-data-[focus]/option:text-primary-dark-100",
+				"text-xs text-zinc-500 group-data-focus/option:text-primary-100 dark:text-zinc-400 dark:group-data-focus/option:text-primary-dark-100",
 			)}
 		>
 			{children}

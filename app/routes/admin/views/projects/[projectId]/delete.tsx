@@ -83,7 +83,7 @@ export function DeleteProjectRoute() {
 					</Button>
 				</div>
 
-				<div className="bg-gray-50 p-6 rounded-lg shadow-[var(--shadow-input-default)] border border-gray-200">
+				<div className="bg-gray-50 p-6 rounded-lg shadow-(--shadow-input-default) border border-gray-200">
 					<div className="rounded-md bg-yellow-50 p-4 mb-6">
 						<div className="flex">
 							<div className="ml-3">

@@ -75,7 +75,7 @@ export function AboutSectionEditor({
 						id="about_title"
 						rows={2}
 						defaultValue={initialContent.about_title || ""}
-						className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm"
+						className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
 						onBlur={handleBlur}
 					/>
 					<FieldLabel htmlFor="about_text" className="mt-3">

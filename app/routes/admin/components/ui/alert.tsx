@@ -122,11 +122,11 @@ export function Alert({
 			{...props}
 		>
 			{showIcon && icons[variant] && (
-				<div className={clsx("flex-shrink-0 mr-3", variantStyles.icon)}>
+				<div className={clsx("shrink-0 mr-3", variantStyles.icon)}>
 					{icons[variant]}
 				</div>
 			)}
-			<div className="flex-grow">
+			<div className="grow">
 				{title && (
 					<AlertTitle className={variantStyles.title}>{title}</AlertTitle>
 				)}
