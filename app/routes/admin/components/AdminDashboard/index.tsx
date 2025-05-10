@@ -11,9 +11,9 @@ import { HeroSectionEditor } from "~/routes/admin/components/sections/HeroSectio
 import { ServicesSectionEditor } from "~/routes/admin/components/sections/ServicesSectionEditor";
 import type { Route } from "~/routes/admin/views/+types/index"; 
 import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload"; 
-import type { SerializeFrom } from "react-router"; 
-type ActualIndexActionData = SerializeFrom<Route.ActionData>;
-type ActualUploadActionData = SerializeFrom<UploadRoute.ActionData>;
+
+type ActualIndexActionData = Route.ActionData;
+type ActualUploadActionData = UploadRoute.ActionData;
 import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
 import { Heading } from "../ui/heading";
 import type { Section as SorterSection, SectionTheme as SorterSectionTheme } from "~/routes/admin/components/SectionSorter";

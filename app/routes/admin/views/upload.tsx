@@ -38,7 +38,7 @@ export async function loader({ context, request }: Route.LoaderArgs): Promise<Ro
 		);
 	}
 }
-export async function action({ request, context }: Route.ActionArgs): Promise<Response | SerializeFrom<Route.ActionData>> { 
+export async function action({ request, context }: Route.ActionArgs): Promise<Response | Route.ActionData> { 
 	const unauthorized = () => {
 		return redirect("/admin/login"); 
 	};

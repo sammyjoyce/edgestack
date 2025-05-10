@@ -143,7 +143,7 @@ export async function action({
 	}
 }
 export default function AdminIndexPage(): JSX.Element {
-	const data = useLoaderData<SerializeFrom<typeof loader>>(); 
+	const data = useLoaderData<typeof loader>(); 
 	return (
 		<main id="admin-dashboard-main" aria-label="Admin Dashboard">
 			<AdminDashboard initialContent={data.content} />

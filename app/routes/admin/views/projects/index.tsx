@@ -68,7 +68,7 @@ export async function action({
 	return data({ success: false, error: "Unknown intent" }, { status: 400 }); 
 }
 export default function AdminProjectsIndexPage() {
-	const { projects } = useLoaderData<SerializeFrom<typeof loader>>(); 
+	const { projects } = useLoaderData<typeof loader>(); 
 	const location = useLocation();
 	const isChildActive = location.pathname !== "/admin/projects" && location.pathname.startsWith("/admin/projects/");
 	invariant(
