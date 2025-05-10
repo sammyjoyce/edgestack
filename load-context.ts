@@ -1,4 +1,5 @@
 import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1";
+import { DefaultLogger } from "drizzle-orm/logger";
 import type { ExecutionContext } from "@cloudflare/workers-types";
 import type { AppLoadContext } from "react-router";
 import * as schema from "./database/schema";
@@ -24,7 +25,12 @@ type GetLoadContextArgs = {
 	context: Pick<AppLoadContext, "cloudflare">;
 };
 export function getLoadContext({ context }: GetLoadContextArgs) {
-	const db = drizzle(context.cloudflare.env.DB, { schema });
+	const db = drizzle(context.cloudflare.env.DB, {
+		schema,
+		// Enable logger only in development mode
+		// Assuming import.meta.env.DEV is available or use an equivalent check
+		logger: context.cloudflare.env.ENVIRONMENT === "development" ? new DefaultLogger() : false,
+	});
 	return {
 		cloudflare: context.cloudflare,
 		db,

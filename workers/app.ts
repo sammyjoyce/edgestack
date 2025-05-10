@@ -1,5 +1,6 @@
 import type { ExecutionContext } from "@cloudflare/workers-types"; 
 import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1";
+import { DefaultLogger } from "drizzle-orm/logger";
 import { createRequestHandler } from "react-router";
 import * as schema from "../database/schema";
 const serverBuildModuleResolver = () => {
@@ -49,7 +50,11 @@ export default {
 				return new Response("Error fetching asset", { status: 500 });
 			}
 		}
-		const db = drizzle(env.DB, { schema });
+		const db = drizzle(env.DB, {
+			schema,
+			// Enable logger only in development mode
+			logger: import.meta.env.MODE === 'development' ? new DefaultLogger() : false,
+		});
 		const loadContext = {
 			cloudflare: { env, ctx: ctx as Omit<ExecutionContext, "props"> },
 			db,

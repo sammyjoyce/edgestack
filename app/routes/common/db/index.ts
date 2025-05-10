@@ -7,8 +7,29 @@ import type {
 	NewContent,
 	NewProject,
 	Project,
+	Content // Assuming Content type is needed
 } from "../../../../database/schema";
 import * as schema from "../../../../database/schema";
+
+// Example: Prepare statement for getProjectById
+// This assumes 'db' will be passed in, and the prepared statement will be bound to that instance.
+// For true persistence of prepared statements across requests in a serverless worker,
+// the Drizzle instance itself would need to be persistent (e.g., global or in a Durable Object).
+// However, preparing it here still offers benefits if getProjectById is called multiple times
+// within the same request lifecycle with the same db instance.
+
+let getProjectByIdPrepared: ReturnType<DrizzleD1Database<typeof schema>['select']['prepare']> | null = null;
+
+function ensureGetProjectByIdPrepared(db: DrizzleD1Database<typeof schema>) {
+	if (!getProjectByIdPrepared || getProjectByIdPrepared.session?.client !== db) { // Re-prepare if db instance changed
+		getProjectByIdPrepared = db
+			.select()
+			.from(schema.projects)
+			.where(eq(schema.projects.id, sql.placeholder("id")))
+			.prepare();
+	}
+	return getProjectByIdPrepared;
+}
 export async function getAllContent(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Record<string, string>> {
@@ -165,16 +186,15 @@ export async function getProjectById(
 		typeof id === "number" && !Number.isNaN(id),
 		"getProjectById: id must be a number",
 	);
-	const result = await db
-		.select()
-		.from(schema.projects)
-		.where(eq(schema.projects.id, id))
-		.get();
+
+	const prepared = ensureGetProjectByIdPrepared(db);
+	const result = await prepared.execute({ id });
+
 	assert(
-		!result || (typeof result === "object" && "id" in result),
+		!result || (result.length > 0 && typeof result[0] === "object" && "id" in result[0]) || result.length === 0,
 		"getProjectById: must return object or undefined",
 	);
-	return result;
+	return result[0];
 }
 export async function createProject(
 	db: DrizzleD1Database<typeof schema>,
