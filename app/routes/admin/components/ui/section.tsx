@@ -11,7 +11,7 @@ export function SectionCard({
 	return (
 		<div
 			className={clsx(
-				"overflow-hidden bg-gray-50 sm:rounded-lg shadow-[var(--shadow-input-default)] border border-gray-200",
+				"overflow-hidden bg-gray-50 sm:rounded-lg shadow-(--shadow-input-default) border border-gray-200",
 				className,
 			)}
 		>

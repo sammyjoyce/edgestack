@@ -63,9 +63,9 @@ export function ProjectImageSelector({
 
 				{/* Or divider */}
 				<div className="relative flex items-center py-2">
-					<div className="flex-grow border-t border-gray-200" />
-					<span className="flex-shrink mx-4 text-gray-400 text-sm">OR</span>
-					<div className="flex-grow border-t border-gray-200" />
+					<div className="grow border-t border-gray-200" />
+					<span className="shrink mx-4 text-gray-400 text-sm">OR</span>
+					<div className="grow border-t border-gray-200" />
 				</div>
 
 				{/* Browse existing images button */}
@@ -80,7 +80,7 @@ export function ProjectImageSelector({
 							<Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
 							<Drawer.Content className="fixed bottom-0 left-0 right-0 mt-24 flex flex-col rounded-t-2xl bg-white z-50">
 								<div className="flex-1 rounded-t-2xl p-4 bg-white max-h-[90vh] overflow-auto">
-									<div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-4" />
+									<div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 mb-4" />
 
 									<div className="max-w-4xl mx-auto">
 										<h3 className="text-lg font-medium text-gray-900 mb-4">

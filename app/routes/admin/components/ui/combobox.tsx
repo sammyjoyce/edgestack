@@ -52,7 +52,7 @@ export function Combobox<T>({
 					// Focus ring applied to the wrapper for better visual consistency
 					"focus-within:ring-2 focus-within:ring-primary dark:focus-within:ring-primary-dark focus-within:ring-offset-0 rounded-lg",
 					// Disabled state
-					"has-[[data-disabled]]:opacity-70 has-[[data-disabled]]:cursor-not-allowed",
+					"has-data-disabled:opacity-70 has-data-disabled:cursor-not-allowed",
 				)}
 			>
 				<Headless.ComboboxInput
@@ -75,15 +75,15 @@ export function Combobox<T>({
 						// Focus: Handled by the wrapper, but ensure no default outline
 						"focus:outline-none",
 						// Invalid state
-						"data-[invalid]:border-red-500 data-[invalid]:hover:border-red-500 dark:data-[invalid]:border-red-500 dark:data-[invalid]:hover:border-red-500",
+						"data-invalid:border-red-500 data-invalid:hover:border-red-500 dark:data-invalid:border-red-500 dark:data-invalid:hover:border-red-500",
 						// Disabled state
-						"data-[disabled]:border-zinc-300 data-[disabled]:bg-zinc-100 data-[disabled]:text-zinc-400 dark:data-[disabled]:border-zinc-700 dark:data-[disabled]:bg-zinc-800 dark:data-[disabled]:text-zinc-500",
+						"data-disabled:border-zinc-300 data-disabled:bg-zinc-100 data-disabled:text-zinc-400 dark:data-disabled:border-zinc-700 dark:data-disabled:bg-zinc-800 dark:data-disabled:text-zinc-500",
 						"dark:scheme-dark",
 					)}
 				/>
 				<Headless.ComboboxButton className="group absolute inset-y-0 right-0 flex items-center px-2.5">
 					<svg
-						className="size-5 stroke-zinc-500 group-data-[disabled]:stroke-zinc-400 group-hover:stroke-zinc-700 sm:size-4 dark:stroke-zinc-400 dark:group-hover:stroke-zinc-300 dark:group-data-[disabled]:stroke-zinc-500"
+						className="size-5 stroke-zinc-500 group-data-disabled:stroke-zinc-400 group-hover:stroke-zinc-700 sm:size-4 dark:stroke-zinc-400 dark:group-hover:stroke-zinc-300 dark:group-data-disabled:stroke-zinc-500"
 						viewBox="0 0 16 16"
 						aria-hidden="true"
 						fill="none"
@@ -111,7 +111,7 @@ export function Combobox<T>({
 					"max-h-60 overflow-y-auto overscroll-contain",
 					"bg-white dark:bg-zinc-800",
 					"shadow-lg ring-1 ring-zinc-950/5 dark:ring-white/10",
-					"transition-opacity duration-100 ease-in data-[closed]:opacity-0 data-[transition]:pointer-events-none",
+					"transition-opacity duration-100 ease-in data-closed:opacity-0 data-transition:pointer-events-none",
 				)}
 			>
 				{({ option }) => children(option)}
@@ -131,7 +131,7 @@ export function ComboboxOption<T>({
 	const sharedClasses = clsx(
 		"flex min-w-0 items-center gap-x-2",
 		"*:data-[slot=icon]:size-5 *:data-[slot=icon]:shrink-0 sm:*:data-[slot=icon]:size-4",
-		"*:data-[slot=icon]:text-zinc-500 group-data-[focus]:*:data-[slot=icon]:text-white dark:*:data-[slot=icon]:text-zinc-400",
+		"*:data-[slot=icon]:text-zinc-500 group-data-focus:*:data-[slot=icon]:text-white dark:*:data-[slot=icon]:text-zinc-400",
 		"*:data-[slot=avatar]:-mx-0.5 *:data-[slot=avatar]:size-6 sm:*:data-[slot=avatar]:size-5",
 	);
 
@@ -142,15 +142,15 @@ export function ComboboxOption<T>({
 				"group/option flex w-full cursor-default items-center justify-between rounded-md py-2 px-2.5 sm:py-1.5 sm:px-2",
 				"text-base text-zinc-900 sm:text-sm dark:text-white",
 				// Focus/Active state
-				"data-[focus]:bg-primary data-[focus]:text-white dark:data-[focus]:bg-primary-dark",
+				"data-focus:bg-primary data-focus:text-white dark:data-focus:bg-primary-dark",
 				// Selected state (check mark)
-				"data-[selected]:font-semibold",
-				"data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed",
+				"data-selected:font-semibold",
+				"data-disabled:opacity-50 data-disabled:cursor-not-allowed",
 			)}
 		>
 			<span className={clsx(className, sharedClasses)}>{children}</span>
 			<svg
-				className="relative hidden size-5 self-center stroke-current group-data-[selected]:inline sm:size-4"
+				className="relative hidden size-5 self-center stroke-current group-data-selected:inline sm:size-4"
 				viewBox="0 0 16 16"
 				fill="none"
 				aria-hidden="true"
@@ -183,7 +183,7 @@ export function ComboboxDescription({
 			{...props}
 			className={clsx(
 				className,
-				"text-sm text-zinc-500 group-data-[focus]:text-primary-100 dark:text-zinc-400 dark:group-data-[focus]:text-primary-dark-100 truncate",
+				"text-sm text-zinc-500 group-data-focus:text-primary-100 dark:text-zinc-400 dark:group-data-focus:text-primary-dark-100 truncate",
 			)}
 		>
 			{children}

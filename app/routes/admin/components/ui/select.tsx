@@ -37,8 +37,8 @@ export const Select = forwardRef(function Select(
 					"block w-full appearance-none rounded-md border-zinc-300 bg-white py-2 dark:border-zinc-700 dark:bg-zinc-900",
 					"text-base text-zinc-900 placeholder:text-zinc-500 dark:text-white sm:text-sm",
 					"focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:focus:border-primary-dark dark:focus:ring-primary-dark",
-					"data-[disabled]:opacity-50 data-[disabled]:pointer-events-none",
-					"data-[invalid]:border-red-500 data-[invalid]:focus:border-red-500 data-[invalid]:focus:ring-red-500 dark:data-[invalid]:border-red-600 dark:data-[invalid]:focus:border-red-600 dark:data-[invalid]:focus:ring-red-600",
+					"data-disabled:opacity-50 data-disabled:pointer-events-none",
+					"data-invalid:border-red-500 data-invalid:focus:border-red-500 data-invalid:focus:ring-red-500 dark:data-invalid:border-red-600 dark:data-invalid:focus:border-red-600 dark:data-invalid:focus:ring-red-600",
 					multiple ? "px-3" : "pl-3 pr-10",
 				])}
 			/>

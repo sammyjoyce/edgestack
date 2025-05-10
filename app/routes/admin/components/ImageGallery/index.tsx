@@ -125,7 +125,7 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 												<Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
 												<Drawer.Content className="fixed bottom-0 left-0 right-0 mt-24 flex flex-col rounded-t-2xl bg-white z-50">
 													<div className="flex-1 rounded-t-2xl p-4 bg-white max-h-[90vh] overflow-auto">
-														<div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-4" />
+														<div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 mb-4" />
 
 														<div className="max-w-4xl mx-auto">
 															<div className="flex justify-between items-start mb-4">

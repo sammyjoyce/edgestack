@@ -44,7 +44,7 @@ export default function ImageUploadZone({
 			{/* Removed margin */}
 			<div
 				{...getRootProps()}
-				className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition w-full max-w-xs min-h-[8rem] bg-gray-50 hover:bg-gray-100 cursor-pointer ${
+				className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition w-full max-w-xs min-h-32 bg-gray-50 hover:bg-gray-100 cursor-pointer ${
 					/* Reduced min-height, added hover */
 					isDragReject
 						? "border-red-400 bg-red-50" /* Adjusted colors */

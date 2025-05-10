@@ -125,7 +125,7 @@ export function ServicesSectionEditor({
 						id="services_intro_title"
 						rows={2}
 						defaultValue={initialContent.services_intro_title || ""}
-						className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm"
+						className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
 						onBlur={handleBlur}
 					/>
 				</FieldRow>
@@ -155,7 +155,7 @@ export function ServicesSectionEditor({
 								id={field.titleKey}
 								rows={2}
 								defaultValue={initialContent[field.titleKey] || ""}
-								className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-primary focus:ring-primary text-sm"
+								className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
 								onBlur={handleBlur}
 							/>
 							<FieldLabel htmlFor={field.textKey} className="pt-3">

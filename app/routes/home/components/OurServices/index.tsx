@@ -53,7 +53,7 @@ export default function OurServices({
 
 	return (
 		<div className="relative bg-white py-16 sm:py-24" id="services">
-			<div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-gray-50" />
+			<div className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-gray-50" />
 
 			<Container>
 				<section className="mt-12 mb-6 sm:mt-16 sm:mb-8 lg:mt-20 lg:mb-10">
@@ -76,7 +76,7 @@ export default function OurServices({
 							<FadeIn key={service.title}>
 								<div className="group relative overflow-hidden rounded-lg">
 									{/* Service Image */}
-									<div className="aspect-[5/9] overflow-hidden">
+									<div className="aspect-5/9 overflow-hidden">
 										<img
 											src={service.image}
 											alt={service.title}
@@ -100,7 +100,7 @@ export default function OurServices({
 									</div>
 
 									{/* Gradient Overlay */}
-									<div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+									<div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
 								</div>
 							</FadeIn>
 						))}

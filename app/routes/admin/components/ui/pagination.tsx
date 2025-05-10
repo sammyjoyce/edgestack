@@ -119,7 +119,7 @@ export function PaginationPage({
 			aria-current={current ? "page" : undefined}
 			className={clsx(
 				className,
-				"min-w-[2.25rem] px-2.5 py-1.5 text-sm",
+				"min-w-9 px-2.5 py-1.5 text-sm",
 				current &&
 					"font-semibold ring-1 ring-primary dark:ring-primary-dark text-primary dark:text-primary-dark",
 				!current &&
