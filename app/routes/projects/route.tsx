@@ -2,10 +2,10 @@ import React from "react"; // Import React
 import { type MetaFunction, Outlet, data, useLoaderData } from "react-router";
 
 import type { Project } from "~/database/schema";
-import type { Route } from "./+types/route";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import { getAllContent, getAllProjects } from "~/routes/common/db";
+import type { Route } from "./+types/route";
 
 export const meta: MetaFunction = () => {
 	return [
@@ -29,10 +29,7 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
 		console.error("Failed to fetch content or projects:", error);
 		// Return plain object for error
 		// throw new Response("Failed to load projects data", { status: 500 });
-		throw data(
-			{ message: "Failed to load projects data" },
-			{ status: 500 },
-		);
+		throw data({ message: "Failed to load projects data" }, { status: 500 });
 	}
 };
 

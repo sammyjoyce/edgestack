@@ -1,11 +1,11 @@
 import { clsx } from "clsx";
 import React from "react";
 import { Link, type To } from "react-router"; // Import To type
-import type { Project } from "../../../../database/schema";
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; // Import the new component
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
+import type { Project } from "../../../../database/schema";
 
 // Define props interface
 interface RecentProjectsProps {
@@ -65,7 +65,9 @@ export default function RecentProjects({
 											{project.title}
 										</h3>
 										<ConditionalRichTextRenderer
-											text={project.description ? String(project.description) : null}
+											text={
+												project.description ? String(project.description) : null
+											}
 											fallbackClassName="mb-4 text-base text-gray-700 md:mb-6 md:text-lg"
 											fallbackTag="p"
 										/>

@@ -1,13 +1,13 @@
 import React from "react";
+import { Form, Link, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
-import { Form, Link, useLoaderData, redirect } from "react-router";
+import { deleteProject, getAllProjects } from "~/routes/common/db";
 import type { Project } from "../../../../../database/schema";
 import { Button } from "../../components/ui/Button";
-import { deleteProject, getAllProjects } from "~/routes/common/db";
-import { Text } from "../../components/ui/text";
 import { Fieldset, Legend } from "../../components/ui/fieldset";
-import type { Route } from "./+types/index";
 import { Heading } from "../../components/ui/heading";
+import { Text } from "../../components/ui/text";
+import type { Route } from "./+types/index";
 // Define return types for loader and action
 type ProjectsLoaderData = {
 	projects: Project[];
@@ -23,8 +23,9 @@ type ProjectsActionData = {
 // Loader to fetch all projects - Return plain objects for type safety
 export async function loader({ request, context }: Route.LoaderArgs) {
 	// Auth check (redundant with layout loader but good practice)
-	const { getSessionCookie, verify } =
-		await import("~/routes/common/utils/auth");
+	const { getSessionCookie, verify } = await import(
+		"~/routes/common/utils/auth"
+	);
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -51,8 +52,9 @@ export async function action({ request, context }: Route.ActionArgs) {
 	const unauthorized = () => {
 		throw new Response("Unauthorized", { status: 401 });
 	};
-	const { getSessionCookie, verify } =
-		await import("~/routes/common/utils/auth");
+	const { getSessionCookie, verify } = await import(
+		"~/routes/common/utils/auth"
+	);
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -75,7 +77,8 @@ export async function action({ request, context }: Route.ActionArgs) {
 			return { success: true, projectId };
 		} catch (error: unknown) {
 			console.error("Failed to delete project:", error);
-			const message = error instanceof Error ? error.message : "Failed to delete project";
+			const message =
+				error instanceof Error ? error.message : "Failed to delete project";
 			throw new Response(message, { status: 500 });
 		}
 	}
@@ -88,8 +91,14 @@ export function ProjectsIndexRoute() {
 	const { projects } = useLoaderData<typeof loader>();
 
 	// TigerStyle runtime assertions with detailed error messages
-	invariant(Array.isArray(projects), "ProjectsIndexRoute: loader must return an array of projects. Check loader implementation.");
-	invariant(typeof projects.length === "number", "ProjectsIndexRoute: projects must have a length property. Data returned from loader is invalid.");
+	invariant(
+		Array.isArray(projects),
+		"ProjectsIndexRoute: loader must return an array of projects. Check loader implementation.",
+	);
+	invariant(
+		typeof projects.length === "number",
+		"ProjectsIndexRoute: projects must have a length property. Data returned from loader is invalid.",
+	);
 
 	return (
 		<>
@@ -105,7 +114,9 @@ export function ProjectsIndexRoute() {
 			{projects.length === 0 ? (
 				<div className="rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
 					{/* <FolderIcon className="mx-auto h-12 w-12 text-gray-400" /> */}
-					<Text className="mt-2 text-lg font-medium text-gray-900">No projects</Text>
+					<Text className="mt-2 text-lg font-medium text-gray-900">
+						No projects
+					</Text>
 					<Text className="mt-1 text-gray-500">
 						Get started by creating a new project using the button above.
 					</Text>
@@ -171,9 +182,24 @@ export function ProjectsIndexRoute() {
 										</Link>
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-										<Form method="post" onSubmit={(e) => confirm("Are you sure you want to delete this project?") || e.preventDefault()}>
-											<input type="hidden" name="intent" value="deleteProject" />
-											<input type="hidden" name="projectId" value={project.id} />
+										<Form
+											method="post"
+											onSubmit={(e) =>
+												confirm(
+													"Are you sure you want to delete this project?",
+												) || e.preventDefault()
+											}
+										>
+											<input
+												type="hidden"
+												name="intent"
+												value="deleteProject"
+											/>
+											<input
+												type="hidden"
+												name="projectId"
+												value={project.id}
+											/>
 											<Button type="submit" variant="danger" size="sm">
 												Delete
 											</Button>

@@ -38,9 +38,7 @@ function bytesToHex(buf: ArrayBuffer): string {
 }
 
 function toHex(buf: Uint8Array): string {
-	return [...buf]
-		.map((b) => b.toString(16).padStart(2, "0"))
-		.join("");
+	return [...buf].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 /** Sign a session payload (`value`) with the given `secret`. */
@@ -93,9 +91,15 @@ export function getSessionCookie(req: Request): string | null {
  * TigerStyle: DRY admin authentication check.
  * Throws Response(401) if not authenticated.
  */
-export async function requireAdmin(request: Request, context: any): Promise<void> {
+export async function requireAdmin(
+	request: Request,
+	context: any,
+): Promise<void> {
 	assert(request instanceof Request, "requireAdmin: request must be a Request");
-	assert(context && typeof context === "object", "requireAdmin: context must be an object");
+	assert(
+		context && typeof context === "object",
+		"requireAdmin: context must be an object",
+	);
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {

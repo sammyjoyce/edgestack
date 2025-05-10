@@ -1,5 +1,5 @@
-import React, { type ReactNode } from "react";
 import clsx from "clsx";
+import React, { type ReactNode } from "react";
 
 /**
  * Status types for Pills
@@ -35,7 +35,7 @@ export function Pill({
 	children,
 	className,
 }: PillProps) {
-	let baseClasses =
+	const baseClasses =
 		"inline-flex items-center rounded-md px-2 py-1 text-xs font-medium border";
 	let variantClasses = "";
 	let statusClasses = "";
@@ -66,7 +66,13 @@ export function Pill({
 		}
 	}
 
-	return <span className={clsx(baseClasses, variantClasses, statusClasses, className)}>{children}</span>;
+	return (
+		<span
+			className={clsx(baseClasses, variantClasses, statusClasses, className)}
+		>
+			{children}
+		</span>
+	);
 }
 
 // Component for PillStatus to fix the error in TextContentForm

@@ -1,10 +1,14 @@
 import { asc, desc, eq, sql } from "drizzle-orm";
-import type { DrizzleD1Database } from "drizzle-orm/d1";
 import type { BatchItem, BatchResponse } from "drizzle-orm/batch";
-import type { NewContent, NewProject, Project } from "../../../../database/schema";
-import * as schema from "../../../../database/schema";
+import type { DrizzleD1Database } from "drizzle-orm/d1";
 // import { validateProjectUpdate, validateContentUpdate } from "../../../../database/valibot-validation";
 import { assert } from "~/routes/common/utils/assert";
+import type {
+	NewContent,
+	NewProject,
+	Project,
+} from "../../../../database/schema";
+import * as schema from "../../../../database/schema";
 
 // DIAGNOSTIC V5: Use Drizzle's sql template tag for direct interaction
 export async function getAllContent(
@@ -19,15 +23,18 @@ export async function getAllContent(
 
 		const contentMap: Record<string, string> = {};
 		for (const row of rows) {
-			if (typeof row.value === 'string') {
+			if (typeof row.value === "string") {
 				// Explicitly treat as plain text, no JSON parsing
 				contentMap[row.key] = row.value;
 			} else if (row.value !== null && row.value !== undefined) {
-				if (typeof row.value === 'object' || Array.isArray(row.value)) {
+				if (typeof row.value === "object" || Array.isArray(row.value)) {
 					try {
 						contentMap[row.key] = JSON.stringify(row.value);
 					} catch {
-						contentMap[row.key] = JSON.stringify({ error: "Failed to stringify", originalValue: row.value });
+						contentMap[row.key] = JSON.stringify({
+							error: "Failed to stringify",
+							originalValue: row.value,
+						});
 					}
 				} else {
 					contentMap[row.key] = String(row.value);
@@ -49,14 +56,13 @@ export async function updateContent(
 		string,
 		string | (Partial<Omit<NewContent, "key">> & { value: string })
 	>,
-): Promise<D1Result<unknown>[]> { // Correct return type for D1 batch
+): Promise<D1Result<unknown>[]> {
+	// Correct return type for D1 batch
 	const statements: BatchItem<"sqlite">[] = []; // Collect Drizzle statements
 
 	for (const [key, valueOrObj] of Object.entries(updates)) {
 		const dataToSet =
-			typeof valueOrObj === "string"
-				? { value: valueOrObj }
-				: valueOrObj;
+			typeof valueOrObj === "string" ? { value: valueOrObj } : valueOrObj;
 
 		if (typeof dataToSet.value !== "string") {
 			console.warn(
@@ -67,12 +73,15 @@ export async function updateContent(
 		}
 
 		const value = dataToSet.value;
-		const page = typeof dataToSet.page === "string" ? dataToSet.page : undefined;
-		const section = typeof dataToSet.section === "string" ? dataToSet.section : undefined;
+		const page =
+			typeof dataToSet.page === "string" ? dataToSet.page : undefined;
+		const section =
+			typeof dataToSet.section === "string" ? dataToSet.section : undefined;
 		const type = dataToSet.type ?? undefined;
 		const sortOrder = dataToSet.sortOrder ?? undefined;
 		const mediaId = dataToSet.mediaId ?? null;
-		const metadata = typeof dataToSet.metadata === "string" ? dataToSet.metadata : null;
+		const metadata =
+			typeof dataToSet.metadata === "string" ? dataToSet.metadata : null;
 		// const currentTimestamp = new Date(); // Rely on $onUpdate for updatedAt
 
 		const valuesPayload: schema.NewContent = {
@@ -86,7 +95,8 @@ export async function updateContent(
 			metadata,
 		};
 
-		const setDataPayload: Partial<Omit<schema.Content, "updatedAt">> = { // Omit updatedAt
+		const setDataPayload: Partial<Omit<schema.Content, "updatedAt">> = {
+			// Omit updatedAt
 			value,
 			// updatedAt: currentTimestamp, // Rely on $onUpdate
 		};
@@ -96,7 +106,7 @@ export async function updateContent(
 		if (sortOrder !== undefined) setDataPayload.sortOrder = sortOrder;
 		if (mediaId !== undefined) setDataPayload.mediaId = mediaId;
 		if (metadata !== undefined) setDataPayload.metadata = metadata;
-		
+
 		// Commented out validation due to missing file
 		// try {
 		// 	validateContentUpdate(setDataPayload);
@@ -121,16 +131,19 @@ export async function updateContent(
 			return Promise.resolve([]);
 		}
 		// db.batch expects a non-empty array of Drizzle statement instances
-		const results = await db.batch(statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]]);
+		const results = await db.batch(
+			statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]],
+		);
 		return results;
 	} catch (batchError) {
-		console.error(`Error during batch content update:`, batchError);
+		console.error("Error during batch content update:", batchError);
 		// Rethrow or handle as appropriate for your application
 		if (batchError instanceof Error) {
 			throw batchError;
-		} else {
-			throw new Error(typeof batchError === "string" ? batchError : JSON.stringify(batchError));
 		}
+		throw new Error(
+			typeof batchError === "string" ? batchError : JSON.stringify(batchError),
+		);
 	}
 }
 
@@ -172,13 +185,19 @@ export async function getProjectById(
 	id: number,
 ): Promise<Project | undefined> {
 	assert(db, "getProjectById: db is required");
-	assert(typeof id === "number" && !Number.isNaN(id), "getProjectById: id must be a number");
+	assert(
+		typeof id === "number" && !Number.isNaN(id),
+		"getProjectById: id must be a number",
+	);
 	const result = await db
 		.select()
 		.from(schema.projects)
 		.where(eq(schema.projects.id, id))
 		.get();
-	assert(!result || (typeof result === "object" && "id" in result), "getProjectById: must return object or undefined");
+	assert(
+		!result || (typeof result === "object" && "id" in result),
+		"getProjectById: must return object or undefined",
+	);
 	return result;
 }
 
@@ -187,7 +206,10 @@ export async function createProject(
 	projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">,
 ): Promise<Project> {
 	assert(db, "createProject: db is required");
-	assert(typeof projectData === "object", "createProject: projectData must be object");
+	assert(
+		typeof projectData === "object",
+		"createProject: projectData must be object",
+	);
 	const dataWithDefaults: Omit<NewProject, "id" | "createdAt" | "updatedAt"> = {
 		...projectData,
 		isFeatured: projectData.isFeatured ?? false,
@@ -205,7 +227,10 @@ export async function createProject(
 		.values(dataWithDefaults)
 		.returning()
 		.get();
-	assert(result && typeof result === "object" && "id" in result, "createProject: must return project");
+	assert(
+		result && typeof result === "object" && "id" in result,
+		"createProject: must return project",
+	);
 	return result;
 }
 
@@ -215,7 +240,10 @@ export async function updateProject(
 	projectData: Partial<Omit<NewProject, "id" | "createdAt">>,
 ): Promise<Project | undefined> {
 	assert(db, "updateProject: db is required");
-	assert(typeof id === "number" && !Number.isNaN(id), "updateProject: id must be a number");
+	assert(
+		typeof id === "number" && !Number.isNaN(id),
+		"updateProject: id must be a number",
+	);
 	// Commented out validation due to missing file
 	// try {
 	// 	validateProjectUpdate(projectData);
@@ -223,7 +251,9 @@ export async function updateProject(
 	// 	console.error("Validation error:", validationError);
 	// 	return undefined;
 	// }
-	const dataToUpdate: Partial<Omit<NewProject, "id" | "createdAt" |"updatedAt">> = {
+	const dataToUpdate: Partial<
+		Omit<NewProject, "id" | "createdAt" | "updatedAt">
+	> = {
 		...projectData,
 		isFeatured: projectData.isFeatured,
 		sortOrder: projectData.sortOrder,
@@ -234,7 +264,10 @@ export async function updateProject(
 		.where(eq(schema.projects.id, id))
 		.returning()
 		.get();
-	assert(!result || (typeof result === "object" && "id" in result), "updateProject: must return object or undefined");
+	assert(
+		!result || (typeof result === "object" && "id" in result),
+		"updateProject: must return object or undefined",
+	);
 	return result;
 }
 
@@ -243,11 +276,17 @@ export async function deleteProject(
 	id: number,
 ): Promise<{ success: boolean; meta?: unknown }> {
 	assert(db, "deleteProject: db is required");
-	assert(typeof id === "number" && !Number.isNaN(id), "deleteProject: id must be a number");
+	assert(
+		typeof id === "number" && !Number.isNaN(id),
+		"deleteProject: id must be a number",
+	);
 	const result = await db
 		.delete(schema.projects)
 		.where(eq(schema.projects.id, id))
 		.run();
-	assert(typeof result.success === "boolean", "deleteProject: must return success boolean");
+	assert(
+		typeof result.success === "boolean",
+		"deleteProject: must return success boolean",
+	);
 	return { success: result.success, meta: result.meta };
 }

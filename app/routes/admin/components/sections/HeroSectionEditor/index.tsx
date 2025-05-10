@@ -5,6 +5,14 @@ import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
+import {
+	FieldLabel,
+	FieldRow,
+	SectionCard,
+	SectionHeading,
+} from "~/routes/admin/components/ui/section";
+import { Textarea } from "~/routes/admin/components/ui/textarea";
+import { Input } from "../ui/input";
 
 interface HeroSectionEditorProps {
 	// Use a union type with inferred action types
@@ -76,24 +84,19 @@ export function HeroSectionEditor({
 	}, [imageUploading, uploadStatus]);
 
 	return (
-		<div className="bg-white p-6 rounded-lg shadow-block border border-neutral-200">
+		<SectionCard>
+			<SectionHeading>Hero Section</SectionHeading>
 			<h3 className="text-lg font-semibold text-foreground mb-6">
 				Hero Section
 			</h3>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 				<div className="flex flex-col gap-y-4">
-					<label
-						htmlFor="hero_title"
-						className="block text-sm font-medium text-foreground mb-1"
-					>
-						Hero Title
-					</label>
-					<textarea
+					<FieldLabel htmlFor="hero_title">Hero Title</FieldLabel>
+					<Textarea
 						name="hero_title"
 						id="hero_title"
 						rows={2}
 						defaultValue={initialContent.hero_title || ""}
-						className="block w-full rounded-md border-neutral-300 bg-white shadow-input-default focus:border-primary focus:ring-1 focus:ring-primary text-sm p-2.5"
 						onBlur={handleBlur}
 					/>
 					<label
@@ -106,8 +109,7 @@ export function HeroSectionEditor({
 						name="hero_subtitle"
 						initialJSON={initialContent.hero_subtitle || ""}
 						disabled={
-							fetcher.state === "submitting" ||
-							fetcher.state === "loading"
+							fetcher.state === "submitting" || fetcher.state === "loading"
 						}
 					/>
 				</div>
@@ -139,6 +141,6 @@ export function HeroSectionEditor({
 					/>
 				</div>
 			</div>
-		</div>
+		</SectionCard>
 	);
 }

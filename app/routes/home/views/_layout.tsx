@@ -1,5 +1,10 @@
 import React from "react"; // Import React
-import { Outlet, useLoaderData, type ShouldRevalidateFunction } from "react-router";
+import {
+	Outlet,
+	type ShouldRevalidateFunction,
+	useLoaderData,
+} from "react-router";
+import { data } from "react-router";
 // Still need the Project type for internal typing
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
@@ -10,7 +15,6 @@ import {
 	getFeaturedProjects,
 } from "~/routes/common/db";
 import { HomeErrorBoundary } from "../components/HomeErrorBoundary";
-import { data } from "react-router";
 
 type HomeLayoutLoaderData = {
 	content: Record<string, string>;
@@ -23,7 +27,8 @@ type HomeLayoutLoaderData = {
 	};
 };
 
-export async function loader({ request, context }: any) { // Adjusted type for LoaderArgs
+export async function loader({ request, context }: any) {
+	// Adjusted type for LoaderArgs
 	try {
 		// Load all content
 		const content = await getAllContent(context.db);
@@ -42,7 +47,8 @@ export async function loader({ request, context }: any) { // Adjusted type for L
 			content,
 			featuredProjects,
 			projects,
-			_debug: { // Consider removing debug info for production builds
+			_debug: {
+				// Consider removing debug info for production builds
 				cacheBuster,
 				timestamp,
 			},
@@ -50,10 +56,7 @@ export async function loader({ request, context }: any) { // Adjusted type for L
 	} catch (error) {
 		console.error("Error fetching data from D1:", error);
 		// Throw an error to be caught by the ErrorBoundary
-		throw new Error(
-			{ message: "Failed to load layout data" },
-			{ status: 500 },
-		);
+		throw new Error({ message: "Failed to load layout data" }, { status: 500 });
 	}
 }
 

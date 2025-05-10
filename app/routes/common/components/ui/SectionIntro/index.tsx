@@ -1,5 +1,5 @@
 import clsx from "clsx"; // Use direct import
-import React from "react"; // Import React
+import type React from "react"; // Import React
 
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn"; // Corrected path

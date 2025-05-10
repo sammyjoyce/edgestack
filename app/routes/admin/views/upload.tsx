@@ -1,6 +1,8 @@
-import React, { type JSX, useState } from "react";
 import { eq } from "drizzle-orm";
+import React, { type JSX, useState } from "react";
 
+import { data } from "react-router";
+import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import {
@@ -9,15 +11,12 @@ import {
 	handleImageUpload,
 	listStoredImages,
 } from "~/utils/upload.server";
-import type { Route } from "./+types/upload";
+import { schema } from "../../../../database/schema";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { schema } from "../../../../database/schema";
-import { data } from "react-router";
+import type { Route } from "./+types/upload";
 
 // import { validateContentInsert } from "../../../../database/valibot-validation"; // Commented out due to missing file
-
 
 export async function loader({ context, request }: Route.LoaderArgs) {
 	// Authentication check
@@ -34,15 +33,19 @@ export async function loader({ context, request }: Route.LoaderArgs) {
 	} catch (error: any) {
 		console.error("Error listing images:", error);
 		throw new Error(
-			"Failed to list images: " + (error.message || "Unknown error")
+			`Failed to list images: ${error.message || "Unknown error"}`,
 		);
 	}
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
-	const unauthorized = () => { throw new Response("Unauthorized", { status: 401 }); };
+	const unauthorized = () => {
+		throw new Response("Unauthorized", { status: 401 });
+	};
 
-	const badRequest = (msg: string) => { throw new Response(msg, { status: 400 }); };
+	const badRequest = (msg: string) => {
+		throw new Response(msg, { status: 400 });
+	};
 
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -64,27 +67,41 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 				const r2Deleted = await deleteStoredImage(filename, context);
 				if (!r2Deleted) {
-					throw new Response("Failed to delete image from storage.", { status: 500 });
+					throw new Response("Failed to delete image from storage.", {
+						status: 500,
+					});
 				}
 
-				const publicUrlBase = context.cloudflare?.env?.PUBLIC_R2_URL || "/assets";
+				const publicUrlBase =
+					context.cloudflare?.env?.PUBLIC_R2_URL || "/assets";
 				const fullUrl = `${publicUrlBase.replace(/\/?$/, "/")}${filename}`;
 
 				await context.db.transaction(async (tx) => {
 					// Operations within transaction
-					const mediaToDelete = await tx.select({ id: schema.media.id }).from(schema.media).where(eq(schema.media.url, fullUrl)).get();
-					
-					await tx.delete(schema.media).where(eq(schema.media.url, fullUrl)).run();
+					const mediaToDelete = await tx
+						.select({ id: schema.media.id })
+						.from(schema.media)
+						.where(eq(schema.media.url, fullUrl))
+						.get();
+
+					await tx
+						.delete(schema.media)
+						.where(eq(schema.media.url, fullUrl))
+						.run();
 
 					if (mediaToDelete?.id) {
-						await tx.update(schema.content)
+						await tx
+							.update(schema.content)
 							.set({ mediaId: null, value: "" }) // Clear link and value
-							.where(eq(schema.content.mediaId, mediaToDelete.id)).run();
+							.where(eq(schema.content.mediaId, mediaToDelete.id))
+							.run();
 					}
 					// Fallback: also clear content if it directly stores the URL in 'value'
-					await tx.update(schema.content)
+					await tx
+						.update(schema.content)
 						.set({ value: "", mediaId: null }) // Ensure mediaId is also cleared here
-						.where(eq(schema.content.value, fullUrl)).run();
+						.where(eq(schema.content.value, fullUrl))
+						.run();
 				});
 
 				return data({ success: true, action: "delete", filename });
@@ -111,7 +128,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 				// 		error: `Validation failed for key '${key}': ${e.message || e}`,
 				// 	}, { status: 400 });
 				// }
-				
+
 				// updateContent uses batch internally. To ensure atomicity with media selection,
 				// we perform the content update within the same transaction.
 				await context.db.transaction(async (tx) => {
@@ -176,23 +193,30 @@ export async function action({ request, context }: Route.ActionArgs) {
 			// 		error: `Validation failed for key '${key}' (URL): ${e.message || e}`,
 			// 	}, { status: 400 });
 			// }
-			
+
 			const mediaAltText = file.name;
-			
+
 			await context.db.transaction(async (tx) => {
 				// Insert media and get its ID
 				let newMediaId: number | null = null;
 				try {
-					const mediaInsertResult = await tx.insert(schema.media).values({
-						url: publicUrl,
-						alt: mediaAltText,
-					}).returning({ id: schema.media.id }).get();
+					const mediaInsertResult = await tx
+						.insert(schema.media)
+						.values({
+							url: publicUrl,
+							alt: mediaAltText,
+						})
+						.returning({ id: schema.media.id })
+						.get();
 
 					if (mediaInsertResult) {
 						newMediaId = mediaInsertResult.id;
 					} else {
 						// Fallback for D1 if returning().get() is not ideal / returns undefined
-						const runResult = await tx.insert(schema.media).values({url: publicUrl, alt: mediaAltText}).run();
+						const runResult = await tx
+							.insert(schema.media)
+							.values({ url: publicUrl, alt: mediaAltText })
+							.run();
 						if (runResult.meta.last_row_id) {
 							newMediaId = Number(runResult.meta.last_row_id);
 						}
@@ -204,9 +228,10 @@ export async function action({ request, context }: Route.ActionArgs) {
 					// Throwing error here will rollback the transaction.
 					if (dbError instanceof Error) {
 						throw dbError;
-					} else {
-						throw new Error(typeof dbError === "string" ? dbError : JSON.stringify(dbError));
 					}
+					throw new Error(
+						typeof dbError === "string" ? dbError : JSON.stringify(dbError),
+					);
 				}
 
 				// Now update content with the publicUrl and newMediaId (if available)
@@ -235,10 +260,13 @@ export async function action({ request, context }: Route.ActionArgs) {
 			return data({ success: true, url: publicUrl, key, action: "upload" });
 		} catch (error: any) {
 			console.error("Upload error or action processing error:", error);
-			return data({
-				success: false,
-				error: error.message || "An unexpected error occurred",
-			}, { status: 500 });
+			return data(
+				{
+					success: false,
+					error: error.message || "An unexpected error occurred",
+				},
+				{ status: 500 },
+			);
 		}
 	}
 

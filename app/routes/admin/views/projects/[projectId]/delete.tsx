@@ -1,11 +1,11 @@
 import React from "react";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import type { Project } from "../../../../../../database/schema";
-import { deleteProject, getProjectById } from "~/routes/common/db"; // Import deleteProject and getProjectById statically
-import type { Route } from "./+types/delete";
-import { Button } from "../../../components/ui/Button";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import { deleteProject, getProjectById } from "~/routes/common/db"; // Import deleteProject and getProjectById statically
+import type { Project } from "../../../../../../database/schema";
+import { Button } from "../../../components/ui/Button";
+import type { Route } from "./+types/delete";
 
 // Return plain objects for type safety
 export async function loader({ params, context }: Route.LoaderArgs) {
@@ -24,7 +24,9 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 		return { project };
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw new Response(error.message || "Failed to load project", { status: 500 });
+		throw new Response(error.message || "Failed to load project", {
+			status: 500,
+		});
 	}
 }
 
@@ -53,7 +55,9 @@ export async function action({
 		return redirect("/admin/projects");
 	} catch (error: any) {
 		console.error("Error deleting project:", error);
-		throw new Response(error.message || "Failed to delete project", { status: 500 });
+		throw new Response(error.message || "Failed to delete project", {
+			status: 500,
+		});
 	}
 }
 

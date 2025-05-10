@@ -1,8 +1,13 @@
-import { type RouteConfig, index, route, layout, prefix } from "@react-router/dev/routes";
+import {
+	type RouteConfig,
+	index,
+	layout,
+	prefix,
+	route,
+} from "@react-router/dev/routes";
 
 // Define routes using the new architecture with module-by-route pattern
 export default [
-  
 	// Home routes
 	route("", "routes/home/route.tsx", [
 		// index("routes/home/views/index.tsx"), // Assuming route.tsx handles the index view or Outlet
@@ -29,8 +34,14 @@ export default [
 			layout("./routes/admin/views/projects/_layout.tsx", [
 				index("./routes/admin/views/projects/index.tsx"),
 				route("new", "./routes/admin/views/projects/new.tsx"),
-				route(":projectId/edit", "./routes/admin/views/projects/[projectId]/edit.tsx"),
-				route(":projectId/delete", "./routes/admin/views/projects/[projectId]/delete.tsx"),
+				route(
+					":projectId/edit",
+					"./routes/admin/views/projects/[projectId]/edit.tsx",
+				),
+				route(
+					":projectId/delete",
+					"./routes/admin/views/projects/[projectId]/delete.tsx",
+				),
 			]),
 		]),
 	]),

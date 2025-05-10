@@ -1,4 +1,4 @@
-import React from "react"; // Import React
+import type React from "react"; // Import React
 import { Border } from "~/routes/common/components/ui/Border";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
 

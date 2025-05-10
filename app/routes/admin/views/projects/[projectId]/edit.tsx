@@ -1,15 +1,15 @@
 import React from "react";
 import { Form, Link, redirect, useLoaderData } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-// The validateProjectUpdate function is not found, we'll implement inline validation
-import type { Project } from "../../../../../database/schema";
 import { ProjectImageSelector } from "~/routes/admin/components/ProjectImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
+import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
-import type { Route } from "./+types/edit";
+// The validateProjectUpdate function is not found, we'll implement inline validation
+import type { Project } from "../../../../../database/schema";
 import { Button } from "../../../components/ui/Button";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import type { Route } from "./+types/edit";
 
 // Define return types for loader and action
 type ProjectLoaderData = {
@@ -43,7 +43,9 @@ export async function loader({
 		return { project };
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw new Response(error.message || "Failed to load project", { status: 500 });
+		throw new Response(error.message || "Failed to load project", {
+			status: 500,
+		});
 	}
 }
 
@@ -104,7 +106,10 @@ export async function action({
 		}
 
 		if (!title) {
-			return data({ success: false, error: "Title is required" }, { status: 400 });
+			return data(
+				{ success: false, error: "Title is required" },
+				{ status: 400 },
+			);
 		}
 
 		// Validate and update the project
@@ -123,7 +128,13 @@ export async function action({
 		} catch (validationError: any) {
 			console.error("Project validation failed:", validationError);
 			// Consider extracting Valibot error messages like in new.tsx if desired
-			return data({ success: false, error: validationError.message || "Validation failed" }, { status: 400 });
+			return data(
+				{
+					success: false,
+					error: validationError.message || "Validation failed",
+				},
+				{ status: 400 },
+			);
 		}
 
 		if (!title.trim()) {
@@ -137,7 +148,14 @@ export async function action({
 		const updated = await updateProject(context.db, projectId, projectData);
 
 		if (!updated) {
-			return data({ success: false, error: "Failed to update project, project might not exist or update failed." }, { status: 500 });
+			return data(
+				{
+					success: false,
+					error:
+						"Failed to update project, project might not exist or update failed.",
+				},
+				{ status: 500 },
+			);
 		}
 
 		// Redirect to projects list after successful update

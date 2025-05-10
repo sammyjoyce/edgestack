@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { Drawer } from "vaul";
-import { Button } from "~/routes/admin/components/ui/Button";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+import { Button } from "~/routes/admin/components/ui/button";
+
+import type {
+	action as uploadRouteAction,
+	loader as uploadRouteLoader,
+} from "~/routes/admin/views/upload";
 import type { StoredImage } from "~/utils/upload.server";
-import type { action as uploadRouteAction, loader as uploadRouteLoader } from "~/routes/admin/views/upload";
 
 interface ImageGalleryProps {
 	onSelectImage?: (image: StoredImage) => void;
@@ -14,7 +17,14 @@ interface ImageGalleryProps {
 export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 	const { images = [] } = useLoaderData<typeof uploadRouteLoader>();
 	// Define a more specific type for the fetcher data if needed, or use a general one if actions are consistent
-	type GalleryActionData = { success?: boolean; error?: string; action?: string; filename?: string; url?: string; key?: string; };
+	type GalleryActionData = {
+		success?: boolean;
+		error?: string;
+		action?: string;
+		filename?: string;
+		url?: string;
+		key?: string;
+	};
 	const fetcher = useFetcher<GalleryActionData>();
 	const [selectedImage, setSelectedImage] = useState<StoredImage | null>(null);
 
@@ -91,138 +101,136 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 
 					<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
 						{images.map((image: StoredImage) => (
-							<FadeIn key={image.name}>
-								<div className="relative group overflow-hidden border border-gray-200 rounded-lg">
-									<img
-										src={image.url}
-										alt={image.name}
-										className="w-full h-32 object-cover"
-									/>
+							<div className="relative group overflow-hidden border border-gray-200 rounded-lg">
+								<img
+									src={image.url}
+									alt={image.name}
+									className="w-full h-32 object-cover"
+								/>
 
-									<div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100">
-										{/* Actions overlay */}
-										<div className="flex gap-2">
-											<Drawer.Root>
-												<Drawer.Trigger asChild>
-													<Button
-														variant="primary"
-														size="sm"
-														onClick={() => setSelectedImage(image)}
-													>
-														View
-													</Button>
-												</Drawer.Trigger>
-												<Drawer.Portal>
-													<Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
-													<Drawer.Content className="fixed bottom-0 left-0 right-0 mt-24 flex flex-col rounded-t-2xl bg-white z-50">
-														<div className="flex-1 rounded-t-2xl p-4 bg-white max-h-[90vh] overflow-auto">
-															<div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-4" />
+								<div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100">
+									{/* Actions overlay */}
+									<div className="flex gap-2">
+										<Drawer.Root>
+											<Drawer.Trigger asChild>
+												<Button
+													variant="primary"
+													size="sm"
+													onClick={() => setSelectedImage(image)}
+												>
+													View
+												</Button>
+											</Drawer.Trigger>
+											<Drawer.Portal>
+												<Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
+												<Drawer.Content className="fixed bottom-0 left-0 right-0 mt-24 flex flex-col rounded-t-2xl bg-white z-50">
+													<div className="flex-1 rounded-t-2xl p-4 bg-white max-h-[90vh] overflow-auto">
+														<div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-4" />
 
-															<div className="max-w-4xl mx-auto">
-																<div className="flex justify-between items-start mb-4">
-																	<div>
-																		<h3 className="text-lg font-medium text-gray-900 truncate max-w-[250px]">
-																			{selectedImage?.name}
-																		</h3>
-																		<p className="text-sm text-gray-500">
-																			Uploaded{" "}
-																			{selectedImage &&
-																				formatDate(selectedImage.uploadDate)}
-																		</p>
-																		<p className="text-sm text-gray-500">
-																			{selectedImage &&
-																				formatFileSize(selectedImage.size)}
-																		</p>
-																	</div>
-																	<div className="flex gap-2">
-																		{forField && (
-																			<fetcher.Form
-																				method="post"
-																				action="/admin/upload"
-																			>
-																				<input
-																					type="hidden"
-																					name="intent"
-																					value="selectImage"
-																				/>
-																				<input
-																					type="hidden"
-																					name="key"
-																					value={forField}
-																				/>
-																				<input
-																					type="hidden"
-																					name="imageUrl"
-																					value={selectedImage?.url}
-																				/>
-																				<Button type="submit" variant="primary">
-																					Use this image
-																				</Button>
-																			</fetcher.Form>
-																		)}
-																		<Button
-																			variant="danger"
-																			onClick={() =>
-																				selectedImage &&
-																				handleDelete(selectedImage)
-																			}
-																		>
-																			Delete
-																		</Button>
-																	</div>
-																</div>
-
-																<div className="rounded-lg overflow-hidden border border-gray-200">
-																	<img
-																		src={selectedImage?.url}
-																		alt={selectedImage?.name}
-																		className="max-w-full w-full h-auto"
-																	/>
-																</div>
-
-																<div className="mt-4 bg-gray-50 p-3 rounded-lg">
-																	<p className="text-sm font-medium text-gray-700 mb-1">
-																		Image URL:
+														<div className="max-w-4xl mx-auto">
+															<div className="flex justify-between items-start mb-4">
+																<div>
+																	<h3 className="text-lg font-medium text-gray-900 truncate max-w-[250px]">
+																		{selectedImage?.name}
+																	</h3>
+																	<p className="text-sm text-gray-500">
+																		Uploaded{" "}
+																		{selectedImage &&
+																			formatDate(selectedImage.uploadDate)}
 																	</p>
-																	<div className="flex items-center mt-1">
-																		<code className="bg-gray-100 text-gray-800 px-2 py-1 text-xs rounded flex-1 overflow-x-auto">
-																			{selectedImage?.url}
-																		</code>
-																		<Button
-																			variant="secondary"
-																			size="xs"
-																			className="ml-2"
-																			onClick={() => {
-																				navigator.clipboard.writeText(
-																					selectedImage?.url || "",
-																				);
-																			}}
+																	<p className="text-sm text-gray-500">
+																		{selectedImage &&
+																			formatFileSize(selectedImage.size)}
+																	</p>
+																</div>
+																<div className="flex gap-2">
+																	{forField && (
+																		<fetcher.Form
+																			method="post"
+																			action="/admin/upload"
 																		>
-																			Copy
-																		</Button>
-																	</div>
+																			<input
+																				type="hidden"
+																				name="intent"
+																				value="selectImage"
+																			/>
+																			<input
+																				type="hidden"
+																				name="key"
+																				value={forField}
+																			/>
+																			<input
+																				type="hidden"
+																				name="imageUrl"
+																				value={selectedImage?.url}
+																			/>
+																			<Button type="submit" variant="primary">
+																				Use this image
+																			</Button>
+																		</fetcher.Form>
+																	)}
+																	<Button
+																		variant="danger"
+																		onClick={() =>
+																			selectedImage &&
+																			handleDelete(selectedImage)
+																		}
+																	>
+																		Delete
+																	</Button>
+																</div>
+															</div>
+
+															<div className="rounded-lg overflow-hidden border border-gray-200">
+																<img
+																	src={selectedImage?.url}
+																	alt={selectedImage?.name}
+																	className="max-w-full w-full h-auto"
+																/>
+															</div>
+
+															<div className="mt-4 bg-gray-50 p-3 rounded-lg">
+																<p className="text-sm font-medium text-gray-700 mb-1">
+																	Image URL:
+																</p>
+																<div className="flex items-center mt-1">
+																	<code className="bg-gray-100 text-gray-800 px-2 py-1 text-xs rounded flex-1 overflow-x-auto">
+																		{selectedImage?.url}
+																	</code>
+																	<Button
+																		variant="secondary"
+																		size="xs"
+																		className="ml-2"
+																		onClick={() => {
+																			navigator.clipboard.writeText(
+																				selectedImage?.url || "",
+																			);
+																		}}
+																	>
+																		Copy
+																	</Button>
 																</div>
 															</div>
 														</div>
-													</Drawer.Content>
-												</Drawer.Portal>
-											</Drawer.Root>
+													</div>
+												</Drawer.Content>
+											</Drawer.Portal>
+										</Drawer.Root>
 
-											<Button
-												variant="danger"
-												size="sm"
-												onClick={() => handleDelete(image)}
-											>
-												Delete
-											</Button>
-										</div>
-									</div>
-
-									<div className="absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-75 text-white text-xs px-2 py-1 truncate">
-										{image.name}
+										<Button
+											variant="danger"
+											size="sm"
+											onClick={() => handleDelete(image)}
+										>
+											Delete
+										</Button>
 									</div>
 								</div>
-							</FadeIn>
+
+								<div className="absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-75 text-white text-xs px-2 py-1 truncate">
+									{image.name}
+								</div>
+							</div>
 						))}
 					</div>
 				</>

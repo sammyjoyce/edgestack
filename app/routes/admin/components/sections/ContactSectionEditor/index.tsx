@@ -1,7 +1,15 @@
-import React from "react"; // Import React
+import type React from "react";
 import type { FetcherWithComponents } from "react-router";
+import { Input } from "../ui/input"; // Import React
+import { Textarea } from "../ui/textarea";
 
 import RichTextField from "~/routes/admin/components/RichTextField";
+import {
+	FieldLabel,
+	FieldRow,
+	SectionCard,
+	SectionHeading,
+} from "~/routes/admin/components/ui/section";
 // Import the specific action type
 import type { action as adminIndexAction } from "~/routes/admin/views/index";
 
@@ -102,7 +110,8 @@ export function ContactSectionEditor({
 	// );
 
 	return (
-		<section className="bg-gray-50 rounded-lg shadow-[var(--shadow-input-default)] border border-gray-200 p-6">
+		<SectionCard>
+			<SectionHeading>Contact Section (Home Page)</SectionHeading>
 			{/* Adjusted shadow/border/padding */}
 			<h2 className="text-xl font-semibold text-gray-900 mb-6">
 				{/* Use semibold, increased margin */}
@@ -111,15 +120,8 @@ export function ContactSectionEditor({
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
 				{/* Adjusted gap */}
 				{contactFields.map(({ key, label, rows, placeholder, isRichText }) => (
-					<div className="flex flex-col gap-y-1" key={key}>
-						{/* Adjusted gap */}
-						<label
-							htmlFor={key}
-							className="block text-sm font-medium text-gray-700 mb-1"
-						>
-							{/* Standard label */}
-							{label}
-						</label>
+					<FieldRow key={key}>
+						<FieldLabel htmlFor={key}>{label}</FieldLabel>
 						{isRichText ? (
 							<RichTextField
 								name={key}
@@ -127,27 +129,27 @@ export function ContactSectionEditor({
 								disabled={fetcher.state === "submitting"}
 							/>
 						) : rows > 1 ? (
-							<textarea
+							<Textarea
 								name={key}
 								id={key}
 								rows={rows}
 								defaultValue={initialContent[key] || ""}
 								placeholder={placeholder}
-								className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+								disabled={fetcher.state === "submitting"}
 							/>
 						) : (
-							<input
+							<Input
 								type="text"
 								name={key}
 								id={key}
 								defaultValue={initialContent[key] || ""}
 								placeholder={placeholder}
-								className="block w-full rounded-md border-gray-300 bg-white shadow-[var(--shadow-input-default)] focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+								disabled={fetcher.state === "submitting"}
 							/>
 						)}
-					</div>
+					</FieldRow>
 				))}
 			</div>
-		</section>
+		</SectionCard>
 	);
 }
