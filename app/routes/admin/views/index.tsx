@@ -1,3 +1,4 @@
+import type { Route } from "./+types/index";
 import React, { type JSX } from "react";
 import { assert } from "~/routes/common/utils/assert";
 const DEBUG = process.env.NODE_ENV !== "production";
@@ -47,6 +48,7 @@ import type { Route } from "./+types";
 export async function action({
 	request,
 	context,
+	params,
 }: Route.ActionArgs): Promise<Response | Route.ActionData> {
 	if (DEBUG)
 		console.log(
@@ -188,11 +190,10 @@ export async function action({
 		);
 	}
 }
-export default function AdminIndexPage(): JSX.Element {
-	const data = useLoaderData<typeof loader>();
+export default function AdminIndexPage({ loaderData }: Route.ComponentProps): JSX.Element {
 	return (
 		<main id="admin-dashboard-main" aria-label="Admin Dashboard">
-			<AdminDashboard initialContent={data.content} />
+			<AdminDashboard initialContent={loaderData.content} />
 		</main>
 	);
 }

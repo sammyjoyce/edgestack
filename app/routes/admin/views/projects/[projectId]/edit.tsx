@@ -1,3 +1,4 @@
+import type { Route } from "./+types/[projectId]/edit";
 import React from "react";
 import {
 	Form,
@@ -6,7 +7,6 @@ import {
 	useActionData,
 	useLoaderData,
 } from "react-router";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import type { Project } from "~/database/schema";
 import { ProjectImageSelector } from "~/routes/admin/components/ProjectImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
@@ -31,9 +31,8 @@ import { Text } from "../../../components/ui/text";
 export async function loader({
 	params,
 	context,
-}: { params: { projectId: string }; context: any }): Promise<
-	{ project: Project } | Response
-> {
+	request,
+}: Route.LoaderArgs): Promise<{ project: Project } | Response> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		throw new Response("Invalid Project ID", { status: 400 });
@@ -55,9 +54,8 @@ export async function action({
 	request,
 	params,
 	context,
-}: { request: Request; params: { projectId: string }; context: any }): Promise<
-	| Response
-	| { success: boolean; errors?: Record<string, string>; error?: string }
+}: Route.ActionArgs): Promise<
+	Response | { success: boolean; errors?: Record<string, string>; error?: string }
 > {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
@@ -146,12 +144,8 @@ export async function action({
 		};
 	}
 }
-export default function EditProjectPage() {
-	const loaderData = useLoaderData() as { project?: Project };
+export default function EditProjectPage({ loaderData, actionData, params }: Route.ComponentProps) {
 	const project = loaderData?.project;
-	const actionData = useActionData() as
-		| { success?: boolean; errors?: Record<string, string>; error?: string }
-		| undefined;
 	const errors = actionData?.errors;
 	const handleCancel = () => window.location.assign("/admin/projects");
 	return (

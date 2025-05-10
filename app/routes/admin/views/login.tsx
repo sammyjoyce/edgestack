@@ -1,3 +1,4 @@
+import type { Route } from "./+types/login";
 import type React from "react";
 import { useState } from "react";
 import { Form, redirect, useActionData } from "react-router";
@@ -23,7 +24,8 @@ type LoginActionData = { success: false; error: string } | { success: true };
 export const action = async ({
 	request,
 	context,
-}: { request: Request; context: any }): Promise<LoginActionData> => {
+	params,
+}: Route.ActionArgs): Promise<LoginActionData | Response> => {
 	try {
 		const formData = await request.formData();
 		const username = formData.get("username")?.toString() ?? "";
@@ -65,7 +67,8 @@ export const action = async ({
 export const loader = async ({
 	request,
 	context,
-}: { request: Request; context: any }): Promise<Response | null> => {
+	params,
+}: Route.LoaderArgs): Promise<Response | null> => {
 	try {
 		const sessionValue = getSessionCookie(request);
 		const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -88,8 +91,7 @@ export const loader = async ({
 		);
 	}
 };
-export default function Component() {
-	const actionData = useActionData() as LoginActionData | undefined;
+export default function Component({ actionData }: Route.ComponentProps) {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	return (
@@ -137,7 +139,7 @@ export default function Component() {
 							/>
 						</Fieldset>
 					</div>
-					{actionData && !actionData.success && "error" in actionData && (
+					{actionData && typeof actionData === 'object' && actionData !== null && !actionData.success && "error" in actionData && (
 						<Alert variant="error" className="mb-4">
 							{actionData.error}
 						</Alert>

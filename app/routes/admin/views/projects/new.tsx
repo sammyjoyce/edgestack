@@ -1,6 +1,6 @@
+import type { Route } from "./+types/new";
 import React from "react";
 import { Form, redirect, useActionData, useNavigate } from "react-router";
-import type { ActionFunctionArgs } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { createProject } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
@@ -19,9 +19,9 @@ import { Textarea } from "../../components/ui/textarea";
 export async function action({
 	request,
 	context,
-}: { request: Request; context: any }): Promise<
-	| Response
-	| { success: boolean; errors?: Record<string, string>; error?: string }
+	params,
+}: Route.ActionArgs): Promise<
+	Response | { success: boolean; errors?: Record<string, string>; error?: string }
 > {
 	const formData = await request.formData();
 	const title = formData.get("title")?.toString() ?? "";
@@ -69,11 +69,8 @@ export async function action({
 		};
 	}
 }
-export default function NewProjectPage() {
+export default function NewProjectPage({ actionData }: Route.ComponentProps) {
 	const navigate = useNavigate();
-	const actionData = useActionData() as
-		| { success?: boolean; errors?: Record<string, string>; error?: string }
-		| undefined;
 	const errors = actionData?.errors;
 	const initial = {};
 	const handleCancel = () => navigate("/admin/projects");

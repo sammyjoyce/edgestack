@@ -11,6 +11,7 @@ const DEFAULT_CONTENT = {
 export async function action({
 	request,
 	context,
+	params,
 }: Route.ActionArgs): Promise<Route.ActionData> {
 	const token = getSessionCookie(request);
 	const secret = context.cloudflare?.env?.JWT_SECRET;

@@ -1,5 +1,5 @@
-import { type MetaFunction, useLoaderData } from "react-router";
 import type { Route } from "./+types/route";
+import { type MetaFunction, useLoaderData } from "react-router";
 const DEBUG = process.env.NODE_ENV !== "production";
 import type { JSX } from "react";
 import Footer from "~/routes/common/components/Footer";
@@ -63,8 +63,8 @@ export async function loader({ request, context }: Route.LoaderArgs): Promise<{
 		revalidatedAt: revalidate ? Date.now() : undefined,
 	};
 }
-export default function HomeRoute(): JSX.Element {
-	const { content, projects, revalidatedAt } = useLoaderData<typeof loader>();
+export default function HomeRoute({ loaderData }: Route.ComponentProps): JSX.Element {
+	const { content, projects, revalidatedAt } = loaderData;
 	if (DEBUG && revalidatedAt)
 		console.log("[HOME ROUTE] Revalidated at:", revalidatedAt);
 	assert(typeof content === "object", "HomeRoute: content must be an object");
