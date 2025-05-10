@@ -1,31 +1,21 @@
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import React, { type JSX, type MouseEvent, useCallback, useState } from "react"; // Import React
+import React, { type JSX, type MouseEvent, useCallback, useState } from "react"; 
 import { NavLink, type To, useNavigate } from "react-router";
 import { Button } from "../ui/Button";
 import DesktopNav from "./DesktopNav";
 import MobileMenu from "./MobileMenu";
-
-/* ─── Types ───────────────────────────────────────── */
-
 export type Path = To | `#${string}` | `http${string}`;
-
 interface MenuItemBase {
 	name: string;
 	path: Path;
 }
-
 export interface MenuItemRoute extends MenuItemBase {
 	isRouteLink: true;
 }
-
 export interface MenuItemAnchor extends MenuItemBase {
 	isRouteLink?: false;
 }
-
 export type MenuItem = MenuItemRoute | MenuItemAnchor;
-
-/* ─── Data (readonly for cheap re-renders) ───────── */
-
 const MENU_ITEMS: readonly MenuItem[] = [
 	{ name: "Home", path: "/", isRouteLink: true },
 	{ name: "Our Services", path: "/#services", isRouteLink: true },
@@ -33,56 +23,35 @@ const MENU_ITEMS: readonly MenuItem[] = [
 	{ name: "About Us", path: "/#about", isRouteLink: true },
 	{ name: "Contact Us", path: "/#contact", isRouteLink: true },
 ] as const;
-
-/* ─── Component ──────────────────────────────────── */
-
 export default function Header(): JSX.Element {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const navigate = useNavigate();
-
-	/**
-	 * Handle navigation to section either by:
-	 * 1. Scrolling to the element if we're already on the home page
-	 * 2. Navigating to the home page with a hash if we're on another page
-	 */
 	const scrollToSection = useCallback(
 		(e: MouseEvent<HTMLAnchorElement>, id: string) => {
 			e.preventDefault();
-
-			// Clean the ID by removing the # if present
 			const cleanId = id.replace(/^#/, "");
-
-			// Get the current path to determine if we're on the home page
 			const currentPath = window.location.pathname;
-
 			if (currentPath === "/") {
-				// If we're on the home page, scroll directly to the element
 				const element = document.getElementById(cleanId);
 				if (element) {
 					element.scrollIntoView({ behavior: "smooth" });
 				}
 			} else {
-				// If we're on another page, navigate to home with hash
-				// This will put the hash in the URL and React Router will handle it
 				navigate(`/#${cleanId}`);
 			}
-
 			setMobileOpen(false);
 		},
 		[navigate],
 	);
-
 	return (
 		<header className="sticky top-0 z-50 w-full bg-black/80 text-[13px] font-semibold text-white backdrop-blur-xs">
 			<nav className="mx-auto max-w-7xl px-4 lg:px-6">
 				<div className="relative flex items-center justify-between py-2">
 					<div className="absolute inset-x-0 bottom-0 h-px bg-gray-800" />
-
 					<DesktopNav
 						menuItems={MENU_ITEMS}
 						scrollToSection={scrollToSection}
 					/>
-
 					<Button
 						type="button"
 						aria-label="Open main menu"
@@ -92,7 +61,6 @@ export default function Header(): JSX.Element {
 					>
 						<Bars3Icon className="h-6 w-6" aria-hidden="true" />
 					</Button>
-
 					<NavLink to="/" className="absolute left-1/2 -translate-x-1/2 flex">
 						<img
 							src="/assets/logo_284x137-KoakP1Oi.png"
@@ -102,7 +70,6 @@ export default function Header(): JSX.Element {
 					</NavLink>
 				</div>
 			</nav>
-
 			<MobileMenu
 				isOpen={mobileOpen}
 				onClose={() => setMobileOpen(false)}

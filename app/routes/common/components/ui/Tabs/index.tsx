@@ -1,19 +1,15 @@
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import type React from "react"; // Import React
+import type React from "react"; 
 import { useState } from "react";
-
-// Basic cn utility function (replace with your preferred library if available)
 function cn(...inputs: (string | undefined | null | boolean)[]) {
 	return clsx(inputs);
 }
-
 export type Tab = {
 	title: string;
 	value: string;
 	content?: string | React.ReactNode | any;
 };
-
 export const Tabs = ({
 	tabs: propTabs,
 	containerClassName,
@@ -29,7 +25,6 @@ export const Tabs = ({
 }) => {
 	const [active, setActive] = useState<Tab>(propTabs[0]);
 	const [tabs, setTabs] = useState<Tab[]>(propTabs);
-
 	const moveSelectedTabToTop = (idx: number) => {
 		const newTabs = [...propTabs];
 		const selectedTab = newTabs.splice(idx, 1);
@@ -37,10 +32,7 @@ export const Tabs = ({
 		setTabs(newTabs);
 		setActive(newTabs[0]);
 	};
-
-	// Helper for active state
 	const isActive = (tab: Tab) => tab.value === active.value;
-
 	return (
 		<>
 			<div
@@ -77,7 +69,6 @@ export const Tabs = ({
 		</>
 	);
 };
-
 export const FadeInDiv = ({
 	className,
 	tabs,

@@ -1,22 +1,18 @@
-import clsx from "clsx"; // Ensure clsx is imported
+import clsx from "clsx"; 
 import {
 	BuildingOffice2Icon,
 	ClockIcon,
 	EnvelopeIcon,
 	PhoneIcon,
 } from "@heroicons/react/24/outline";
-import { motion } from "framer-motion"; // Use direct import
-import React from "react"; // Import React
-import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; // Import the new component
-
-// Remove the direct useLoaderData import - instead, take content as a prop
+import { motion } from "framer-motion"; 
+import React from "react"; 
+import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; 
 interface ContactUsProps {
 	content?: Record<string, string>;
-	theme?: 'light' | 'dark'; // Add theme prop
+	theme?: 'light' | 'dark'; 
 }
-
 export default function ContactUs({ content = {}, theme = "light" }: ContactUsProps) {
-	// Extract values from content prop with fallbacks
 	const {
 		contact_headline: headline = "Ready to Start Your Project?",
 		contact_intro:
@@ -32,7 +28,6 @@ export default function ContactUs({ content = {}, theme = "light" }: ContactUsPr
 		contact_instagram:
 			instagram = "https://www.instagram.com/lushconstructions",
 	} = content;
-
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
@@ -41,7 +36,7 @@ export default function ContactUs({ content = {}, theme = "light" }: ContactUsPr
 			transition={{ duration: 0.8 }}
 			className={clsx(
 				"relative isolate overflow-hidden py-24 sm:py-32 bg-black text-white dark:bg-gray-900 dark:text-white",
-				theme === "dark" && "dark", // This will make dark:bg-gray-900 apply if theme is dark
+				theme === "dark" && "dark", 
 			)}
 			id="contact"
 		>
@@ -78,7 +73,6 @@ export default function ContactUs({ content = {}, theme = "light" }: ContactUsPr
 						)}
 						richTextClassName={clsx(theme === "dark" && "dark:prose-invert")}
 					/>
-
 					<dl className={clsx(
 						"mt-10 space-y-4 text-[15px] leading-normal",
 						"text-gray-300 dark:text-gray-300"

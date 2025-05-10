@@ -2,7 +2,6 @@ import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import React from "react";
 import { Text } from "./text";
-
 const sizes = {
 	xs: "sm:max-w-xs",
 	sm: "sm:max-w-sm",
@@ -14,12 +13,11 @@ const sizes = {
 	"4xl": "sm:max-w-4xl",
 	"5xl": "sm:max-w-5xl",
 };
-
 export function Dialog({
 	size = "lg",
 	className,
 	children,
-	onClose, // Ensure onClose is passed to Headless.Dialog
+	onClose, 
 	...props
 }: {
 	size?: keyof typeof sizes;
@@ -28,7 +26,7 @@ export function Dialog({
 	onClose: () => void;
 } & Omit<
 	Headless.DialogProps,
-	"as" | "className" | "onClose" // Exclude onClose from Omit as it's explicitly typed
+	"as" | "className" | "onClose" 
 >) {
 	return (
 		<Headless.Dialog {...props} onClose={onClose}>
@@ -36,9 +34,7 @@ export function Dialog({
 				transition
 				className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity duration-300 ease-out data-closed:opacity-0"
 			/>
-
 			<div className="fixed inset-0 w-screen overflow-y-auto p-4 flex items-center justify-center">
-				{/* Removed nested div structure for simpler centering */}
 				<Headless.DialogPanel
 					transition
 					className={clsx(
@@ -54,7 +50,6 @@ export function Dialog({
 		</Headless.Dialog>
 	);
 }
-
 export function DialogTitle({
 	className,
 	...props
@@ -72,7 +67,6 @@ export function DialogTitle({
 		/>
 	);
 }
-
 export function DialogDescription({
 	className,
 	...props
@@ -80,7 +74,6 @@ export function DialogDescription({
 	Headless.DescriptionProps<typeof Text>,
 	"as" | "className"
 >) {
-	// Using Text component for consistency if it's styled appropriately, otherwise a simple p or div
 	return (
 		<Headless.Description
 			as={Text}
@@ -89,14 +82,12 @@ export function DialogDescription({
 		/>
 	);
 }
-
 export function DialogBody({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"div">) {
 	return <div {...props} className={clsx(className, "mt-4 space-y-4")} />;
 }
-
 export function DialogActions({
 	className,
 	...props

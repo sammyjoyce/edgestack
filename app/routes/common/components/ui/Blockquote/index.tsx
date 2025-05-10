@@ -1,19 +1,11 @@
-import clsx from "clsx"; // Use direct import
-import type React from "react"; // Import React
-
+import clsx from "clsx"; 
+import type React from "react"; 
 import { Border } from "~/routes/common/components/ui/Border";
-
-// Removed ImageProps and Image import from 'next/image'
-
-// Define props for the standard img tag if needed, or simplify
 interface SimpleImageProps {
 	src: string;
 	alt?: string;
-	// Add other relevant img attributes if necessary, like width, height, loading, etc.
-	// sizes?: string; // Removed sizes as it's not standard for <img> like next/image
 	className?: string;
 }
-
 function BlockquoteWithImage({
 	author,
 	children,
@@ -23,7 +15,7 @@ function BlockquoteWithImage({
 	author: { name: string; role: string };
 	children: React.ReactNode;
 	className?: string;
-	image: SimpleImageProps; // Use the simplified image props
+	image: SimpleImageProps; 
 }) {
 	return (
 		<figure
@@ -36,16 +28,13 @@ function BlockquoteWithImage({
 				{typeof children === "string" ? <p>{children}</p> : children}
 			</blockquote>
 			<div className="col-start-1 row-start-2 overflow-hidden rounded-xl bg-neutral-100 sm:col-span-5 sm:row-span-full sm:rounded-3xl">
-				{/* Replace next/image Image with standard img tag */}
 				<img
 					alt={image.alt ?? ""}
 					src={image.src}
-					// sizes removed
 					className={
 						image.className ??
 						"h-12 w-12 object-cover grayscale sm:aspect-7/9 sm:h-auto sm:w-full"
-					} // Keep className or adjust
-					// Add loading="lazy" if appropriate
+					} 
 				/>
 			</div>
 			<figcaption className="text-sm text-neutral-950 sm:col-span-7 sm:row-start-3 sm:text-base">
@@ -57,7 +46,6 @@ function BlockquoteWithImage({
 		</figure>
 	);
 }
-
 function BlockquoteWithoutImage({
 	author,
 	children,
@@ -80,29 +68,22 @@ function BlockquoteWithoutImage({
 		</Border>
 	);
 }
-
-// Update the props definition for the main Blockquote component
 type BlockquoteBaseProps = {
 	author: { name: string; role: string };
 	children: React.ReactNode;
 	className?: string;
 };
-
 type BlockquoteWithImageProps = BlockquoteBaseProps & {
 	image: SimpleImageProps;
 };
-
 type BlockquoteWithoutImageProps = BlockquoteBaseProps & {
 	image?: undefined;
 };
-
 export function Blockquote(
 	props: BlockquoteWithImageProps | BlockquoteWithoutImageProps,
 ) {
 	if (props.image) {
-		// Type assertion needed because TS can't automatically narrow here based on the check
 		return <BlockquoteWithImage {...(props as BlockquoteWithImageProps)} />;
 	}
-
 	return <BlockquoteWithoutImage {...props} />;
 }

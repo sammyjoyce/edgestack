@@ -11,31 +11,23 @@ import {
 	type To,
 	redirect,
 	useLoaderData,
-	useNavigation, // Add this import
+	useNavigation,
+	SerializeFrom, 
 } from "react-router";
 import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 import { SidebarLayout } from "../components/ui/sidebar-layout";
-// Import generated Route type for this route
 import type { Route } from "./+types/_layout";
-// ... other imports ...
-
-// Only include the admin theme stylesheet for admin routes
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
 ];
-
-// Define loader with the generated LoaderArgs type
-export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Route.LoaderData | Response> => { // Update return type
+export const loader = async ({ request, context }: Route.LoaderArgs): Promise<SerializeFrom<Route.LoaderData> | Response> => { 
 	const url = new URL(request.url);
 	const isLoginRoute = url.pathname === "/admin/login";
 	const isLogoutRoute = url.pathname === "/admin/logout";
-
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
-
-	// Verify token function
 	const isAuthenticated = async () => {
 		if (!sessionValue || !jwtSecret) return false;
 		try {
@@ -45,50 +37,34 @@ export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Ro
 			return false;
 		}
 	};
-
 	const loggedIn = await isAuthenticated();
-
-	// If not logged in and trying to access anything other than login, redirect to login
 	if (!loggedIn && !isLoginRoute) {
-		// Allow logout route to proceed to clear cookie even if not logged in
 		if (!isLogoutRoute) {
 			return redirect("/admin/login");
 		}
 	}
-
-	// If logged in and trying to access login, redirect to admin dashboard
 	if (loggedIn && isLoginRoute) {
 		return redirect("/admin");
 	}
-
-	// Allow access if logged in, or if accessing login/logout page
-	// Return an object directly instead of using data() helper
-	return { isAuthenticated: loggedIn }; // Return plain object
+	return { isAuthenticated: loggedIn }; 
 };
-
-// Add no-op action to layout to handle form submissions and prevent missing action errors
-// Action can return null or a simple data response if needed.
-export const action = async ({ request, context }: Route.ActionArgs): Promise<null | Route.ActionData> => {
+export const action = async ({ request, context }: Route.ActionArgs): Promise<null | SerializeFrom<Route.ActionData>> => {
 	return null;
 };
-
 interface NavItem {
 	name: string;
-	href: To | string; // Use To for internal, string for external
+	href: To | string; 
 	icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
-
-// Use typed paths for internal links
 const navigation: NavItem[] = [
 	{ name: "Dashboard", href: "/admin", icon: HomeIcon },
 	{ name: "Projects", href: "/admin/projects", icon: FolderIcon },
-	{ name: "Live Site", href: "/", icon: DocumentDuplicateIcon }, // Keep as string for external/root
+	{ name: "Live Site", href: "/", icon: DocumentDuplicateIcon }, 
 	{ name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
-
 export default function AdminLayout() {
 	const navigationHook = useNavigation();
-	const loaderData = useLoaderData<Route.LoaderData>(); // Use inferred type or Route.LoaderData
+	const loaderData = useLoaderData<SerializeFrom<typeof loader>>(); 
 	const sidebarNav = (
 		<nav className="flex h-full flex-col bg-gray-900 px-6 py-4">
 			<div className="flex h-16 items-center border-b border-gray-800 mb-2 pb-2">
@@ -136,8 +112,6 @@ export default function AdminLayout() {
 			</ul>
 		</nav>
 	);
-
-
 	return (
 		<SidebarLayout
 			navbar={
@@ -149,7 +123,6 @@ export default function AdminLayout() {
 			}
 			sidebar={sidebarNav}
 		>
-			{/* Add global loading indicator */}
 			{navigationHook.state === "loading" && (
 				<div
 					style={{
@@ -160,16 +133,15 @@ export default function AdminLayout() {
 						height: "3px",
 						background: "var(--color-primary)",
 						zIndex: 9999,
-						transition: "width 0.2s ease-out", // Note: width transition might not be visible if it's always 100%
+						transition: "width 0.2s ease-out", 
 					}}
-					className="global-loading-indicator" // You might want to style this class for width or use a different animation
+					className="global-loading-indicator" 
 				/>
 			)}
-			<Outlet context={loaderData} /> {/* Pass loaderData via context if needed by child routes, or they use their own loaders */}
+			<Outlet context={loaderData} /> {}
 		</SidebarLayout>
 	);
 }
-
 export function ErrorBoundary() {
 	return <AdminErrorBoundary />;
 }

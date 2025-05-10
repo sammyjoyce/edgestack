@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Link, redirect, useLoaderData, data, Outlet, useLocation } from "react-router";
+import { Form, Link, redirect, useLoaderData, data, Outlet, useLocation, SerializeFrom } from "react-router";
 import invariant from "tiny-invariant";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
@@ -9,85 +9,68 @@ import { Fieldset, Legend } from "../../components/ui/fieldset";
 import { Heading } from "../../components/ui/heading";
 import { Text } from "../../components/ui/text";
 import type { Route } from "./+types/index";
-
-// Loader to fetch all projects
 export async function loader({
 	request,
 	context,
-}: Route.LoaderArgs): Promise<Route.LoaderData | Response> { // Update return type
+}: Route.LoaderArgs): Promise<SerializeFrom<Route.LoaderData> | Response> { 
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
 		throw redirect("/admin/login");
 	}
-
 	try {
 		const projects = await getAllProjects(context.db);
-		return { projects }; // Return plain object
+		return { projects }; 
 	} catch (error: any) {
 		console.error("Failed to load projects:", error);
-		// Use data() helper for throwing errors to be caught by ErrorBoundary
-		throw data( // throw data() instead of returning it
-			{ error: error.message || "Failed to load projects" }, // Ensure error key matches expected type
+		throw data( 
+			{ error: error.message || "Failed to load projects" }, 
 			{ status: 500 },
 		);
 	}
 }
-
-// Action to handle project management
 export async function action({
 	request,
 	context,
-}: Route.ActionArgs): Promise<Route.ActionData | Response> { // Update return type
+}: Route.ActionArgs): Promise<SerializeFrom<Route.ActionData> | Response> { 
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
-
-	// Auth check
-	// const unauthorized = () => redirect("/admin/login"); // Not used directly, redirect is returned
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		return redirect("/admin/login"); // Use redirect()
+		return redirect("/admin/login"); 
 	}
-
-	// Handle delete project intent
 	if (intent === "deleteProject") {
 		const projectIdStr = formData.get("projectId")?.toString();
 		if (!projectIdStr) {
-			return data( // Use data()
+			return data( 
 				{ success: false, error: "Missing project ID" },
 				{ status: 400 },
 			);
 		}
 		const projectId = Number(projectIdStr);
 		if (Number.isNaN(projectId)) {
-			return data( // Use data()
+			return data( 
 				{ success: false, error: "Invalid project ID" },
 				{ status: 400 },
 			);
 		}
-
 		try {
 			await deleteProject(context.db, projectId);
-			return data({ success: true, projectId }); // Use data() for success
+			return data({ success: true, projectId }); 
 		} catch (error: unknown) {
 			console.error("Failed to delete project:", error);
 			const message =
 				error instanceof Error ? error.message : "Failed to delete project";
-			return data({ success: false, error: message }, { status: 500 }); // Use data() for error
+			return data({ success: false, error: message }, { status: 500 }); 
 		}
 	}
-
-	// Handle unknown intent
-	return data({ success: false, error: "Unknown intent" }, { status: 400 }); // Use data() for unknown intent
+	return data({ success: false, error: "Unknown intent" }, { status: 400 }); 
 }
-
 export default function AdminProjectsIndexPage() {
-	const { projects } = useLoaderData<Route.LoaderData>(); // Or Route.LoaderData
+	const { projects } = useLoaderData<SerializeFrom<typeof loader>>(); 
 	const location = useLocation();
 	const isChildActive = location.pathname !== "/admin/projects" && location.pathname.startsWith("/admin/projects/");
-
-	// TigerStyle runtime assertions with detailed error messages
 	invariant(
 		Array.isArray(projects),
 		"ProjectsIndexRoute: loader must return an array of projects. Check loader implementation.",
@@ -96,7 +79,6 @@ export default function AdminProjectsIndexPage() {
 		typeof projects.length === "number",
 		"ProjectsIndexRoute: projects must have a length property. Data returned from loader is invalid.",
 	);
-
 	return (
 		<>
 			<Fieldset className="mb-8">
@@ -107,12 +89,10 @@ export default function AdminProjectsIndexPage() {
 					Add New Project
 				</Button>
 			</Fieldset>
-
 			{isChildActive ? (
 				<Outlet />
 			) : projects.length === 0 ? (
 				<div className="rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
-					{/* <FolderIcon className="mx-auto h-12 w-12 text-gray-400" /> */}
 					<Text className="mt-2 text-lg font-medium text-gray-900">
 						No projects
 					</Text>

@@ -1,37 +1,26 @@
-import clsx from "clsx"; // Ensure clsx is imported
-import type React from "react"; // Import React and Fragment
+import clsx from "clsx"; 
+import type React from "react"; 
 import { Fragment, type JSX } from "react";
 import RichTextRenderer from "~/routes/common/components/RichTextRenderer";
-
 interface ConditionalRichTextRendererProps {
 	text: string | undefined | null;
 	fallbackClassName?: string;
 	richTextClassName?: string;
-	fallbackTag?: keyof React.JSX.IntrinsicElements; // Changed to React.JSX
+	fallbackTag?: keyof React.JSX.IntrinsicElements; 
 }
-
-/**
- * Renders text using RichTextRenderer if it's valid JSON,
- * otherwise renders it as plain text within a specified tag (defaulting to <p>).
- */
 export default function ConditionalRichTextRenderer({
 	text,
-	fallbackClassName = "text-base sm:text-lg", // Default fallback style
-	richTextClassName, // Optional class for RichTextRenderer container
-	fallbackTag: FallbackTag = "p", // Default to <p> tag
+	fallbackClassName = "text-base sm:text-lg", 
+	richTextClassName, 
+	fallbackTag: FallbackTag = "p", 
 }: ConditionalRichTextRendererProps): JSX.Element | null {
 	if (!text) {
-		return null; // Render nothing if text is empty or null/undefined
+		return null; 
 	}
-
 	try {
-		JSON.parse(text); // Attempt to parse as JSON
-		// If successful, render using RichTextRenderer
-		// RichTextRenderer itself applies dark:prose-invert, so no need to add it here via richTextClassName
-		// unless specifically overriding or extending.
+		JSON.parse(text); 
 		return <RichTextRenderer json={text} className={richTextClassName} />;
 	} catch {
-		// If parsing fails, render as plain text within the specified tag
 		return <FallbackTag className={fallbackClassName}>{text}</FallbackTag>;
 	}
 }

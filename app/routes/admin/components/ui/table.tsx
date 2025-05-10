@@ -1,9 +1,7 @@
 "use client";
-
 import clsx from "clsx";
-import React, { createContext, useContext, useState } from "react"; // Ensured React is imported
+import React, { createContext, useContext, useState } from "react"; 
 import { Link } from "./link";
-
 const TableContext = createContext<{
 	bleed: boolean;
 	dense: boolean;
@@ -15,7 +13,6 @@ const TableContext = createContext<{
 	grid: false,
 	striped: false,
 });
-
 export function Table({
 	bleed = false,
 	dense = false,
@@ -37,7 +34,7 @@ export function Table({
 					{...props}
 					className={clsx(
 						className,
-						"-mx-4 overflow-x-auto whitespace-nowrap sm:-mx-6 lg:-mx-8", // Standardized negative margins
+						"-mx-4 overflow-x-auto whitespace-nowrap sm:-mx-6 lg:-mx-8", 
 					)}
 				>
 					<div
@@ -55,7 +52,6 @@ export function Table({
 		</TableContext.Provider>
 	);
 }
-
 export function TableHead({
 	className,
 	...props
@@ -70,7 +66,6 @@ export function TableHead({
 		/>
 	);
 }
-
 export function TableBody(props: React.ComponentPropsWithoutRef<"tbody">) {
 	return (
 		<tbody
@@ -79,7 +74,6 @@ export function TableBody(props: React.ComponentPropsWithoutRef<"tbody">) {
 		/>
 	);
 }
-
 const TableRowContext = createContext<{
 	href?: string;
 	target?: string;
@@ -89,7 +83,6 @@ const TableRowContext = createContext<{
 	target: undefined,
 	title: undefined,
 });
-
 export function TableRow({
 	href,
 	target,
@@ -102,7 +95,6 @@ export function TableRow({
 	title?: string;
 } & React.ComponentPropsWithoutRef<"tr">) {
 	const { striped } = useContext(TableContext);
-
 	return (
 		<TableRowContext.Provider value={{ href, target, title }}>
 			<tr
@@ -118,13 +110,11 @@ export function TableRow({
 		</TableRowContext.Provider>
 	);
 }
-
 export function TableHeader({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"th">) {
 	const { bleed, grid } = useContext(TableContext);
-
 	return (
 		<th
 			{...props}
@@ -138,7 +128,6 @@ export function TableHeader({
 		/>
 	);
 }
-
 export function TableCell({
 	className,
 	children,
@@ -147,7 +136,6 @@ export function TableCell({
 	const { bleed, dense, grid } = useContext(TableContext);
 	const { href, target, title } = useContext(TableRowContext);
 	const [cellRef, setCellRef] = useState<HTMLElement | null>(null);
-
 	return (
 		<td
 			ref={href ? setCellRef : undefined}
@@ -164,7 +152,7 @@ export function TableCell({
 			{href && (
 				<Link
 					data-row-link
-					to={href} // Changed from href to to
+					to={href} 
 					target={target}
 					aria-label={title}
 					tabIndex={cellRef?.previousElementSibling === null ? 0 : -1}

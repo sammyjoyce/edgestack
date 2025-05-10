@@ -1,8 +1,7 @@
 import type React from "react";
 import type { FetcherWithComponents } from "react-router";
-import { Input } from "~/routes/admin/components/ui/input"; // Import React
+import { Input } from "~/routes/admin/components/ui/input"; 
 import { Textarea } from "~/routes/admin/components/ui/textarea";
-
 import RichTextField from "~/routes/admin/components/RichTextField";
 import {
 	FieldLabel,
@@ -10,15 +9,11 @@ import {
 	SectionCard,
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
-// Import the specific action type
 import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
-
-
 interface ContactSectionEditorProps {
 	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData>; 
 	initialContent: Record<string, string>;
 }
-
 const contactFields = [
 	{
 		key: "contact_headline",
@@ -91,34 +86,17 @@ const contactFields = [
 		placeholder: "https://www.instagram.com/lushconstructions",
 	},
 ];
-
 export function ContactSectionEditor({
 	fetcher,
 	initialContent,
 }: ContactSectionEditorProps): React.ReactElement {
-	// Remove handleBlur as RichTextField handles its updates internally
-	// const handleBlur = React.useCallback(
-	// 	(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-	// 		const { name, value } = e.currentTarget;
-	// 		const formData = new FormData();
-	// 		formData.append("intent", "updateTextContent"); // Add intent
-	// 		formData.append(name, value);
-	// 		// Use typed action path
-	// 		fetcher.submit(formData, { method: "post", action: "/admin" });
-	// 	},
-	// 	[fetcher],
-	// );
-
 	return (
 		<SectionCard>
 			<SectionHeading>Contact Section (Home Page)</SectionHeading>
-			{/* Adjusted shadow/border/padding */}
 			<h2 className="text-xl font-semibold text-gray-900 mb-6">
-				{/* Use semibold, increased margin */}
 				Contact Section (Home Page)
 			</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-				{/* Adjusted gap */}
 				{contactFields.map(({ key, label, rows, placeholder, isRichText }) => (
 					<FieldRow key={key}>
 						<FieldLabel htmlFor={key}>{label}</FieldLabel>

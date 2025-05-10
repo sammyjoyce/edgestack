@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router";
-
 export interface ErrorBoundaryProps {
 	title?: string;
 	message?: string;
@@ -8,7 +7,6 @@ export interface ErrorBoundaryProps {
 	homeHref?: string;
 	homeLabel?: string;
 }
-
 export function SharedErrorBoundary({
 	title = "Error",
 	message = "An unexpected error occurred",

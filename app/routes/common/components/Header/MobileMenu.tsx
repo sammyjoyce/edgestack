@@ -1,14 +1,11 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { type JSX, type MouseEvent } from "react"; // Import React
+import React, { type JSX, type MouseEvent } from "react"; 
 import { NavLink } from "react-router";
 import type { MenuItem } from ".";
 import { Button } from "../ui/Button";
 import { useMenuItemInfo } from "./useMenuItemInfo";
-
-/* ─── Props ──────────────────────────────────────── */
-
 interface MobileMenuProps {
 	isOpen: boolean;
 	onClose: () => void;
@@ -18,18 +15,14 @@ interface MobileMenuProps {
 		sectionId: string,
 	) => void;
 }
-
-/* ─── Component ──────────────────────────────────── */
-
 export default function MobileMenu({
-	isOpen = false, // Provide default value to ensure boolean
+	isOpen = false, 
 	onClose,
 	menuItems,
 	scrollToSection,
 }: MobileMenuProps): JSX.Element {
 	return (
 		<Dialog as="div" className="lg:hidden" open={isOpen} onClose={onClose}>
-			{/* overlay */}
 			<AnimatePresence>
 				{isOpen && (
 					<motion.div
@@ -43,8 +36,6 @@ export default function MobileMenu({
 					/>
 				)}
 			</AnimatePresence>
-
-			{/* panel */}
 			<DialogPanel className="fixed inset-y-0 right-0 z-50 w-full max-w-sm overflow-y-auto bg-black/95 px-6 py-6 shadow-2xl ring-1 ring-gray-800 backdrop-blur-lg">
 				<div className="flex items-center justify-between">
 					<NavLink to="/" className="-m-1.5 p-1.5" onClick={onClose}>
@@ -64,12 +55,10 @@ export default function MobileMenu({
 						<XMarkIcon className="h-6 w-6" aria-hidden="true" />
 					</button>
 				</div>
-
 				<nav className="mt-6 space-y-6">
 					{menuItems.map((item) => {
 						const { isRoute, rawPath, isHomeWithHash, hashPart, anchorHref } =
 							useMenuItemInfo(item);
-
 						if (isRoute) {
 							if (isHomeWithHash) {
 								return (
@@ -86,7 +75,6 @@ export default function MobileMenu({
 									</a>
 								);
 							}
-
 							return (
 								<NavLink
 									key={item.name}
@@ -98,7 +86,6 @@ export default function MobileMenu({
 								</NavLink>
 							);
 						}
-
 						return (
 							<a
 								key={item.name}

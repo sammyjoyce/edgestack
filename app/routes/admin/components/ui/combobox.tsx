@@ -1,9 +1,7 @@
 "use client";
-
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import { useState } from "react";
-
 export function Combobox<T>({
 	options,
 	displayValue,
@@ -28,7 +26,6 @@ export function Combobox<T>({
 		anchor?: "top" | "bottom";
 	}) {
 	const [query, setQuery] = useState("");
-
 	const filteredOptions =
 		query === ""
 			? options
@@ -37,7 +34,6 @@ export function Combobox<T>({
 						? filter(option, query)
 						: displayValue(option)?.toLowerCase().includes(query.toLowerCase()),
 				);
-
 	return (
 		<Headless.Combobox
 			{...props}
@@ -45,13 +41,11 @@ export function Combobox<T>({
 			virtual={{ options: filteredOptions }}
 			onClose={() => setQuery("")}
 		>
-			<div // Changed from span to div for semantic correctness and to avoid complex pseudo-elements for styling
-				data-slot="control-wrapper" // Added for clarity
+			<div 
+				data-slot="control-wrapper" 
 				className={clsx(
 					"relative w-full",
-					// Focus ring applied to the wrapper for better visual consistency
 					"focus-within:ring-2 focus-within:ring-primary dark:focus-within:ring-primary-dark focus-within:ring-offset-0 rounded-lg",
-					// Disabled state
 					"has-data-disabled:opacity-70 has-data-disabled:cursor-not-allowed",
 				)}
 			>
@@ -63,20 +57,13 @@ export function Combobox<T>({
 					onChange={(event) => setQuery(event.target.value)}
 					placeholder={placeholder}
 					className={clsx(
-						className, // Allow external classes
-						// Basic layout & Sizing
+						className, 
 						"relative block w-full appearance-none rounded-lg px-3.5 py-2.5 sm:px-3 sm:py-1.5",
-						// Typography
 						"text-base text-zinc-950 placeholder:text-zinc-500 sm:text-sm dark:text-white dark:placeholder:text-zinc-400",
-						// Borders
 						"border border-zinc-300 hover:border-zinc-400 dark:border-zinc-600 dark:hover:border-zinc-500",
-						// Background
 						"bg-white dark:bg-zinc-800",
-						// Focus: Handled by the wrapper, but ensure no default outline
 						"focus:outline-none",
-						// Invalid state
 						"data-invalid:border-red-500 data-invalid:hover:border-red-500 dark:data-invalid:border-red-500 dark:data-invalid:hover:border-red-500",
-						// Disabled state
 						"data-disabled:border-zinc-300 data-disabled:bg-zinc-100 data-disabled:text-zinc-400 dark:data-disabled:border-zinc-700 dark:data-disabled:bg-zinc-800 dark:data-disabled:text-zinc-500",
 						"dark:scheme-dark",
 					)}
@@ -119,7 +106,6 @@ export function Combobox<T>({
 		</Headless.Combobox>
 	);
 }
-
 export function ComboboxOption<T>({
 	children,
 	className,
@@ -134,16 +120,13 @@ export function ComboboxOption<T>({
 		"*:data-[slot=icon]:text-zinc-500 group-data-focus:*:data-[slot=icon]:text-white dark:*:data-[slot=icon]:text-zinc-400",
 		"*:data-[slot=avatar]:-mx-0.5 *:data-[slot=avatar]:size-6 sm:*:data-[slot=avatar]:size-5",
 	);
-
 	return (
 		<Headless.ComboboxOption
 			{...props}
 			className={clsx(
 				"group/option flex w-full cursor-default items-center justify-between rounded-md py-2 px-2.5 sm:py-1.5 sm:px-2",
 				"text-base text-zinc-900 sm:text-sm dark:text-white",
-				// Focus/Active state
 				"data-focus:bg-primary data-focus:text-white dark:data-focus:bg-primary-dark",
-				// Selected state (check mark)
 				"data-selected:font-semibold",
 				"data-disabled:opacity-50 data-disabled:cursor-not-allowed",
 			)}
@@ -165,14 +148,12 @@ export function ComboboxOption<T>({
 		</Headless.ComboboxOption>
 	);
 }
-
 export function ComboboxLabel({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"span">) {
 	return <span {...props} className={clsx(className, "truncate")} />;
 }
-
 export function ComboboxDescription({
 	className,
 	children,

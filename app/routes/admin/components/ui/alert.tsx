@@ -1,8 +1,6 @@
 import clsx from "clsx";
 import React from "react";
-import { Text } from "./text"; // Assuming Text component is styled or not a priority
-
-// Define icons for different alert types (example using Heroicons or similar SVG strings)
+import { Text } from "./text"; 
 const icons = {
 	info: (
 		<svg
@@ -61,7 +59,6 @@ const icons = {
 		</svg>
 	),
 };
-
 const alertStyles = {
 	base: "flex items-start p-4 rounded-md border",
 	variants: {
@@ -95,16 +92,13 @@ const alertStyles = {
 		},
 	},
 };
-
 export type AlertVariant = keyof typeof alertStyles.variants;
-
-export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> { // Omit title from HTMLAttributes
+export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> { 
 	variant?: AlertVariant;
-	title?: React.ReactNode; // Your custom title prop
-	children: React.ReactNode; // For the description/body
+	title?: React.ReactNode; 
+	children: React.ReactNode; 
 	showIcon?: boolean;
 }
-
 export function Alert({
 	variant = "info",
 	title,
@@ -114,7 +108,6 @@ export function Alert({
 	...props
 }: AlertProps) {
 	const variantStyles = alertStyles.variants[variant];
-
 	return (
 		<div
 			role="alert"
@@ -137,7 +130,6 @@ export function Alert({
 		</div>
 	);
 }
-
 export function AlertTitle({
 	className,
 	...props
@@ -148,12 +140,10 @@ export function AlertTitle({
 			className={clsx(
 				className,
 				"font-medium",
-				// Specific title styling is now part of variantStyles.title
 			)}
 		/>
 	);
 }
-
 export function AlertDescription({
 	className,
 	...props
@@ -164,11 +154,7 @@ export function AlertDescription({
 			className={clsx(
 				className,
 				"text-sm",
-				// Specific description styling is now part of variantStyles.description
 			)}
 		/>
 	);
 }
-
-// AlertBody and AlertActions are removed as they are more suited for Dialogs/Modals
-// and less for typical inline alerts.

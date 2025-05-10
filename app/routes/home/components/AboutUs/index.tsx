@@ -1,25 +1,22 @@
-import clsx from "clsx"; // Ensure clsx is imported
-import React, { type JSX } from "react"; // Import React and JSX type
+import clsx from "clsx"; 
+import React, { type JSX } from "react"; 
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-
 interface AboutProps {
 	title?: string;
-	text?: string; // JSON‑encoded rich text or plain text
+	text?: string; 
 	imageUrl?: string;
 	altText?: string;
-	theme?: 'light' | 'dark'; // Add theme prop
+	theme?: 'light' | 'dark'; 
 }
-
 export default function AboutUs({
 	title = "About Us",
 	text,
 	imageUrl,
 	altText,
-	theme = "light", // Default theme
+	theme = "light", 
 }: AboutProps): JSX.Element {
 	const defaultAboutText = `At Lush Constructions, we're driven by a passion for building more than just structures – we craft homes, communities, and memories that last a lifetime. With a relentless focus on quality, transparency, and trust, we're dedicated to turning your vision into a breathtaking reality. As proud members of Master Builders NSW, we uphold the highest standards in the industry, ensuring every project is delivered with precision, care, and a commitment to excellence. Whether you're dreaming of a grand renovation, a thoughtful extension, or a brand-new build, our team of experts is here to guide you every step of the way.`;
-
 	return (
 		<section className={clsx(
 			"py-12 sm:py-20 md:py-28 bg-white text-gray-900 dark:bg-gray-900 dark:text-white",
@@ -37,7 +34,6 @@ export default function AboutUs({
 								/>
 							</FadeIn>
 							<FadeIn>
-								{/* Text color will be inherited from body's dark:text-gray-100 or similar */}
 								<h2 className={clsx(
 									"font-medium font-serif text-3xl tracking-tight text-gray-900 dark:text-white sm:text-4xl md:text-5xl"
 								)}>

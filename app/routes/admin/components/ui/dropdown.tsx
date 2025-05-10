@@ -1,23 +1,19 @@
 "use client";
-
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import React from "react";
-import { Button } from "./button"; // Assuming Button is styled appropriately
-import { Link } from "./link"; // Assuming Link is styled appropriately
-
+import { Button } from "./button"; 
+import { Link } from "./link"; 
 export function Dropdown(props: Headless.MenuProps) {
 	return <Headless.Menu {...props} />;
 }
-
 export function DropdownButton<T extends React.ElementType = typeof Button>({
-	as, 
+	as,
 	...props
-}: { className?: string } & Omit<Headless.MenuButtonProps<T>, "className">) {
-	const Component = as || Button; 
-	return <Headless.MenuButton as={Component} {...props} />;
+}: { className?: string; as?: T } & Omit<Headless.MenuButtonProps<T>, "className" | "as">) {
+	const Component = as || Button;
+	return <Headless.MenuButton as={Component as React.ElementType} {...props} />;
 }
-
 export function DropdownMenu({
 	anchor = "bottom",
 	className,
@@ -34,14 +30,12 @@ export function DropdownMenu({
 				"bg-white dark:bg-zinc-800",
 				"shadow-lg ring-1 ring-black/5 dark:ring-white/10",
 				"focus:outline-none",
-				// Transitions
 				"transition ease-out duration-100 data-closed:transform data-closed:opacity-0 data-closed:scale-95",
 				"data-enter:transform data-enter:opacity-100 data-enter:scale-100",
 			)}
 		/>
 	);
 }
-
 export function DropdownItem({
 	className,
 	...props
@@ -55,11 +49,9 @@ export function DropdownItem({
 		"text-zinc-700 dark:text-zinc-200",
 		"data-focus:bg-primary data-focus:text-white dark:data-focus:bg-primary-dark dark:data-focus:text-white",
 		"data-disabled:opacity-50 data-disabled:cursor-not-allowed",
-		// Icon and Avatar styling within items
 		"*:data-[slot=icon]:size-4 *:data-[slot=icon]:text-zinc-500 group-data-focus:*:data-[slot=icon]:text-white dark:*:data-[slot=icon]:text-zinc-400",
 		"*:data-[slot=avatar]:size-5",
 	);
-
 	return "href" in props ? (
 		<Headless.MenuItem as={Link} {...props} className={itemClasses} />
 	) : (
@@ -71,7 +63,6 @@ export function DropdownItem({
 		/>
 	);
 }
-
 export function DropdownHeader({
 	className,
 	...props
@@ -86,8 +77,6 @@ export function DropdownHeader({
 		/>
 	);
 }
-
-// DropdownSection can often be omitted if DropdownMenu handles padding, or styled simply
 export function DropdownSection({
 	className,
 	...props
@@ -98,11 +87,10 @@ export function DropdownSection({
 	return (
 		<Headless.MenuSection
 			{...props}
-			className={clsx(className, "py-1")} // Simple vertical padding for sections
+			className={clsx(className, "py-1")} 
 		/>
 	);
 }
-
 export function DropdownHeading({
 	className,
 	...props
@@ -120,7 +108,6 @@ export function DropdownHeading({
 		/>
 	);
 }
-
 export function DropdownDivider({
 	className,
 	...props
@@ -135,13 +122,10 @@ export function DropdownDivider({
 		/>
 	);
 }
-
 export function DropdownLabel({
 	className,
 	...props
 }: { className?: string } & Omit<Headless.LabelProps, "as" | "className">) {
-	// For simplicity, DropdownItem itself usually contains the label text.
-	// If a separate label component is needed, it should be styled simply.
 	return (
 		<Headless.Label
 			{...props}
@@ -150,7 +134,6 @@ export function DropdownLabel({
 		/>
 	);
 }
-
 export function DropdownDescription({
 	className,
 	...props
@@ -169,7 +152,6 @@ export function DropdownDescription({
 		/>
 	);
 }
-
 export function DropdownShortcut({
 	keys,
 	className,
@@ -192,7 +174,7 @@ export function DropdownShortcut({
 					key={index}
 					className={clsx(
 						"min-w-[1.5ch] text-center font-sans",
-						index > 0 && char.length > 1 && "pl-0.5", // Adjusted spacing for multi-char keys
+						index > 0 && char.length > 1 && "pl-0.5", 
 					)}
 				>
 					{char}

@@ -1,8 +1,5 @@
-import clsx from "clsx"; // Use direct import
-import type React from "react"; // Import React
-
-// Removed Link import from 'next/link'
-
+import clsx from "clsx"; 
+import type React from "react"; 
 function FacebookIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
@@ -14,7 +11,6 @@ function FacebookIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 		</svg>
 	);
 }
-
 function InstagramIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
@@ -26,7 +22,6 @@ function InstagramIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 		</svg>
 	);
 }
-
 function GitHubIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
@@ -38,7 +33,6 @@ function GitHubIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 		</svg>
 	);
 }
-
 function DribbbleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
@@ -50,14 +44,12 @@ function DribbbleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 		</svg>
 	);
 }
-
 export const socialMediaProfiles = [
-	{ title: "Facebook", href: "https://facebook.com", icon: FacebookIcon },
-	{ title: "Instagram", href: "https://instagram.com", icon: InstagramIcon },
-	{ title: "GitHub", href: "https://github.com", icon: GitHubIcon },
-	{ title: "Dribbble", href: "https://dribbble.com", icon: DribbbleIcon },
+	{ title: "Facebook", href: "https:
+	{ title: "Instagram", href: "https:
+	{ title: "GitHub", href: "https:
+	{ title: "Dribbble", href: "https:
 ];
-
 export function SocialMedia({
 	className,
 	invert = false,
@@ -75,12 +67,11 @@ export function SocialMedia({
 		>
 			{socialMediaProfiles.map((socialMediaProfile) => (
 				<li key={socialMediaProfile.title}>
-					{/* Replace next/link Link with standard anchor tag */}
 					<a
 						href={socialMediaProfile.href}
 						aria-label={socialMediaProfile.title}
-						target="_blank" // Add target="_blank" for external links
-						rel="noopener noreferrer" // Add rel for security
+						target="_blank" 
+						rel="noopener noreferrer" 
 						className={clsx(
 							"transition",
 							invert ? "hover:text-neutral-200" : "hover:text-neutral-700",

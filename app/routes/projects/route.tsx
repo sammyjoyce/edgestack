@@ -1,12 +1,10 @@
-import React from "react"; // Import React
+import React from "react"; 
 import { type MetaFunction, Outlet, data, useLoaderData } from "react-router";
-
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import { getAllContent, getAllProjects } from "~/routes/common/db";
 import type { Route } from "./+types/route";
-
 export const meta: MetaFunction = () => {
 	return [
 		{ title: "Projects | Lush Constructions" },
@@ -16,30 +14,21 @@ export const meta: MetaFunction = () => {
 		},
 	];
 };
-
-// Loader to fetch dynamic content from D1
-// The loader should return the data type, React Router handles the Response wrapping
 export const loader = async ({ context }: Route.LoaderArgs) => {
 	try {
 		const content = await getAllContent(context.db);
 		const projects = await getAllProjects(context.db);
-		// Return plain object
 		return { content, projects };
 	} catch (error) {
 		console.error("Failed to fetch content or projects:", error);
-		// Return plain object for error
-		// throw new Response("Failed to load projects data", { status: 500 });
 		throw data({ message: "Failed to load projects data" }, { status: 500 });
 	}
 };
-
 export default function Projects() {
 	const { content, projects } = useLoaderData<typeof loader>();
-
 	return (
 		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
 			<Header />
-
 			<div className="bg-white pt-20 pb-10">
 				<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 					<h1 className="mb-4 text-center font-bold font-serif text-4xl text-black">
@@ -51,11 +40,7 @@ export default function Projects() {
 					</p>
 				</div>
 			</div>
-
-			{/* Outlet renders the child route */}
-			{/* Pass projects to Outlet context */}
 			<Outlet context={{ content, projects }} />
-
 			<Footer />
 		</div>
 	);

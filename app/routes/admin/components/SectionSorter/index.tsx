@@ -16,71 +16,72 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import React, { useEffect, useState, useCallback } from "react";
 import type { FetcherWithComponents } from "react-router";
-// Import the specific action type
+import clsx from "clsx";
 import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
-
-type Section = { id: string; label: string };
-
+import {
+	SwitchField,
+	Switch,
+	Label as SwitchLabel,
+} from "~/routes/admin/components/ui/switch"; 
+export type SectionTheme = "light" | "dark";
+export type Section = {
+	id: string;
+	label: string;
+	theme: SectionTheme;
+	themeKey: string; 
+};
 interface SectionSorterProps {
-	/** Persisted comma-separated order string, e.g. `"hero,services,about,contact"` */
-	orderValue: string | undefined;
-	/** Fetcher from AdminDashboard – we reuse it to save after each drag */
-	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData>; 
+	initialSections: Section[];
+	orderFetcher: FetcherWithComponents<AdminIndexRoute.ActionData>;
+	themeUpdateFetcher: FetcherWithComponents<AdminIndexRoute.ActionData>;
 }
-
-/** Default order if no value persisted */
-const DEFAULT_SECTIONS: Section[] = [
-	{ id: "hero", label: "Hero" },
-	{ id: "services", label: "Services" },
-	{ id: "projects", label: "Projects" },
-	{ id: "about", label: "About" },
-	{ id: "contact", label: "Contact" },
-];
-
 export default function SectionSorter({
-	orderValue,
-	fetcher,
+	initialSections,
+	orderFetcher,
+	themeUpdateFetcher,
 }: SectionSorterProps): React.ReactElement {
-	/* --- Local state ------------------------------------------------------- */
-	const [sections, setSections] = useState<Section[]>(() => {
-		if (!orderValue) return DEFAULT_SECTIONS;
-		const ids = orderValue.split(",");
-		return ids
-			.map((id) => DEFAULT_SECTIONS.find((s) => s.id === id))
-			.filter(Boolean) as Section[];
-	});
-
-	// Live‑region status for screen readers
+	const [sections, setSections] = useState<Section[]>(initialSections);
+	useEffect(() => {
+		setSections(initialSections);
+	}, [initialSections]);
 	const [statusMessage, setStatusMessage] = useState<string>("");
-
-	/* --- Sensors ----------------------------------------------------------- */
 	const sensors = useSensors(
 		useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
 		useSensor(KeyboardSensor),
 	);
-
-	/* --- Persist order after every change ---------------------------------- */
 	useEffect(() => {
-		// Prevent initial submission on mount if order hasn't changed
-		const initialOrder =
-			orderValue || DEFAULT_SECTIONS.map((s) => s.id).join(",");
+		const initialOrderString = initialSections.map((s) => s.id).join(",");
 		const currentOrder = sections.map((s) => s.id).join(",");
-
 		if (
-			initialOrder === currentOrder &&
-			fetcher.state === "idle" &&
-			!fetcher.data
+			initialOrderString === currentOrder &&
+			orderFetcher.state === "idle" &&
+			!orderFetcher.data 
 		) {
 			return;
 		}
-
-		const data = new FormData();
-		data.append("intent", "reorderSections");
-		data.append("home_sections_order", currentOrder);
-		fetcher.submit(data, { method: "post", action: "/admin" });
-	}, [sections, fetcher, orderValue]);
-
-	/* --- Drag end handler -------------------------------------------------- */
+		if (initialOrderString !== currentOrder) {
+			const data = new FormData();
+			data.append("intent", "reorderSections");
+			data.append("home_sections_order", currentOrder);
+			orderFetcher.submit(data, { method: "post", action: "/admin" });
+		}
+	}, [sections, orderFetcher, initialSections]);
+	const handleThemeChange = useCallback(
+		(sectionId: string, newTheme: SectionTheme) => {
+			const sectionToUpdate = sections.find((s) => s.id === sectionId);
+			if (!sectionToUpdate) return;
+			setSections((prevSections) =>
+				prevSections.map((s) =>
+					s.id === sectionId ? { ...s, theme: newTheme } : s,
+				),
+			);
+			const data = new FormData();
+			data.append("intent", "updateTextContent"); 
+			data.append(sectionToUpdate.themeKey, newTheme);
+			themeUpdateFetcher.submit(data, { method: "post", action: "/admin" });
+		},
+		[sections, themeUpdateFetcher],
+	);
 	const handleDragEnd = useCallback((event: DragEndEvent) => {
 		const { active, over } = event;
 		if (over && active.id !== over.id) {
@@ -91,7 +92,6 @@ export default function SectionSorter({
 			});
 		}
 	}, []);
-
 	return (
 		<section
 			className="bg-white p-6 rounded-lg shadow-xs border border-gray-200"
@@ -129,14 +129,15 @@ export default function SectionSorter({
 						className="flex flex-col gap-2"
 						aria-describedby="section-sorter-instructions"
 					>
-						{sections.map((s, idx) => (
+						{sections.map((section, idx) => (
 							<SortableItem
-								key={s.id}
-								id={s.id}
-								label={s.label}
+								key={section.id}
+								id={section.id}
+								section={section} 
 								index={idx}
 								total={sections.length}
 								updateStatus={setStatusMessage}
+								onThemeChange={handleThemeChange}
 							/>
 						))}
 					</ul>
@@ -145,20 +146,22 @@ export default function SectionSorter({
 		</section>
 	);
 }
-
 function SortableItem({
 	id,
-	label,
+	section, 
 	index,
 	total,
 	updateStatus,
+	onThemeChange,
 }: {
 	id: string;
-	label: string;
+	section: Section; 
 	index: number;
 	total: number;
 	updateStatus: (msg: string) => void;
+	onThemeChange: (sectionId: string, newTheme: SectionTheme) => void;
 }): React.ReactElement {
+	const { label, theme, themeKey } = section; 
 	const {
 		setNodeRef,
 		attributes,
@@ -167,47 +170,70 @@ function SortableItem({
 		transition,
 		isDragging,
 	} = useSortable({ id });
-
 	const style: React.CSSProperties = {
 		transform: CSS.Transform.toString(transform),
 		transition,
 	};
-
-	// Announce order changes for screen readers
 	React.useEffect(() => {
 		if (isDragging) {
-			updateStatus(`Moving ${label}, position ${index + 1} of ${total}.`);
+			updateStatus(
+				`Moving ${label}, current theme ${theme}, position ${
+					index + 1
+				} of ${total}.`,
+			);
 		} else {
-			updateStatus("");
+			updateStatus(""); 
 		}
-	}, [isDragging, label, index, total, updateStatus]);
-
+	}, [isDragging, label, theme, index, total, updateStatus]);
+	const handleLocalThemeChange = (isChecked: boolean) => {
+		onThemeChange(id, isChecked ? "dark" : "light");
+	};
 	return (
 		<li
 			ref={setNodeRef}
-			{...attributes}
-			{...listeners}
-			style={style}
-			className={`flex items-center justify-between rounded border border-gray-200 bg-white px-4 py-2 shadow-xs cursor-grab focus:outline-none focus:ring-2 focus:ring-primary ${
-				isDragging ? "opacity-50 ring-2 ring-primary" : ""
-			}`}
-			aria-label={`Section ${label}, position ${
-				index + 1
-			} of ${total}. Use arrow keys to move.`}
+			style={style} 
+			className={clsx(
+				"flex flex-col sm:flex-row items-center justify-between rounded border border-gray-200 bg-white px-4 py-2 shadow-xs focus:outline-none focus:ring-2 focus:ring-primary",
+				isDragging && "opacity-50 ring-2 ring-primary",
+			)}
 			role="option"
 			aria-selected={isDragging}
-			aria-roledescription="draggable section"
-			tabIndex={0}
+			aria-roledescription="draggable section with theme toggle"
+			tabIndex={0} 
 		>
-			<span>{label}</span>
-			<span
-				className="text-sm text-gray-400"
-				title="Drag to reorder"
-				aria-label="Drag to reorder"
-				tabIndex={-1}
+			<div
+				{...attributes} 
+				{...listeners} 
+				className="flex-grow flex items-center cursor-grab py-1 sm:py-0"
+				aria-label={`Section ${label}, position ${
+					index + 1
+				} of ${total}. Use arrow keys to move.`}
 			>
-				↕
-			</span>
+				<span className="mr-auto">{label}</span>
+				<span
+					className="text-sm text-gray-400 ml-2 hidden sm:inline" 
+					title="Drag to reorder"
+					aria-hidden="true" 
+				>
+					↕
+				</span>
+			</div>
+			<div className="flex items-center mt-2 sm:mt-0 sm:ml-4">
+				<SwitchField className="flex items-center">
+					<SwitchLabel
+						htmlFor={themeKey}
+						className="text-sm text-gray-700 mr-2"
+					>
+						Theme: {theme === "dark" ? "Dark" : "Light"}
+					</SwitchLabel>
+					<Switch
+						id={themeKey} 
+						checked={theme === "dark"}
+						onChange={handleLocalThemeChange}
+						aria-label={`Toggle theme for ${label} section. Current theme: ${theme}.`}
+					/>
+				</SwitchField>
+			</div>
 		</li>
 	);
 }

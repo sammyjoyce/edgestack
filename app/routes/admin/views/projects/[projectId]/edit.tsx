@@ -13,73 +13,53 @@ import { Heading } from "../../../components/ui/heading";
 import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
 import { Button } from "../../../components/ui/button";
-import type { Route } from "./+types/edit";
-// import { data } from "react-router"; // data is already imported via useActionData line
-
-// Return plain objects with proper typing
+import type { Route } from "./+types/projectId/edit";
+import type { SerializeFrom } from "react-router";
 export async function loader({
-	params, // params will be typed by Route.LoaderArgs
-	context, // context will be typed by Route.LoaderArgs
-}: Route.LoaderArgs): Promise<Route.LoaderData | Response> { // Update return type
-	// Use generated type
+	params, 
+	context, 
+}: Route.LoaderArgs): Promise<SerializeFrom<Route.LoaderData> | Response> { 
 	const projectId = Number(params.projectId);
-
 	if (Number.isNaN(projectId)) {
-		throw data({ error: "Invalid Project ID" }, { status: 400 }); // throw data()
+		throw data({ error: "Invalid Project ID" }, { status: 400 }); 
 	}
-
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw data({ error: "Project not found" }, { status: 404 }); // throw data()
+			throw data({ error: "Project not found" }, { status: 404 }); 
 		}
-		return { project }; // Return plain object
+		return { project }; 
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw data({ error: error.message || "Failed to load project" }, { status: 500 }); // throw data()
+		throw data({ error: error.message || "Failed to load project" }, { status: 500 }); 
 	}
 }
-
-// Return plain objects or Response for type safety
 export async function action({
 	request,
 	params,
-	context, // context will be typed by Route.ActionArgs
-}: Route.ActionArgs): Promise<Response | Route.ActionData> { // Update return type
-	// Use generated type
+	context, 
+}: Route.ActionArgs): Promise<Response | Route.ActionData> { 
 	const projectId = Number(params.projectId);
-
 	if (Number.isNaN(projectId)) {
 		return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
 	}
-
 	const formData = await request.formData();
-
 	const title = formData.get("title")?.toString() ?? "";
 	const description = formData.get("description")?.toString() ?? "";
 	const details = formData.get("details")?.toString() ?? "";
 	const isFeatured = formData.has("isFeatured");
 	const sortOrder =
 		Number.parseInt(formData.get("sortOrder") as string, 10) || 0;
-
-	// Handle file upload if present
 	const imageFile = formData.get("image") as File;
 	let imageUrl = formData.get("currentImageUrl") as string;
-
 	try {
-		// Process image upload if a new file was provided
 		if (imageFile && imageFile.size > 0) {
-			// Access bucket from context
 			const env = context.cloudflare?.env;
 			if (!env) {
 				return data({ success: false, error: "Environment not available" }, { status: 500 });
 			}
-
 			try {
-				// Generate a key based on project ID and timestamp
 				const imageKey = `project-${projectId}-${Date.now()}`;
-
-				// Pass the FormData file to the image upload handler with all required parameters
 				const uploadResult = await handleImageUpload(
 					imageFile,
 					imageKey,
@@ -88,7 +68,6 @@ export async function action({
 				if (uploadResult && typeof uploadResult === "string") {
 					imageUrl = uploadResult;
 				} else {
-					// If uploadResult is not a string, it implies an error object from handleImageUpload
 					const errorMsg = typeof uploadResult === 'object' && uploadResult !== null && 'error' in uploadResult ? (uploadResult as {error: string}).error : "Failed to upload image";
 					return data({ success: false, error: errorMsg }, { status: 400 });
 				}
@@ -97,30 +76,22 @@ export async function action({
 				return data({ success: false, error: "Failed to upload image" }, { status: 500 });
 			}
 		}
-
 		if (!title) {
 			return data(
-				{ success: false, error: "Title is required", errors: { title: "Title is required" } }, // Add to errors object
+				{ success: false, error: "Title is required", errors: { title: "Title is required" } }, 
 				{ status: 400 },
 			);
 		}
-
-		// Validate and update the project
 		const projectData = {
 			title,
 			description: description || "",
 			details: details || "",
-			imageUrl: imageUrl || null, // Use null if empty
+			imageUrl: imageUrl || null, 
 			isFeatured,
 			sortOrder,
 		};
-
-		// Validate project data before updating
 		validateProjectUpdate(projectData);
-
-		// Update the project in the database
 		const updated = await updateProject(context.db, projectId, projectData);
-
 		if (!updated) {
 			return data(
 				{
@@ -131,13 +102,11 @@ export async function action({
 				{ status: 500 },
 			);
 		}
-
-		// Redirect to projects list after successful update
 		return redirect("/admin/projects");
 	} catch (error: any) {
 		console.error("Error updating project:", error);
 		const errors: Record<string, string> = {};
-		if (error.issues && Array.isArray(error.issues)) { // Check for Valibot error structure
+		if (error.issues && Array.isArray(error.issues)) { 
 			for (const issue of error.issues) {
 				const fieldName = issue.path?.[0]?.key;
 				if (typeof fieldName === 'string' && !errors[fieldName]) {
@@ -146,29 +115,25 @@ export async function action({
 			}
 		}
 		if (Object.keys(errors).length > 0) {
-			return data({ success: false, errors, error: "Validation failed." }, { status: 400 }); // Add general error
+			return data({ success: false, errors, error: "Validation failed." }, { status: 400 }); 
 		}
 		return data({ success: false, error: error.message || "Failed to update project" }, { status: 500 });
 	}
 }
-
 export default function EditProjectPage() {
-	const { project } = useLoaderData<Route.LoaderData>(); // Or Route.LoaderData
-	const actionData = useActionData<Route.ActionData>(); // Or Route.ActionData
+	const { project } = useLoaderData<SerializeFrom<typeof loader>>(); 
+	const actionData = useActionData<SerializeFrom<typeof action>>(); 
 	const errors = actionData?.errors as Record<string, string> | undefined;
-
 	return (
 		<FadeIn>
 			<Heading level={1} className="mb-8">
-				Edit Project: {project!.title} {/* project is guaranteed by loader throwing on not found */}
+				Edit Project: {project?.title} {}
 			</Heading>
-
 			{actionData?.error && !errors && (
 				<Text className="p-4 mb-4 text-red-700 bg-red-100 rounded-lg border border-red-200" role="alert">
 					{actionData.error}
 				</Text>
 			)}
-
 			<Form
 				method="post"
 				encType="multipart/form-data"
@@ -190,7 +155,6 @@ export default function EditProjectPage() {
 					/>
 					{errors?.title && <Text id="title-error" className="text-sm text-red-600">{errors.title}</Text>}
 				</div>
-
 				<div>
 					<Label htmlFor="description" className="mb-1">
 						Description
@@ -199,16 +163,13 @@ export default function EditProjectPage() {
 						name="description"
 						initialJSON={project.description || ""}
 					/>
-					{/* Hidden input for description is handled by RichTextField */}
 				</div>
-
 				<div>
 					<Label htmlFor="details" className="mb-1">
 						Details (e.g., Location, Duration, Budget)
 					</Label>
 					<RichTextField name="details" initialJSON={project.details || ""} />
 				</div>
-
 				<div className="flex items-center gap-2">
 					<Input
 						type="checkbox"
@@ -220,12 +181,10 @@ export default function EditProjectPage() {
 					/>
 					<Label htmlFor="isFeatured">Feature on Home Page</Label>
 				</div>
-
 				<div>
 					<Label className="mb-1">Project Image</Label>
 					<ProjectImageSelector currentImage={project.imageUrl || undefined} />
 				</div>
-
 				<div>
 					<Label htmlFor="sortOrder" className="mb-1">
 						Sort Order (lower numbers appear first)
@@ -239,7 +198,6 @@ export default function EditProjectPage() {
 						className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
 					/>
 				</div>
-
 				<div className="flex justify-end gap-3 pt-6 border-t border-gray-200 mt-6">
 					<Button
 						as={Link}

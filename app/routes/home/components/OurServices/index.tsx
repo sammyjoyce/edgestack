@@ -1,26 +1,21 @@
-import clsx from "clsx"; // Ensure clsx is imported
+import clsx from "clsx"; 
 import React, { type JSX } from "react";
-import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; // Import the new component
+import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; 
 import { Button } from "~/routes/common/components/ui/Button";
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
-
-// Define props interface
 interface ServiceItem {
 	title: string;
 	image: string;
 	link: string;
 }
-
 interface OurServicesProps {
 	introTitle?: string;
 	introText?: string;
 	servicesData?: ServiceItem[];
-	theme?: 'light' | 'dark'; // Add theme prop
+	theme?: 'light' | 'dark'; 
 }
-
-// Default hardcoded services
 const defaultServices: ServiceItem[] = [
 	{
 		title: "Kitchens",
@@ -43,17 +38,15 @@ const defaultServices: ServiceItem[] = [
 		link: "#contact",
 	},
 ];
-
 export default function OurServices({
 	introTitle = "Renovation and Extension Specialists",
 	introText,
 	servicesData,
-	theme = "light", // Default theme
+	theme = "light", 
 }: OurServicesProps): JSX.Element {
 	const defaultIntroText =
 		"Qualified & Professional Building Services from Start to Finish";
 	const services = servicesData ?? defaultServices;
-
 	return (
 		<div className={clsx(
 			"relative py-16 sm:py-24 bg-white dark:bg-gray-900",
@@ -62,12 +55,9 @@ export default function OurServices({
 			<div className={clsx(
 				"absolute inset-x-0 top-0 h-40 bg-linear-to-b from-gray-50 dark:from-gray-800"
 			)} />
-
 			<Container>
 				<section className="mt-12 mb-6 sm:mt-16 sm:mb-8 lg:mt-20 lg:mb-10">
-					{/* Use props for intro title and text, with defaults */}
 					<SectionIntro centered title={introTitle}>
-						{/* SectionIntro will need its own theme prop or to inherit styles */}
 						<ConditionalRichTextRenderer
 							text={introText || defaultIntroText}
 							fallbackClassName="text-gray-700 dark:text-gray-300"
@@ -75,19 +65,15 @@ export default function OurServices({
 							fallbackTag="p" 
 						/>
 						<div className="mt-6 flex justify-center">
-							{/* Button's invert prop might need to be dynamic based on theme */}
 							<Button to="#contact" invert={theme === 'light'}>Get Started</Button>
 						</div>
 					</SectionIntro>
 				</section>
-
 				<FadeInStagger faster>
 					<div className="grid grid-cols-1 gap-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
-						{/* Map over the provided services array or fallback to default */}
 						{services.map((service) => (
 							<FadeIn key={service.title}>
 								<div className="group relative overflow-hidden rounded-lg">
-									{/* Service Image */}
 									<div className="aspect-5/9 overflow-hidden">
 										<img
 											src={service.image}
@@ -95,9 +81,6 @@ export default function OurServices({
 											className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
 										/>
 									</div>
-
-									{/* Service Info */}
-									{/* Overlay generally means light text is needed regardless of section theme */}
 									<div className="absolute inset-0 z-10 flex flex-col justify-end p-4 sm:p-6">
 										<div className="flex flex-col gap-2 text-white sm:gap-3">
 											<h3 className="font-bold text-3xl sm:text-4xl ">
@@ -111,8 +94,6 @@ export default function OurServices({
 											</a>
 										</div>
 									</div>
-
-									{/* Gradient Overlay */}
 									<div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
 								</div>
 							</FadeIn>

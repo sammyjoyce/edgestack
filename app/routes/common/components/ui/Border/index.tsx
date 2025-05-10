@@ -1,14 +1,11 @@
-import clsx from "clsx"; // Use direct import
-import type React from "react"; // Import React
-
+import clsx from "clsx"; 
+import type React from "react"; 
 type BorderProps<T extends React.ElementType = "div"> = {
-	// Add default type
 	as?: T;
 	className?: string;
 	position?: "top" | "left";
 	invert?: boolean;
 };
-
 export function Border<T extends React.ElementType = "div">({
 	as,
 	className,
@@ -18,7 +15,6 @@ export function Border<T extends React.ElementType = "div">({
 }: Omit<React.ComponentPropsWithoutRef<T>, keyof BorderProps<T>> &
 	BorderProps<T>) {
 	const Component = as ?? "div";
-
 	return (
 		<Component
 			className={clsx(

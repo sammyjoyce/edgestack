@@ -1,62 +1,41 @@
-import React, { type JSX } from "react"; // Ensure React is imported for JSX
+import React, { type JSX } from "react"; 
 import { Link, useFetcher } from "react-router";
-
 import { Container } from "~/routes/common/components/ui/Container";
 import { Button } from "../ui/button";
-
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
-
 import { ImageUploadSection } from "~/routes/admin/components/ImageUploadSection";
-// Admin components
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { AboutSectionEditor } from "~/routes/admin/components/sections/AboutSectionEditor";
 import { ContactSectionEditor } from "~/routes/admin/components/sections/ContactSectionEditor";
 import { HeroSectionEditor } from "~/routes/admin/components/sections/HeroSectionEditor";
 import { ServicesSectionEditor } from "~/routes/admin/components/sections/ServicesSectionEditor";
-// Import action types for fetchers
-import type { Route } from "~/routes/admin/views/+types/index"; // Import Route from +types
-import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload"; // Import Route as UploadRoute from +types
-
-type ActualIndexActionData = Route.ActionData;
-type ActualUploadActionData = UploadRoute.ActionData;
+import type { Route } from "~/routes/admin/views/+types/index"; 
+import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload"; 
+import type { SerializeFrom } from "react-router";
+type ActualIndexActionData = SerializeFrom<Route.ActionData>;
+type ActualUploadActionData = SerializeFrom<UploadRoute.ActionData>;
 import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
 import { Heading } from "../ui/heading";
-
+import type { Section as SorterSection, SectionTheme as SorterSectionTheme } from "~/routes/admin/components/SectionSorter";
 interface AdminDashboardProps {
 	initialContent: Record<string, string> | undefined;
 }
-
 export default function AdminDashboard({
 	initialContent,
 }: AdminDashboardProps): React.JSX.Element {
-	// Use initialContent prop as the only source of content
 	const content = initialContent;
-
-	// ... rest of the component remains unchanged ...
-
-	// Define the shape that we know is returned by the actions
-	// This should align with the ActionData types defined in the respective +types files
-	// type IndexActionData = Route.ActionData; // from admin/views/+types/index.ts
-	// type UploadActionData = UploadRoute.ActionData; // from admin/views/+types/upload.ts
-
-	// Use React Router 7's built-in type inference - no explicit type parameters
-	// This lets React Router handle the complex type relationships correctly
-	const heroFetcher = useFetcher<ActualIndexActionData>(); // For text content related to hero
-	const introFetcher = useFetcher<ActualIndexActionData>(); // For text content related to intro
-	const servicesFetcher = useFetcher<ActualIndexActionData>(); // For text content related to services
-	const aboutFetcher = useFetcher<ActualIndexActionData>(); // For text content related to about
-	const contactFetcher = useFetcher<ActualIndexActionData>(); // For text content related to contact
-	const sorterFetcher = useFetcher<ActualIndexActionData>(); // For section sorting
-	const projectsFetcher = useFetcher<ActualIndexActionData>(); // For projects intro text
-	const uploadFetcher = useFetcher<ActualUploadActionData>(); // Dedicated for all image uploads
-
-	// Access content safely, handle null/error case
+	const heroFetcher = useFetcher<ActualIndexActionData>(); 
+	const introFetcher = useFetcher<ActualIndexActionData>(); 
+	const servicesFetcher = useFetcher<ActualIndexActionData>(); 
+	const aboutFetcher = useFetcher<ActualIndexActionData>(); 
+	const contactFetcher = useFetcher<ActualIndexActionData>(); 
+	const sorterFetcher = useFetcher<ActualIndexActionData>(); 
+	const projectsFetcher = useFetcher<ActualIndexActionData>(); 
+	const uploadFetcher = useFetcher<ActualUploadActionData>(); 
 	const safeContent =
 		content && typeof content === "object" && !("error" in content)
 			? (content as Record<string, string>)
 			: ({} as Record<string, string>);
-
-	// Handler for Hero image upload
 	const [heroUploading, setHeroUploading] = React.useState(false);
 	const [heroImageUrl, setHeroImageUrl] = React.useState(
 		safeContent.hero_image_url || "",
@@ -74,7 +53,6 @@ export default function AdminDashboard({
 		safeContent.service_3_image || "",
 		safeContent.service_4_image || "",
 	]);
-
 	const uploadImage = React.useCallback(
 		async (
 			fetcherInstance: ReturnType<typeof useFetcher<ActualUploadActionData | ActualIndexActionData >>,
@@ -112,28 +90,25 @@ export default function AdminDashboard({
 		},
 		[], 
 	);
-
 	const handleHeroImageUpload = (file: File) =>
 		uploadImage(
-			uploadFetcher, // Use dedicated uploadFetcher
+			uploadFetcher, 
 			"hero_image_url",
 			file,
 			setHeroUploading,
 			setHeroImageUrl,
 		);
-
 	const handleAboutImageUpload = (file: File) =>
 		uploadImage(
-			uploadFetcher, // Use dedicated uploadFetcher
+			uploadFetcher, 
 			"about_image_url",
 			file,
 			setAboutUploading,
 			setAboutImageUrl,
 		);
-
 	const handleServiceImageUpload = (idx: number, file: File) =>
 		uploadImage(
-			uploadFetcher, // Use dedicated uploadFetcher
+			uploadFetcher, 
 			`service_${idx + 1}_image`,
 			file,
 			(v) =>
@@ -145,20 +120,46 @@ export default function AdminDashboard({
 					prev.map((val, i) => (i === idx ? url : val)),
 				),
 		);
-
-	/* ------------------------------------------------- *
-	 * Section order comes from key "home_sections_order"
-	 * Persist handled inside SectionSorter via fetcher
-	 * ------------------------------------------------- */
 	const sectionsOrder = safeContent.home_sections_order as string | undefined;
-
-	// Define tabs configuration
+	const sectionDetailsMap: Record<string, { label: string; themeKey: string }> =
+		{
+			hero: { label: "Hero", themeKey: "hero_title_theme" }, 
+			services: {
+				label: "Services",
+				themeKey: "services_intro_title_theme",
+			}, 
+			projects: {
+				label: "Projects",
+				themeKey: "projects_intro_title_theme",
+			}, 
+			about: { label: "About", themeKey: "about_title_theme" }, 
+			contact: { label: "Contact", themeKey: "contact_title_theme" }, 
+		};
+	const orderedSectionIds = sectionsOrder
+		? sectionsOrder.split(",")
+		: Object.keys(sectionDetailsMap); 
+	const sorterSections: SorterSection[] = orderedSectionIds
+		.map((id) => {
+			const details = sectionDetailsMap[id];
+			if (!details) return null;
+			return {
+				id,
+				label: details.label,
+				theme: (safeContent[details.themeKey] as SorterSectionTheme) || "light",
+				themeKey: details.themeKey,
+			};
+		})
+		.filter(Boolean) as SorterSection[];
 	const tabs: Tab[] = [
 		{
-			title: "Order",
+			title: "Order & Themes",
 			value: "order",
 			content: (
-				<SectionSorter orderValue={sectionsOrder} fetcher={sorterFetcher} />
+				<SectionSorter
+					initialSections={sorterSections}
+					orderFetcher={sorterFetcher} 
+					themeUpdateFetcher={heroFetcher} 
+				/>
 			),
 		},
 		{
@@ -221,12 +222,12 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
-							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.message && ( // Check for message
+							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.message && ( 
 								<p className={`mt-2 text-sm ${projectsFetcher.data.success ? 'text-green-600' : 'text-red-600'}`}>
 									{projectsFetcher.data.message}
 								</p>
 							)}
-							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.error && ( // Check for error
+							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.error && ( 
 								<p className="mt-2 text-sm text-red-600">
 									{projectsFetcher.data.error}
 								</p>
@@ -258,12 +259,12 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
-							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.message && ( // Check for message
+							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.message && ( 
 								<p className={`mt-2 text-sm ${projectsFetcher.data.success ? 'text-green-600' : 'text-red-600'}`}>
 									{projectsFetcher.data.message}
 								</p>
 							)}
-							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.error && ( // Check for error
+							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.error && ( 
 								<p className="mt-2 text-sm text-red-600">
 									{projectsFetcher.data.error}
 								</p>
@@ -328,12 +329,8 @@ export default function AdminDashboard({
 			),
 		},
 	];
-
-
-
 	return (
 		<Container className="mt-8">
-			{/* Adjusted container */}
 			<div className="flex flex-col space-y-4">
 				<div className="flex justify-between items-center">
 					<Heading level={2}>{"Home Page Editor"}</Heading>
@@ -361,10 +358,9 @@ export default function AdminDashboard({
 						<span>Open site</span>
 					</Button>
 				</div>
-
 				<Tabs
 					tabs={tabs}
-					containerClassName="mb-8" // Add margin below tabs
+					containerClassName="mb-8" 
 				/>
 			</div>
 		</Container>

@@ -1,17 +1,14 @@
-import React, { type JSX } from "react"; // Import React
-import { type MetaFunction, useOutletContext } from "react-router"; // Import MetaFunction
+import React, { type JSX } from "react"; 
+import { type MetaFunction, useOutletContext } from "react-router"; 
 const DEBUG = process.env.NODE_ENV !== "production";
 import invariant from "tiny-invariant";
 import RecentProjects from "~/routes/common/components/RecentProjects";
-// Import parent route loader function for typing
 import type { loader as parentLayoutLoader } from "~/routes/home/views/_layout";
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
-
 export const meta: MetaFunction<never, { "routes/home/views/_layout": typeof parentLayoutLoader }> = ({ matches }) => {
-	// Access loader data safely from parent layout match using the correct type (Awaited to unwrap the Promise)
 	const parentLayoutMatch = matches.find(
 		(match) => match?.id === "routes/home/views/_layout",
 	);
@@ -21,7 +18,6 @@ export const meta: MetaFunction<never, { "routes/home/views/_layout": typeof par
 	const pageDescription =
 		c.meta_description ??
 		"High-Quality Solutions for Home & Office Improvement";
-
 	return [
 		{ title: pageTitle },
 		{
@@ -30,26 +26,20 @@ export const meta: MetaFunction<never, { "routes/home/views/_layout": typeof par
 		},
 	];
 };
-
 export function HomeRoute(): JSX.Element {
-	// Use useOutletContext with Awaited<ReturnType> to unwrap the Promise
 	const { content: rawContent, projects = [] } =
 		useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
 	const content = (rawContent ?? {}) as Record<string, string>;
-
 	invariant(
 		typeof content === "object",
 		"HomeRoute: content must be an object",
 	);
 	invariant(Array.isArray(projects), "HomeRoute: projects must be an array");
-
 	if (DEBUG)
 		console.log(
 			"[HOME ROUTE] Rendering with content keys:",
 			Object.keys(content),
 		);
-
-	// Section mapping
 	const sectionBlocks: Record<string, JSX.Element> = {
 		hero: (
 			<Hero
@@ -115,22 +105,16 @@ export function HomeRoute(): JSX.Element {
 		),
 		contact: <ContactUs key="contact" content={content} />,
 	};
-
-	// Determine order
 	const DEFAULT_ORDER = ["hero", "services", "projects", "about", "contact"];
 	const orderString = content.home_sections_order as string | undefined;
 	const order = orderString
 		? orderString.split(",").filter((id) => id in sectionBlocks)
 		: DEFAULT_ORDER;
-
 	invariant(Array.isArray(order), "HomeRoute: order must be an array");
 	invariant(
 		order.every((id) => typeof id === "string"),
 		"HomeRoute: all order ids must be strings",
 	);
-
 	return <>{order.map((id) => sectionBlocks[id])}</>;
 }
-
-// Default export for backwards compatibility
 export default HomeRoute;

@@ -2,23 +2,16 @@ import type { JSX, MouseEvent } from "react";
 import type { MenuItem } from ".";
 import { Button } from "../ui/Button";
 import { useMenuItemInfo } from "./useMenuItemInfo";
-
-/* ─── Props ──────────────────────────────────────── */
-
 export interface DesktopNavProps {
 	menuItems: readonly MenuItem[];
 	scrollToSection: (e: MouseEvent<HTMLAnchorElement>, id: string) => void;
 }
-
-/* ─── Helpers ────────────────────────────────────── */
-
 function LinkButton(
 	item: MenuItem,
 	scrollTo: DesktopNavProps["scrollToSection"],
 ) {
 	const { isRoute, rawPath, isHomeWithHash, hashPart, anchorHref } =
 		useMenuItemInfo(item);
-
 	if (isRoute) {
 		if (isHomeWithHash) {
 			return (
@@ -31,14 +24,12 @@ function LinkButton(
 				</Button>
 			);
 		}
-
 		return (
 			<Button key={item.name} to={rawPath}>
 				{item.name}
 			</Button>
 		);
 	}
-
 	const id = anchorHref.startsWith("#") ? anchorHref.slice(1) : undefined;
 	return (
 		<Button
@@ -52,21 +43,16 @@ function LinkButton(
 		</Button>
 	);
 }
-
-/* ─── Component ──────────────────────────────────── */
-
 export default function DesktopNav({
 	menuItems,
 	scrollToSection,
 }: DesktopNavProps): JSX.Element {
 	const [left, right] = [menuItems.slice(0, 3), menuItems.slice(3)];
-
 	return (
 		<>
 			<nav className="hidden lg:flex items-center gap-x-4">
 				{left.map((i) => LinkButton(i, scrollToSection))}
 			</nav>
-
 			<nav className="hidden lg:flex items-center gap-x-4">
 				{right.map((i) => LinkButton(i, scrollToSection))}
 				<Button to="tel:0404289437" size="xs" invert>

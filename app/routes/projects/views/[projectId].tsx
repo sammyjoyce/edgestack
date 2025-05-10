@@ -1,14 +1,12 @@
-import clsx from "clsx"; // Ensure clsx is imported
+import clsx from "clsx"; 
 import React from "react";
-import { Link, data, useLoaderData, useOutletContext } from "react-router"; // Added useOutletContext
+import { Link, data, useLoaderData, useOutletContext, SerializeFrom } from "react-router"; 
 import type { Project } from "~/database/schema";
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
-import type { Route } from "./+types/[projectId]";
-
-// Loader using the generated type for params and context
+import type { Route } from "./+types/projectId";
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
 	assert(
 		typeof params.projectId === "string",
@@ -16,7 +14,6 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 	);
 	const projectId = Number(params.projectId);
 	assert(!Number.isNaN(projectId), "projectId must be a valid number");
-
 	try {
 		const project = await getProjectById(context.db, projectId);
 		assert(
@@ -31,19 +28,11 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 		);
 	}
 };
-
-import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout"; // Import parent loader type
-
+import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout"; 
 export function ProjectDetailRoute() {
-	// Use type inference with the loader function
-	const { project } = useLoaderData<typeof loader>();
-	// Get theme from parent layout context
-	const { content } = useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
-	const projectDetailTheme = content[`project_${project.id}_theme`] === 'dark' ? 'dark' : 'light';
-
-
-	// The loader guarantees that 'project' is available if no error was thrown.
-	// Error cases (including not found) are handled by the ErrorBoundary.
+	const { project } = useLoaderData<SerializeFrom<typeof loader>>();
+	const { content } = useOutletContext<SerializeFrom<typeof parentLayoutLoader>>();
+	const projectDetailTheme = project && content[`project_${project.id}_theme`] === 'dark' ? 'dark' : 'light';
 	return (
 		<div className={clsx("py-16 bg-white dark:bg-gray-950", projectDetailTheme === "dark" && "dark")}>
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -70,7 +59,7 @@ export function ProjectDetailRoute() {
 									text={project.details}
 									fallbackClassName="text-gray-600 dark:text-gray-400"
 									richTextClassName={clsx(projectDetailTheme === "dark" && "dark:prose-invert")}
-									fallbackTag="div" // Use div if details might contain multiple paragraphs
+									fallbackTag="div" 
 								/>
 							</div>
 						)}
@@ -89,6 +78,4 @@ export function ProjectDetailRoute() {
 		</div>
 	);
 }
-
-// Default export for backwards compatibility
 export default ProjectDetailRoute;

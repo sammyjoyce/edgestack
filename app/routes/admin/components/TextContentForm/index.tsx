@@ -4,23 +4,20 @@ import {
 	ExclamationTriangleIcon,
 	InformationCircleIcon,
 	XCircleIcon,
-} from "@heroicons/react/20/solid"; // Or /24/solid
-import React, { type JSX, useRef } from "react"; // Import React and JSX type
+} from "@heroicons/react/20/solid"; 
+import React, { type JSX, useRef } from "react"; 
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
-// Pull Label from the shared fieldset, Textarea from the admin ui folder
 import { Label } from "~/routes/admin/components/ui/fieldset";
 import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";
 import { Pill, PillStatusComponent } from "~/routes/common/components/ui/Pill";
 import { Button } from "../ui/button";
-
 type ActionResponseData = {
 	success?: boolean;
 	error?: string;
 	message?: string;
 };
-
 const textFields = [
 	{
 		key: "hero_title",
@@ -93,14 +90,11 @@ const textFields = [
 		help: "Description for the second service.",
 	},
 ];
-
 interface TextContentFormProps {
-	fetcher: FetcherWithComponents<ActionResponseData>; // Match the type in useTextContentForm hook
+	fetcher: FetcherWithComponents<ActionResponseData>; 
 	initialContent: Record<string, string>;
 	formRef?: React.RefObject<HTMLFormElement>;
 }
-
-// Simple accessible tooltip component
 function Tooltip({ id, children }: { id: string; children: React.ReactNode }) {
 	return (
 		<span
@@ -112,7 +106,6 @@ function Tooltip({ id, children }: { id: string; children: React.ReactNode }) {
 		</span>
 	);
 }
-
 export function TextContentForm({
 	fetcher,
 	initialContent,
@@ -120,7 +113,6 @@ export function TextContentForm({
 }: TextContentFormProps): JSX.Element {
 	const localFormRef = useRef<HTMLFormElement>(null);
 	const ref = formRef || localFormRef;
-
 	const {
 		autoSave,
 		setAutoSave,
@@ -137,7 +129,6 @@ export function TextContentForm({
 		fetcher,
 		textFieldsConfig: textFields,
 	});
-
 	return (
 		<form
 			id="text-content-form"

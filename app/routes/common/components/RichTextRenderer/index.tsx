@@ -4,25 +4,20 @@ import type {
 	SerializedLexicalNode,
 	SerializedTextNode,
 } from "lexical";
-
-// Define missing serialized node types that don't exist in base lexical package
 interface SerializedHeadingNode extends SerializedLexicalNode {
 	tag: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 	children: SerializedLexicalNode[];
 }
-
 interface SerializedLinkNode extends SerializedLexicalNode {
 	url: string;
 	target?: string;
 	rel?: string;
 	children: SerializedLexicalNode[];
 }
-
 interface SerializedListItemNode extends SerializedLexicalNode {
 	value: number;
 	children: SerializedLexicalNode[];
 }
-
 interface SerializedListNode extends SerializedLexicalNode {
 	listType: "bullet" | "number" | "check";
 	tag: "ul" | "ol";
@@ -30,45 +25,32 @@ interface SerializedListNode extends SerializedLexicalNode {
 }
 import type React from "react";
 import { Fragment } from "react";
-// Optional: If you want to render internal links using react-router
-// import { Link as RouterLink } from "react-router";
-
 interface Props {
 	json: string;
-	className?: string; // Allow passing className for styling
+	className?: string; 
 }
-
-// Helper to apply text formatting
 function applyTextFormat(
 	format: number,
 	children: React.ReactNode,
 ): React.ReactNode {
 	let element = children;
 	if (format & 1) {
-		// BOLD
 		element = <strong>{element}</strong>;
 	}
 	if (format & 2) {
-		// ITALIC
 		element = <em>{element}</em>;
 	}
 	if (format & 8) {
-		// UNDERLINE
 		element = <u>{element}</u>;
 	}
-	// Add other formats like strikethrough (4), code (16), etc. if needed
 	return element;
 }
-
-// Recursive function to render Lexical nodes
 function renderNode(node: SerializedLexicalNode, key: number): React.ReactNode {
 	if (!node) return null;
-
 	const children =
 		"children" in node && Array.isArray(node.children)
 			? node.children.map((child, index) => renderNode(child, index))
 			: null;
-
 	switch (node.type) {
 		case "root":
 			return <Fragment key={key}>{children}</Fragment>;
@@ -76,32 +58,24 @@ function renderNode(node: SerializedLexicalNode, key: number): React.ReactNode {
 			return <p key={key}>{children}</p>;
 		case "heading": {
 			const headingNode = node as SerializedHeadingNode;
-			const Tag = headingNode.tag; // h1, h2, etc.
+			const Tag = headingNode.tag; 
 			return <Tag key={key}>{children}</Tag>;
 		}
 		case "list": {
 			const listNode = node as SerializedListNode;
-			const Tag = listNode.tag; // ul, ol
+			const Tag = listNode.tag; 
 			return <Tag key={key}>{children}</Tag>;
 		}
 		case "listitem": {
-			// const listItemNode = node as SerializedListItemNode; // Not needed currently
-			// Lexical list items might have nested lists, handle children appropriately
 			return <li key={key}>{children}</li>;
 		}
 		case "link": {
 			const linkNode = node as SerializedLinkNode;
-			// Basic link rendering. Enhance with internal link detection if needed.
-			// Example: Check if linkNode.url starts with '/' for internal links
-			// const isInternal = linkNode.url?.startsWith('/');
-			// if (isInternal) {
-			//   return <RouterLink key={key} to={linkNode.url}>{children}</RouterLink>;
-			// }
 			return (
 				<a
 					key={key}
 					href={linkNode.url}
-					target={linkNode.target || "_blank"} // Default to _blank for external links
+					target={linkNode.target || "_blank"} 
 					rel={linkNode.rel || "noopener noreferrer"}
 				>
 					{children}
@@ -118,43 +92,30 @@ function renderNode(node: SerializedLexicalNode, key: number): React.ReactNode {
 		}
 		case "linebreak":
 			return <br key={key} />;
-		// Add cases for other node types (e.g., 'image', 'quote', 'code') if needed
 		default:
-			// Optionally log unhandled node types
-			// console.warn("Unhandled Lexical node type:", node.type);
-			// Render children for unknown block-level nodes, or null for unknown inline nodes
 			return "children" in node ? (
 				<Fragment key={key}>{children}</Fragment>
 			) : null;
 	}
 }
-
-// Basic read-only renderer for Lexical JSON state
 export default function RichTextRenderer({ json, className }: Props) {
 	let parsedState: SerializedEditorState | null = null;
 	let error = null;
-
 	try {
 		parsedState = JSON.parse(json) as SerializedEditorState;
 	} catch (e) {
 		console.error("Failed to parse Lexical JSON:", e);
 		error = "Invalid content format.";
-		// Optionally render an error message
-		// return <div className={clsx("text-red-600", className)}>Error: Invalid content format.</div>;
 	}
-
 	if (error || !parsedState || !parsedState.root) {
-		// Render nothing or an error message if parsing failed or content is empty
 		return (
-			<div className={clsx("prose prose-sm max-w-none dark:prose-invert", className)}> {/* Added dark:prose-invert */}
+			<div className={clsx("prose prose-sm max-w-none dark:prose-invert", className)}> {}
 				{error ? <p className="text-red-500">{error}</p> : null}
 			</div>
 		);
 	}
-
 	return (
-		// Apply prose for default styling, allow override/extension with className
-		<div className={clsx("prose prose-sm max-w-none dark:prose-invert", className)}> {/* Added dark:prose-invert */}
+		<div className={clsx("prose prose-sm max-w-none dark:prose-invert", className)}> {}
 			{renderNode(parsedState.root, 0)}
 		</div>
 	);

@@ -3,24 +3,21 @@ import type { JSX } from "react";
 import { useCallback, useEffect, useState } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
-import RichTextField from "~/routes/admin/components/RichTextField"; // Import RichTextField
+import RichTextField from "~/routes/admin/components/RichTextField"; 
 import {
 	FieldLabel,
 	FieldRow,
 	SectionCard,
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
-// Import the specific action types
 import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
 import type { Route as AdminUploadRoute } from "~/routes/admin/views/+types/upload";
-
 interface ServiceField {
 	titleKey: string;
 	textKey: string;
 	imageKey: string;
 	label: string;
 }
-
 interface ServicesSectionEditorProps {
 	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData | AdminUploadRoute.ActionData>;
 	initialContent: Record<string, string>;
@@ -28,7 +25,6 @@ interface ServicesSectionEditorProps {
 	imageUploading: boolean[];
 	serviceImageUrls: (string | undefined)[];
 }
-
 const serviceFields: ServiceField[] = [
 	{
 		titleKey: "service_1_title",
@@ -55,10 +51,6 @@ const serviceFields: ServiceField[] = [
 		label: "Service 4",
 	},
 ];
-
-// ------------------------------------------------------------------------
-// Component
-// ------------------------------------------------------------------------
 export function ServicesSectionEditor({
 	fetcher,
 	initialContent,
@@ -69,7 +61,6 @@ export function ServicesSectionEditor({
 	const [statusTexts, setStatusTexts] = useState<string[]>(
 		Array(serviceFields.length).fill(""),
 	);
-
 	const handleBlur = useCallback(
 		(e: React.FocusEvent<HTMLTextAreaElement>) => {
 			const { name, value } = e.currentTarget;
@@ -80,12 +71,10 @@ export function ServicesSectionEditor({
 		},
 		[fetcher],
 	);
-
 	const handleDrop = useCallback(
 		(idx: number) => (files: File[]) => {
 			const [file] = files;
 			if (!file) return;
-
 			onImageUpload(idx, file);
 			setStatusTexts((prev) => {
 				const next = [...prev];
@@ -95,7 +84,6 @@ export function ServicesSectionEditor({
 		},
 		[onImageUpload],
 	);
-
 	useEffect(() => {
 		imageUploading.forEach((uploading, idx) => {
 			if (!uploading && statusTexts[idx].startsWith("Uploading")) {
@@ -108,7 +96,6 @@ export function ServicesSectionEditor({
 			}
 		});
 	}, [imageUploading, statusTexts]);
-
 	return (
 		<SectionCard>
 			<SectionHeading>Services Section</SectionHeading>

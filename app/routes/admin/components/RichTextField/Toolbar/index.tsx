@@ -14,7 +14,6 @@ import React, {
 	useEffect,
 	useState,
 } from "react"; 
-
 import clsx from "clsx";
 import {
 	$getSelection,
@@ -27,19 +26,14 @@ import {
 	type TextFormatType,
 	UNDO_COMMAND,
 } from "lexical";
-// Removed duplicate React import block
-
-// Simple divider component
 function Divider() {
 	return <div className="w-px h-5 bg-gray-300 mx-1" />;
 }
-
 interface ToolbarButton {
 	label: string;
 	arg: TextFormatType;
 	icon: ReactNode;
 }
-
 const TOOLBAR_BUTTONS: ToolbarButton[] = [
 	{ label: "Bold", arg: "bold", icon: <b>B</b> },
 	{ label: "Italic", arg: "italic", icon: <i>I</i> },
@@ -50,13 +44,10 @@ const TOOLBAR_BUTTONS: ToolbarButton[] = [
 		icon: <span className="line-through">S</span>,
 	},
 ];
-
 export default function LexicalToolbar(): JSX.Element {
 	const [editor] = useLexicalComposerContext();
-
 	const [canUndo, setCanUndo] = useState(false);
 	const [canRedo, setCanRedo] = useState(false);
-
 	const [active, setActive] = useState<
 		Partial<Record<TextFormatType, boolean>>
 	>({
@@ -65,8 +56,6 @@ export default function LexicalToolbar(): JSX.Element {
 		underline: false,
 		strikethrough: false,
 	});
-
-	// keep state in sync with the editor selection
 	useEffect(() => {
 		return editor.registerUpdateListener(({ editorState }) => {
 			editorState.read(() => {
@@ -82,8 +71,6 @@ export default function LexicalToolbar(): JSX.Element {
 			});
 		});
 	}, [editor]);
-
-	// Add listeners for undo/redo state
 	useEffect(() => {
 		const unregisterUndo = editor.registerCommand(
 			CAN_UNDO_COMMAND,
@@ -106,18 +93,14 @@ export default function LexicalToolbar(): JSX.Element {
 			unregisterRedo();
 		};
 	}, [editor]);
-
 	const format = useCallback(
 		(formatType: TextFormatType) => {
 			editor.dispatchCommand(FORMAT_TEXT_COMMAND, formatType);
 		},
 		[editor],
 	);
-
-	// Styled toolbar for rich text formatting
 	return (
 		<div className="flex gap-1 bg-gray-50 border border-b-0 border-gray-300 rounded-t-md px-2 py-1">
-			{/* Undo/Redo Buttons */}
 			<button
 				type="button"
 				disabled={!canUndo}
@@ -136,10 +119,7 @@ export default function LexicalToolbar(): JSX.Element {
 			>
 				<ArrowUturnRightIcon className="size-4" />
 			</button>
-
 			<Divider />
-
-			{/* Text Format Buttons */}
 			{TOOLBAR_BUTTONS.map((btn: ToolbarButton) => (
 				<button
 					key={btn.arg}
@@ -160,10 +140,7 @@ export default function LexicalToolbar(): JSX.Element {
 					{btn.icon}
 				</button>
 			))}
-
 			<Divider />
-
-			{/* Alignment Buttons */}
 			<button
 				type="button"
 				onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left")}

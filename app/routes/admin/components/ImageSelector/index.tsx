@@ -1,4 +1,4 @@
-import type React from "react"; // Import React and useRef
+import type React from "react"; 
 import { type JSX, useRef, useState } from "react";
 import { useFetcher } from "react-router";
 import { Drawer } from "vaul";
@@ -6,7 +6,6 @@ import { ImageGallery } from "~/routes/admin/components/ImageGallery";
 import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
 import type { StoredImage } from "~/utils/upload.server";
 import { Button } from "../ui/button";
-
 interface ImageSelectorProps {
 	onDrop: (files: File[]) => void;
 	disabled?: boolean;
@@ -14,10 +13,9 @@ interface ImageSelectorProps {
 	imageUrl?: string;
 	label?: string;
 	className?: string;
-	fileInputRef?: React.RefObject<HTMLInputElement>;
+	fileInputRef?: React.RefObject<HTMLInputElement | null>;
 	fieldKey: string;
 }
-
 export function ImageSelector({
 	onDrop,
 	disabled = false,
@@ -25,28 +23,23 @@ export function ImageSelector({
 	imageUrl,
 	label = "Upload Image",
 	className = "",
-	fileInputRef, // This ref is passed from parent, no need to create one here if parent manages it
+	fileInputRef, 
 	fieldKey,
 }: ImageSelectorProps): JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);
 	const fetcher = useFetcher();
-
-	// Handle selection of an existing image
 	const handleSelectImage = (image: StoredImage) => {
 		const formData = new FormData();
 		formData.append("intent", "selectImage");
 		formData.append("key", fieldKey);
 		formData.append("imageUrl", image.url);
-
 		fetcher.submit(formData, {
 			method: "post",
 			action: "/admin/upload",
 			encType: "multipart/form-data",
 		});
-
 		setIsOpen(false);
 	};
-
 	return (
 		<div className={`${className} w-full flex flex-col items-center`}>
 			<ImageUploadZone
@@ -57,7 +50,6 @@ export function ImageSelector({
 				label={label}
 				fileInputRef={fileInputRef}
 			/>
-
 			<div className="flex justify-center mt-2 w-full">
 				<Drawer.Root open={isOpen} onOpenChange={setIsOpen}>
 					<Drawer.Trigger asChild>
@@ -70,12 +62,10 @@ export function ImageSelector({
 						<Drawer.Content className="fixed bottom-0 left-0 right-0 mt-24 flex flex-col rounded-t-2xl bg-white z-50">
 							<div className="flex-1 rounded-t-2xl p-4 bg-white max-h-[90vh] overflow-auto">
 								<div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 mb-4" />
-
 								<div className="max-w-4xl mx-auto">
 									<h3 className="text-lg font-medium text-gray-900 mb-4">
 										Select an Existing Image
 									</h3>
-
 									<div className="image-gallery-container">
 										<ImageGallery
 											onSelectImage={handleSelectImage}
