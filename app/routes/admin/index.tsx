@@ -97,11 +97,8 @@ export async function action({
 		}
 
 		// Handle other intents or return error for unknown intents
-		console.warn(`[ADMIN DASHBOARD ACTION] Unknown intent: ${intent}`);
-		return new Response(JSON.stringify({ error: `Unknown intent: ${intent}` }), {
-			status: 400,
-			headers: { "Content-Type": "application/json" }, 
-		});
+		if (DEBUG) console.warn(`[ADMIN DASHBOARD ACTION] Unknown intent: ${intent}`);
+		return data({ success: false, error: `Unknown intent: ${intent}` }, { status: 400 });
 
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
