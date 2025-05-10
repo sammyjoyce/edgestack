@@ -49,7 +49,7 @@ function SingleImageUpload({
 	label: string;
 	initialValue: string;
 	fetcher: ReturnType<typeof useFetcher<UploadActionData>>;
-	fileInputRef: React.RefObject<HTMLInputElement>;
+	fileInputRef: React.RefObject<HTMLInputElement | null>;
 	statusText: string;
 	setStatusText: (v: string) => void;
 }) {

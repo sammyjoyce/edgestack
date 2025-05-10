@@ -164,7 +164,7 @@ export function TableCell({
 			{href && (
 				<Link
 					data-row-link
-					href={href}
+					to={href} // Changed from href to to
 					target={target}
 					aria-label={title}
 					tabIndex={cellRef?.previousElementSibling === null ? 0 : -1}

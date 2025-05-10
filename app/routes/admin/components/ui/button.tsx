@@ -86,6 +86,7 @@ export interface ButtonProps {
 	block?: boolean;
 	onClick?: (evt: React.MouseEvent<HTMLElement>) => void;
 	href?: string;
+	to?: string; // Add this
 	target?: "_blank";
 	"aria-label"?: string;
 }
@@ -103,6 +104,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 		block,
 		type = "button",
 		href,
+		to, // Destructure 'to'
 		target,
 		onClick,
 		...props
@@ -141,14 +143,16 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 		onClick: props.disabled ? undefined : onClick,
 	};
 
-	// Pick element: explicit `as`, then `href`→<Link>, otherwise headless Button
-	const Component = as ?? (href ? Link : Headless.Button);
+	const Component = as ?? (to || href ? Link : Headless.Button);
 
 	return (
 		<Component
 			{...commonProps}
 			{...props}
-			href={href}
+			// Pass 'to' if Component is Link and 'to' is provided
+			to={Component === Link && to ? to : undefined}
+			// Pass 'href' if Component is Link and 'href' is provided (and 'to' is not)
+			href={Component === Link && href && !to ? href : undefined}
 			target={target}
 			type={Component === Headless.Button ? type : undefined}
 		>

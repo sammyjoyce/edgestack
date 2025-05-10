@@ -5,7 +5,7 @@ import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalR
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
-import type { Project } from "../../../../database/schema";
+import type { Project } from "~/database/schema";
 
 // Define props interface
 interface RecentProjectsProps {
