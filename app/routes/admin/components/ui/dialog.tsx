@@ -17,17 +17,14 @@ export function Dialog({
 	size = "lg",
 	className,
 	children,
-	onClose, 
+	onClose,
 	...props
 }: {
 	size?: keyof typeof sizes;
 	className?: string;
 	children: React.ReactNode;
 	onClose: () => void;
-} & Omit<
-	Headless.DialogProps,
-	"as" | "className" | "onClose" 
->) {
+} & Omit<Headless.DialogProps, "as" | "className" | "onClose">) {
 	return (
 		<Headless.Dialog {...props} onClose={onClose}>
 			<Headless.DialogBackdrop

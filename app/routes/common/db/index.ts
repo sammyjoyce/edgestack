@@ -7,7 +7,7 @@ import type {
 	NewContent,
 	NewProject,
 	Project,
-	Content // Assuming Content type is needed
+	Content, // Assuming Content type is needed
 } from "../../../../database/schema";
 import * as schema from "../../../../database/schema";
 
@@ -18,10 +18,16 @@ import * as schema from "../../../../database/schema";
 // However, preparing it here still offers benefits if getProjectById is called multiple times
 // within the same request lifecycle with the same db instance.
 
-let getProjectByIdPrepared: ReturnType<DrizzleD1Database<typeof schema>['select']['prepare']> | null = null;
+let getProjectByIdPrepared: ReturnType<
+	DrizzleD1Database<typeof schema>["select"]["prepare"]
+> | null = null;
 
 function ensureGetProjectByIdPrepared(db: DrizzleD1Database<typeof schema>) {
-	if (!getProjectByIdPrepared || getProjectByIdPrepared.session?.client !== db) { // Re-prepare if db instance changed
+	if (
+		!getProjectByIdPrepared ||
+		getProjectByIdPrepared.session?.client !== db
+	) {
+		// Re-prepare if db instance changed
 		getProjectByIdPrepared = db
 			.select()
 			.from(schema.projects)
@@ -36,7 +42,11 @@ export async function getAllContent(
 	assert(db, "getAllContent: db is required");
 	try {
 		const rows = await db
-			.select({ key: schema.content.key, value: schema.content.value, theme: schema.content.theme })
+			.select({
+				key: schema.content.key,
+				value: schema.content.value,
+				theme: schema.content.theme,
+			})
 			.from(schema.content)
 			.all();
 		const contentMap: Record<string, string> = {};
@@ -59,7 +69,7 @@ export async function getAllContent(
 			} else {
 				contentMap[row.key] = "";
 			}
-			contentMap[`${row.key}_theme`] = row.theme ?? 'light';
+			contentMap[`${row.key}_theme`] = row.theme ?? "light";
 		}
 		assert(typeof contentMap === "object", "getAllContent: must return object");
 		return contentMap;
@@ -74,18 +84,33 @@ export async function updateContent(
 		string | (Partial<Omit<NewContent, "key">> & { value: string })
 	>,
 ): Promise<D1Result<unknown>[]> {
-	const statements: BatchItem<"sqlite">[] = []; 
+	const statements: BatchItem<"sqlite">[] = [];
 	for (const [key, valueOrObj] of Object.entries(updates)) {
 		if (key.endsWith("_theme")) {
 			const baseKey = key.replace("_theme", "");
-			const themeValue = typeof valueOrObj === 'string' ? valueOrObj as 'light' | 'dark' : 'light';
-			if (themeValue === 'light' || themeValue === 'dark') {
-				statements.push(db.update(schema.content).set({ theme: themeValue }).where(eq(schema.content.key, baseKey)));
+			const themeValue =
+				typeof valueOrObj === "string"
+					? (valueOrObj as "light" | "dark")
+					: "light";
+			if (themeValue === "light" || themeValue === "dark") {
+				statements.push(
+					db
+						.update(schema.content)
+						.set({ theme: themeValue })
+						.where(eq(schema.content.key, baseKey)),
+				);
 			} else {
-				console.warn(`Invalid theme value '${themeValue}' for key '${baseKey}_theme'. Defaulting to 'light'.`);
-				statements.push(db.update(schema.content).set({ theme: 'light' }).where(eq(schema.content.key, baseKey)));
+				console.warn(
+					`Invalid theme value '${themeValue}' for key '${baseKey}_theme'. Defaulting to 'light'.`,
+				);
+				statements.push(
+					db
+						.update(schema.content)
+						.set({ theme: "light" })
+						.where(eq(schema.content.key, baseKey)),
+				);
 			}
-			continue; 
+			continue;
 		}
 		const dataToSet =
 			typeof valueOrObj === "string" ? { value: valueOrObj } : valueOrObj;
@@ -97,8 +122,9 @@ export async function updateContent(
 		const type = dataToSet.type ?? undefined;
 		const sortOrder = dataToSet.sortOrder ?? undefined;
 		const mediaId = dataToSet.mediaId ?? null;
-		const metadata = typeof dataToSet.metadata === "string" ? dataToSet.metadata : null;		
-		const theme = dataToSet.theme as 'light' | 'dark' | undefined;
+		const metadata =
+			typeof dataToSet.metadata === "string" ? dataToSet.metadata : null;
+		const theme = dataToSet.theme as "light" | "dark" | undefined;
 		const valuesPayload: schema.NewContent = {
 			key,
 			value,
@@ -119,7 +145,8 @@ export async function updateContent(
 		if (sortOrder !== undefined) setDataPayload.sortOrder = sortOrder;
 		if (mediaId !== undefined) setDataPayload.mediaId = mediaId;
 		if (metadata !== undefined) setDataPayload.metadata = metadata;
-		if (theme && (theme === 'light' || theme === 'dark')) setDataPayload.theme = theme;
+		if (theme && (theme === "light" || theme === "dark"))
+			setDataPayload.theme = theme;
 		validateContentUpdate(setDataPayload);
 		const upsertStatement = db
 			.insert(schema.content)
@@ -128,7 +155,7 @@ export async function updateContent(
 				target: schema.content.key,
 				set: setDataPayload,
 			});
-		statements.push(upsertStatement); 
+		statements.push(upsertStatement);
 	}
 	try {
 		if (statements.length === 0) {
@@ -158,7 +185,8 @@ export async function getAllProjects(
 		.from(schema.projects)
 		.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt))
 		.all();
-	if (process.env.NODE_ENV !== "production") console.log(`getAllProjects took ${performance.now() - t0}ms`);
+	if (process.env.NODE_ENV !== "production")
+		console.log(`getAllProjects took ${performance.now() - t0}ms`);
 	assert(Array.isArray(result), "getAllProjects: must return array");
 	return result;
 }
@@ -173,7 +201,8 @@ export async function getFeaturedProjects(
 		.where(eq(schema.projects.isFeatured, true))
 		.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt))
 		.all();
-	if (process.env.NODE_ENV !== "production") console.log(`getFeaturedProjects took ${performance.now() - t0}ms`);
+	if (process.env.NODE_ENV !== "production")
+		console.log(`getFeaturedProjects took ${performance.now() - t0}ms`);
 	assert(Array.isArray(result), "getFeaturedProjects: must return array");
 	return result;
 }
@@ -191,7 +220,11 @@ export async function getProjectById(
 	const result = await prepared.execute({ id });
 
 	assert(
-		!result || (result.length > 0 && typeof result[0] === "object" && "id" in result[0]) || result.length === 0,
+		!result ||
+			(result.length > 0 &&
+				typeof result[0] === "object" &&
+				"id" in result[0]) ||
+			result.length === 0,
 		"getProjectById: must return object or undefined",
 	);
 	return result[0];

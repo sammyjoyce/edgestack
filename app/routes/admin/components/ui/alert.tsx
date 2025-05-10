@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import React from "react";
-import { Text } from "./text"; 
+import { Text } from "./text";
 const icons = {
 	info: (
 		<svg
@@ -93,10 +93,11 @@ const alertStyles = {
 	},
 };
 export type AlertVariant = keyof typeof alertStyles.variants;
-export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> { 
+export interface AlertProps
+	extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
 	variant?: AlertVariant;
-	title?: React.ReactNode; 
-	children: React.ReactNode; 
+	title?: React.ReactNode;
+	children: React.ReactNode;
 	showIcon?: boolean;
 }
 export function Alert({
@@ -134,27 +135,11 @@ export function AlertTitle({
 	className,
 	...props
 }: { className?: string } & React.HTMLAttributes<HTMLHeadingElement>) {
-	return (
-		<h5
-			{...props}
-			className={clsx(
-				className,
-				"font-medium",
-			)}
-		/>
-	);
+	return <h5 {...props} className={clsx(className, "font-medium")} />;
 }
 export function AlertDescription({
 	className,
 	...props
 }: { className?: string } & React.HTMLAttributes<HTMLDivElement>) {
-	return (
-		<Text
-			{...props}
-			className={clsx(
-				className,
-				"text-sm",
-			)}
-		/>
-	);
+	return <Text {...props} className={clsx(className, "text-sm")} />;
 }

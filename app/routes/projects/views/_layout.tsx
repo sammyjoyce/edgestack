@@ -1,4 +1,4 @@
-import clsx from "clsx"; 
+import clsx from "clsx";
 import { Outlet, data, useLoaderData } from "react-router";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
@@ -27,7 +27,8 @@ export const loader = async ({ context }: any) => {
 };
 export function ProjectsLayout() {
 	const loaderData = useLoaderData<typeof loader>();
-	const projectsPageIntroTheme = loaderData.content.projects_page_intro_theme === 'dark' ? 'dark' : 'light';
+	const projectsPageIntroTheme =
+		loaderData.content.projects_page_intro_theme === "dark" ? "dark" : "light";
 	return (
 		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
 			<Header />

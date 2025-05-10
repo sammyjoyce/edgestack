@@ -1,6 +1,6 @@
-import clsx from "clsx"; 
+import clsx from "clsx";
 import React from "react";
-import { Link, data, useLoaderData, useOutletContext } from "react-router"; 
+import { Link, data, useLoaderData, useOutletContext } from "react-router";
 import type { Project } from "~/database/schema";
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
@@ -28,13 +28,22 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 		);
 	}
 };
-import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout"; 
+import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout";
 export function ProjectDetailRoute() {
 	const { project } = useLoaderData<typeof loader>();
-	const { content } = useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
-	const projectDetailTheme = project && content[`project_${project.id}_theme`] === 'dark' ? 'dark' : 'light';
+	const { content } =
+		useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
+	const projectDetailTheme =
+		project && content[`project_${project.id}_theme`] === "dark"
+			? "dark"
+			: "light";
 	return (
-		<div className={clsx("py-16 bg-white dark:bg-gray-950", projectDetailTheme === "dark" && "dark")}>
+		<div
+			className={clsx(
+				"py-16 bg-white dark:bg-gray-950",
+				projectDetailTheme === "dark" && "dark",
+			)}
+		>
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 				<FadeIn>
 					<article className="bg-gray-50 p-6 rounded-lg shadow-md dark:bg-gray-800">
@@ -49,17 +58,28 @@ export function ProjectDetailRoute() {
 						<ConditionalRichTextRenderer
 							text={project.description}
 							fallbackClassName="text-gray-700 dark:text-gray-300 text-lg mb-4"
-							richTextClassName={clsx(projectDetailTheme === "dark" && "dark:prose-invert")}
+							richTextClassName={clsx(
+								projectDetailTheme === "dark" && "dark:prose-invert",
+							)}
 							fallbackTag="p"
 						/>
 						{project.details && (
-							<div className={clsx("prose prose-sm mt-4 mb-6", projectDetailTheme === "dark" && "dark:prose-invert")}>
-								<h3 className="font-semibold text-gray-800 dark:text-gray-200">Details:</h3>
+							<div
+								className={clsx(
+									"prose prose-sm mt-4 mb-6",
+									projectDetailTheme === "dark" && "dark:prose-invert",
+								)}
+							>
+								<h3 className="font-semibold text-gray-800 dark:text-gray-200">
+									Details:
+								</h3>
 								<ConditionalRichTextRenderer
 									text={project.details}
 									fallbackClassName="text-gray-600 dark:text-gray-400"
-									richTextClassName={clsx(projectDetailTheme === "dark" && "dark:prose-invert")}
-									fallbackTag="div" 
+									richTextClassName={clsx(
+										projectDetailTheme === "dark" && "dark:prose-invert",
+									)}
+									fallbackTag="div"
 								/>
 							</div>
 						)}

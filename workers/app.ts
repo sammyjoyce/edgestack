@@ -1,4 +1,4 @@
-import type { ExecutionContext } from "@cloudflare/workers-types"; 
+import type { ExecutionContext } from "@cloudflare/workers-types";
 import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1";
 import { DefaultLogger } from "drizzle-orm/logger";
 import { createRequestHandler } from "react-router";
@@ -35,14 +35,14 @@ export default {
 					svg: "image/svg+xml",
 				};
 				const contentType =
-					object.httpMetadata?.contentType || 
-					(ext && typeMap[ext]) || 
-					"application/octet-stream"; 
+					object.httpMetadata?.contentType ||
+					(ext && typeMap[ext]) ||
+					"application/octet-stream";
 				return new Response(object.body, {
 					status: 200,
 					headers: {
 						"Content-Type": contentType,
-						"Cache-Control": "public, max-age=86400, immutable", 
+						"Cache-Control": "public, max-age=86400, immutable",
 						"Access-Control-Allow-Origin": "*",
 					},
 				});
@@ -53,7 +53,8 @@ export default {
 		const db = drizzle(env.DB, {
 			schema,
 			// Enable logger only in development mode
-			logger: import.meta.env.MODE === 'development' ? new DefaultLogger() : false,
+			logger:
+				import.meta.env.MODE === "development" ? new DefaultLogger() : false,
 		});
 		const loadContext = {
 			cloudflare: { env, ctx: ctx as Omit<ExecutionContext, "props"> },

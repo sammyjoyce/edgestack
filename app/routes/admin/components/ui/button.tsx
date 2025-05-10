@@ -2,7 +2,7 @@ import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
 import { forwardRef } from "react";
-import { Link } from "./link"; 
+import { Link } from "./link";
 const styles = {
 	base: [
 		"relative isolate inline-flex items-center justify-center gap-2 rounded-md p-3 font-semibold",
@@ -27,7 +27,7 @@ const styles = {
 			"data-selected:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,2.5px_2.5px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#00000022]",
 		],
 		secondary: [
-			"text-white bg-foreground", 
+			"text-white bg-foreground",
 			"shadow-[inset_1px_1px_1px_#ffffffb3,inset_-1px_-1px_1px_#0000003b,0.44px_0.44px_0.62px_-0.75px_#00000042,1.21px_1.21px_1.71px_-1.5px_#0000003f,2.65px_2.65px_3.75px_-2.25px_#0000003b,5.9px_5.9px_8.34px_-3px_#00000031,14px_14px_21.21px_-3.75px_#00000033,-0.5px_-0.5px_0_0_#000000af]",
 			"data-active:shadow-[inset_0.5px_0.5px_1px_#ffffffb3,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,4px_4px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#000000ac]",
 			"data-selected:shadow-[inset_0.5px_0.5px_1px_#ffffffb3,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,4px_4px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#000000ac]",
@@ -45,7 +45,7 @@ const styles = {
 			"data-selected:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,2.5px_2.5px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#00000022]",
 		],
 		default: [
-			"bg-[#f4f4f4] text-foreground", 
+			"bg-[#f4f4f4] text-foreground",
 			"shadow-[rgb(255,255,255)_1px_1px_1px_0px_inset,rgba(0,0,0,0.15)_-1px_-1px_1px_0px_inset,rgba(0,0,0,0.26)_0.44px_0.44px_0.62px_-1px,rgba(0,0,0,0.247)_1.21px_1.21px_1.71px_-1.5px,rgba(0,0,0,0.23)_2.65px_2.65px_3.75px_-2.25px,rgba(0,0,0,0.192)_5.9px_5.9px_8.34px_-3px,rgba(0,0,0,0.056)_10px_10px_21.21px_-3.75px,-0.5px_-0.5px_0_0_rgb(0_0_0/5%)]",
 			"data-active:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#00000026,0.22px_0.22px_0.31px_-0.5px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,2.5px_2.5px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_rgb(0_0_0/10%)]",
 			"data-selected:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#00000026,0.22px_0.22px_0.31px_-0.5px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,2.5px_2.5px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_rgb(0_0_0/10%)]",
@@ -67,7 +67,7 @@ export interface ButtonProps {
 	block?: boolean;
 	onClick?: (evt: React.MouseEvent<HTMLElement>) => void;
 	href?: string;
-	to?: string; 
+	to?: string;
 	target?: "_blank";
 	"aria-label"?: string;
 }
@@ -84,7 +84,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 		block,
 		type = "button",
 		href,
-		to, 
+		to,
 		target,
 		onClick,
 		...props

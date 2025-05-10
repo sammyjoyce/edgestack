@@ -1,5 +1,5 @@
-import clsx from "clsx"; 
-import type React from "react"; 
+import clsx from "clsx";
+import type React from "react";
 import { Border } from "~/routes/common/components/ui/Border";
 interface SimpleImageProps {
 	src: string;
@@ -15,7 +15,7 @@ function BlockquoteWithImage({
 	author: { name: string; role: string };
 	children: React.ReactNode;
 	className?: string;
-	image: SimpleImageProps; 
+	image: SimpleImageProps;
 }) {
 	return (
 		<figure
@@ -34,7 +34,7 @@ function BlockquoteWithImage({
 					className={
 						image.className ??
 						"h-12 w-12 object-cover grayscale sm:aspect-7/9 sm:h-auto sm:w-full"
-					} 
+					}
 				/>
 			</div>
 			<figcaption className="text-sm text-neutral-950 sm:col-span-7 sm:row-start-3 sm:text-base">

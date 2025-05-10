@@ -1,5 +1,5 @@
-import { LinkNode } from "@lexical/link"; 
-import { ListItemNode, ListNode } from "@lexical/list"; 
+import { LinkNode } from "@lexical/link";
+import { ListItemNode, ListNode } from "@lexical/list";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
@@ -8,14 +8,14 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text"; 
-import type { EditorState, LexicalEditor } from "lexical"; 
+import { HeadingNode, QuoteNode } from "@lexical/rich-text";
+import type { EditorState, LexicalEditor } from "lexical";
 import clsx from "clsx";
-import React, { type JSX, useCallback, useMemo, useRef } from "react"; 
+import React, { type JSX, useCallback, useMemo, useRef } from "react";
 import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
 interface Props {
-	name: string; 
-	initialJSON?: string | null; 
+	name: string;
+	initialJSON?: string | null;
 	disabled?: boolean;
 }
 export default function RichTextField({
@@ -35,14 +35,14 @@ export default function RichTextField({
 			onError: console.error,
 			nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, LinkNode],
 			theme: {
-				text: { underline: "underline" }, 
+				text: { underline: "underline" },
 			},
 			editorState: initialJSON
 				? (editor: LexicalEditor) => {
 						const state = editor.parseEditorState(initialJSON);
 						editor.setEditorState(state);
 					}
-				: undefined, 
+				: undefined,
 		}),
 		[name, initialJSON],
 	);

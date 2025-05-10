@@ -49,10 +49,7 @@ export function Field({
 	return (
 		<Headless.Field
 			{...props}
-			className={clsx(
-				className,
-				"flex flex-col gap-1.5", 
-			)}
+			className={clsx(className, "flex flex-col gap-1.5")}
 		/>
 	);
 }

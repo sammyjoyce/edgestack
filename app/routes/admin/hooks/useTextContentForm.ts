@@ -1,13 +1,13 @@
-import type React from "react"; 
+import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { ValiError } from "valibot";
 import { validateContentInsert } from "../../../../database/valibot-validation.js";
 type ActionResponseData = {
 	success?: boolean;
-	error?: string; 
+	error?: string;
 	message?: string;
-	errors?: Record<string, string>; 
+	errors?: Record<string, string>;
 };
 const validateField = (
 	key: string,
@@ -16,12 +16,18 @@ const validateField = (
 ): string | null => {
 	if (isRichText) return null;
 	try {
-		if (!key) return "Field key is missing."; 
-		validateContentInsert({ key, value, page: "home", section: "dynamic", type: "text" });
+		if (!key) return "Field key is missing.";
+		validateContentInsert({
+			key,
+			value,
+			page: "home",
+			section: "dynamic",
+			type: "text",
+		});
 		return null;
 	} catch (err: unknown) {
 		if (err instanceof ValiError && err.issues.length > 0) {
-			return err.issues[0].message; 
+			return err.issues[0].message;
 		}
 		let message = "Validation failed";
 		if (err instanceof Error) {
@@ -35,17 +41,17 @@ interface TextFieldConfig {
 	label: string;
 	rows: number;
 	help: string;
-	isRichText?: boolean; 
+	isRichText?: boolean;
 }
 interface UseTextContentFormArgs {
 	initialContent: Record<string, string>;
-	fetcher: FetcherWithComponents<ActionResponseData>; 
-	textFieldsConfig: TextFieldConfig[]; 
+	fetcher: FetcherWithComponents<ActionResponseData>;
+	textFieldsConfig: TextFieldConfig[];
 }
 export function useTextContentForm({
 	initialContent,
 	fetcher,
-	textFieldsConfig, 
+	textFieldsConfig,
 }: UseTextContentFormArgs): {
 	autoSave: boolean;
 	setAutoSave: React.Dispatch<React.SetStateAction<boolean>>;
@@ -68,7 +74,7 @@ export function useTextContentForm({
 		useState<Record<string, string>>(initialContent);
 	const [errors, setErrors] = useState<Record<string, string>>({});
 	const [feedback, setFeedback] = useState<string | null>(null);
-	const isSubmittingRef = useRef(false); 
+	const isSubmittingRef = useRef(false);
 	useEffect(() => {
 		setFields(initialContent);
 		setPendingFields(initialContent);
@@ -76,7 +82,7 @@ export function useTextContentForm({
 	const labelForKey = useCallback(
 		(key: string): string => {
 			const field = textFieldsConfig.find((f) => f.key === key);
-			return field?.label ?? key; 
+			return field?.label ?? key;
 		},
 		[textFieldsConfig],
 	);
@@ -87,18 +93,18 @@ export function useTextContentForm({
 	);
 	const handleBlur = useCallback(
 		(e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-			if (isSubmittingRef.current) return; 
+			if (isSubmittingRef.current) return;
 			const { name, value } = e.currentTarget;
 			if (isRichTextField(name)) return;
 			if (autoSave) {
-				const err = validateField(name, value, false); 
+				const err = validateField(name, value, false);
 				if (!err) {
 					const data = new FormData();
-					data.append("intent", "updateTextContent"); 
+					data.append("intent", "updateTextContent");
 					data.append(name, value);
-					isSubmittingRef.current = true; 
-					fetcher.submit(data, { method: "post", action: "/admin" }); 
-					setFeedback(`Saving '${labelForKey(name)}'...`); 
+					isSubmittingRef.current = true;
+					fetcher.submit(data, { method: "post", action: "/admin" });
+					setFeedback(`Saving '${labelForKey(name)}'...`);
 					setErrors((prev) => {
 						const next = { ...prev };
 						delete next[name];
@@ -117,7 +123,7 @@ export function useTextContentForm({
 	);
 	const handleChange = useCallback(
 		(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-			if (autoSave) return; 
+			if (autoSave) return;
 			if (isRichTextField(e.currentTarget.name)) return;
 			const { name, value } = e.currentTarget;
 			setPendingFields((prev) => ({ ...prev, [name]: value }));
@@ -134,7 +140,7 @@ export function useTextContentForm({
 	const handleSave = useCallback(
 		(e?: React.FormEvent) => {
 			e?.preventDefault();
-			if (isSubmittingRef.current) return; 
+			if (isSubmittingRef.current) return;
 			let hasError = false;
 			const newErrors: Record<string, string> = {};
 			for (const [key, value] of Object.entries(pendingFields)) {
@@ -155,33 +161,35 @@ export function useTextContentForm({
 				return;
 			}
 			const data = new FormData();
-			data.append("intent", "updateTextContent"); 
+			data.append("intent", "updateTextContent");
 			for (const [key, value] of Object.entries(pendingFields)) {
 				data.append(key, value);
 			}
-			isSubmittingRef.current = true; 
-			fetcher.submit(data, { method: "post", action: "/admin" }); 
+			isSubmittingRef.current = true;
+			fetcher.submit(data, { method: "post", action: "/admin" });
 			setFeedback("Saving changes...");
 			setFields(pendingFields);
 		},
 		[fetcher, pendingFields, isRichTextField],
 	);
 	const handleUndo = useCallback(() => {
-		setPendingFields(fields); 
-		setErrors({}); 
+		setPendingFields(fields);
+		setErrors({});
 		setFeedback("Changes reverted.");
 	}, [fields]);
 	useEffect(() => {
 		if (fetcher.state === "idle") {
-			isSubmittingRef.current = false; 
+			isSubmittingRef.current = false;
 			const data = fetcher.data as ActionResponseData | undefined;
 			if (data) {
 				if (data.success) {
 					setErrors({});
-					setFeedback(data.message || "Changes saved successfully."); 
-				} else if (data.errors && typeof data.errors === 'object') {
+					setFeedback(data.message || "Changes saved successfully.");
+				} else if (data.errors && typeof data.errors === "object") {
 					setErrors(data.errors as Record<string, string>);
-					setFeedback(data.message || "Validation failed. Please check the fields."); 
+					setFeedback(
+						data.message || "Validation failed. Please check the fields.",
+					);
 				} else if (data.error) {
 					setFeedback(data.error);
 					if (!autoSave) {
@@ -194,17 +202,17 @@ export function useTextContentForm({
 				}
 			}
 		}
-	}, [fetcher.state, fetcher.data, autoSave, fields, labelForKey, feedback]); 
+	}, [fetcher.state, fetcher.data, autoSave, fields, labelForKey, feedback]);
 	return {
 		autoSave,
 		setAutoSave,
-		fields: autoSave ? fields : pendingFields, 
+		fields: autoSave ? fields : pendingFields,
 		errors,
 		feedback,
 		handleBlur,
 		handleChange,
 		handleSave,
 		handleUndo,
-		isSubmitting: fetcher.state !== "idle", 
+		isSubmitting: fetcher.state !== "idle",
 	};
 }

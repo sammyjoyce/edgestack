@@ -2,7 +2,7 @@ import type { AppLoadContext } from "react-router";
 export interface StoredImage {
 	name: string;
 	url: string;
-	uploadDate: string; 
+	uploadDate: string;
 	size?: number;
 	contentType?: string;
 }
@@ -90,20 +90,20 @@ export async function handleImageUpload(
 		throw new Error("Invalid or empty file provided for upload.");
 	}
 	const uniqueFilename = `${Date.now()}-${file.name.replace(
-		/[^a-zA-Z0-9._-]/g, 
-		"_", 
+		/[^a-zA-Z0-9._-]/g,
+		"_",
 	)}`;
 	try {
 		const fileData = await file.arrayBuffer();
 		await context.cloudflare.env.ASSETS_BUCKET.put(uniqueFilename, fileData, {
-			httpMetadata: { contentType: file.type }, 
+			httpMetadata: { contentType: file.type },
 		});
 		const publicUrlBase = context.cloudflare.env.PUBLIC_R2_URL;
 		if (!publicUrlBase) {
 			console.warn(
 				"PUBLIC_R2_URL environment variable not set. Using relative path as fallback.",
 			);
-			return `/assets/${uniqueFilename}`; 
+			return `/assets/${uniqueFilename}`;
 		}
 		const publicUrl = `${publicUrlBase.replace(/\/?$/, "/")}${uniqueFilename}`;
 		return publicUrl;

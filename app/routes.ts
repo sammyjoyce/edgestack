@@ -1,25 +1,25 @@
 import {
 	type RouteConfig,
-	index, 
+	index,
 	layout,
-	prefix, 
+	prefix,
 	route,
 } from "@react-router/dev/routes";
 export default [
-	route("", "routes/home/route.tsx"), 
+	route("", "routes/home/route.tsx"),
 	route("projects", "./routes/projects/route.tsx", {
 		children: [
-			index("./routes/projects/views/index.tsx"), 
-			route(":projectId", "./routes/projects/views/[projectId].tsx"), 
+			index("./routes/projects/views/index.tsx"),
+			route(":projectId", "./routes/projects/views/[projectId].tsx"),
 		],
 	}),
 	...prefix("admin", [
 		route("login", "./routes/admin/views/login.tsx"),
 		layout("./routes/admin/views/_layout.tsx", [
-			index("./routes/admin/views/index.tsx"), 
+			index("./routes/admin/views/index.tsx"),
 			route("logout", "./routes/admin/views/logout.tsx"),
 			route("upload", "./routes/admin/views/upload.tsx"),
-			route("projects", "./routes/admin/views/projects/index.tsx", [ 
+			route("projects", "./routes/admin/views/projects/index.tsx", [
 				route("new", "./routes/admin/views/projects/new.tsx"),
 				route(
 					":projectId/edit",

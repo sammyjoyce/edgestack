@@ -1,7 +1,7 @@
 import React from "react";
 import { redirect } from "react-router";
 import { COOKIE_NAME } from "~/routes/common/utils/auth";
-import type { Route } from "./+types/logout"; 
+import type { Route } from "./+types/logout";
 async function handleLogout(): Promise<Response> {
 	const response = redirect("/admin/login");
 	response.headers.set(

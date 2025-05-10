@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { Drawer } from "vaul";
 import { Button } from "../ui/button";
@@ -9,8 +9,8 @@ interface ImageGalleryProps {
 	forField?: string;
 }
 export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
-	const { images = [] } = useLoaderData<UploadRoute.LoaderData>(); 
-	const fetcher = useFetcher<UploadRoute.ActionData>(); 
+	const { images = [] } = useLoaderData<UploadRoute.LoaderData>();
+	const fetcher = useFetcher<UploadRoute.ActionData>();
 	const [selectedImage, setSelectedImage] = useState<StoredImage | null>(null);
 	const formatDate = (dateString: string) => {
 		const date = new Date(dateString);
@@ -45,13 +45,13 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 			onSelectImage(image);
 		}
 	};
-	useEffect(() => { 
+	useEffect(() => {
 		if (fetcher.data?.success && fetcher.data?.action === "delete") {
 			if (selectedImage && selectedImage.name === fetcher.data.filename) {
-				setSelectedImage(null); 
+				setSelectedImage(null);
 			}
 		}
-	}, [fetcher.data, selectedImage]); 
+	}, [fetcher.data, selectedImage]);
 	return (
 		<div className="bg-white border border-gray-200 rounded-lg shadow-xs p-4">
 			{images.length === 0 ? (

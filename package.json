@@ -3,7 +3,7 @@
 	"type": "module",
 	"scripts": {
 		"knip": "bunx knip",
-		"format": "biome check --unsafe --write ./app/**/*.{ts,tsx,js,jsx,json,jsonc}",
+		"format": "biome check --write ./app/**/*.{ts,tsx,js,jsx,json,jsonc}",
 		"dev": "react-router dev",
 		"build": "react-router build",
 		"build:production": "vite build --mode production",
@@ -53,7 +53,7 @@
 		"vaul": "^1.1.2"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
+		"@biomejs/biome": "1.9.4",
 		"@cloudflare/vite-plugin": "^1.1.0",
 		"@cloudflare/workers-types": "^4.20250506.0",
 		"@react-router/dev": "^7.5.3",

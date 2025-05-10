@@ -1,15 +1,15 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import React, { forwardRef } from "react";
-import { TouchTarget } from "./button"; 
-import { Link } from "./link"; 
+import { TouchTarget } from "./button";
+import { Link } from "./link";
 type AvatarProps = {
 	src?: string | null;
 	square?: boolean;
 	initials?: string;
 	alt?: string;
 	className?: string;
-	size?: "xs" | "sm" | "md" | "lg" | "xl"; 
+	size?: "xs" | "sm" | "md" | "lg" | "xl";
 };
 const avatarSizes = {
 	xs: "size-6 text-xs",
@@ -24,7 +24,7 @@ export function Avatar({
 	initials,
 	alt = "",
 	className,
-	size = "md", 
+	size = "md",
 	...props
 }: AvatarProps & React.ComponentPropsWithoutRef<"span">) {
 	const sizeClasses = avatarSizes[size] || avatarSizes.md;
@@ -35,8 +35,8 @@ export function Avatar({
 			className={clsx(
 				className,
 				"inline-grid shrink-0 align-middle relative group",
-				sizeClasses, 
-				square ? "rounded-md" : "rounded-full", 
+				sizeClasses,
+				square ? "rounded-md" : "rounded-full",
 				"ring-1 ring-inset ring-black/10 dark:ring-white/10",
 			)}
 		>
@@ -84,7 +84,7 @@ export const AvatarButton = forwardRef(function AvatarButton(
 		initials,
 		alt,
 		className,
-		size = "md", 
+		size = "md",
 		...props
 	}: AvatarProps &
 		(
@@ -96,10 +96,10 @@ export const AvatarButton = forwardRef(function AvatarButton(
 	const sizeClasses = avatarSizes[size] || avatarSizes.md;
 	const classes = clsx(
 		className,
-		sizeClasses, 
+		sizeClasses,
 		square ? "rounded-md" : "rounded-full",
 		"relative inline-flex items-center justify-center",
-		"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-primary dark:focus:ring-primary-dark", 
+		"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-primary dark:focus:ring-primary-dark",
 	);
 	const avatarContent = (
 		<Avatar

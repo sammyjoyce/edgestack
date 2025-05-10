@@ -1,7 +1,7 @@
 "use client";
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
-import React, { Fragment } from "react"; 
+import React, { Fragment } from "react";
 const CheckIcon = () => (
 	<svg
 		className="size-4 stroke-current group-data-selected/option:inline"
@@ -44,8 +44,8 @@ export function Listbox<TValue>({
 	autoFocus,
 	"aria-label": ariaLabel,
 	children: options,
-	value, 
-	onChange, 
+	value,
+	onChange,
 	...props
 }: {
 	className?: string;
@@ -53,8 +53,8 @@ export function Listbox<TValue>({
 	autoFocus?: boolean;
 	"aria-label"?: string;
 	children?: React.ReactNode;
-	value: TValue; 
-	onChange: (value: TValue) => void; 
+	value: TValue;
+	onChange: (value: TValue) => void;
 } & Omit<
 	Headless.ListboxProps<typeof Fragment, TValue>,
 	"as" | "multiple" | "value" | "onChange"
@@ -95,7 +95,7 @@ export function Listbox<TValue>({
 			</Headless.ListboxButton>
 			<Headless.ListboxOptions
 				transition
-				anchor="bottom start" 
+				anchor="bottom start"
 				className={clsx(
 					"isolate z-10 mt-1 w-full min-w-(--button-width) overflow-auto rounded-md bg-white p-1 shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-zinc-800 dark:ring-white/10",
 					"transition ease-out duration-100 data-closed:transform data-closed:opacity-0 data-closed:scale-95",
@@ -110,24 +110,20 @@ export function Listbox<TValue>({
 export function ListboxOption<TValue>({
 	children,
 	className,
-	value, 
+	value,
 	...props
 }: {
 	className?: string;
 	children?: React.ReactNode;
-	value: TValue; 
+	value: TValue;
 } & Omit<
 	Headless.ListboxOptionProps<"div", TValue>,
 	"as" | "className" | "value"
 >) {
 	return (
-		<Headless.ListboxOption
-			as={Fragment} 
-			value={value}
-			{...props}
-		>
+		<Headless.ListboxOption as={Fragment} value={value} {...props}>
 			{({ selected, active }) => (
-				<div 
+				<div
 					className={clsx(
 						className,
 						"group/option relative flex cursor-default select-none items-center gap-x-2 rounded-md py-1.5 px-2.5 text-sm",

@@ -1,4 +1,4 @@
-import React, { type JSX, useState, useEffect, useCallback } from "react"; 
+import React, { type JSX, useState, useEffect, useCallback } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
@@ -11,7 +11,9 @@ import {
 import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
 import type { Route as AdminUploadRoute } from "~/routes/admin/views/+types/upload";
 interface AboutSectionEditorProps {
-	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData | AdminUploadRoute.ActionData>;
+	fetcher: FetcherWithComponents<
+		AdminIndexRoute.ActionData | AdminUploadRoute.ActionData
+	>;
 	initialContent: Record<string, string>;
 	onImageUpload: (file: File) => void;
 	imageUploading: boolean;
@@ -21,7 +23,7 @@ export function AboutSectionEditor({
 	fetcher,
 	initialContent,
 	onImageUpload,
-	imageUploading: isUploading, 
+	imageUploading: isUploading,
 	aboutImageUrl,
 }: AboutSectionEditorProps): React.JSX.Element {
 	const [uploadStatus, setUploadStatus] = useState<string | null>(null);
@@ -29,7 +31,7 @@ export function AboutSectionEditor({
 		(e: React.FocusEvent<HTMLTextAreaElement>) => {
 			const { name, value } = e.currentTarget;
 			const formData = new FormData();
-			formData.append("intent", "updateTextContent"); 
+			formData.append("intent", "updateTextContent");
 			formData.append(name, value);
 			fetcher.submit(formData, { method: "post", action: "/admin" });
 		},
@@ -48,21 +50,21 @@ export function AboutSectionEditor({
 		if (!isUploading && uploadStatus === "Uploading About Image...") {
 			setUploadStatus("About Image uploaded successfully!");
 		}
-	}, [isUploading, uploadStatus]); 
+	}, [isUploading, uploadStatus]);
 	return (
 		<SectionCard>
 			<SectionHeading>About Section</SectionHeading>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<FieldRow>
+				<div className="flex flex-col gap-1">
 					<FieldLabel htmlFor="about_title">About Title</FieldLabel>
-					<textarea
+					<Textarea
 						name="about_title"
 						id="about_title"
 						rows={2}
 						defaultValue={initialContent.about_title || ""}
-						className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
 						onBlur={handleBlur}
 					/>
+					{/* Placeholder for error/help text */}
 					<FieldLabel htmlFor="about_text" className="mt-3">
 						About Text
 					</FieldLabel>
@@ -71,7 +73,8 @@ export function AboutSectionEditor({
 						initialJSON={initialContent.about_text}
 						disabled={fetcher.state === "submitting"}
 					/>
-				</FieldRow>
+					{/* Placeholder for error/help text */}
+				</div>
 				<div className="flex flex-col items-center justify-start pt-1">
 					<FieldLabel htmlFor="about-image-upload" className="self-start">
 						About Image

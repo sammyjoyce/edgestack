@@ -14,7 +14,9 @@ import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { Input } from "../../ui/input";
 const DEBUG = process.env.NODE_ENV !== "production";
 interface HeroSectionEditorProps {
-	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData | AdminUploadRoute.ActionData>;
+	fetcher: FetcherWithComponents<
+		AdminIndexRoute.ActionData | AdminUploadRoute.ActionData
+	>;
 	initialContent: Record<string, string>;
 	onImageUpload: (file: File) => void;
 	imageUploading: boolean;
@@ -47,9 +49,11 @@ export function HeroSectionEditor({
 					method: "post",
 					action: "/admin",
 				});
-				if (DEBUG) console.log("[HeroSectionEditor] Form submitted successfully");
+				if (DEBUG)
+					console.log("[HeroSectionEditor] Form submitted successfully");
 			} catch (error) {
-				if (DEBUG) console.error("[HeroSectionEditor] Error submitting form:", error);
+				if (DEBUG)
+					console.error("[HeroSectionEditor] Error submitting form:", error);
 			}
 		},
 		[fetcher],
@@ -75,7 +79,7 @@ export function HeroSectionEditor({
 				Hero Section
 			</h3>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<div className="flex flex-col gap-y-4">
+				<div className="flex flex-col gap-1">
 					<FieldLabel htmlFor="hero_title">Hero Title</FieldLabel>
 					<Textarea
 						name="hero_title"
@@ -84,12 +88,10 @@ export function HeroSectionEditor({
 						defaultValue={initialContent.hero_title || ""}
 						onBlur={handleBlur}
 					/>
-					<label
-						htmlFor="hero_subtitle"
-						className="block text-sm font-medium text-foreground mb-1 mt-2"
-					>
+					{/* Placeholder for error/help text */}
+					<FieldLabel htmlFor="hero_subtitle" className="mt-3">
 						Hero Subtitle
-					</label>
+					</FieldLabel>
 					<RichTextField
 						name="hero_subtitle"
 						initialJSON={initialContent.hero_subtitle || ""}
@@ -97,6 +99,7 @@ export function HeroSectionEditor({
 							fetcher.state === "submitting" || fetcher.state === "loading"
 						}
 					/>
+					{/* Placeholder for error/help text */}
 				</div>
 				<div className="flex flex-col items-start justify-start pt-1">
 					<label

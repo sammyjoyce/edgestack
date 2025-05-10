@@ -27,7 +27,7 @@ import type React from "react";
 import { Fragment } from "react";
 interface Props {
 	json: string;
-	className?: string; 
+	className?: string;
 }
 function applyTextFormat(
 	format: number,
@@ -58,12 +58,12 @@ function renderNode(node: SerializedLexicalNode, key: number): React.ReactNode {
 			return <p key={key}>{children}</p>;
 		case "heading": {
 			const headingNode = node as SerializedHeadingNode;
-			const Tag = headingNode.tag; 
+			const Tag = headingNode.tag;
 			return <Tag key={key}>{children}</Tag>;
 		}
 		case "list": {
 			const listNode = node as SerializedListNode;
-			const Tag = listNode.tag; 
+			const Tag = listNode.tag;
 			return <Tag key={key}>{children}</Tag>;
 		}
 		case "listitem": {
@@ -75,7 +75,7 @@ function renderNode(node: SerializedLexicalNode, key: number): React.ReactNode {
 				<a
 					key={key}
 					href={linkNode.url}
-					target={linkNode.target || "_blank"} 
+					target={linkNode.target || "_blank"}
 					rel={linkNode.rel || "noopener noreferrer"}
 				>
 					{children}
@@ -109,13 +109,24 @@ export default function RichTextRenderer({ json, className }: Props) {
 	}
 	if (error || !parsedState || !parsedState.root) {
 		return (
-			<div className={clsx("prose prose-sm max-w-none dark:prose-invert", className)}> {}
+			<div
+				className={clsx(
+					"prose prose-sm max-w-none dark:prose-invert",
+					className,
+				)}
+			>
+				{" "}
+				{}
 				{error ? <p className="text-red-500">{error}</p> : null}
 			</div>
 		);
 	}
 	return (
-		<div className={clsx("prose prose-sm max-w-none dark:prose-invert", className)}> {}
+		<div
+			className={clsx("prose prose-sm max-w-none dark:prose-invert", className)}
+		>
+			{" "}
+			{}
 			{renderNode(parsedState.root, 0)}
 		</div>
 	);

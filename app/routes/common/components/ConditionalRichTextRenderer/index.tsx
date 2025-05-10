@@ -1,24 +1,24 @@
-import clsx from "clsx"; 
-import type React from "react"; 
+import clsx from "clsx";
+import type React from "react";
 import { Fragment, type JSX } from "react";
 import RichTextRenderer from "~/routes/common/components/RichTextRenderer";
 interface ConditionalRichTextRendererProps {
 	text: string | undefined | null;
 	fallbackClassName?: string;
 	richTextClassName?: string;
-	fallbackTag?: keyof React.JSX.IntrinsicElements; 
+	fallbackTag?: keyof React.JSX.IntrinsicElements;
 }
 export default function ConditionalRichTextRenderer({
 	text,
-	fallbackClassName = "text-base sm:text-lg", 
-	richTextClassName, 
-	fallbackTag: FallbackTag = "p", 
+	fallbackClassName = "text-base sm:text-lg",
+	richTextClassName,
+	fallbackTag: FallbackTag = "p",
 }: ConditionalRichTextRendererProps): JSX.Element | null {
 	if (!text) {
-		return null; 
+		return null;
 	}
 	try {
-		JSON.parse(text); 
+		JSON.parse(text);
 		return <RichTextRenderer json={text} className={richTextClassName} />;
 	} catch {
 		return <FallbackTag className={fallbackClassName}>{text}</FallbackTag>;

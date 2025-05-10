@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React from "react"; 
+import React from "react";
 export function Divider({
 	className,
 	...props
@@ -9,7 +9,7 @@ export function Divider({
 			{...props}
 			className={clsx(
 				className,
-				"w-full border-t border-zinc-200 dark:border-zinc-700", 
+				"w-full border-t border-zinc-200 dark:border-zinc-700",
 			)}
 		/>
 	);

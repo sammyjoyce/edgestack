@@ -1,7 +1,7 @@
-import { clsx } from "clsx"; 
+import { clsx } from "clsx";
 import React from "react";
-import { Link, type To } from "react-router"; 
-import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; 
+import { Link, type To } from "react-router";
+import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
@@ -9,21 +9,27 @@ import type { Project } from "~/database/schema";
 interface RecentProjectsProps {
 	introTitle?: string;
 	introText?: string;
-	projects: Project[]; 
-	theme?: 'light' | 'dark'; 
+	projects: Project[];
+	theme?: "light" | "dark";
 }
 export default function RecentProjects({
 	introTitle,
 	introText,
 	projects = [],
-	theme = "light", 
+	theme = "light",
 }: RecentProjectsProps) {
-	return ( 
-		<section id="projects" className={clsx("w-full py-20 bg-white dark:bg-gray-900", theme === "dark" && "dark")}>
+	return (
+		<section
+			id="projects"
+			className={clsx(
+				"w-full py-20 bg-white dark:bg-gray-900",
+				theme === "dark" && "dark",
+			)}
+		>
 			<SectionIntro
 				title={introTitle ?? "Recent Projects"}
 				className="mb-16 max-w-6xl px-4 lg:px-8"
-				invert={theme === 'dark'} 
+				invert={theme === "dark"}
 			>
 				{introText && <p>{introText}</p>}
 			</SectionIntro>
@@ -64,7 +70,9 @@ export default function RecentProjects({
 												project.description ? String(project.description) : null
 											}
 											fallbackClassName="mb-4 text-base text-gray-700 dark:text-gray-300 md:mb-6 md:text-lg"
-											richTextClassName={clsx(theme === "dark" && "dark:prose-invert")}
+											richTextClassName={clsx(
+												theme === "dark" && "dark:prose-invert",
+											)}
 											fallbackTag="p"
 										/>
 										<Link

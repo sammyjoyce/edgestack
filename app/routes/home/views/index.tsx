@@ -1,5 +1,5 @@
-import React, { type JSX } from "react"; 
-import { type MetaFunction, useOutletContext } from "react-router"; 
+import React, { type JSX } from "react";
+import { type MetaFunction, useOutletContext } from "react-router";
 const DEBUG = process.env.NODE_ENV !== "production";
 import { assert } from "~/routes/common/utils/assert";
 import RecentProjects from "~/routes/common/components/RecentProjects";
@@ -8,11 +8,16 @@ import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
-export const meta: MetaFunction<never, { "routes/home/views/_layout": typeof parentLayoutLoader }> = ({ matches }) => {
+export const meta: MetaFunction<
+	never,
+	{ "routes/home/views/_layout": typeof parentLayoutLoader }
+> = ({ matches }) => {
 	const parentLayoutMatch = matches.find(
 		(match) => match?.id === "routes/home/views/_layout",
 	);
-	const parentLayoutData = parentLayoutMatch?.data as Awaited<ReturnType<typeof parentLayoutLoader>> | undefined;
+	const parentLayoutData = parentLayoutMatch?.data as
+		| Awaited<ReturnType<typeof parentLayoutLoader>>
+		| undefined;
 	const c = parentLayoutData?.content ?? {};
 	const pageTitle = c.meta_title ?? "Lush Constructions";
 	const pageDescription =
@@ -30,10 +35,7 @@ export function HomeRoute(): JSX.Element {
 	const { content: rawContent, projects = [] } =
 		useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
 	const content = (rawContent ?? {}) as Record<string, string>;
-	assert(
-		typeof content === "object",
-		"HomeRoute: content must be an object",
-	);
+	assert(typeof content === "object", "HomeRoute: content must be an object");
 	assert(Array.isArray(projects), "HomeRoute: projects must be an array");
 	if (DEBUG)
 		console.log(

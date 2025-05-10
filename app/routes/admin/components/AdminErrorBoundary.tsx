@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouteError, isRouteErrorResponse } from "react-router"; 
+import { useRouteError, isRouteErrorResponse } from "react-router";
 import { SharedErrorBoundary } from "~/routes/common/components/ErrorBoundary";
 function AdminErrorBoundary() {
 	const error = useRouteError();
@@ -10,9 +10,14 @@ function AdminErrorBoundary() {
 	if (isRouteErrorResponse(error)) {
 		status = error.status;
 		title = `${error.status} - ${error.statusText}`;
-		if (error.data && typeof error.data === 'object' && 'message' in error.data && typeof error.data.message === 'string') {
+		if (
+			error.data &&
+			typeof error.data === "object" &&
+			"message" in error.data &&
+			typeof error.data.message === "string"
+		) {
 			message = error.data.message;
-		} else if (typeof error.data === 'string' && error.data.length > 0) { 
+		} else if (typeof error.data === "string" && error.data.length > 0) {
 			message = error.data;
 		} else {
 			message = error.statusText || "An error occurred";
@@ -24,7 +29,12 @@ function AdminErrorBoundary() {
 		console.error("[ADMIN ERROR BOUNDARY] Error message:", error.message);
 		console.error("[ADMIN ERROR BOUNDARY] Error stack:", error.stack);
 	}
-	if (typeof error === "object" && error !== null && !isRouteErrorResponse(error) && !(error instanceof Error)) {
+	if (
+		typeof error === "object" &&
+		error !== null &&
+		!isRouteErrorResponse(error) &&
+		!(error instanceof Error)
+	) {
 		Object.entries(error).forEach(([key, value]) => {
 			console.error(`[ADMIN ERROR BOUNDARY] Error ${key}:`, value);
 		});
@@ -33,7 +43,7 @@ function AdminErrorBoundary() {
 		<SharedErrorBoundary
 			title={title}
 			message={message}
-			status={status} 
+			status={status}
 			homeHref="/admin"
 			homeLabel="Return to Admin Dashboard"
 		/>

@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import React from "react"; 
-import { Button } from "./button"; 
+import React from "react";
+import { Button } from "./button";
 const ChevronLeftIcon = () => (
 	<svg
 		className="size-4 stroke-current"
@@ -56,7 +56,7 @@ export function PaginationPrevious({
 		<Button
 			href={href === null ? undefined : href}
 			disabled={href === null}
-			variant="ghost" 
+			variant="ghost"
 			aria-label="Previous page"
 			className={clsx(className, "gap-x-1 pr-2.5")}
 		>
@@ -107,7 +107,7 @@ export function PaginationPage({
 	return (
 		<Button
 			href={href}
-			variant={current ? "outline" : "ghost"} 
+			variant={current ? "outline" : "ghost"}
 			aria-label={`Page ${children}`}
 			aria-current={current ? "page" : undefined}
 			className={clsx(

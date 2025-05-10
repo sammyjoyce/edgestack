@@ -1,5 +1,5 @@
-import { motion } from "framer-motion"; 
-import type React from "react"; 
+import { motion } from "framer-motion";
+import type React from "react";
 import { useEffect, useId, useRef, useState } from "react";
 function Block({
 	x,

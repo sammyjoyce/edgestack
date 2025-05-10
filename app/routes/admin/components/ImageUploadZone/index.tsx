@@ -1,4 +1,4 @@
-import React, { type JSX, useCallback } from "react"; 
+import React, { type JSX, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 interface ImageUploadZoneProps {
 	onDrop: (files: File[]) => void;
@@ -41,9 +41,9 @@ export default function ImageUploadZone({
 				{...getRootProps()}
 				className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition w-full max-w-xs min-h-32 bg-gray-50 hover:bg-gray-100 cursor-pointer ${
 					isDragReject
-						? "border-red-400 bg-red-50" 
+						? "border-red-400 bg-red-50"
 						: isDragActive
-							? "border-primary bg-primary/10" 
+							? "border-primary bg-primary/10"
 							: "border-gray-300"
 				} ${disabled ? "opacity-50 pointer-events-none" : ""}`}
 				aria-label="Image upload drop zone"
@@ -61,7 +61,7 @@ export default function ImageUploadZone({
 				<img
 					src={imageUrl}
 					alt={`Preview of ${label}`}
-					className="rounded border border-gray-200 mt-3 max-w-full w-48 h-auto object-cover bg-gray-100" 
+					className="rounded border border-gray-200 mt-3 max-w-full w-48 h-auto object-cover bg-gray-100"
 				/>
 			)}
 		</section>
