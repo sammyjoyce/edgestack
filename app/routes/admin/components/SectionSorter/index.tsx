@@ -263,7 +263,7 @@ function SortableItem({
 				</span>
 			</div>
 			<div className="flex items-center">
-				<SwitchField className="flex flex-col items-center !gap-0 mr-2">
+				<SwitchField className="flex flex-col items-center gap-0! mr-2">
 					<Switch
 						id={`${details.id}-theme-toggle`}
 						name={details.themeKey}

@@ -123,7 +123,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 			{...commonProps}
 			{...props}
 			to={Component === Link && to ? to : undefined}
-			href={Component === Link && href && !to ? href : undefined}
+			href={Component === Link && href && to! ? href : undefined}
 			target={target}
 			type={Component === Headless.Button ? type : undefined}
 		>
