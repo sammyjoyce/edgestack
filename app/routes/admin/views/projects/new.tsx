@@ -8,7 +8,7 @@ import type { NewProject } from "../../../../../database/schema";
 import type { Route } from "./+types/new";
 
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { Button } from "../../components/ui/Button";
+import { Button } from "../../components/ui/button";
 import { Fieldset, Label, Legend } from "../../components/ui/fieldset";
 import { Heading } from "../../components/ui/heading";
 import { Input } from "../../components/ui/input";
@@ -158,16 +158,26 @@ export function NewProjectRoute() {
 						name="imageUrl"
 						placeholder="URL to project image (optional)"
 					/>
-					<Button
-						as="a"
-						href="/admin/upload"
+					<a
+						href="https://vercel.com/import/project?template=https://github.com/sammyjoyce/lush"
 						target="_blank"
 						rel="noopener noreferrer"
-						variant="secondary"
-						className="whitespace-nowrap mt-2"
+						className="w-full flex items-center justify-center gap-2"
 					>
-						Upload Image
-					</Button>
+						<span>Deploy to Vercel</span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							fill="none"
+							viewBox="0 0 20 20"
+							className="inline-block"
+						>
+							<title>Vercel Logo</title>
+							<path fill="currentColor" d="M10 2l7.071 12.25H2.929z" />
+						</svg>
+					</a>
+					<Button type="submit">Create Project</Button>
 				</Fieldset>
 
 				<div className="flex justify-end gap-3 pt-4 border-t border-gray-200 mt-6">

@@ -1,4 +1,8 @@
-import { createInsertSchema, createSelectSchema, createUpdateSchema } from "drizzle-valibot";
+import {
+	createInsertSchema,
+	createSelectSchema,
+	createUpdateSchema,
+} from "drizzle-valibot";
 import { content, media, projects } from "./schema";
 
 // Error response schema for validation

@@ -3,12 +3,12 @@ import type React from "react"; // Import React and JSX type
 import { type JSX, useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
-import { Button } from "~/routes/admin/components/ui/button";
 // Pull Label from the shared fieldset, Textarea from the admin ui folder
 import { Label } from "~/routes/admin/components/ui/fieldset";
 import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";
 import { Pill, PillStatusComponent } from "~/routes/common/components/ui/Pill";
+import { Button } from "../ui/button";
 
 type ActionResponseData = {
 	success?: boolean;

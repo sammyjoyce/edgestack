@@ -14,6 +14,9 @@ import {
 import { schema } from "../../../../database/schema";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
+import { Heading } from "../components/ui/heading";
+import { Input } from "../components/ui/input";
+import { Text } from "../components/ui/text";
 import type { Route } from "./+types/upload";
 
 // import { validateContentInsert } from "../../../../database/valibot-validation"; // Commented out due to missing file
@@ -278,27 +281,25 @@ export default function UploadRoute() {
 		<FadeIn>
 			<div className="flex flex-col gap-8">
 				<div>
-					<h1 className="text-2xl font-semibold text-gray-900">
-						Image Management
-					</h1>
-					<p className="mt-2 text-sm text-gray-500">
+					<Heading level={1}>Image Management</Heading>
+					<Text className="mt-2 text-sm text-gray-500">
 						Upload new images or select from existing ones. Images will be
 						optimized and stored for use in your content.
-					</p>
+					</Text>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 					<div>
-						<h2 className="text-xl font-medium text-gray-900 mb-4">
+						<Heading level={2} className="mb-4">
 							Upload New Images
-						</h2>
+						</Heading>
 						<ImageUploadSection initialContent={{}} />
 					</div>
 
 					<div>
-						<h2 className="text-xl font-medium text-gray-900 mb-4">
+						<Heading level={2} className="mb-4">
 							Manage Existing Images
-						</h2>
+						</Heading>
 						<ImageGallery />
 					</div>
 				</div>

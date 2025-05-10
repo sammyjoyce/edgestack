@@ -8,7 +8,10 @@ import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
 // The validateProjectUpdate function is not found, we'll implement inline validation
 import type { Project } from "../../../../../database/schema";
-import { Button } from "../../../components/ui/Button";
+import { Label } from "../../../components/ui/fieldset";
+import { Heading } from "../../../components/ui/heading";
+import { Input } from "../../../components/ui/input";
+import { Button } from "../components/ui/button";
 import type { Route } from "./+types/edit";
 
 // Define return types for loader and action
@@ -174,9 +177,9 @@ export default function Component() {
 
 	return (
 		<FadeIn>
-			<h1 className="text-2xl font-semibold text-gray-900 mb-8">
+			<Heading level={1} className="mb-8">
 				Edit Project: {project.title}
-			</h1>
+			</Heading>
 
 			<Form
 				method="post"
@@ -184,13 +187,10 @@ export default function Component() {
 				className="bg-gray-50 shadow-(--shadow-input-default) border border-gray-200 rounded-lg p-6 flex flex-col gap-6"
 			>
 				<div>
-					<label
-						htmlFor="title"
-						className="block text-sm font-medium text-gray-700 mb-1"
-					>
+					<Label htmlFor="title" className="mb-1">
 						Project Title <span className="text-red-600">*</span>
-					</label>
-					<input
+					</Label>
+					<Input
 						type="text"
 						name="title"
 						id="title"
@@ -201,12 +201,9 @@ export default function Component() {
 				</div>
 
 				<div>
-					<label
-						htmlFor="description"
-						className="block text-sm font-medium text-gray-700 mb-1"
-					>
+					<Label htmlFor="description" className="mb-1">
 						Description
-					</label>
+					</Label>
 					<RichTextField
 						name="description"
 						initialJSON={project.description || ""}
@@ -215,17 +212,14 @@ export default function Component() {
 				</div>
 
 				<div>
-					<label
-						htmlFor="details"
-						className="block text-sm font-medium text-gray-700 mb-1"
-					>
+					<Label htmlFor="details" className="mb-1">
 						Details (e.g., Location, Duration, Budget)
-					</label>
+					</Label>
 					<RichTextField name="details" initialJSON={project.details || ""} />
 				</div>
 
 				<div className="flex items-center gap-2">
-					<input
+					<Input
 						type="checkbox"
 						name="isFeatured"
 						id="isFeatured"
@@ -233,29 +227,19 @@ export default function Component() {
 						defaultChecked={project.isFeatured ?? false}
 						className="size-4 rounded border-gray-300 text-primary focus:ring-primary"
 					/>
-					<label
-						htmlFor="isFeatured"
-						className="block text-sm font-medium text-gray-700"
-					>
-						Feature on Home Page
-					</label>
+					<Label htmlFor="isFeatured">Feature on Home Page</Label>
 				</div>
 
 				<div>
-					<label className="block text-sm font-medium text-gray-700 mb-1">
-						Project Image
-					</label>
+					<Label className="mb-1">Project Image</Label>
 					<ProjectImageSelector currentImage={project.imageUrl || undefined} />
 				</div>
 
 				<div>
-					<label
-						htmlFor="sortOrder"
-						className="block text-sm font-medium text-gray-700 mb-1"
-					>
+					<Label htmlFor="sortOrder" className="mb-1">
 						Sort Order (lower numbers appear first)
-					</label>
-					<input
+					</Label>
+					<Input
 						type="number"
 						name="sortOrder"
 						id="sortOrder"

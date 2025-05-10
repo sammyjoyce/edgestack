@@ -3,7 +3,7 @@ import { Form, Link, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
 import type { Project } from "../../../../../database/schema";
-import { Button } from "../../components/ui/Button";
+import { Button } from "../../components/ui/button";
 import { Fieldset, Legend } from "../../components/ui/fieldset";
 import { Heading } from "../../components/ui/heading";
 import { Text } from "../../components/ui/text";

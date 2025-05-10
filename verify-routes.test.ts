@@ -1,7 +1,7 @@
-import { describe, test, expect, beforeAll } from 'bun:test';
-import { createMemoryRouter, RouterProvider } from 'react-router';
-import React from 'react';
+import { beforeAll, describe, expect, test } from 'bun:test';
 import { render, screen, waitFor } from '@testing-library/react';
+import React from 'react';
+import { type RouterProvider, createMemoryRouter } from 'react-router';
 import routeConfig from './app/routes';
 
 /**
