@@ -23,10 +23,10 @@ import { Input } from "../components/ui/input";
 import type { Route } from "./+types/login";
 
 // Define a specific type for the data part of the action's return
-type LoginActionData = { success: false; error: string };
+type LoginActionData = { success: false; error: string } | { success: true }; // Allow success: true
 
 // Use generated type without explicit return type annotation
-export const action = async ({ request, context }: Route.ActionArgs) => {
+export const action = async ({ request, context }: Route.ActionArgs): Promise<Response | LoginActionData> => { // Update return type
 	try {
 		const formData = await request.formData();
 		const username = formData.get("username")?.toString() ?? "";
@@ -44,10 +44,10 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 
 		// Provide clear error if JWT_SECRET is missing
 		if (!jwtSecret) {
-			throw new Response(
-				"JWT_SECRET not configured. Please set JWT_SECRET in your environment variables.",
-				{ status: 500 },
-			);
+			// For server errors not meant for user display, throwing Response is fine.
+			// For user-facing errors, return data({ success: false, error: ... })
+			console.error("JWT_SECRET not configured."); // Log for admin
+			return data({ success: false, error: "Server configuration error." }, { status: 500});
 		}
 
 		// Directly access environment variables
@@ -55,10 +55,8 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		const adminPassword = env?.ADMIN_PASSWORD as string;
 
 		if (!adminUsername || !adminPassword) {
-			throw new Response(
-				"Admin credentials not configured. Please set ADMIN_USERNAME and ADMIN_PASSWORD in your environment variables.",
-				{ status: 500 },
-			);
+			console.error("Admin credentials not configured."); // Log for admin
+			return data({ success: false, error: "Server configuration error." }, { status: 500});
 		}
 
 		// Check against environment variable credentials
@@ -75,25 +73,23 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 				`${COOKIE_NAME}=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${COOKIE_MAX_AGE}`,
 			);
 
-			return response;
+			return response; // This is a redirect Response
 		}
 
-		// Return error data directly
-		return {
+		return { // This is LoginActionData
 			success: false,
 			error: "Invalid username or password",
 		};
 	} catch (error) {
 		if (DEBUG) console.error("[ADMIN LOGIN] Action Error:", error);
-		throw new Response(
-			"Unexpected server error during login process. Please check logs for details.",
-			{ status: 500 },
-		);
+		// For unexpected errors, throwing a Response is appropriate for ErrorBoundary
+		// Or return a data response if you want to handle it in the component
+		return data({ success: false, error: "Unexpected server error during login." }, { status: 500 });
 	}
 };
 
 // Add loader to check authentication status before rendering the login page
-export const loader = async ({ request, context }: Route.LoaderArgs) => {
+export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Response | null> => { // Return type is fine
 	try {
 		const sessionValue = getSessionCookie(request);
 		const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -116,16 +112,17 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 		return null;
 	} catch (error) {
 		if (DEBUG) console.error("[ADMIN LOGIN] Loader Error:", error);
-		throw new Response(
+		// Throwing Response for ErrorBoundary
+		throw new Response( // Can also use data() helper here
 			"Unexpected server error during login loader process. Please check logs for details.",
 			{ status: 500 },
 		);
 	}
 };
 
-export default function LoginRoute() {
+export default function Component() { // Renamed to Component
 	// Access action data with proper typing
-	const actionData = useActionData<LoginActionData>();
+	const actionData = useActionData<typeof action>(); // Use inferred type
 
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");

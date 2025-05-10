@@ -22,36 +22,39 @@ import type { Route } from "./+types/upload";
 
 // import { validateContentInsert } from "../../../../database/valibot-validation"; // Commented out due to missing file
 
-export async function loader({ context, request }: Route.LoaderArgs) {
+export async function loader({ context, request }: Route.LoaderArgs): Promise<Route.LoaderData | Response> { // Update return type
 	// Authentication check
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		throw new Response("Unauthorized", { status: 401 });
+		throw redirect("/admin/login"); // throw redirect
 	}
 
 	try {
 		// List all stored images
 		const images = await listStoredImages(context);
-		return { images };
+		return { images }; // Return plain object
 	} catch (error: any) {
 		console.error("Error listing images:", error);
-		throw data(
-			{ message: `Failed to list images: ${error.message || "Unknown error"}` },
+		throw data( // throw data()
+			{ error: `Failed to list images: ${error.message || "Unknown error"}` },
 			{ status: 500 },
 		);
 	}
 }
 
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs): Promise<Response | Route.ActionData> { // Update return type
 	const unauthorized = () => {
-		throw new Response("Unauthorized", { status: 401 });
+		return redirect("/admin/login"); // return redirect
 	};
 
-	const badRequest = (msg: string) => {
-		throw new Response(msg, { status: 400 });
+	const badRequest = (msg: string, errors?: Record<string, string>) => { // Allow passing errors
+		return data({ success: false, error: msg, errors }, { status: 400 }); // return data()
 	};
 
+	const serverError = (msg: string) => {
+		return data({ success: false, error: msg }, { status: 500 }); // return data()
+	};
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -72,9 +75,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 
 				const r2Deleted = await deleteStoredImage(filename, context);
 				if (!r2Deleted) {
-					throw new Response("Failed to delete image from storage.", {
-						status: 500,
-					});
+					return serverError("Failed to delete image from storage."); // Use serverError
 				}
 
 				const publicUrlBase =
@@ -134,22 +135,20 @@ export async function action({ request, context }: Route.ActionArgs) {
 							const fieldName = issue.path?.[0]?.key as string | undefined;
 							if (fieldName && !errors[fieldName]) {
 								errors[fieldName] = issue.message;
-							} else if (!fieldName && issue.message && !errors[key]){ // Associate general error with the key being processed
+							} else if (!fieldName && issue.message && !errors[key]){
 								errors[key] = issue.message;
 							}
 						}
+						return badRequest(`Validation failed for key '${key}'.`, errors); // Pass errors
 					} else if (e instanceof Error) {
 						errors[key] = e.message; // General error for this key
 					} else {
 						errors[key] = "An unknown validation error occurred.";
 					}
     
-					if (Object.keys(errors).length > 0) {
-						return data({ success: false, errors, key }, { status: 400 });
-					}
 					// This part might be unreachable if errors always populate, but as a fallback:
 					const errorMessage = e instanceof Error ? e.message : String(e);
-					return data({ success: false, error: `Validation failed for key '${key}': ${errorMessage}`, key }, { status: 400 });
+					return badRequest(`Validation failed for key '${key}': ${errorMessage}`);
 				}
     
 				// updateContent uses batch internally. To ensure atomicity with media selection,
@@ -203,7 +202,9 @@ export async function action({ request, context }: Route.ActionArgs) {
 			// Use the helper function for upload with type assertion for consistency
 			const publicUrl = await handleImageUpload(file, key, context);
 			if (!publicUrl || typeof publicUrl !== "string") {
-				return badRequest("Failed to upload image"); 
+				// Check if publicUrl is an error object from handleImageUpload
+				const errorMsg = typeof publicUrl === 'object' && publicUrl !== null && 'error' in publicUrl ? (publicUrl as {error: string}).error : "Failed to upload image";
+				return badRequest(errorMsg);
 			}
     
 			try {
@@ -216,22 +217,20 @@ export async function action({ request, context }: Route.ActionArgs) {
 						const fieldName = issue.path?.[0]?.key as string | undefined;
 						if (fieldName && !errors[fieldName]) {
 							errors[fieldName] = issue.message;
-						} else if (!fieldName && issue.message && !errors[key]){ // Associate general error with the key being processed
+						} else if (!fieldName && issue.message && !errors[key]){
 							errors[key] = issue.message;
 						}
 					}
+					return badRequest(`Validation failed for key '${key}' (URL).`, errors); // Pass errors
 				} else if (e instanceof Error) {
 					errors[key] = e.message; // General error for this key
 				} else {
 					errors[key] = "An unknown validation error occurred.";
 				}
     
-				if (Object.keys(errors).length > 0) {
-					return data({ success: false, errors, key }, { status: 400 });
-				}
 				// This part might be unreachable if errors always populate, but as a fallback:
 				const errorMessage = e instanceof Error ? e.message : String(e);
-				return data({ success: false, error: `Validation failed for key '${key}' (URL): ${errorMessage}`, key }, { status: 400 });
+				return badRequest(`Validation failed for key '${key}' (URL): ${errorMessage}`);
 			}
     
 			const mediaAltText = file.name;
@@ -299,20 +298,14 @@ export async function action({ request, context }: Route.ActionArgs) {
 			return data({ success: true, url: publicUrl, key, action: "upload" });
 		} catch (error: any) {
 			console.error("Upload error or action processing error:", error);
-			return data(
-				{
-					success: false,
-					error: error.message || "An unexpected error occurred",
-				},
-				{ status: 500 },
-			);
+			return serverError(error.message || "An unexpected error occurred"); // Use serverError
 		}
 	}
 
 	return data({ success: false, error: "Method not allowed" }, { status: 405 });
 }
 
-export default function UploadRoute() {
+export default function Component() { // Renamed to Component
 	return (
 		<FadeIn>
 			<div className="flex flex-col gap-8">

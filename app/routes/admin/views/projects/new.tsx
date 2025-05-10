@@ -16,17 +16,11 @@ import { Input } from "../../components/ui/input";
 import { Text } from "../../components/ui/text";
 import { Textarea } from "../../components/ui/textarea";
 
-// Define return types for action
-type ProjectActionData = {
-	success: boolean;
-	error?: string;
-};
-
 // Return plain objects or Response for type safety
 export async function action({
 	request,
 	context, // context will be typed by Route.ActionArgs
-}: Route.ActionArgs): Promise<Response | ProjectActionData> {
+}: Route.ActionArgs): Promise<Response | Route.ActionData> { // Update return type
 	// Use generated type
 	const formData = await request.formData();
 
@@ -75,15 +69,15 @@ export async function action({
 			}
 		}
 		if (Object.keys(errors).length > 0) {
-			return data({ success: false, errors }, { status: 400 });
+			return data({ success: false, errors, error: "Validation failed." }, { status: 400 }); // Add general error message
 		}
 		return data({ success: false, error: error.message || "Failed to create project" }, { status: 500 });
 	}
 }
 
-export function NewProjectRoute() {
+export function Component() { // Renamed to Component
 	const navigate = useNavigate();
-	const actionData = useActionData<typeof action>();
+	const actionData = useActionData<Route.ActionData>(); // Or Route.ActionData
 	const errors = actionData?.errors as Record<string, string> | undefined;
 
 	// TigerStyle runtime assertions
@@ -191,5 +185,5 @@ export function NewProjectRoute() {
 	);
 }
 
-// Default export for backwards compatibility
-export default NewProjectRoute;
+// Default export for backwards compatibility if needed
+// export default Component;

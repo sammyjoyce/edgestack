@@ -10,23 +10,11 @@ import { Heading } from "../../components/ui/heading";
 import { Text } from "../../components/ui/text";
 import type { Route } from "./+types/index";
 
-// Define return types for loader and action
-type ProjectsLoaderData = {
-	projects: Project[];
-	error?: string;
-};
-
-type ProjectsActionData = {
-	success: boolean;
-	error?: string;
-	projectId?: number;
-};
-
-// Loader to fetch all projects - Return plain objects for type safety
+// Loader to fetch all projects
 export async function loader({
 	request,
 	context,
-}: Route.LoaderArgs): Promise<ProjectsLoaderData> { // Return type can remain specific if you handle errors by throwing
+}: Route.LoaderArgs): Promise<Route.LoaderData | Response> { // Update return type
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -35,48 +23,45 @@ export async function loader({
 
 	try {
 		const projects = await getAllProjects(context.db);
-		return { projects };
+		return { projects }; // Return plain object
 	} catch (error: any) {
 		console.error("Failed to load projects:", error);
 		// Use data() helper for throwing errors to be caught by ErrorBoundary
-		throw data(
-			{ message: error.message || "Failed to load projects" },
+		throw data( // throw data() instead of returning it
+			{ error: error.message || "Failed to load projects" }, // Ensure error key matches expected type
 			{ status: 500 },
 		);
 	}
 }
 
-// Action to handle project management - Return plain objects for type safety
+// Action to handle project management
 export async function action({
 	request,
 	context,
-}: Route.ActionArgs): Promise<ProjectsActionData | Response> { // Update return type
+}: Route.ActionArgs): Promise<Route.ActionData | Response> { // Update return type
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
 
 	// Auth check
-	const unauthorized = () => redirect("/admin/login"); // Redirect for unauthorized
-	const { getSessionCookie, verify } = await import(
-		"~/routes/common/utils/auth"
-	);
+	// const unauthorized = () => redirect("/admin/login"); // Not used directly, redirect is returned
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		return unauthorized();
+		return redirect("/admin/login"); // Use redirect()
 	}
 
 	// Handle delete project intent
 	if (intent === "deleteProject") {
 		const projectIdStr = formData.get("projectId")?.toString();
 		if (!projectIdStr) {
-			return data(
+			return data( // Use data()
 				{ success: false, error: "Missing project ID" },
 				{ status: 400 },
 			);
 		}
 		const projectId = Number(projectIdStr);
 		if (Number.isNaN(projectId)) {
-			return data(
+			return data( // Use data()
 				{ success: false, error: "Invalid project ID" },
 				{ status: 400 },
 			);
@@ -97,8 +82,8 @@ export async function action({
 	return data({ success: false, error: "Unknown intent" }, { status: 400 }); // Use data() for unknown intent
 }
 
-export function ProjectsIndexRoute() {
-	const { projects } = useLoaderData<typeof loader>();
+export function Component() { // Renamed to Component
+	const { projects } = useLoaderData<Route.LoaderData>(); // Or Route.LoaderData
 
 	// TigerStyle runtime assertions with detailed error messages
 	invariant(
@@ -225,5 +210,5 @@ export function ProjectsIndexRoute() {
 	);
 }
 
-// Default export for backwards compatibility
-export default ProjectsIndexRoute;
+// Default export for backwards compatibility if needed, or remove if Component is the standard.
+// export default Component;

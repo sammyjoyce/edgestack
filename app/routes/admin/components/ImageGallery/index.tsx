@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Add useEffect
 import { useFetcher, useLoaderData } from "react-router";
 import { Drawer } from "vaul";
 import { Button } from "../ui/button";
 
-import type {
-	action as uploadRouteAction,
-	loader as uploadRouteLoader,
-} from "~/routes/admin/views/upload";
+// Import the specific Route type for the upload view
+import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload";
 import type { StoredImage } from "~/utils/upload.server";
 
 interface ImageGalleryProps {
@@ -15,17 +13,8 @@ interface ImageGalleryProps {
 }
 
 export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
-	const { images = [] } = useLoaderData<typeof uploadRouteLoader>();
-	// Define a more specific type for the fetcher data if needed, or use a general one if actions are consistent
-	type GalleryActionData = {
-		success?: boolean;
-		error?: string;
-		action?: string;
-		filename?: string;
-		url?: string;
-		key?: string;
-	};
-	const fetcher = useFetcher<GalleryActionData>();
+	const { images = [] } = useLoaderData<UploadRoute.LoaderData>(); // Use typed loader data
+	const fetcher = useFetcher<UploadRoute.ActionData>(); // Use typed action data
 	const [selectedImage, setSelectedImage] = useState<StoredImage | null>(null);
 
 	// Format the date for display
@@ -71,7 +60,7 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 	};
 
 	// Effect to remove deleted images from the list
-	React.useEffect(() => {
+	useEffect(() => { // Change React.useEffect to useEffect
 		// If action was successful deletion, React Router will revalidate loaders.
 		// The images list should update automatically if the loader data changes.
 		// No explicit reload needed if revalidation is working correctly.
@@ -79,8 +68,12 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 			// Optionally, provide user feedback about successful deletion if needed
 			// For example, using a toast notification or a status message.
 			// If the list doesn't update, ensure the loader for `images` is revalidated.
+			// Consider closing any modal if the selectedImage was the one deleted.
+			if (selectedImage && selectedImage.name === fetcher.data.filename) {
+				setSelectedImage(null); // Clear selection if deleted
+			}
 		}
-	}, [fetcher.data]);
+	}, [fetcher.data, selectedImage]); // Add selectedImage to dependencies
 
 	return (
 		<div className="bg-white border border-gray-200 rounded-lg shadow-xs p-4">

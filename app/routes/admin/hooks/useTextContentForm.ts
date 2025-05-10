@@ -4,10 +4,13 @@ import type { FetcherWithComponents } from "react-router";
 import { validateContentInsert } from "../../../../database/valibot-validation.js";
 
 // Define the expected shape of action response data explicitly
+// Ensure ActionResponseData matches the actual structure from the server action,
+// especially the `errors` field for validation.
 type ActionResponseData = {
 	success?: boolean;
-	error?: string;
+	error?: string; // General error message
 	message?: string;
+	errors?: Record<string, string>; // Field-specific validation errors
 };
 
 const validateField = (
@@ -19,13 +22,17 @@ const validateField = (
 	if (isRichText) return null;
 
 	try {
-		// Basic check: Ensure key and value are not empty before specific validation
-		if (!key || !value) {
-			return null; // Or handle as needed
-		}
-		validateContentInsert({ key, value });
+		if (!key) return "Field key is missing."; // Add check for key
+		// Value can be empty, schema should define if it's optional or not.
+		// Provide all required fields for validateContentInsert.
+		// These might need to come from TextFieldConfig or be contextually determined.
+		validateContentInsert({ key, value, page: "home", section: "dynamic", type: "text" });
 		return null;
 	} catch (err: unknown) {
+		// ... (error handling for ValiError can be more specific here if needed)
+		if (err instanceof ValiError && err.issues.length > 0) {
+			return err.issues[0].message; // Return the first validation issue message
+		}
 		let message = "Validation failed";
 		if (err instanceof Error) {
 			message = err.message;
@@ -217,25 +224,28 @@ export function useTextContentForm({
 
 			if (data) {
 				if (data.success) {
-					setErrors({}); 
-					// Feedback for successful save is usually handled by the component showing "Saved"
-					// setFeedback(data.message || "Changes saved successfully.");
+					setErrors({});
+					setFeedback(data.message || "Changes saved successfully."); // Provide feedback on success
 				} else if (data.errors && typeof data.errors === 'object') {
-					// Handle structured errors from Valibot
 					setErrors(data.errors as Record<string, string>);
-					setFeedback("Validation failed. Please check the fields.");
-					if (!autoSave) {
-						// Keep pendingFields as they are so user can correct them
-					}
+					setFeedback(data.message || "Validation failed. Please check the fields."); // Use server message if available
+					// If not autoSave, pendingFields remain for correction.
 				} else if (data.error) {
 					setFeedback(data.error);
 					if (!autoSave) {
-						setPendingFields(fields); // Revert if general error and not auto-saving
+						setPendingFields(fields);
 					}
+				}
+			} else if (fetcher.state === "idle" && !isSubmittingRef.current) {
+				// Handle cases where fetcher becomes idle without new data (e.g. after initial load or non-data-changing submission)
+				// Potentially clear feedback or set a generic "Ready" status if appropriate.
+				// For now, let's ensure feedback isn't stuck on "Saving..."
+				if (feedback?.startsWith("Saving")) {
+					setFeedback(null);
 				}
 			}
 		}
-	}, [fetcher.state, fetcher.data, autoSave, fields, labelForKey]);
+	}, [fetcher.state, fetcher.data, autoSave, fields, labelForKey, feedback]); // Added feedback to dependency array
 
 	return {
 		autoSave,
