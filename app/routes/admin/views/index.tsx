@@ -1,5 +1,5 @@
 import React, { type JSX } from "react";
-import invariant from "tiny-invariant";
+import { assert } from "~/routes/common/utils/assert";
 const DEBUG = process.env.NODE_ENV !== "production";
 import {
 	redirect,
@@ -27,16 +27,16 @@ export async function loader({
 	request,
 	context,
 }: Route.LoaderArgs): Promise<Route.LoaderData> {
-	invariant(request instanceof Request, "loader: request must be a Request");
-	invariant(context?.db, "loader: missing DB in context");
+	assert(request instanceof Request, "loader: request must be a Request");
+	assert(context?.db, "loader: missing DB in context");
 	const token = getSessionCookie(request);
 	const secret = context.cloudflare?.env?.JWT_SECRET;
-	invariant(secret, "loader: JWT_SECRET is required in context");
+	assert(secret, "loader: JWT_SECRET is required in context");
 	if (!token || !(await verify(token, secret))) {
 		throw redirect("/admin/login");
 	}
 	const items = await getAllContent(context.db);
-	invariant(
+	assert(
 		items && typeof items === "object",
 		"loader: items must be an object",
 	);
@@ -54,12 +54,12 @@ export async function action({
 	if (DEBUG) console.log(
 		"Action triggered in admin/views/index.tsx - THIS IS THE CORRECT ROUTE",
 	);
-	invariant(request instanceof Request, "action: request must be a Request");
-	invariant(context?.db, "action: missing DB in context");
+	assert(request instanceof Request, "action: request must be a Request");
+	assert(context?.db, "action: missing DB in context");
 	try {
 		const token = getSessionCookie(request);
 		const secret = context.cloudflare?.env?.JWT_SECRET;
-		invariant(secret, "action: JWT_SECRET is required in context");
+		assert(secret, "action: JWT_SECRET is required in context");
 		if (!token || !(await verify(token, secret))) {
 			return data({ success: false, error: "Unauthorized" }, { status: 401 });
 		}
@@ -75,7 +75,7 @@ export async function action({
 					updates[key] = value;
 				}
 			}
-			invariant(Object.keys(updates).length > 0, "action: No updates provided for updateTextContent");
+			assert(Object.keys(updates).length > 0, "action: No updates provided for updateTextContent");
 			const validationErrors: Record<string, string> = {};
 			for (const [key, valueToValidate] of Object.entries(updates)) {
 				try {
@@ -110,7 +110,7 @@ export async function action({
 					updates[key] = value;
 				}
 			}
-			invariant(Object.keys(updates).length > 0, "action: No updates provided for reorderSections");
+			assert(Object.keys(updates).length > 0, "action: No updates provided for reorderSections");
 			if (DEBUG) console.log("[ADMIN DASHBOARD ACTION] reorderSections updates:", updates);
 			await updateContent(context.db, updates);
 			return data({ success: true, message: "Sections reordered successfully." });

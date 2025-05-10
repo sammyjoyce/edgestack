@@ -2,7 +2,7 @@ import { type MetaFunction, useLoaderData } from "react-router";
 import type { Route } from "./+types/route"; 
 const DEBUG = process.env.NODE_ENV !== "production";
 import type { JSX } from "react";
-import invariant from "tiny-invariant";
+import { assert } from "~/routes/common/utils/assert";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import RecentProjects from "~/routes/common/components/RecentProjects";
@@ -32,8 +32,8 @@ export async function loader({ request, context }: Route.LoaderArgs): Promise<{
 	projects: Project[];
 	revalidatedAt?: number;
 }> {
-	invariant(request instanceof Request, "loader: request must be a Request");
-	invariant(context?.db, "loader: missing DB in context");
+	assert(request instanceof Request, "loader: request must be a Request");
+	assert(context?.db, "loader: missing DB in context");
 	const url = new URL(request.url);
 	const revalidate = url.searchParams.get("revalidate") === "true";
 	if (DEBUG) console.log("[HOME LOADER] Revalidation requested:", revalidate);
@@ -55,8 +55,8 @@ export async function loader({ request, context }: Route.LoaderArgs): Promise<{
 			}
 		}
 	}
-	invariant(typeof content === "object", "loader: content must be an object");
-	invariant(Array.isArray(projects), "loader: projects must be an array");
+	assert(typeof content === "object", "loader: content must be an object");
+	assert(Array.isArray(projects), "loader: projects must be an array");
 	return {
 		content,
 		projects,
@@ -66,11 +66,11 @@ export async function loader({ request, context }: Route.LoaderArgs): Promise<{
 export default function HomeRoute(): JSX.Element {
 	const { content, projects, revalidatedAt } = useLoaderData<typeof loader>();
 	if (DEBUG && revalidatedAt) console.log("[HOME ROUTE] Revalidated at:", revalidatedAt);
-	invariant(
+	assert(
 		typeof content === "object",
 		"HomeRoute: content must be an object",
 	);
-	invariant(Array.isArray(projects), "HomeRoute: projects must be an array");
+	assert(Array.isArray(projects), "HomeRoute: projects must be an array");
 	const typedContent = content as unknown as Record<string, string>;
 	const sectionBlocks: Record<string, JSX.Element> = {
 		hero: (
@@ -143,7 +143,7 @@ export default function HomeRoute(): JSX.Element {
 		),
 		contact: <ContactUs key="contact" content={typedContent} />,
 	};
-	invariant(
+	assert(
 		typeof sectionBlocks === "object",
 		"HomeRoute: sectionBlocks must be an object",
 	);
@@ -152,8 +152,8 @@ export default function HomeRoute(): JSX.Element {
 	const order = orderString
 		? orderString.split(",").filter((id) => id in sectionBlocks)
 		: DEFAULT_ORDER;
-	invariant(Array.isArray(order), "HomeRoute: order must be an array");
-	invariant(
+	assert(Array.isArray(order), "HomeRoute: order must be an array");
+	assert(
 		order.every((id) => typeof id === "string"),
 		"HomeRoute: all order ids must be strings",
 	);

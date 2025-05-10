@@ -1,7 +1,7 @@
 import React, { type JSX } from "react"; 
 import { type MetaFunction, useOutletContext } from "react-router"; 
 const DEBUG = process.env.NODE_ENV !== "production";
-import invariant from "tiny-invariant";
+import { assert } from "~/routes/common/utils/assert";
 import RecentProjects from "~/routes/common/components/RecentProjects";
 import type { loader as parentLayoutLoader } from "~/routes/home/views/_layout";
 import AboutUs from "../components/AboutUs";
@@ -30,11 +30,11 @@ export function HomeRoute(): JSX.Element {
 	const { content: rawContent, projects = [] } =
 		useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
 	const content = (rawContent ?? {}) as Record<string, string>;
-	invariant(
+	assert(
 		typeof content === "object",
 		"HomeRoute: content must be an object",
 	);
-	invariant(Array.isArray(projects), "HomeRoute: projects must be an array");
+	assert(Array.isArray(projects), "HomeRoute: projects must be an array");
 	if (DEBUG)
 		console.log(
 			"[HOME ROUTE] Rendering with content keys:",
@@ -110,8 +110,8 @@ export function HomeRoute(): JSX.Element {
 	const order = orderString
 		? orderString.split(",").filter((id) => id in sectionBlocks)
 		: DEFAULT_ORDER;
-	invariant(Array.isArray(order), "HomeRoute: order must be an array");
-	invariant(
+	assert(Array.isArray(order), "HomeRoute: order must be an array");
+	assert(
 		order.every((id) => typeof id === "string"),
 		"HomeRoute: all order ids must be strings",
 	);
