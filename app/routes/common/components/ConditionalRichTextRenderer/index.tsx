@@ -19,7 +19,6 @@ export default function ConditionalRichTextRenderer({
 	richTextClassName, // Optional class for RichTextRenderer container
 	fallbackTag: FallbackTag = "p", // Default to <p> tag
 }: ConditionalRichTextRendererProps): JSX.Element | null {
-	// Changed to JSX.Element
 	if (!text) {
 		return null; // Render nothing if text is empty or null/undefined
 	}

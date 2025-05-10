@@ -32,7 +32,6 @@ export function HeroSectionEditor({
 	imageUploading,
 	heroImageUrl,
 }: HeroSectionEditorProps): React.ReactElement {
-	// Use React.ReactElement
 	const [uploadStatus, setUploadStatus] = React.useState<string | null>(null);
 
 	const handleBlur = React.useCallback(

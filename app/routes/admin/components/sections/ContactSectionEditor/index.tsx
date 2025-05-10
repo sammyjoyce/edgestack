@@ -95,7 +95,6 @@ export function ContactSectionEditor({
 	fetcher,
 	initialContent,
 }: ContactSectionEditorProps): React.ReactElement {
-	// Use React.ReactElement
 	// Remove handleBlur as RichTextField handles its updates internally
 	// const handleBlur = React.useCallback(
 	// 	(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {

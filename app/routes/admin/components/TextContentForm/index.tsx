@@ -112,7 +112,6 @@ export function TextContentForm({
 	initialContent,
 	formRef,
 }: TextContentFormProps): JSX.Element {
-	// Use JSX.Element
 	const localFormRef = useRef<HTMLFormElement>(null);
 	const ref = formRef || localFormRef;
 

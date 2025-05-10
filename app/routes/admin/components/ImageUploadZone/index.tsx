@@ -20,7 +20,6 @@ export default function ImageUploadZone({
 	className = "",
 	fileInputRef,
 }: ImageUploadZoneProps): JSX.Element {
-	// Use JSX.Element
 	const handleDrop = useCallback(
 		(accepted: File[]) => {
 			if (!disabled && accepted.length > 0) {

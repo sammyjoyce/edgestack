@@ -31,7 +31,6 @@ export function AboutSectionEditor({
 	imageUploading: isUploading, // Renamed destructured prop
 	aboutImageUrl,
 }: AboutSectionEditorProps): React.JSX.Element {
-	// Changed to React.JSX.Element
 	const [uploadStatus, setUploadStatus] = useState<string | null>(null);
 
 	const handleBlur = React.useCallback(
