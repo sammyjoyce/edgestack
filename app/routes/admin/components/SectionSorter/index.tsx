@@ -1,238 +1,228 @@
-import {
-	DndContext,
-	type DragEndEvent,
-	KeyboardSensor,
-	PointerSensor,
-	closestCenter,
-	useSensor,
-	useSensors,
-} from "@dnd-kit/core";
-import {
-	SortableContext,
-	arrayMove,
-	useSortable,
-	verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import type { FetcherWithComponents } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import type { Active, DragEndEvent } from "@dnd-kit/core";
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
-import React, { useEffect, useState, useCallback } from "react";
-import type { FetcherWithComponents } from "react-router";
+import * as React from "react";
 import clsx from "clsx";
-import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
-import {
-	SwitchField,
-	Switch,
-	Label as SwitchLabel,
-} from "~/routes/admin/components/ui/switch"; 
+import { Switch, Label as SwitchLabel } from "~/routes/admin/components/ui/switch";
+import { Button } from "~/routes/admin/components/ui/button";
+import type { SerializeFrom } from "@remix-run/node";
+import SwitchField from "../../../../common/components/ui/SwitchField"; 
+import type { Route as AdminIndexRoute } from "../../views/+types";
+
 export type SectionTheme = "light" | "dark";
-export type Section = {
+export interface Section { 
 	id: string;
 	label: string;
 	theme: SectionTheme;
 	themeKey: string; 
-};
+}
+
+interface SectionDetail { 
+    id: string; 
+    label: string;
+	currentTheme?: SectionTheme | null; 
+    themeKey: string;
+}
+
 interface SectionSorterProps {
-	initialSections: Section[];
+	initialSectionsFromDb: Section[]; 
+    sectionDetailsOrdered: SectionDetail[]; 
 	orderFetcher: FetcherWithComponents<AdminIndexRoute.ActionData>;
 	themeUpdateFetcher: FetcherWithComponents<AdminIndexRoute.ActionData>;
 }
+
+interface SortableItemProps {
+	details: SectionDetail; 
+	onThemeChange: (sectionKey: string, themeKey: string, newTheme: SectionTheme) => void;
+    fetcherData: AdminIndexRoute.ActionData | undefined;
+}
+
 export default function SectionSorter({
-	initialSections,
+	initialSectionsFromDb,
+    sectionDetailsOrdered,
 	orderFetcher,
 	themeUpdateFetcher,
 }: SectionSorterProps): React.ReactElement {
-	const [sections, setSections] = useState<Section[]>(initialSections);
-	useEffect(() => {
-		setSections(initialSections);
-	}, [initialSections]);
-	const [statusMessage, setStatusMessage] = useState<string>("");
+	// Internal state for dnd-kit, derived from sectionDetailsOrdered and initialSectionsFromDb
+    const [orderedItems, setOrderedItems] = React.useState<SectionDetail[]>(() => {
+        const dbOrder = initialSectionsFromDb.map(s => s.id);
+        return sectionDetailsOrdered.sort((a, b) => dbOrder.indexOf(a.id) - dbOrder.indexOf(b.id));
+    });
+
+	React.useEffect(() => {
+        const dbOrder = initialSectionsFromDb.map(s => s.id);
+        const currentSortedDetails = [...sectionDetailsOrdered].sort((a,b) => dbOrder.indexOf(a.id) - dbOrder.indexOf(b.id));
+        setOrderedItems(currentSortedDetails);
+	}, [initialSectionsFromDb, sectionDetailsOrdered]);
+    
+	const [statusMessage, setStatusMessage] = React.useState<string>("");
+
 	const sensors = useSensors(
 		useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-		useSensor(KeyboardSensor),
+		useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
 	);
-	useEffect(() => {
-		const initialOrderString = initialSections.map((s) => s.id).join(",");
-		const currentOrder = sections.map((s) => s.id).join(",");
+
+	React.useEffect(() => {
+		const initialOrderString = initialSectionsFromDb.map((s) => s.id).join(",");
+		const currentOrder = orderedItems.map((s) => s.id).join(",");
 		if (
-			initialOrderString === currentOrder &&
-			orderFetcher.state === "idle" &&
-			!orderFetcher.data 
+			initialOrderString !== currentOrder &&
+			orderFetcher.state === "idle"
 		) {
-			return;
-		}
-		if (initialOrderString !== currentOrder) {
 			const data = new FormData();
 			data.append("intent", "reorderSections");
 			data.append("home_sections_order", currentOrder);
 			orderFetcher.submit(data, { method: "post", action: "/admin" });
 		}
-	}, [sections, orderFetcher, initialSections]);
-	const handleThemeChange = useCallback(
-		(sectionId: string, newTheme: SectionTheme) => {
-			const sectionToUpdate = sections.find((s) => s.id === sectionId);
-			if (!sectionToUpdate) return;
-			setSections((prevSections) =>
-				prevSections.map((s) =>
-					s.id === sectionId ? { ...s, theme: newTheme } : s,
-				),
-			);
-			const data = new FormData();
-			data.append("intent", "updateTextContent"); 
-			data.append(sectionToUpdate.themeKey, newTheme);
-			themeUpdateFetcher.submit(data, { method: "post", action: "/admin" });
+	}, [orderedItems, orderFetcher, initialSectionsFromDb]);
+
+	const handleThemeChange = React.useCallback(
+		(sectionKey: string, themeKey: string, newTheme: SectionTheme) => {
+            // Optimistic UI update for theme
+            setOrderedItems(prevItems => prevItems.map(item => 
+                item.id === sectionKey ? { ...item, currentTheme: newTheme } : item
+            ));
+
+			const formData = new FormData();
+			formData.append("intent", "updateTextContent");
+			formData.append("page", "home"); 
+			formData.append("section", sectionKey); 
+			formData.append(themeKey, newTheme);
+			themeUpdateFetcher.submit(formData, { method: "post", action: "/admin" });
 		},
-		[sections, themeUpdateFetcher],
+		[themeUpdateFetcher],
 	);
-	const handleDragEnd = useCallback((event: DragEndEvent) => {
+
+	const handleDragEnd = React.useCallback((event: DragEndEvent) => {
 		const { active, over } = event;
 		if (over && active.id !== over.id) {
-			setSections((prev) => {
-				const oldIndex = prev.findIndex((s) => s.id === active.id);
-				const newIndex = prev.findIndex((s) => s.id === over.id);
+			setOrderedItems((prev) => {
+				const oldIndex = prev.findIndex(item => item.id === active.id);
+				const newIndex = prev.findIndex(item => item.id === over.id);
 				return arrayMove(prev, oldIndex, newIndex);
 			});
 		}
+		setStatusMessage(""); 
 	}, []);
+
+	if (!orderedItems || orderedItems.length === 0) {
+		return <p className="text-slate-400">No sections available to sort.</p>;
+	}
+
 	return (
-		<section
-			className="bg-white p-6 rounded-lg shadow-xs border border-gray-200"
-			aria-labelledby="section-order-heading"
-		>
-			<h2
-				id="section-order-heading"
-				className="text-xl font-semibold text-gray-900 mb-2"
-			>
-				Home Page Section Order
+		<section aria-labelledby="section-sorter-heading" className="p-4 bg-slate-800 rounded-lg shadow">
+			<h2 id="section-sorter-heading" className="text-xl font-semibold text-slate-100 mb-4">
+				Reorder & Theme Sections
 			</h2>
-			<p
-				id="section-sorter-instructions"
-				className="text-sm text-gray-600 mb-4"
-			>
-				Drag and drop to reorder sections. Changes are saved automatically.
-			</p>
-			<div
-				role="status"
-				aria-live="polite"
-				className="text-sm text-gray-600 h-5 mb-4"
-			>
-				{statusMessage}
-			</div>
+			{statusMessage && (
+				<div className="sr-only" aria-live="assertive" aria-atomic="true">
+					{statusMessage}
+				</div>
+			)}
 			<DndContext
 				sensors={sensors}
 				collisionDetection={closestCenter}
 				onDragEnd={handleDragEnd}
+				modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
 			>
-				<SortableContext
-					items={sections}
-					strategy={verticalListSortingStrategy}
-				>
-					<ul
-						className="flex flex-col gap-2"
-						aria-describedby="section-sorter-instructions"
-					>
-						{sections.map((section, idx) => (
+				<SortableContext items={orderedItems.map(item => item.id)} strategy={verticalListSortingStrategy}>
+					<ul className="space-y-2">
+						{orderedItems.map((itemDetails) => (
 							<SortableItem
-								key={section.id}
-								id={section.id}
-								section={section} 
-								index={idx}
-								total={sections.length}
-								updateStatus={setStatusMessage}
-								onThemeChange={handleThemeChange}
+								key={itemDetails.id}
+								details={itemDetails}
+                                onThemeChange={handleThemeChange}
+                                fetcherData={themeUpdateFetcher.data as AdminIndexRoute.ActionData | undefined}
 							/>
 						))}
 					</ul>
 				</SortableContext>
 			</DndContext>
+			{/* Commented out generic message as errors are per item now
+			{themeUpdateFetcher.data && themeUpdateFetcher.data.message && (
+				<p
+					className={`mt-4 text-sm ${themeUpdateFetcher.data.success ? "text-green-400" : "text-red-400"}`}
+				>
+					{themeUpdateFetcher.data.message}
+				</p>
+			)} 
+            */}
 		</section>
 	);
 }
-function SortableItem({
-	id,
-	section, 
-	index,
-	total,
-	updateStatus,
-	onThemeChange,
-}: {
-	id: string;
-	section: Section; 
-	index: number;
-	total: number;
-	updateStatus: (msg: string) => void;
-	onThemeChange: (sectionId: string, newTheme: SectionTheme) => void;
-}): React.ReactElement {
-	const { label, theme, themeKey } = section; 
-	const {
-		setNodeRef,
-		attributes,
-		listeners,
-		transform,
-		transition,
-		isDragging,
-	} = useSortable({ id });
+
+function SortableItem({ details, onThemeChange, fetcherData }: SortableItemProps) {
+	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+		id: details.id,
+	});
+
 	const style: React.CSSProperties = {
 		transform: CSS.Transform.toString(transform),
 		transition,
+		zIndex: isDragging ? 100 : undefined,
 	};
-	React.useEffect(() => {
-		if (isDragging) {
-			updateStatus(
-				`Moving ${label}, current theme ${theme}, position ${
-					index + 1
-				} of ${total}.`,
-			);
-		} else {
-			updateStatus(""); 
-		}
-	}, [isDragging, label, theme, index, total, updateStatus]);
-	const handleLocalThemeChange = (isChecked: boolean) => {
-		onThemeChange(id, isChecked ? "dark" : "light");
-	};
+
+    const themeErrorForThisItem = fetcherData?.errors?.[details.themeKey ?? ""];
+    const isLight = details.currentTheme === "light";
+
 	return (
 		<li
 			ref={setNodeRef}
-			style={style} 
-			className={clsx(
-				"flex flex-col sm:flex-row items-center justify-between rounded border border-gray-200 bg-white px-4 py-2 shadow-xs focus:outline-none focus:ring-2 focus:ring-primary",
-				isDragging && "opacity-50 ring-2 ring-primary",
-			)}
-			role="option"
-			aria-selected={isDragging}
-			aria-roledescription="draggable section with theme toggle"
-			tabIndex={0} 
+			style={style}
+            className={clsx(
+                "p-3 bg-slate-700 rounded-md shadow flex items-center justify-between",
+                { "opacity-50": isDragging }
+            )}
 		>
-			<div
-				{...attributes} 
-				{...listeners} 
-				className="flex-grow flex items-center cursor-grab py-1 sm:py-0"
-				aria-label={`Section ${label}, position ${
-					index + 1
-				} of ${total}. Use arrow keys to move.`}
-			>
-				<span className="mr-auto">{label}</span>
-				<span
-					className="text-sm text-gray-400 ml-2 hidden sm:inline" 
-					title="Drag to reorder"
-					aria-hidden="true" 
+			<div className="flex items-center">
+				<Button
+					variant="outline"
+					className="cursor-grab p-2 text-slate-300 hover:bg-slate-600 focus-visible:ring-primary-500 mr-3"
+					aria-label={`Drag ${details.label} section`}
+					{...attributes}
+					{...listeners}
 				>
-					↕
-				</span>
-			</div>
-			<div className="flex items-center mt-2 sm:mt-0 sm:ml-4">
-				<SwitchField className="flex items-center">
-					<SwitchLabel
-						htmlFor={themeKey}
-						className="text-sm text-gray-700 mr-2"
+					<svg
+						className="h-5 w-5"
+						fill="none"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth="2"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
 					>
-						Theme: {theme === "dark" ? "Dark" : "Light"}
-					</SwitchLabel>
-					<Switch
-						id={themeKey} 
-						checked={theme === "dark"}
-						onChange={handleLocalThemeChange}
-						aria-label={`Toggle theme for ${label} section. Current theme: ${theme}.`}
-					/>
-				</SwitchField>
+						<line x1="3" y1="12" x2="21" y2="12"></line>
+						<line x1="3" y1="6" x2="21" y2="6"></line>
+						<line x1="3" y1="18" x2="21" y2="18"></line>
+					</svg>
+				</Button>
+				<span className="text-sm font-medium text-slate-100 select-none">{details.label}</span>
+			</div>
+			<div className="flex items-center">
+                <SwitchField className="flex flex-col items-center !gap-0 mr-2">
+                    <Switch
+                        id={`${details.id}-theme-toggle`}
+                       	name={details.themeKey} 
+                        checked={!isLight} 
+                        onChange={(isChecked: boolean) => onThemeChange(details.id, details.themeKey, isChecked ? "dark" : "light")}
+                        aria-label={`Theme for ${details.label} section. Current theme: ${isLight ? "Light" : "Dark"}.`}
+                    />
+                    <SwitchLabel
+                        htmlFor={`${details.id}-theme-toggle`}
+                        className="text-xs text-slate-300 font-normal select-none whitespace-nowrap mt-1"
+                    >
+                        Current: {isLight ? "Light" : "Dark"}
+                    </SwitchLabel>
+                </SwitchField>
+					{themeErrorForThisItem && (
+						<p className="text-xs text-red-400 mt-1 w-full text-right">
+							Error: {themeErrorForThisItem}
+						</p>
+					)}
 			</div>
 		</li>
 	);
