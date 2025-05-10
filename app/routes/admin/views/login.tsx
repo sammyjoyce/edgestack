@@ -5,7 +5,6 @@ import {
 	redirect,
 	useActionData,
 	data,
-	SerializeFrom,
 } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import {
@@ -22,7 +21,7 @@ import { Input } from "../components/ui/input";
 import type { Route } from "./+types/login";
 const DEBUG = process.env.NODE_ENV !== "production";
 type LoginActionData = { success: false; error: string } | { success: true }; 
-export const action = async ({ request, context }: Route.ActionArgs): Promise<Response | SerializeFrom<LoginActionData>> => { 
+export const action = async ({ request, context }: Route.ActionArgs): Promise<Response | LoginActionData> => { 
 	try {
 		const formData = await request.formData();
 		const username = formData.get("username")?.toString() ?? "";
@@ -88,7 +87,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Re
 	}
 };
 export default function Component() { 
-	const actionData = useActionData<SerializeFrom<typeof action>>(); 
+	const actionData = useActionData<typeof action>(); 
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	return (

@@ -10,8 +10,8 @@ import { Label } from "../../../components/ui/fieldset";
 import { Text } from "../../../components/ui/text";
 import { Button } from "../../../components/ui/button";
 import type { Route } from "./+types/projectId/delete";
-import { data, SerializeFrom } from "react-router"; 
-export async function loader({ params, context }: Route.LoaderArgs): Promise<SerializeFrom<Route.LoaderData> | Response> { 
+import { data } from "react-router"; 
+export async function loader({ params, context }: Route.LoaderArgs): Promise<Route.LoaderData | Response> { 
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		throw data({ error: "Invalid Project ID" }, { status: 400 }); 
@@ -33,8 +33,8 @@ export async function loader({ params, context }: Route.LoaderArgs): Promise<Ser
 export async function action({
 	request,
 	params,
-	context, 
-}: Route.ActionArgs): Promise<Response | SerializeFrom<Route.ActionData>> { 
+	context,
+}: Route.ActionArgs): Promise<Response | Route.ActionData> { 
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
@@ -56,7 +56,7 @@ export async function action({
 	}
 }
 export default function DeleteProjectPage() {
-	const { project } = useLoaderData<SerializeFrom<typeof loader>>(); 
+	const { project } = useLoaderData<typeof loader>(); 
 	const navigate = useNavigate();
 	return (
 		<FadeIn>

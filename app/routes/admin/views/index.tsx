@@ -7,7 +7,6 @@ import {
 	useLoaderData,
 	useNavigation,
 	data,
-	SerializeFrom, 
 } from "react-router";
 import {
 	getAllContent,
@@ -27,7 +26,7 @@ const DEFAULT_CONTENT = {
 export async function loader({
 	request,
 	context,
-}: Route.LoaderArgs): Promise<SerializeFrom<{ content: Record<string, string> }>> {
+}: Route.LoaderArgs): Promise<Route.LoaderData> {
 	invariant(request instanceof Request, "loader: request must be a Request");
 	invariant(context?.db, "loader: missing DB in context");
 	const token = getSessionCookie(request);
@@ -50,7 +49,7 @@ import { ValiError } from "valibot";
 export async function action({
 	request,
 	context,
-}: Route.ActionArgs): Promise<Response | SerializeFrom<{ success: boolean; error?: string; message?: string; errors?: Record<string, string>}>> {
+}: Route.ActionArgs): Promise<Response | Route.ActionData> {
 	if (DEBUG) console.log(
 		"Action triggered in admin/views/index.tsx - THIS IS THE CORRECT ROUTE",
 	);

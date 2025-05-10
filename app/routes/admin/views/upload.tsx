@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
 import React, { type JSX, useState } from "react";
 import { ValiError } from "valibot";
-import { data, redirect, SerializeFrom } from "react-router";
+import { data, redirect } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
@@ -21,7 +21,7 @@ import { Heading } from "../components/ui/heading";
 import { Input } from "../components/ui/input";
 import { Text } from "../components/ui/text";
 import type { Route } from "./+types/upload";
-export async function loader({ context, request }: Route.LoaderArgs): Promise<SerializeFrom<Route.LoaderData> | Response> { 
+export async function loader({ context, request }: Route.LoaderArgs): Promise<Route.LoaderData | Response> { 
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {

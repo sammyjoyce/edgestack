@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Link, redirect, useLoaderData, data, Outlet, useLocation, SerializeFrom } from "react-router";
+import { Form, Link, redirect, useLoaderData, data, Outlet, useLocation } from "react-router";
 import invariant from "tiny-invariant";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
@@ -12,7 +12,7 @@ import type { Route } from "./+types/index";
 export async function loader({
 	request,
 	context,
-}: Route.LoaderArgs): Promise<SerializeFrom<Route.LoaderData> | Response> { 
+}: Route.LoaderArgs): Promise<Route.LoaderData | Response> { 
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -32,7 +32,7 @@ export async function loader({
 export async function action({
 	request,
 	context,
-}: Route.ActionArgs): Promise<SerializeFrom<Route.ActionData> | Response> { 
+}: Route.ActionArgs): Promise<Route.ActionData | Response> { 
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
 	const sessionValue = getSessionCookie(request);
