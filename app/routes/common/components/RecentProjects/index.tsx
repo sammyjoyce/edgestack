@@ -1,4 +1,4 @@
-import { clsx } from "clsx";
+import { clsx } from "clsx"; // Ensure clsx is imported if not already
 import React from "react";
 import { Link, type To } from "react-router"; // Import To type
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; // Import the new component
@@ -12,21 +12,24 @@ interface RecentProjectsProps {
 	introTitle?: string;
 	introText?: string;
 	projects: Project[]; // Expect projects array as a prop
+	theme?: 'light' | 'dark'; // Add theme prop
 }
 
 export default function RecentProjects({
 	introTitle,
 	introText,
 	projects = [],
+	theme = "light", // Default theme
 }: RecentProjectsProps) {
 	// No longer use hardcoded data
 
-	return (
-		<section id="projects" className="w-full bg-white py-20">
+	return ( // Apply theme to the section's root element
+		<section id="projects" className={clsx("w-full py-20 bg-white dark:bg-gray-900", theme === "dark" && "dark")}>
 			{/* Use props for intro title and text, with defaults */}
 			<SectionIntro
 				title={introTitle ?? "Recent Projects"}
 				className="mb-16 max-w-6xl px-4 lg:px-8"
+				invert={theme === 'dark'} // Invert SectionIntro if the section theme is dark
 			>
 				{introText && <p>{introText}</p>}
 				{/* Conditionally render intro text if provided */}
@@ -61,20 +64,21 @@ export default function RecentProjects({
 											idx % 2 === 1 ? "md:order-first" : "",
 										)}
 									>
-										<h3 className="mb-4 font-serif text-2xl text-black leading-snug md:mb-6 md:text-3xl">
+										<h3 className="mb-4 font-serif text-2xl text-black leading-snug dark:text-white md:mb-6 md:text-3xl">
 											{project.title}
 										</h3>
 										<ConditionalRichTextRenderer
 											text={
 												project.description ? String(project.description) : null
 											}
-											fallbackClassName="mb-4 text-base text-gray-700 md:mb-6 md:text-lg"
+											fallbackClassName="mb-4 text-base text-gray-700 dark:text-gray-300 md:mb-6 md:text-lg"
+											richTextClassName={clsx(theme === "dark" && "dark:prose-invert")}
 											fallbackTag="p"
 										/>
 										{/* Use Link with typed 'to' prop */}
 										<Link
 											to={`/projects/${project.id}`}
-											className="font-semibold text-base text-black underline underline-offset-4 transition hover:text-gray-700"
+											className="font-semibold text-base text-black underline underline-offset-4 transition hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
 										>
 											View Project Details →
 										</Link>

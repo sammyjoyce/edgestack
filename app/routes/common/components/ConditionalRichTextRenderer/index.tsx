@@ -1,3 +1,4 @@
+import clsx from "clsx"; // Ensure clsx is imported
 import type React from "react"; // Import React and Fragment
 import { Fragment, type JSX } from "react";
 import RichTextRenderer from "~/routes/common/components/RichTextRenderer";
@@ -26,6 +27,8 @@ export default function ConditionalRichTextRenderer({
 	try {
 		JSON.parse(text); // Attempt to parse as JSON
 		// If successful, render using RichTextRenderer
+		// RichTextRenderer itself applies dark:prose-invert, so no need to add it here via richTextClassName
+		// unless specifically overriding or extending.
 		return <RichTextRenderer json={text} className={richTextClassName} />;
 	} catch {
 		// If parsing fails, render as plain text within the specified tag

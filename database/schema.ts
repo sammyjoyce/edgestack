@@ -7,6 +7,7 @@ export const content = sqliteTable("content", {
 	page: text("page").notNull().default("global"), // Logical page this content belongs to
 	section: text("section").default("default"), // Finer-grained grouping
 	type: text("type").notNull().default("text"), // Content type (text, image, markdown, etc.)
+	theme: text("theme", { enum: ["light", "dark"] }).default("light"), // Theme for the content block
 	value: text("value", { mode: "json" }).notNull(), // Content value
 	mediaId: integer("media_id").references(() => media.id), // Optional FK to media
 	sortOrder: integer("sort_order").default(0).notNull(), // For ordered blocks

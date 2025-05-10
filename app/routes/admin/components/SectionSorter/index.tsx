@@ -194,8 +194,10 @@ function SortableItem({
 			aria-label={`Section ${label}, position ${
 				index + 1
 			} of ${total}. Use arrow keys to move.`}
-			aria-grabbed={isDragging}
+			role="option"
+			aria-selected={isDragging}
 			aria-roledescription="draggable section"
+			tabIndex={0}
 		>
 			<span>{label}</span>
 			<span

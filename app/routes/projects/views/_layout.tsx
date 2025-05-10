@@ -1,3 +1,4 @@
+import clsx from "clsx"; // Ensure clsx is imported
 import { Outlet, data, useLoaderData } from "react-router";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
@@ -35,17 +36,24 @@ export const loader = async ({ context }: any) => {
 export function ProjectsLayout() {
 	// Use type inference with the loader function
 	const loaderData = useLoaderData<typeof loader>();
+	const projectsPageIntroTheme = loaderData.content.projects_page_intro_theme === 'dark' ? 'dark' : 'light';
 
 	return (
 		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
 			<Header />
 
-			<div className="bg-white pt-20 pb-10">
+			{/* Apply theme to the intro section of the projects page */}
+			<div
+				className={clsx(
+					"pt-20 pb-10 bg-white text-gray-900 dark:bg-gray-900 dark:text-white",
+					projectsPageIntroTheme === "dark" && "dark",
+				)}
+			>
 				<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-					<h1 className="mb-4 text-center font-bold font-serif text-4xl text-black">
+					<h1 className="mb-4 text-center font-bold font-serif text-4xl text-black dark:text-white">
 						Our Projects
 					</h1>
-					<p className="mx-auto max-w-3xl text-center text-gray-700 text-xl">
+					<p className="mx-auto max-w-3xl text-center text-xl text-gray-700 dark:text-gray-300">
 						{loaderData.content.projects_page_intro ??
 							"Explore our portfolio of completed projects, showcasing our commitment to quality craftsmanship and attention to detail."}
 					</p>

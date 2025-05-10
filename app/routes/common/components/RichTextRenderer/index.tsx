@@ -146,7 +146,7 @@ export default function RichTextRenderer({ json, className }: Props) {
 	if (error || !parsedState || !parsedState.root) {
 		// Render nothing or an error message if parsing failed or content is empty
 		return (
-			<div className={clsx("prose prose-sm max-w-none", className)}>
+			<div className={clsx("prose prose-sm max-w-none dark:prose-invert", className)}> {/* Added dark:prose-invert */}
 				{error ? <p className="text-red-500">{error}</p> : null}
 			</div>
 		);
@@ -154,7 +154,7 @@ export default function RichTextRenderer({ json, className }: Props) {
 
 	return (
 		// Apply prose for default styling, allow override/extension with className
-		<div className={clsx("prose prose-sm max-w-none", className)}>
+		<div className={clsx("prose prose-sm max-w-none dark:prose-invert", className)}> {/* Added dark:prose-invert */}
 			{renderNode(parsedState.root, 0)}
 		</div>
 	);

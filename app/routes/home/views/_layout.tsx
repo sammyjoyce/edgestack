@@ -66,7 +66,7 @@ export function HomeLayout() {
 	const loaderData = useLoaderData<typeof loader>();
 
 	return (
-		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
+		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0 dark:bg-gradient-to-b dark:from-gray-950/0 dark:via-gray-800/10 dark:to-gray-950/0">
 			<Header />
 			<Outlet context={loaderData} />
 			<Footer />

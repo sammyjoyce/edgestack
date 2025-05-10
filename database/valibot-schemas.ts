@@ -6,7 +6,7 @@ import {
 import { content, media, projects } from "./schema";
 
 // Error response schema for validation
-import { number, object, string } from "valibot";
+import { number, object, string, enum_ as enumType, optional } from "valibot";
 export const errorResponseSchema = object({
 	error: string(),
 	status: number(),
@@ -14,8 +14,12 @@ export const errorResponseSchema = object({
 
 // Valibot schemas for runtime validation
 export const contentInsertSchema = createInsertSchema(content);
-const contentSelectSchema = createSelectSchema(content);
-export const contentUpdateSchema = createUpdateSchema(content);
+const contentSelectSchema = createSelectSchema(content, {
+	theme: optional(enumType(["light", "dark"])),
+});
+export const contentUpdateSchema = createUpdateSchema(content, {
+	theme: optional(enumType(["light", "dark"])),
+});
 
 export const projectInsertSchema = createInsertSchema(projects);
 const projectSelectSchema = createSelectSchema(projects);

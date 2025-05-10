@@ -83,14 +83,6 @@ export default function HomeRoute(): JSX.Element {
 
 	const typedContent = content as unknown as Record<string, string>;
 
-	const order = ["hero", "services", "projects", "about", "contact"];
-
-	invariant(Array.isArray(order), "HomeRoute: order must be an array");
-	invariant(
-		order.every((id) => typeof id === "string"),
-		"HomeRoute: all order ids must be strings",
-	);
-
 	const sectionBlocks: Record<string, JSX.Element> = {
 		hero: (
 			<Hero
@@ -166,6 +158,19 @@ export default function HomeRoute(): JSX.Element {
 	invariant(
 		typeof sectionBlocks === "object",
 		"HomeRoute: sectionBlocks must be an object",
+	);
+
+	// Determine section order from database or use default
+	const DEFAULT_ORDER = ["hero", "services", "projects", "about", "contact"];
+	const orderString = typedContent?.home_sections_order as string | undefined;
+	const order = orderString
+		? orderString.split(",").filter((id) => id in sectionBlocks)
+		: DEFAULT_ORDER;
+
+	invariant(Array.isArray(order), "HomeRoute: order must be an array");
+	invariant(
+		order.every((id) => typeof id === "string"),
+		"HomeRoute: all order ids must be strings",
 	);
 
 	return (

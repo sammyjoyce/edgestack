@@ -26,9 +26,12 @@ export const Button = forwardRef(function Button(
 	className = clsx(
 		className,
 		"inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition",
-		invert
-			? "bg-white text-neutral-950 hover:bg-neutral-200"
-			: "bg-neutral-950 text-white hover:bg-neutral-800",
+		// If invert is true (button is on a dark background):
+		// Light mode: light button. Dark mode: still a contrasting button for dark backgrounds (e.g. slightly lighter or darker than main dark bg if it's on a card)
+		// If invert is false (button is on a light background):
+		// Light mode: dark button. Dark mode: light button.
+		invert ? "bg-white text-neutral-950 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-700"
+			   : "bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-neutral-200 dark:text-neutral-950 dark:hover:bg-neutral-300"
 	);
 
 	const inner = <span className="relative top-px">{children}</span>;
