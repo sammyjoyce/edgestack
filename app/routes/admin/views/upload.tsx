@@ -23,6 +23,7 @@ import { PageHeader } from "../components/ui/PageHeader";
 import { Heading } from "../components/ui/heading";
 import { Input } from "../components/ui/input";
 import { Text } from "../components/ui/text";
+// Removed type { Route } from "./+types/upload"; as it's moved to the top by another change
 export async function loader({
 	context,
 	request,
