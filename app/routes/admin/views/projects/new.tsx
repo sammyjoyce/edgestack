@@ -75,7 +75,7 @@ export async function action({
 	}
 }
 
-export function Component() { // Renamed to Component
+export default function NewProjectPage() {
 	const navigate = useNavigate();
 	const actionData = useActionData<Route.ActionData>(); // Or Route.ActionData
 	const errors = actionData?.errors as Record<string, string> | undefined;
@@ -184,6 +184,3 @@ export function Component() { // Renamed to Component
 		</FadeIn>
 	);
 }
-
-// Default export for backwards compatibility if needed
-// export default Component;

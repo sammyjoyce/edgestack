@@ -82,7 +82,7 @@ export async function action({
 	return data({ success: false, error: "Unknown intent" }, { status: 400 }); // Use data() for unknown intent
 }
 
-export function Component() { // Renamed to Component
+export default function AdminProjectsIndexPage() {
 	const { projects } = useLoaderData<Route.LoaderData>(); // Or Route.LoaderData
 
 	// TigerStyle runtime assertions with detailed error messages
@@ -209,6 +209,3 @@ export function Component() { // Renamed to Component
 		</>
 	);
 }
-
-// Default export for backwards compatibility if needed, or remove if Component is the standard.
-// export default Component;

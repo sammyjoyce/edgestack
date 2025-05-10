@@ -152,7 +152,7 @@ export async function action({
 	}
 }
 
-export function Component() { // Ensure it's a named export "Component"
+export default function EditProjectPage() {
 	const { project } = useLoaderData<Route.LoaderData>(); // Or Route.LoaderData
 	const actionData = useActionData<Route.ActionData>(); // Or Route.ActionData
 	const errors = actionData?.errors as Record<string, string> | undefined;
