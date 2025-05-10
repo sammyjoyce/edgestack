@@ -12,7 +12,7 @@ import {
 	listStoredImages,
 } from "~/utils/upload.server";
 import { schema } from "../../../../database/schema";
-import { validateContentInsert } from "../../../../database/valibot-validation";
+import { validateContentInsert } from "../../../../database/valibot-validation.js";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
 import { Heading } from "../components/ui/heading";
