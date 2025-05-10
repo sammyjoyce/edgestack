@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, redirect, useActionData, useNavigate, data } from "react-router";
 import type { ActionFunctionArgs } from "react-router";
-import invariant from "tiny-invariant";
+import { assert } from "~/routes/common/utils/assert";
 import { createProject } from "~/routes/common/db";
 import type { NewProject } from "../../../../../database/schema";
 import { validateProjectInsert } from "../../../../../database/valibot-validation.js";
@@ -64,11 +64,11 @@ export default function NewProjectPage() {
 	const navigate = useNavigate();
 	const actionData = useActionData<typeof action>(); 
 	const errors = actionData?.errors as Record<string, string> | undefined;
-	invariant(
+	assert(
 		typeof navigate === "function",
 		"NewProjectRoute: navigate must be a function",
 	);
-	invariant(
+	assert(
 		typeof actionData === "undefined" || typeof actionData === "object",
 		"NewProjectRoute: actionData must be object or undefined",
 	);

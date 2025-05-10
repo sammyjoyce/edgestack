@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Link, redirect, useLoaderData, data, Outlet, useLocation } from "react-router";
-import invariant from "tiny-invariant";
+import { assert } from "~/routes/common/utils/assert";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import type { Project } from "../../../../../database/schema";
@@ -71,11 +71,11 @@ export default function AdminProjectsIndexPage() {
 	const { projects } = useLoaderData<typeof loader>(); 
 	const location = useLocation();
 	const isChildActive = location.pathname !== "/admin/projects" && location.pathname.startsWith("/admin/projects/");
-	invariant(
+	assert(
 		Array.isArray(projects),
 		"ProjectsIndexRoute: loader must return an array of projects. Check loader implementation.",
 	);
-	invariant(
+	assert(
 		typeof projects.length === "number",
 		"ProjectsIndexRoute: projects must have a length property. Data returned from loader is invalid.",
 	);
