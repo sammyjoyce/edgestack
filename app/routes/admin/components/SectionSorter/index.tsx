@@ -7,10 +7,10 @@ import { restrictToVerticalAxis, restrictToWindowEdges } from "@dnd-kit/modifier
 import { CSS } from "@dnd-kit/utilities";
 import * as React from "react";
 import clsx from "clsx";
-import { Switch, Label as SwitchLabel } from "~/routes/admin/components/ui/switch";
+import { Switch, Label as SwitchLabel, SwitchField } from "~/routes/admin/components/ui/switch";
 import { Button } from "~/routes/admin/components/ui/button";
 import type { SerializeFrom } from "react-router";
-import SwitchField from "~/routes/common/components/ui/SwitchField.tsx"; 
+// import SwitchField from "~/routes/common/components/ui/SwitchField.tsx"; 
 import type { Route as AdminIndexRoute } from "../../views/+types";
 
 export type SectionTheme = "light" | "dark";
