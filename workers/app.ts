@@ -45,7 +45,9 @@ export default {
 					svg: "image/svg+xml",
 				};
 				const contentType =
-					ext && typeMap[ext] ? typeMap[ext] : "application/octet-stream";
+					object.httpMetadata?.contentType || // Prefer R2 metadata
+					(ext && typeMap[ext]) || // Fallback to extension map
+					"application/octet-stream"; // Default
 				return new Response(object.body, {
 					status: 200,
 					headers: {

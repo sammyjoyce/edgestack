@@ -76,6 +76,7 @@ const navigation: NavItem[] = [
 import clsx from "clsx";
 
 export default function Component() {
+	const navigation = useNavigation();
 	// build the sidebar once
 	const sidebarNav = (
 		<nav className="flex h-full flex-col bg-gray-900 px-6 py-4">
@@ -136,6 +137,21 @@ export default function Component() {
 			}
 			sidebar={sidebarNav}
 		>
+			{navigation.state === "loading" && (
+				<div
+					style={{
+						position: "fixed",
+						top: 0,
+						left: 0,
+						right: 0,
+						height: "3px",
+						background: "var(--color-primary)",
+						zIndex: 9999,
+						transition: "width 0.2s ease-out",
+					}}
+					className="global-loading-indicator"
+				/>
+			)}
 			<Outlet context={useLoaderData<typeof loader>()} />
 		</SidebarLayout>
 	);

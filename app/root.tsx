@@ -7,7 +7,9 @@ import {
 	ScrollRestoration,
 	isRouteErrorResponse,
 	useMatches,
+	useLocation, // Added for HashScrollHandler if it uses it internally, or if we place it here
 } from "react-router";
+import { HashScrollHandler } from "~/routes/common/components/HashScrollHandler"; // Import HashScrollHandler
 
 import type { Route } from "./+types/root";
 // Import global error logger for client-side diagnostics
@@ -42,6 +44,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				{children}
 				<ScrollRestoration />
 				<Scripts />
+				<HashScrollHandler /> {/* Add HashScrollHandler here */}
 			</body>
 		</html>
 	);
