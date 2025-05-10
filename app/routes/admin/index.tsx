@@ -47,7 +47,7 @@ export async function loader({
 export async function action({
 	request,
 	context,
-}: Route.ActionArgs): Promise<Response> {
+}: Route.ActionArgs) { // Adjusted return type
 	console.log(
 		"Action triggered in admin/views/index.tsx - THIS IS THE CORRECT ROUTE",
 	);
@@ -64,36 +64,43 @@ export async function action({
 		if (request.method !== "POST") {
 			return new Response(JSON.stringify({ error: "Method not allowed" }), {
 				status: 405,
+				headers: { "Content-Type": "application/json" },
 			});
 		}
 		const formData = await request.formData();
 		const intent = formData.get("intent")?.toString();
 
-		if (intent === "updateTextContent" || intent === "reorderSections") {
+		if (intent === "updateTextContent") {
 			const updates: Record<string, string> = {};
 			for (const [key, value] of formData.entries()) {
 				if (key !== "intent" && typeof value === "string") {
 					updates[key] = value;
 				}
 			}
-			invariant(Object.keys(updates).length > 0, "action: No updates provided for " + intent);
+			invariant(Object.keys(updates).length > 0, "action: No updates provided for updateTextContent");
 			if (DEBUG)
 				console.log(`[ADMIN DASHBOARD ACTION] ${intent} updates:`, updates);
 			await updateContent(context.db, updates);
-			// Return a success response. React Router will handle revalidation.
-			return new Response(
-				JSON.stringify({ success: true, message: "Content updated successfully." }),
-				{
-					status: 200,
-					headers: { "Content-Type": "application/json" },
-				},
-			);
+			// Return JSON for fetchers, no redirect needed for background saves
+			return data({ success: true, message: "Content updated successfully." });
+		} else if (intent === "reorderSections") {
+			const updates: Record<string, string> = {};
+			for (const [key, value] of formData.entries()) {
+				if (key !== "intent" && typeof value === "string") {
+					updates[key] = value;
+				}
+			}
+			invariant(Object.keys(updates).length > 0, "action: No updates provided for reorderSections");
+			if (DEBUG) console.log("[ADMIN DASHBOARD ACTION] reorderSections updates:", updates);
+			await updateContent(context.db, updates);
+			return data({ success: true, message: "Sections reordered successfully." });
 		}
 
 		// Handle other intents or return error for unknown intents
 		console.warn(`[ADMIN DASHBOARD ACTION] Unknown intent: ${intent}`);
 		return new Response(JSON.stringify({ error: `Unknown intent: ${intent}` }), {
 			status: 400,
+			headers: { "Content-Type": "application/json" }, 
 		});
 
 	} catch (error: unknown) {

@@ -46,9 +46,7 @@ export async function loader({
 		return { project };
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw new Response(error.message || "Failed to load project", {
-			status: 500,
-		});
+		throw data({ message: error.message || "Failed to load project" }, { status: 500 });
 	}
 }
 
