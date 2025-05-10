@@ -15,7 +15,7 @@
  * Usage
  * ────────────────────────────────────────────────────────────────────────────
  *   bun scrub-comments.ts [projectDir] [--ext .ts,.tsx,.js] [--skip node_modules,.git]
- *                         [--treesitter] [--dry-run]
+ *                         [--treesitter] [--dry-run] [--keep-docs]
  *
  *   bun build scrub-comments.ts --compile --outfile scrub-comments
  *
@@ -26,190 +26,364 @@
  *
  *   # Safer stripping via Tree‑sitter when grammar is present
  *   bun scrub-comments.ts ./my-proj --treesitter
+ *
+ *   # Keep JSDoc/TSDoc blocks
+ *   bun scrub-comments.ts ./my-proj --keep-docs
  */
 
 import { readdir, readFile, writeFile } from "fs/promises";
 import { join, extname, relative } from "path";
 import ignore from "ignore";
 
-/* ── CLI ARG PARSING ───────────────────────────────────────────────────── */
-type Args = {
-  _: string[];
+/* ── CONFIGURATION ─────────────────────────────────────────────────────── */
+
+/** Configuration options for the script. */
+interface ScriptConfig {
+  projectDir: string;
+  extensions: Set<string>;
+  skipDirectories: Set<string>;
+  isDryRun: boolean;
+  useTreeSitter: boolean;
+  keepDocs: boolean;
+}
+
+/** Type for raw string arguments parsed from the command line. */
+type RawCliArgs = {
+  _?: string[]; // Positional arguments
   ext?: string;
   skip?: string;
-  "dry-run"?: boolean;
-  treesitter?: boolean;
-  "keep-docs"?: boolean;      // preserve /** JSDoc / TSDoc blocks
+  "dry-run"?: string;
+  treesitter?: string;
+  "keep-docs"?: string;
+  [key: string]: string | string[] | undefined; // Allow other keys from CLI
 };
 
-function parseArgs(argv: string[]): Args {
-  const args: Args = { _: [] };
+/**
+ * Parses command-line arguments into a structured configuration object.
+ * @param argv Array of command-line arguments (e.g., `Bun.argv.slice(2)`).
+ * @returns A ScriptConfig object.
+ */
+function parseCliArguments(argv: string[]): ScriptConfig {
+  const rawArgs: RawCliArgs = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const token = argv[i];
     if (token.startsWith("--")) {
-      const key = token.slice(2) as keyof Args;
-      const val = argv[i + 1] && !argv[i + 1].startsWith("--") ? argv[++i] : "true";
-      (args as any)[key] = val;
+      const key = token.slice(2);
+      const nextToken = argv[i + 1];
+      // Check if the next token is a value for the current flag, or another flag
+      if (nextToken && !nextToken.startsWith("--")) {
+        rawArgs[key] = nextToken;
+        i++; // Consume the value token
+      } else {
+        // Flag is present without a value (treat as true), or is the last token
+        rawArgs[key] = "true";
+      }
     } else {
-      args._.push(token);
+      // Positional argument
+      // The _ property is initialized, so the non-null assertion operator is safe here.
+      rawArgs._!.push(token);
     }
   }
-  return args;
+
+  return {
+    projectDir: rawArgs._![0] ?? process.cwd(),
+    extensions: new Set(
+      (rawArgs.ext ?? ".ts,.tsx").split(",").map((e) => (e.startsWith(".") ? e : `.${e}`))
+    ),
+    skipDirectories: new Set(
+      (rawArgs.skip ?? "node_modules,.git").split(",").filter(Boolean)
+    ),
+    isDryRun: rawArgs["dry-run"] === "true",
+    useTreeSitter: rawArgs.treesitter === "true",
+    keepDocs: rawArgs["keep-docs"] === "true",
+  };
 }
 
-const parsed = parseArgs(Bun.argv.slice(2));
-const projectDir = parsed._[0] ?? process.cwd();
-const exts = new Set(
-  (parsed.ext ?? ".ts,.tsx").split(",").map((e) => (e.startsWith(".") ? e : `.${e}`))
-);
-const skipDirs = new Set(
-  (parsed.skip ?? "node_modules,.git").split(",").filter(Boolean)
-);
-const DRY_RUN = parsed["dry-run"] ?? false;
-const USE_TS = parsed.treesitter ?? false;
-const KEEP_DOCS = parsed["keep-docs"] ?? false;
+const config = parseCliArguments(Bun.argv.slice(2));
+
+const PROJECT_DIR = config.projectDir;
+const EXTENSIONS = config.extensions;
+const SKIP_DIRECTORIES = config.skipDirectories;
+const IS_DRY_RUN = config.isDryRun;
+const USE_TREE_SITTER = config.useTreeSitter;
+const KEEP_DOCS = config.keepDocs;
 
 /* ── .gitignore handling ──────────────────────────────────────────────── */
 const ig = ignore();
 try {
-  const gitignorePath = join(projectDir, ".gitignore");
+  const gitignorePath = join(PROJECT_DIR, ".gitignore");
   const giContent = await readFile(gitignorePath, "utf8");
-  ig.add(giContent.split(/\r?\n/));
+  ig.add(giContent.split(/\r?\n/).filter(line => line.trim() !== "" && !line.startsWith("#")));
 } catch {
   /* no .gitignore present or unreadable – proceed without it */
 }
 
 /* ── TREE‑SITTER SETUP (OPTIONAL) ──────────────────────────────────────── */
-let Parser: any = null;
-let LANGUAGES: Record<string, any> = {};
-if (USE_TS) {
+let Parser: any = null; // 'any' is acceptable here due to optional dynamic import
+let LANGUAGES: Record<string, any> = {}; // 'any' for Tree-sitter language objects
+
+if (USE_TREE_SITTER) {
   try {
     Parser = (await import("web-tree-sitter")).default;
     await Parser.init();
-    // Dynamically load grammars for extensions we care about
-    // Only ts/tsx/js/jsx for now; extend as needed
-    if (exts.has(".ts") || exts.has(".tsx")) {
-      const Lang = await Parser.Language.load(
-        "https://unpkg.com/tree-sitter-typescript@0.20.2/typescript.wasm"
-      );
-      LANGUAGES[".ts"] = LANGUAGES[".tsx"] = Lang;
+
+    const grammarMappings = [
+      {
+        checkExts: [".ts", ".tsx"],
+        grammarUrl: "https://unpkg.com/tree-sitter-typescript@0.20.2/typescript.wasm",
+        assignToExts: [".ts", ".tsx"],
+      },
+      {
+        checkExts: [".js", ".jsx"],
+        grammarUrl: "https://unpkg.com/tree-sitter-javascript@0.20.2/javascript.wasm",
+        assignToExts: [".js", ".jsx"],
+      },
+      // Add more language grammars here as needed (e.g., .py, .go, .rs)
+      // {
+      //   checkExts: [".py"],
+      //   grammarUrl: "https://unpkg.com/tree-sitter-python@0.20.0/tree-sitter-python.wasm",
+      //   assignToExts: [".py"],
+      // },
+    ];
+
+    for (const mapping of grammarMappings) {
+      if (mapping.checkExts.some(ext => EXTENSIONS.has(ext))) {
+        try {
+          const Lang = await Parser.Language.load(mapping.grammarUrl);
+          mapping.assignToExts.forEach(extKey => { LANGUAGES[extKey] = Lang; });
+          console.info(`Loaded Tree-sitter grammar for ${mapping.assignToExts.join(", ")}`);
+        } catch (langLoadErr) {
+          console.warn(`Failed to load Tree-sitter grammar for ${mapping.checkExts.join('/')} from ${mapping.grammarUrl}:`, langLoadErr);
+        }
+      }
     }
-    if (exts.has(".js") || exts.has(".jsx")) {
-      const Lang = await Parser.Language.load(
-        "https://unpkg.com/tree-sitter-javascript@0.20.2/javascript.wasm"
-      );
-      LANGUAGES[".js"] = LANGUAGES[".jsx"] = Lang;
+    if (Object.keys(LANGUAGES).length === 0) {
+        console.warn("Tree-sitter enabled, but no relevant grammars loaded for configured extensions. Falling back to regex.");
+        Parser = null; // Effectively disable Tree-sitter if no grammars loaded
     }
   } catch (err) {
-    console.warn("Tree‑sitter unavailable – falling back to regex stripping.", err);
-    Parser = null;
+    console.warn("Tree‑sitter parser library unavailable – falling back to regex stripping.", err);
+    Parser = null; // Ensure Parser is null if main import fails
   }
 }
 
 /* ── HELPERS ───────────────────────────────────────────────────────────── */
-/* Determine whether a comment node is a JSDoc/TSDoc that *precedes* a declaration */
-function isDocComment(node: any, src: string): boolean {
-  if (!src.startsWith("/**", node.startIndex)) return false;
 
-  // Grab the next meaningful sibling (skip other comments)
+/**
+ * Recursively walks a directory to find files matching specified extensions,
+ * respecting .gitignore rules and skip directories.
+ * @param currentDirPath The directory path to start walking from.
+ * @param rootProjectDir The root project directory, used for .gitignore path relativity.
+ * @returns A promise that resolves to an array of absolute file paths.
+ */
+async function walk(currentDirPath: string, rootProjectDir: string): Promise<string[]> {
+  const filesFound: string[] = [];
+  try {
+    const entries = await readdir(currentDirPath, { withFileTypes: true });
+    for (const entry of entries) {
+      const entryPath = join(currentDirPath, entry.name);
+      const relativeEntryPath = relative(rootProjectDir, entryPath);
+
+      if (entry.isDirectory()) {
+        if (SKIP_DIRECTORIES.has(entry.name) || (relativeEntryPath && ig.ignores(relativeEntryPath))) {
+          continue;
+        }
+        filesFound.push(...await walk(entryPath, rootProjectDir));
+      } else if (entry.isFile()) {
+        const fileExt = extname(entry.name);
+        if (EXTENSIONS.has(fileExt) && (!relativeEntryPath || !ig.ignores(relativeEntryPath))) {
+          filesFound.push(entryPath);
+        }
+      }
+    }
+  } catch (err) {
+    console.error(`Error reading directory ${currentDirPath}:`, err);
+  }
+  return filesFound;
+}
+
+/**
+ * Determines if a Tree-sitter comment node is a JSDoc/TSDoc block
+ * that immediately precedes a recognizable declaration.
+ * @param node The Tree-sitter comment node (type: any due to dynamic Tree-sitter loading).
+ * @param src The source code string.
+ * @returns True if the node is considered a doc comment for a declaration.
+ */
+function isDocComment(node: any, src: string): boolean {
+  if (!src.startsWith("/**", node.startIndex) || src.startsWith("/***", node.startIndex)) {
+    // Standard JSDoc starts with /**, not /*** (often used for license blocks or other special comments)
+    return false;
+  }
+
+  // Grab the next meaningful sibling (skip other comments, whitespace, etc.)
   let sib = node.nextSibling;
-  while (sib && sib.type === "comment") sib = sib.nextSibling;
+  while (sib && (sib.type === "comment" || sib.isMissing() || sib.text.trim() === "")) {
+    sib = sib.nextSibling;
+  }
   if (!sib) return false;
 
   // Common declaration node types in TS/JS grammars
+  // This set can be expanded based on the grammars used.
   const declTypes = new Set([
     "function_declaration",
     "method_definition",
     "class_declaration",
-    "lexical_declaration",
-    "variable_declaration",
+    "lexical_declaration", // let, const
+    "variable_declaration", // var
     "interface_declaration",
     "type_alias_declaration",
     "enum_declaration",
-    "property_signature",
-    "method_signature",
-    "enum_member",
-    "export_statement",
+    "property_signature", // In interfaces/types
+    "method_signature",   // In interfaces/types
+    // "enum_member", // Decided against, as JSDoc for enum members is less common to keep vs the enum itself
+    "export_statement", // Covers `export function ...`, `export class ...` etc.
+    // For export statements, we might need to check the child of export_statement
+    // e.g., export_statement -> function_declaration
   ]);
 
-  return declTypes.has(sib.type);
+  if (declTypes.has(sib.type)) {
+    return true;
+  }
+
+  // Handle cases like `export const foo = ...` where `export_statement` wraps `lexical_declaration`
+  if (sib.type === "export_statement" && sib.firstChild && declTypes.has(sib.firstChild.type)) {
+    return true;
+  }
+  // Handle cases like `export default function ...`
+  if (sib.type === "export_statement" && sib.namedChildren.length > 0 && declTypes.has(sib.namedChildren[0].type)) {
+      return true;
+  }
+
+
+  return false;
 }
 
 /* Regex‑based fallback */
 function stripRegex(content: string): string {
   // remove single‑line comments (avoid URL “://”)
-  let out = content.replace(/(?<!:)\/\/.*$/gm, "");
+  let out = content.replace(/(?<![:\/\w])\/\/.*$/gm, ""); // Improved to avoid http://, file://, etc.
 
   // choose multi‑line removal strategy based on KEEP_DOCS
   out = KEEP_DOCS
-    ? out.replace(/\/\*(?!\*)([\s\S]*?)\*\//g, "")   // keep /** ... */ docs
+    ? out.replace(/\/\*(?!\*+([^\/]|$))([\s\S]*?)\*\//g, "")   // keep /** ... */ (and /*** ... */ etc.) docs, remove /* ... */
     : out.replace(/\/\*[\s\S]*?\*\//g, "");          // strip all blocks
 
-  // remove empty JSX {}
-  out = out.replace(/^\s*{\s*}\s*$/gm, "");
+  // remove empty JSX {} (usually result of removed comments in JSX)
+  out = out.replace(/\{\s*\}/gm, "");
 
-  // collapse blank lines
-  return out.replace(/^\s*$(?:\r?\n)/gm, "");
+  // collapse multiple blank lines into one, and remove leading/trailing blank lines
+  out = out.replace(/^\s*$(?:\r?\n)+/gm, "\n").trim(); // Results in single blank lines, then trim file
+  return out;
 }
 
 /* Tree‑sitter‑based stripper (comments only, preserves code/strings) */
 function stripTreeSitter(content: string, ext: string): string {
   const lang = LANGUAGES[ext];
-  if (!lang || !Parser) return stripRegex(content);
+  // Parser should already be non-null if USE_TREE_SITTER is true and grammars loaded
+  if (!lang || !Parser) {
+    console.warn(`No Tree-sitter grammar for ${ext}, or Parser not initialized. Falling back to regex for this file.`);
+    return stripRegex(content);
+  }
 
   const parser = new Parser();
   parser.setLanguage(lang);
   const tree = parser.parse(content);
 
-  const comments = tree.rootNode.descendantsOfType("comment");
   let result = "";
-  let last = 0;
+  let lastIndex = 0;
 
-  for (const node of comments) {
-    const startIdx = node.startIndex;
-    const endIdx = node.endIndex;
+  // Iterate over all nodes and selectively keep non-comments or kept comments
+  // This is more robust than just finding comments and slicing around them,
+  // especially for nested structures or complex comment scenarios.
 
-    // Preserve documentation comments that actually annotate a declaration
-    if (KEEP_DOCS && isDocComment(node, content)) continue;
-
-    result += content.slice(last, startIdx);
-    last = endIdx;
+  function traverse(node: any) {
+    if (node.type === "comment") {
+      if (KEEP_DOCS && isDocComment(node, content)) {
+        // This JSDoc should be kept, append it.
+        result += content.slice(lastIndex, node.startIndex); // Append content before this comment
+        result += node.text; // Append the comment itself
+        lastIndex = node.endIndex;
+      } else {
+        // This comment should be stripped. Append content before it.
+        result += content.slice(lastIndex, node.startIndex);
+        // Add a newline if the comment was on its own line and stripping it would merge lines.
+        // This is a heuristic and might need refinement.
+        const charBefore = node.startIndex > 0 ? content[node.startIndex - 1] : '\n';
+        const charAfter = node.endIndex < content.length ? content[node.endIndex] : '\n';
+        if (charBefore === '\n' && charAfter === '\n' && node.text.includes('\n')) {
+            // Multi-line comment that was block-like
+            result += '\n';
+        } else if (charBefore === '\n' && charAfter === '\n' && !node.text.includes('\n')) {
+            // Single-line comment on its own line
+             result += '\n';
+        }
+        lastIndex = node.endIndex;
+      }
+    } else if (node.childCount > 0) {
+      node.children.forEach(traverse);
+    }
+    // If it's a terminal node and not a comment, it will be handled by appending the final slice.
   }
-  result += content.slice(last);
 
-  // collapse blank lines produced by removals
-  return result.replace(/^\s*$(?:\r?\n)/gm, "");
+  traverse(tree.rootNode);
+  result += content.slice(lastIndex); // Append any remaining content after the last processed node
+
+  // collapse multiple blank lines into one, and remove leading/trailing blank lines
+  return result.replace(/^\s*$(?:\r?\n)+/gm, "\n").trim();
 }
 
 /* ── MAIN ──────────────────────────────────────────────────────────────── */
 (async () => {
-  const files = await walk(projectDir);
+  console.info(`Starting comment removal process...`);
+  console.info(`Project directory: ${PROJECT_DIR}`);
+  console.info(`Extensions: ${Array.from(EXTENSIONS).join(", ")}`);
+  console.info(`Skip directories: ${Array.from(SKIP_DIRECTORIES).join(", ")}`);
+  console.info(`Dry run: ${IS_DRY_RUN}`);
+  console.info(`Use Tree-sitter: ${USE_TREE_SITTER && Parser ? 'Enabled' : 'Disabled/Fallback'}`);
+  console.info(`Keep JSDoc/TSDoc: ${KEEP_DOCS}`);
+
+  const files = await walk(PROJECT_DIR, PROJECT_DIR);
   if (files.length === 0) {
-    console.log("No matching files.");
+    console.log("No matching files found to process.");
     return;
   }
+  console.info(`Found ${files.length} file(s) to process.`);
+
+  let changedCount = 0;
+  let unchangedCount = 0;
 
   await Promise.all(
-    files.map(async (path) => {
+    files.map(async (filePath) => {
       try {
-        const original = await readFile(path, "utf8");
-        const ext = extname(path);
-        const cleaned = USE_TS && Parser ? stripTreeSitter(original, ext) : stripRegex(original);
-        if (original !== cleaned) {
-          if (DRY_RUN) {
-            console.log(`→ would change ${path}`);
+        const originalContent = await readFile(filePath, "utf8");
+        const fileExt = extname(filePath);
+        
+        const cleanedContent = (USE_TREE_SITTER && Parser && LANGUAGES[fileExt])
+          ? stripTreeSitter(originalContent, fileExt)
+          : stripRegex(originalContent);
+
+        if (originalContent !== cleanedContent) {
+          changedCount++;
+          if (IS_DRY_RUN) {
+            console.log(`→ Would change: ${relative(PROJECT_DIR, filePath)}`);
           } else {
-            await writeFile(path, cleaned, "utf8");
-            console.log(`✓ ${path}`);
+            await writeFile(filePath, cleanedContent, "utf8");
+            console.log(`✓ Cleaned: ${relative(PROJECT_DIR, filePath)}`);
           }
+        } else {
+          unchangedCount++;
+          // console.log(`= Unchanged: ${relative(PROJECT_DIR, filePath)}`); // Optional: log unchanged files
         }
       } catch (err) {
-        console.error(`✗ ${path}`, err);
+        console.error(`✗ Error processing ${relative(PROJECT_DIR, filePath)}:`, err);
       }
     })
   );
 
   console.log(
-    `Comment removal ${DRY_RUN ? "preview" : "process"} completed for ${files.length} file(s).`
+    `\nComment removal ${IS_DRY_RUN ? "preview" : "process"} completed.`
   );
+  console.log(`  Processed: ${files.length} file(s)`);
+  console.log(`  Changed:   ${changedCount} file(s)`);
+  console.log(`  Unchanged: ${unchangedCount} file(s)`);
 })();
