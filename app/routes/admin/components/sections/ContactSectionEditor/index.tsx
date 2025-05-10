@@ -1,7 +1,7 @@
 import type React from "react";
 import type { FetcherWithComponents } from "react-router";
-import { Input } from "../ui/input"; // Import React
-import { Textarea } from "../ui/textarea";
+import { Input } from "~/routes/admin/components/ui/input"; // Import React
+import { Textarea } from "~/routes/admin/components/ui/textarea";
 
 import RichTextField from "~/routes/admin/components/RichTextField";
 import {
