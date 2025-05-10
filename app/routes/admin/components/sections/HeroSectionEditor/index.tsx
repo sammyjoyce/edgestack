@@ -12,7 +12,7 @@ import {
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
 import { Textarea } from "~/routes/admin/components/ui/textarea";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 
 interface HeroSectionEditorProps {
 	// Use a union type with inferred action types
