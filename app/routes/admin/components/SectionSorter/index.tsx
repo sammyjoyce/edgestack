@@ -49,12 +49,12 @@ export default function SectionSorter({
 }: SectionSorterProps): React.ReactElement {
 	// Internal state for dnd-kit, derived from sectionDetailsOrdered and initialSectionsFromDb
     const [orderedItems, setOrderedItems] = React.useState<SectionDetail[]>(() => {
-        const dbOrder = initialSectionsFromDb.map(s => s.id);
+        const dbOrder = (initialSectionsFromDb || []).map(s => s.id);
         return sectionDetailsOrdered.sort((a, b) => dbOrder.indexOf(a.id) - dbOrder.indexOf(b.id));
     });
 
 	React.useEffect(() => {
-        const dbOrder = initialSectionsFromDb.map(s => s.id);
+        const dbOrder = (initialSectionsFromDb || []).map(s => s.id);
         const currentSortedDetails = [...sectionDetailsOrdered].sort((a,b) => dbOrder.indexOf(a.id) - dbOrder.indexOf(b.id));
         setOrderedItems(currentSortedDetails);
 	}, [initialSectionsFromDb, sectionDetailsOrdered]);
@@ -67,7 +67,7 @@ export default function SectionSorter({
 	);
 
 	React.useEffect(() => {
-		const initialOrderString = initialSectionsFromDb.map((s) => s.id).join(",");
+		const initialOrderString = (initialSectionsFromDb || []).map((s) => s.id).join(",");
 		const currentOrder = orderedItems.map((s) => s.id).join(",");
 		if (
 			initialOrderString !== currentOrder &&
