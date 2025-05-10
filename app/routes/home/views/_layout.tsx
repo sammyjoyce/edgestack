@@ -1,3 +1,4 @@
+import type { Route } from "./+types/_layout";
 import React from "react";
 import {
 	Outlet,
@@ -24,7 +25,7 @@ type HomeLayoutLoaderData = {
 		timestamp: string;
 	};
 };
-export async function loader({ request, context }: any) {
+export async function loader({ request, context, params }: Route.LoaderArgs) {
 	try {
 		const content = await getAllContent(context.db);
 		const featuredProjects = await getFeaturedProjects(context.db);

@@ -23,10 +23,10 @@ import { PageHeader } from "../components/ui/PageHeader";
 import { Heading } from "../components/ui/heading";
 import { Input } from "../components/ui/input";
 import { Text } from "../components/ui/text";
-import type { Route } from "./+types/upload";
 export async function loader({
 	context,
 	request,
+	params,
 }: Route.LoaderArgs): Promise<Route.LoaderData | Response> {
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;

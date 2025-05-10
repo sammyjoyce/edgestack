@@ -4,12 +4,13 @@ import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import { ProjectsErrorBoundary } from "../components/ProjectsErrorBoundary";
+import type { Route } from "./+types/_layout";
 type ProjectsLayoutLoaderData = {
 	content: Record<string, string>;
 	projects: Project[];
 	error?: string;
 };
-export const loader = async ({ context }: any) => {
+export const loader = async ({ context, request, params }: Route.LoaderArgs) => {
 	try {
 		const { getAllContent, getAllProjects } = await import(
 			"~/routes/common/db"

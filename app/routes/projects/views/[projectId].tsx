@@ -6,8 +6,8 @@ import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalR
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
-import type { Route } from "./+types/projectId";
-export const loader = async ({ params, context }: Route.LoaderArgs) => {
+import type { Route } from "./+types/[projectId]";
+export const loader = async ({ params, context, request }: Route.LoaderArgs) => {
 	assert(
 		typeof params.projectId === "string",
 		"params.projectId must be a string",
