@@ -11,8 +11,8 @@ import {
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
 // Import the specific action types
-import type { action as adminIndexAction } from "~/routes/admin/views/index";
-import type { action as adminUploadAction } from "~/routes/admin/views/upload";
+import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
+import type { Route as AdminUploadRoute } from "~/routes/admin/views/+types/upload";
 
 interface ServiceField {
 	titleKey: string;
@@ -22,9 +22,7 @@ interface ServiceField {
 }
 
 interface ServicesSectionEditorProps {
-	fetcher: FetcherWithComponents<
-		typeof adminIndexAction | typeof adminUploadAction
-	>;
+	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData | AdminUploadRoute.ActionData>;
 	initialContent: Record<string, string>;
 	onImageUpload: (idx: number, file: File) => void;
 	imageUploading: boolean[];

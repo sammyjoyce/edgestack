@@ -98,9 +98,9 @@ const alertStyles = {
 
 export type AlertVariant = keyof typeof alertStyles.variants;
 
-export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> { // Omit title from HTMLAttributes
 	variant?: AlertVariant;
-	title?: React.ReactNode;
+	title?: React.ReactNode; // Your custom title prop
 	children: React.ReactNode; // For the description/body
 	showIcon?: boolean;
 }

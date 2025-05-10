@@ -8,7 +8,7 @@ import {
 } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import AdminDashboard from "../components/AdminDashboard";
-import type { Route } from "./+types/index";
+// import type { Route } from "./+types/index"; // REMOVE THIS
 
 const DEFAULT_CONTENT = {
 	hero_title: "Building Dreams, Creating Spaces",
@@ -174,7 +174,7 @@ export async function action({
 
 /* ---------------- COMPONENT -------------- */
 export default function Component(): JSX.Element { // Renamed to Component
-	const { content } = useLoaderData<typeof loader>(); // Use generated type for loaderData if available, or keep as is
+	const { content } = useLoaderData<Route.LoaderData>();
 
 	return (
 		<main id="admin-dashboard-main" aria-label="Admin Dashboard">

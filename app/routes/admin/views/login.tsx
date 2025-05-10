@@ -22,6 +22,8 @@ import { Input } from "../components/ui/input";
 // Import generated types from proper path
 import type { Route } from "./+types/login";
 
+const DEBUG = process.env.NODE_ENV !== "production";
+
 // Define a specific type for the data part of the action's return
 type LoginActionData = { success: false; error: string } | { success: true }; // Allow success: true
 

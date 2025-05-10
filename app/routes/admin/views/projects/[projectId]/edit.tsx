@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Link, redirect, useLoaderData } from "react-router";
+import { Form, Link, redirect, useLoaderData, useActionData, data } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { ProjectImageSelector } from "~/routes/admin/components/ProjectImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
@@ -7,13 +7,14 @@ import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
-import type { Project } from "../../../../../database/schema";
+import type { Project } from "~/database/schema";
 import { Label } from "../../../components/ui/fieldset";
 import { Heading } from "../../../components/ui/heading";
 import { Input } from "../../../components/ui/input";
+import { Text } from "../../../components/ui/text";
 import { Button } from "../../../components/ui/button";
 import type { Route } from "./+types/edit";
-import { data } from "react-router"; // Import data helper
+// import { data } from "react-router"; // data is already imported via useActionData line
 
 // Return plain objects with proper typing
 export async function loader({

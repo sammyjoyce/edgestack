@@ -14,7 +14,9 @@ import {
 	useNavigation, // Add this import
 } from "react-router";
 import adminThemeStylesheet from "../../../admin-theme.css?url";
+import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
+import { SidebarLayout } from "../components/ui/sidebar-layout";
 // Import generated Route type for this route
 import type { Route } from "./+types/_layout";
 // ... other imports ...

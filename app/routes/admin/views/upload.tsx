@@ -1,4 +1,5 @@
 import { eq } from "drizzle-orm";
+import type { DrizzleD1Database } from "drizzle-orm/d1";
 import React, { type JSX, useState } from "react";
 import { ValiError } from "valibot";
 import { data } from "react-router";
@@ -12,6 +13,7 @@ import {
 	listStoredImages,
 } from "~/utils/upload.server";
 import { schema } from "../../../../database/schema";
+import type * as FullSchema from "../../../../database/schema";
 import { validateContentInsert } from "../../../../database/valibot-validation.js";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
@@ -82,10 +84,10 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
 					context.cloudflare?.env?.PUBLIC_R2_URL || "/assets";
 				const fullUrl = `${publicUrlBase.replace(/\/?$/, "/")}${filename}`;
 
-				await context.db.transaction(async (tx) => {
+				await context.db.transaction(async (tx: DrizzleD1Database<typeof FullSchema.schema>) => {
 					// Operations within transaction
 					const mediaToDelete = await tx
-						.select({ id: schema.media.id })
+						.select({ id: FullSchema.schema.media.id })
 						.from(schema.media)
 						.where(eq(schema.media.url, fullUrl))
 						.get();
@@ -153,11 +155,11 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
     
 				// updateContent uses batch internally. To ensure atomicity with media selection,
 				// we perform the content update within the same transaction.
-				await context.db.transaction(async (tx) => {
+				await context.db.transaction(async (tx: DrizzleD1Database<typeof FullSchema.schema>) => {
 					const mediaRecord = await tx
-						.select({ id: schema.media.id })
-						.from(schema.media)
-						.where(eq(schema.media.url, imageUrl))
+						.select({ id: FullSchema.schema.media.id })
+						.from(FullSchema.schema.media)
+						.where(eq(FullSchema.schema.media.url, imageUrl))
 						.get();
 
 					const contentKeyVal = {
@@ -235,17 +237,17 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
     
 			const mediaAltText = file.name;
 
-			await context.db.transaction(async (tx) => {
+			await context.db.transaction(async (tx: DrizzleD1Database<typeof FullSchema.schema>) => {
 				// Insert media and get its ID
 				let newMediaId: number | null = null;
 				try {
 					const mediaInsertResult = await tx
-						.insert(schema.media)
+						.insert(FullSchema.schema.media)
 						.values({
 							url: publicUrl,
 							alt: mediaAltText,
 						})
-						.returning({ id: schema.media.id })
+						.returning({ id: FullSchema.schema.media.id })
 						.get();
 
 					if (mediaInsertResult) {
@@ -253,7 +255,7 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
 					} else {
 						// Fallback for D1 if returning().get() is not ideal / returns undefined
 						const runResult = await tx
-							.insert(schema.media)
+							.insert(FullSchema.schema.media)
 							.values({ url: publicUrl, alt: mediaAltText })
 							.run();
 						if (runResult.meta.last_row_id) {

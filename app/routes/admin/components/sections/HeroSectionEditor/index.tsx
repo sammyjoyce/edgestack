@@ -1,7 +1,7 @@
 import React from "react";
 import type { FetcherWithComponents } from "react-router";
-import type { action as adminIndexAction } from "~/routes/admin/views/index";
-import type { action as adminUploadAction } from "~/routes/admin/views/upload";
+import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
+import type { Route as AdminUploadRoute } from "~/routes/admin/views/+types/upload";
 
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
@@ -14,11 +14,10 @@ import {
 import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { Input } from "../../ui/input";
 
+const DEBUG = process.env.NODE_ENV !== "production";
+
 interface HeroSectionEditorProps {
-	// Use a union type with inferred action types
-	fetcher: FetcherWithComponents<
-		typeof adminIndexAction | typeof adminUploadAction
-	>;
+	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData | AdminUploadRoute.ActionData>;
 	initialContent: Record<string, string>;
 	onImageUpload: (file: File) => void;
 	imageUploading: boolean;

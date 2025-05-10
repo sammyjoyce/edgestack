@@ -11,10 +11,11 @@ import {
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
 // Import the specific action type
-import type { action as adminIndexAction } from "~/routes/admin/views/index";
+import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
+
 
 interface ContactSectionEditorProps {
-	fetcher: FetcherWithComponents<typeof adminIndexAction>; // Use inferred type
+	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData>; 
 	initialContent: Record<string, string>;
 }
 
