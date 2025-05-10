@@ -24,6 +24,7 @@ const DEFAULT_CONTENT = {
 export async function loader({
 	request,
 	context,
+	params,
 }: Route.LoaderArgs): Promise<Route.LoaderData> {
 	assert(request instanceof Request, "loader: request must be a Request");
 	assert(context?.db, "loader: missing DB in context");
@@ -42,9 +43,7 @@ export async function loader({
 import { ValiError } from "valibot";
 import {
 	validateContentInsert,
-	validateContentUpdate,
 } from "../../../../database/valibot-validation.js";
-import type { Route } from "./+types";
 export async function action({
 	request,
 	context,

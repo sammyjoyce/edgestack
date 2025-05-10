@@ -1,7 +1,7 @@
+import type { Route } from "./+types/seed-content";
 import { data, redirect } from "react-router";
 import { getAllContent, updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
-import type { Route } from "./+types/seed-content";
 const DEBUG = process.env.NODE_ENV !== "production";
 const DEFAULT_CONTENT = {
 	hero_title: "Building Dreams, Creating Spaces",

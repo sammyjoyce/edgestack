@@ -4,6 +4,7 @@ import {
 	FolderIcon,
 	HomeIcon,
 } from "@heroicons/react/24/outline";
+import type { Route } from "./+types/_layout";
 import type React from "react";
 import {
 	Outlet,
@@ -16,14 +17,19 @@ import {
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
-import { SidebarLayout } from "../components/ui/sidebar-layout";
-import type { Route } from "./+types/_layout";
+import {
+	SidebarLayout,
+	Sidebar,
+	SidebarSection,
+	SidebarItem,
+} from "../components/ui/sidebar-layout";
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
 ];
 export const loader = async ({
 	request,
 	context,
+	params,
 }: Route.LoaderArgs): Promise<Route.LoaderData | Response> => {
 	const url = new URL(request.url);
 	const isLoginRoute = url.pathname === "/admin/login";

@@ -1,10 +1,10 @@
+import type { Route } from "./+types/route";
 import React from "react";
 import { type MetaFunction, Outlet, data, useLoaderData } from "react-router";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import { getAllContent, getAllProjects } from "~/routes/common/db";
-import type { Route } from "./+types/route";
 export const meta: MetaFunction = () => {
 	return [
 		{ title: "Projects | Lush Constructions" },
