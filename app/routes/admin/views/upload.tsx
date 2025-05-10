@@ -35,8 +35,9 @@ export async function loader({ context, request }: Route.LoaderArgs) {
 		return { images };
 	} catch (error: any) {
 		console.error("Error listing images:", error);
-		throw new Error(
-			`Failed to list images: ${error.message || "Unknown error"}`,
+		throw data(
+			{ message: `Failed to list images: ${error.message || "Unknown error"}` },
+			{ status: 500 },
 		);
 	}
 }
