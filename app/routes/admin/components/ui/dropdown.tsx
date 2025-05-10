@@ -1,7 +1,7 @@
 "use client";
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
-import React from "react";
+import type React from "react";
 import { Button } from "./button";
 import { Link } from "./link";
 export function Dropdown(props: Headless.MenuProps) {

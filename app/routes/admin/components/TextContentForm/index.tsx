@@ -7,7 +7,8 @@ import {
 import { Alert } from "../ui/alert";
 	XCircleIcon,
 } from "@heroicons/react/20/solid";
-import React, { type JSX, useRef } from "react";
+import type React from "react";
+import { type JSX, useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { Label } from "~/routes/admin/components/ui/fieldset";

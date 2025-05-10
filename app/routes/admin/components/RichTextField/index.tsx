@@ -9,8 +9,8 @@ import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import type { EditorState, LexicalEditor } from "lexical";
 import clsx from "clsx";
+import type { EditorState, LexicalEditor } from "lexical";
 import React, { type JSX, useCallback, useMemo, useRef } from "react";
 import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
 interface Props {

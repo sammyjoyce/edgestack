@@ -1,10 +1,10 @@
-import clsx from "clsx";
 import {
 	BuildingOffice2Icon,
 	ClockIcon,
 	EnvelopeIcon,
 	PhoneIcon,
 } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 import { motion } from "framer-motion";
 import React from "react";
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";

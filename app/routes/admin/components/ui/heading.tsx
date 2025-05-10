@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React from "react";
+import type React from "react";
 type HeadingProps = {
 	level?: 1 | 2 | 3 | 4 | 5 | 6;
 	as?: React.ElementType;

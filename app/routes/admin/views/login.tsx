@@ -1,6 +1,6 @@
 import type React from "react";
 import { useState } from "react";
-import { Form, redirect, useActionData, data } from "react-router";
+import { Form, redirect, useActionData } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import {
 	COOKIE_MAX_AGE,
@@ -9,17 +9,21 @@ import {
 	sign,
 	verify,
 } from "~/routes/common/utils/auth";
+import { FormCard } from "../components/ui/FormCard";
+import { PageHeader } from "../components/ui/PageHeader";
+import { Alert } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
 import { Fieldset } from "../components/ui/fieldset";
 import { Label } from "../components/ui/fieldset";
 import { Input } from "../components/ui/input";
-import type { Route } from "./+types/login";
+import { Text } from "../components/ui/text";
+// Removed unused Route type import.
 const DEBUG = process.env.NODE_ENV !== "production";
 type LoginActionData = { success: false; error: string } | { success: true };
 export const action = async ({
 	request,
 	context,
-}: Route.ActionArgs): Promise<Response | LoginActionData> => {
+}: { request: Request; context: any }): Promise<LoginActionData> => {
 	try {
 		const formData = await request.formData();
 		const username = formData.get("username")?.toString() ?? "";
@@ -35,19 +39,13 @@ export const action = async ({
 		}
 		if (!jwtSecret) {
 			console.error("JWT_SECRET not configured.");
-			return data(
-				{ success: false, error: "Server configuration error." },
-				{ status: 500 },
-			);
+			return { success: false, error: "Server configuration error." };
 		}
 		const adminUsername = env?.ADMIN_USERNAME as string;
 		const adminPassword = env?.ADMIN_PASSWORD as string;
 		if (!adminUsername || !adminPassword) {
 			console.error("Admin credentials not configured.");
-			return data(
-				{ success: false, error: "Server configuration error." },
-				{ status: 500 },
-			);
+			return { success: false, error: "Server configuration error." };
 		}
 		if (username === adminUsername && password === adminPassword) {
 			const token = await sign(username, jwtSecret);
@@ -58,25 +56,16 @@ export const action = async ({
 			);
 			return response;
 		}
-		return data(
-			{
-				success: false,
-				error: "Invalid username or password",
-			},
-			{ status: 401 },
-		);
+		return { success: false, error: "Invalid username or password" };
 	} catch (error) {
 		if (DEBUG) console.error("[ADMIN LOGIN] ActionError:", error);
-		return data(
-			{ success: false, error: "Unexpected server error during login." },
-			{ status: 500 },
-		);
+		return { success: false, error: "Unexpected server error during login." };
 	}
 };
 export const loader = async ({
 	request,
 	context,
-}: Route.LoaderArgs): Promise<Response | null> => {
+}: { request: Request; context: any }): Promise<Response | null> => {
 	try {
 		const sessionValue = getSessionCookie(request);
 		const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -100,20 +89,20 @@ export const loader = async ({
 	}
 };
 export default function Component() {
-	const actionData = useActionData<typeof action>();
+	const actionData = useActionData() as LoginActionData | undefined;
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	return (
 		<FadeIn className="flex min-h-screen flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-			<div className="w-full max-w-md space-y-8 rounded-lg border border-gray-200 bg-white p-8 shadow-md dark:border-gray-700 dark:bg-gray-800">
-				<div className="text-center">
-					<h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-						Admin Login
-					</h1>
-					<p className="mt-2 text-gray-600 dark:text-gray-300">
-						Sign in to your account
-					</p>
-				</div>
+			<FormCard>
+				<PageHeader
+					title="Admin Login"
+					className="mb-2 text-center"
+					actions={null}
+				/>
+				<Text className="mb-6 text-center text-gray-600 dark:text-gray-300">
+					Sign in to your account
+				</Text>
 				<Form method="post" className="mt-8 space-y-6">
 					<input type="hidden" name="remember" defaultValue="true" />
 					<div className="space-y-4 rounded-md shadow-sm">
@@ -148,10 +137,10 @@ export default function Component() {
 							/>
 						</Fieldset>
 					</div>
-					{actionData && !actionData.success && (
-						<div className="rounded-md border-l-4 border-red-500 bg-red-100 p-3 dark:bg-red-900/30 dark:text-red-200">
-							<p className="text-sm font-medium">{actionData.error}</p>
-						</div>
+					{actionData && !actionData.success && "error" in actionData && (
+						<Alert variant="error" className="mb-4">
+							{actionData.error}
+						</Alert>
 					)}
 					<div>
 						<Button type="submit" variant="primary" className="w-full">
@@ -159,7 +148,7 @@ export default function Component() {
 						</Button>
 					</div>
 				</Form>
-			</div>
+			</FormCard>
 		</FadeIn>
 	);
 }

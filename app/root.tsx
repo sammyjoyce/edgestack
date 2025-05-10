@@ -6,8 +6,8 @@ import {
 	Scripts,
 	ScrollRestoration,
 	isRouteErrorResponse,
-	useMatches,
 	useLocation,
+	useMatches,
 } from "react-router";
 import { HashScrollHandler } from "~/routes/common/components/HashScrollHandler";
 import type { Route } from "./+types/root";

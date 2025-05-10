@@ -1,35 +1,35 @@
-import type { FetcherWithComponents } from "react-router";
-import { Alert } from "../ui/alert";
-import { useFetcher } from "react-router";
 import {
 	DndContext,
-	closestCenter,
 	KeyboardSensor,
 	PointerSensor,
+	closestCenter,
 	useSensor,
 	useSensors,
 } from "@dnd-kit/core";
 import type { Active, DragEndEvent } from "@dnd-kit/core";
 import {
-	arrayMove,
-	SortableContext,
-	sortableKeyboardCoordinates,
-	verticalListSortingStrategy,
-	useSortable,
-} from "@dnd-kit/sortable";
-import {
 	restrictToVerticalAxis,
 	restrictToWindowEdges,
 } from "@dnd-kit/modifiers";
+import {
+	SortableContext,
+	arrayMove,
+	sortableKeyboardCoordinates,
+	useSortable,
+	verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import * as React from "react";
 import clsx from "clsx";
+import * as React from "react";
+import type { FetcherWithComponents } from "react-router";
+import { useFetcher } from "react-router";
+import { Button } from "~/routes/admin/components/ui/button";
 import {
 	Switch,
-	Label as SwitchLabel,
 	SwitchField,
+	Label as SwitchLabel,
 } from "~/routes/admin/components/ui/switch";
-import { Button } from "~/routes/admin/components/ui/button";
+import { Alert } from "../ui/alert";
 
 // import SwitchField from "~/routes/common/components/ui/SwitchField.tsx";
 import type { Route as AdminIndexRoute } from "../../views/+types";

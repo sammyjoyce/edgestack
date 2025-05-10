@@ -1,6 +1,6 @@
+import clsx from "clsx";
 import React, { type JSX } from "react";
 import { Button } from "~/routes/common/components/ui/Button";
-import clsx from "clsx";
 interface HeroProps {
 	title: string;
 	subtitle?: string;

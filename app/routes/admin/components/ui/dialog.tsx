@@ -1,6 +1,6 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
-import React from "react";
+import type React from "react";
 import { Text } from "./text";
 const sizes = {
 	xs: "sm:max-w-xs",

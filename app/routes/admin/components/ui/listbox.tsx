@@ -1,7 +1,8 @@
 "use client";
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
-import React, { Fragment } from "react";
+import type React from "react";
+import { Fragment } from "react";
 const CheckIcon = () => (
 	<svg
 		className="size-4 stroke-current group-data-selected/option:inline"

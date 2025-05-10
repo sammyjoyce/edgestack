@@ -3,58 +3,65 @@ import {
 	Form,
 	Link,
 	redirect,
-	useLoaderData,
 	useActionData,
-	data,
+	useLoaderData,
 } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import type { Project } from "~/database/schema";
 import { ProjectImageSelector } from "~/routes/admin/components/ProjectImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
-import type { Project } from "~/database/schema";
+import { ProjectFormFields } from "../../../components/ProjectFormFields";
+import { FormCard } from "../../../components/ui/FormCard";
+import { PageHeader } from "../../../components/ui/PageHeader";
+import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+} from "../../../components/ui/alert";
+import { Button } from "../../../components/ui/button";
 import { Label } from "../../../components/ui/fieldset";
-import { Heading } from "../../../components/ui/heading";
 import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
-import { Button } from "../../../components/ui/button";
-import type { Route } from "./+types/projectId/edit";
+// Removed missing Route type import.
 
 export async function loader({
 	params,
 	context,
-}: Route.LoaderArgs): Promise<Route.LoaderData | Response> {
+}: { params: { projectId: string }; context: any }): Promise<
+	{ project: Project } | Response
+> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
-		throw data({ error: "Invalid Project ID" }, { status: 400 });
+		throw new Response("Invalid Project ID", { status: 400 });
 	}
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw data({ error: "Project not found" }, { status: 404 });
+			throw new Response("Project not found", { status: 404 });
 		}
 		return { project };
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw data(
-			{ error: error.message || "Failed to load project" },
-			{ status: 500 },
-		);
+		throw new Response(error.message || "Failed to load project", {
+			status: 500,
+		});
 	}
 }
 export async function action({
 	request,
 	params,
 	context,
-}: Route.ActionArgs): Promise<Response | Route.ActionData> {
+}: { request: Request; params: { projectId: string }; context: any }): Promise<
+	| Response
+	| { success: boolean; errors?: Record<string, string>; error?: string }
+> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
-		return data(
-			{ success: false, error: "Invalid Project ID" },
-			{ status: 400 },
-		);
+		return { success: false, error: "Invalid Project ID" };
 	}
 	const formData = await request.formData();
 	const title = formData.get("title")?.toString() ?? "";
@@ -69,10 +76,7 @@ export async function action({
 		if (imageFile && imageFile.size > 0) {
 			const env = context.cloudflare?.env;
 			if (!env) {
-				return data(
-					{ success: false, error: "Environment not available" },
-					{ status: 500 },
-				);
+				return { success: false, error: "Environment not available" };
 			}
 			try {
 				const imageKey = `project-${projectId}-${Date.now()}`;
@@ -90,25 +94,19 @@ export async function action({
 						"error" in uploadResult
 							? (uploadResult as { error: string }).error
 							: "Failed to upload image";
-					return data({ success: false, error: errorMsg }, { status: 400 });
+					return { success: false, error: errorMsg };
 				}
 			} catch (error) {
 				console.error("Image upload error:", error);
-				return data(
-					{ success: false, error: "Failed to upload image" },
-					{ status: 500 },
-				);
+				return { success: false, error: "Failed to upload image" };
 			}
 		}
 		if (!title) {
-			return data(
-				{
-					success: false,
-					error: "Title is required",
-					errors: { title: "Title is required" },
-				},
-				{ status: 400 },
-			);
+			return {
+				success: false,
+				error: "Title is required",
+				errors: { title: "Title is required" },
+			};
 		}
 		const projectData = {
 			title,
@@ -121,14 +119,11 @@ export async function action({
 		validateProjectUpdate(projectData);
 		const updated = await updateProject(context.db, projectId, projectData);
 		if (!updated) {
-			return data(
-				{
-					success: false,
-					error:
-						"Failed to update project, project might not exist or update failed.",
-				},
-				{ status: 500 },
-			);
+			return {
+				success: false,
+				error:
+					"Failed to update project, project might not exist or update failed.",
+			};
 		}
 		return redirect("/admin/projects");
 	} catch (error: any) {
@@ -143,118 +138,44 @@ export async function action({
 			}
 		}
 		if (Object.keys(errors).length > 0) {
-			return data(
-				{ success: false, errors, error: "Validation failed." },
-				{ status: 400 },
-			);
+			return { success: false, errors, error: "Validation failed." };
 		}
-		return data(
-			{ success: false, error: error.message || "Failed to update project" },
-			{ status: 500 },
-		);
+		return {
+			success: false,
+			error: error.message || "Failed to update project",
+		};
 	}
 }
 export default function EditProjectPage() {
-	const { project } = useLoaderData<typeof loader>();
-	const actionData = useActionData<typeof action>();
-	const errors = actionData?.errors as Record<string, string> | undefined;
+	const loaderData = useLoaderData() as { project?: Project };
+	const project = loaderData?.project;
+	const actionData = useActionData() as
+		| { success?: boolean; errors?: Record<string, string>; error?: string }
+		| undefined;
+	const errors = actionData?.errors;
+	const handleCancel = () => window.location.assign("/admin/projects");
 	return (
 		<FadeIn>
-			<Heading level={1} className="mb-8">
-				Edit Project: {project?.title} {}
-			</Heading>
-			{actionData?.error && !errors && (
-				<Text
-					className="p-4 mb-4 text-red-700 bg-red-100 rounded-lg border border-red-200"
-					role="alert"
-				>
+			<PageHeader title={`Edit Project: ${project?.title ?? ""}`} />
+
+			{actionData && !actionData.success && actionData.error && (
+				<Alert variant="error" className="mb-4">
 					{actionData.error}
-				</Text>
+				</Alert>
 			)}
-			<Form
+			<FormCard
+				as="form"
 				method="post"
 				encType="multipart/form-data"
-				className="bg-gray-50 shadow-(--shadow-input-default) border border-gray-200 rounded-lg p-6 flex flex-col gap-6"
+				className="flex flex-col gap-6"
 			>
-				<div>
-					<Label htmlFor="title" className="mb-1">
-						Project Title <span className="text-red-600">*</span>
-					</Label>
-					<Input
-						type="text"
-						name="title"
-						id="title"
-						required
-						defaultValue={project.title}
-						className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
-						aria-invalid={!!errors?.title}
-						aria-describedby={errors?.title ? "title-error" : undefined}
-					/>
-					{errors?.title && (
-						<Text id="title-error" className="text-sm text-red-600">
-							{errors.title}
-						</Text>
-					)}
-				</div>
-				<div>
-					<Label htmlFor="description" className="mb-1">
-						Description
-					</Label>
-					<RichTextField
-						name="description"
-						initialJSON={project.description || ""}
-					/>
-				</div>
-				<div>
-					<Label htmlFor="details" className="mb-1">
-						Details (e.g., Location, Duration, Budget)
-					</Label>
-					<RichTextField name="details" initialJSON={project.details || ""} />
-				</div>
-				<div className="flex items-center gap-2">
-					<Input
-						type="checkbox"
-						name="isFeatured"
-						id="isFeatured"
-						value="true"
-						defaultChecked={project.isFeatured ?? false}
-						className="size-4 rounded border-gray-300 text-primary focus:ring-primary"
-					/>
-					<Label htmlFor="isFeatured">Feature on Home Page</Label>
-				</div>
-				<div>
-					<Label className="mb-1">Project Image</Label>
-					<ProjectImageSelector currentImage={project.imageUrl || undefined} />
-				</div>
-				<div>
-					<Label htmlFor="sortOrder" className="mb-1">
-						Sort Order (lower numbers appear first)
-					</Label>
-					<Input
-						type="number"
-						name="sortOrder"
-						id="sortOrder"
-						min="0"
-						defaultValue={project.sortOrder ?? 0}
-						className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
-					/>
-				</div>
-				<div className="flex justify-end gap-3 pt-6 border-t border-gray-200 mt-6">
-					<Button
-						as={Link}
-						to="/admin/projects"
-						className="bg-gray-100 text-gray-700 hover:bg-gray-200"
-					>
-						Cancel
-					</Button>
-					<Button
-						type="submit"
-						className="bg-primary text-white hover:bg-primary/90"
-					>
-						Save Changes
-					</Button>
-				</div>
-			</Form>
+				<ProjectFormFields
+					initial={project as any}
+					errors={errors}
+					isEdit
+					onCancel={handleCancel}
+				/>
+			</FormCard>
 		</FadeIn>
 	);
 }
