@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import React, { type JSX, useState } from "react";
-
+import { ValiError } from "valibot";
 import { data } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { updateContent } from "~/routes/common/db";
@@ -123,25 +123,35 @@ export async function action({ request, context }: Route.ActionArgs) {
 				if (!imageUrl) {
 					return badRequest("Missing image URL.");
 				}
-
+    
 				try {
-					validateContentInsert({ key, value: imageUrl });
-				} catch (e: any) {
+					// Add other required fields for contentInsertSchema or use a more specific schema
+					validateContentInsert({ key, value: imageUrl, page: "unknown", section: "image", type: "image" });
+				} catch (e: unknown) { // Catch as unknown
 					const errors: Record<string, string> = {};
-					if (e.issues && Array.isArray(e.issues)) {
+					if (e instanceof ValiError) { // Type check for ValiError
 						for (const issue of e.issues) {
-							const fieldName = issue.path?.[0]?.key;
-							if (typeof fieldName === 'string' && !errors[fieldName]) {
+							const fieldName = issue.path?.[0]?.key as string | undefined;
+							if (fieldName && !errors[fieldName]) {
 								errors[fieldName] = issue.message;
+							} else if (!fieldName && issue.message && !errors[key]){ // Associate general error with the key being processed
+								errors[key] = issue.message;
 							}
 						}
+					} else if (e instanceof Error) {
+						errors[key] = e.message; // General error for this key
+					} else {
+						errors[key] = "An unknown validation error occurred.";
 					}
+    
 					if (Object.keys(errors).length > 0) {
 						return data({ success: false, errors, key }, { status: 400 });
 					}
-					return data({ success: false, error: `Validation failed for key '${key}': ${e.message || e}`, key }, { status: 400 });
+					// This part might be unreachable if errors always populate, but as a fallback:
+					const errorMessage = e instanceof Error ? e.message : String(e);
+					return data({ success: false, error: `Validation failed for key '${key}': ${errorMessage}`, key }, { status: 400 });
 				}
-
+    
 				// updateContent uses batch internally. To ensure atomicity with media selection,
 				// we perform the content update within the same transaction.
 				await context.db.transaction(async (tx) => {
@@ -195,25 +205,35 @@ export async function action({ request, context }: Route.ActionArgs) {
 			if (!publicUrl || typeof publicUrl !== "string") {
 				return badRequest("Failed to upload image"); 
 			}
-
+    
 			try {
-				validateContentInsert({ key, value: publicUrl });
-			} catch (e: any) {
+				// Add other required fields for contentInsertSchema or use a more specific schema
+				validateContentInsert({ key, value: publicUrl, page: "unknown", section: "image", type: "image" });
+			} catch (e: unknown) { // Catch as unknown
 				const errors: Record<string, string> = {};
-				if (e.issues && Array.isArray(e.issues)) {
+				if (e instanceof ValiError) { // Type check for ValiError
 					for (const issue of e.issues) {
-						const fieldName = issue.path?.[0]?.key;
-						if (typeof fieldName === 'string' && !errors[fieldName]) {
+						const fieldName = issue.path?.[0]?.key as string | undefined;
+						if (fieldName && !errors[fieldName]) {
 							errors[fieldName] = issue.message;
+						} else if (!fieldName && issue.message && !errors[key]){ // Associate general error with the key being processed
+							errors[key] = issue.message;
 						}
 					}
+				} else if (e instanceof Error) {
+					errors[key] = e.message; // General error for this key
+				} else {
+					errors[key] = "An unknown validation error occurred.";
 				}
+    
 				if (Object.keys(errors).length > 0) {
 					return data({ success: false, errors, key }, { status: 400 });
 				}
-				return data({ success: false, error: `Validation failed for key '${key}' (URL): ${e.message || e}`, key }, { status: 400 });
+				// This part might be unreachable if errors always populate, but as a fallback:
+				const errorMessage = e instanceof Error ? e.message : String(e);
+				return data({ success: false, error: `Validation failed for key '${key}' (URL): ${errorMessage}`, key }, { status: 400 });
 			}
-
+    
 			const mediaAltText = file.name;
 
 			await context.db.transaction(async (tx) => {

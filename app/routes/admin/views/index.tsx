@@ -53,7 +53,8 @@ export async function loader({
 
 // ... other imports
 import { validateContentInsert, validateContentUpdateMap } from "../../../../database/valibot-validation.js"; // Assuming a validation helper for maps
-
+import { ValiError } from "valibot";
+    
 // ... (loader function remains the same)
 
 /* ---------------- ACTION ---------------- */
@@ -92,35 +93,35 @@ export async function action({
 				}
 			}
 			invariant(Object.keys(updates).length > 0, "action: No updates provided for updateTextContent");
-			
-			// Optional: Add validation for the updates map
-			try {
-				// Assuming validateContentUpdateMap validates a Record<string, string>
-				// This is a placeholder for actual validation logic for a map of content.
-				// You might need to iterate and validate each key-value pair if using validateContentInsert.
-				// For simplicity, let's assume a batch validation or skip detailed field-by-field for this example.
-				// If validating each, collect errors similarly to other actions.
-				// validateContentUpdateMap(updates); // Example validation call
-			} catch (validationError: any) {
-				const errors: Record<string, string> = {};
-				if (validationError.issues && Array.isArray(validationError.issues)) {
-					for (const issue of validationError.issues) {
-						const fieldName = issue.path?.[0]?.key as string | undefined;
-						if (fieldName && !errors[fieldName]) {
-							errors[fieldName] = issue.message;
-						} else if (!fieldName && issue.message) {
-							// General error not tied to a specific field in the map
-							errors._general = (errors._general ? errors._general + "; " : "") + issue.message;
+    
+			const validationErrors: Record<string, string> = {};
+			for (const [key, valueToValidate] of Object.entries(updates)) {
+				try {
+					// Assuming content.value can be a plain string or a JSON string.
+					// validateContentInsert will use the schema for content which expects `value` as text.
+					validateContentInsert({ key, value: valueToValidate, page: "home", section: "unknown", type: "text" }); // Add required fields for schema, adjust if needed
+				} catch (err) {
+					if (err instanceof ValiError) {
+						// Capture the first issue message for the specific key
+						if (!validationErrors[key] && err.issues.length > 0) {
+							validationErrors[key] = err.issues[0].message;
+						}
+					} else if (err instanceof Error) {
+						 if (!validationErrors[key]) {
+							validationErrors[key] = err.message;
+						 }
+					} else {
+						if (!validationErrors[key]) {
+						   validationErrors[key] = "Unknown validation error";
 						}
 					}
 				}
-				if (Object.keys(errors).length > 0) {
-					return data({ success: false, errors, message: "Validation failed." }, { status: 400 });
-				}
-				// Fallback if error structure is different
-				return data({ success: false, error: validationError.message || "Validation failed during content update.", message: "Validation failed." }, { status: 400 });
 			}
-
+    
+			if (Object.keys(validationErrors).length > 0) {
+				return data({ success: false, errors: validationErrors, message: "Validation failed for one or more fields." }, { status: 400 });
+			}
+    
 			if (DEBUG)
 				console.log(`[ADMIN DASHBOARD ACTION] ${intent} updates:`, updates);
 			await updateContent(context.db, updates);
@@ -157,23 +158,25 @@ export async function action({
 		// Attempt to parse Valibot issues if they exist on the error
 		// This is more relevant if the invariant or db call itself throws a Valibot error
 		const errors: Record<string, string> = {};
-		// @ts-ignore // Accessing potential 'issues' property
-		if (err.issues && Array.isArray(err.issues)) {
-			// @ts-ignore
-			for (const issue of err.issues) {
+		if (error instanceof ValiError) {
+			for (const issue of error.issues) {
 				const fieldName = issue.path?.[0]?.key as string | undefined;
 				if (fieldName && !errors[fieldName]) {
 					errors[fieldName] = issue.message;
+				} else if (!fieldName && issue.message && !errors._general) { // Avoid overwriting if multiple general errors
+					errors._general = issue.message;
 				} else if (!fieldName && issue.message) {
-					// General error not tied to a specific field
-					errors._general = (errors._general ? errors._general + "; " : "") + issue.message;
+					 errors._general += `; ${issue.message}`;
 				}
 			}
+		} else if (err.message && !errors._general) { // Fallback for generic errors
+			errors._general = err.message;
 		}
+    
 		if (Object.keys(errors).length > 0) {
 			return data({ success: false, errors, message: "An error occurred with specific fields." }, { status: 400 });
 		}
-		
+    		
 		const errorMessage = err.message || "Internal server error";
 		return data({ success: false, error: errorMessage, message: "An internal server error occurred." }, { status: 500 });
 	}
