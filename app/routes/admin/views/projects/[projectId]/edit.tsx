@@ -11,7 +11,7 @@ import type { Project } from "../../../../../database/schema";
 import { Label } from "../../../components/ui/fieldset";
 import { Heading } from "../../../components/ui/heading";
 import { Input } from "../../../components/ui/input";
-import { Button } from "../components/ui/button";
+import { Button } from "../../../components/ui/button";
 import type { Route } from "./+types/edit";
 
 // Define return types for loader and action
