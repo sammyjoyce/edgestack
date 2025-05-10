@@ -1,18 +1,21 @@
-import clsx from "clsx"; 
+import clsx from "clsx";
 import {
 	BuildingOffice2Icon,
 	ClockIcon,
 	EnvelopeIcon,
 	PhoneIcon,
 } from "@heroicons/react/24/outline";
-import { motion } from "framer-motion"; 
-import React from "react"; 
-import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; 
+import { motion } from "framer-motion";
+import React from "react";
+import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
 interface ContactUsProps {
 	content?: Record<string, string>;
-	theme?: 'light' | 'dark'; 
+	theme?: "light" | "dark";
 }
-export default function ContactUs({ content = {}, theme = "light" }: ContactUsProps) {
+export default function ContactUs({
+	content = {},
+	theme = "light",
+}: ContactUsProps) {
 	const {
 		contact_headline: headline = "Ready to Start Your Project?",
 		contact_intro:
@@ -36,7 +39,7 @@ export default function ContactUs({ content = {}, theme = "light" }: ContactUsPr
 			transition={{ duration: 0.8 }}
 			className={clsx(
 				"relative isolate overflow-hidden py-24 sm:py-32 bg-black text-white dark:bg-gray-900 dark:text-white",
-				theme === "dark" && "dark", 
+				theme === "dark" && "dark",
 			)}
 			id="contact"
 		>
@@ -51,7 +54,7 @@ export default function ContactUs({ content = {}, theme = "light" }: ContactUsPr
 								"polygon(74.1% 56.1%, 100% 38.6%, 97.5% 73.3%, 85.5% 100%, 80.7% 98.2%, 72.5% 67.7%, 60.2% 37.8%, 52.4% 32.2%, 47.5% 41.9%, 45.2% 65.8%, 27.5% 23.5%, 0.1% 35.4%, 17.9% 0.1%, 27.6% 23.5%, 76.1% 2.6%, 74.1% 56.1%)",
 						}}
 						className={clsx(
-							"aspect-1155/678 w-xl opacity-20 bg-linear-to-br/oklch from-gray-800/20 to-gray-700/20 dark:from-gray-700/20 dark:to-gray-600/20"
+							"aspect-1155/678 w-xl opacity-20 bg-linear-to-br/oklch from-gray-800/20 to-gray-700/20 dark:from-gray-700/20 dark:to-gray-600/20",
 						)}
 					/>
 				</div>
@@ -59,24 +62,28 @@ export default function ContactUs({ content = {}, theme = "light" }: ContactUsPr
 			<div className="mx-auto max-w-6xl px-6 lg:px-8">
 				<div className="mx-auto max-w-2xl text-white dark:text-gray-100">
 					<h2 className="sr-only">Contact us</h2>
-					<p className={clsx(
-						"bg-clip-text font-medium text-4xl text-transparent leading-tight tracking-[-1.43px] text-balance",
-						"bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 dark:from-gray-100 dark:via-gray-200/80 dark:to-gray-300/50"
-					)}>
+					<p
+						className={clsx(
+							"bg-clip-text font-medium text-4xl text-transparent leading-tight tracking-[-1.43px] text-balance",
+							"bg-linear-to-r/oklch from-white via-white/80 to-gray-300/50 dark:from-gray-100 dark:via-gray-200/80 dark:to-gray-300/50",
+						)}
+					>
 						{headline}
 					</p>
 					<ConditionalRichTextRenderer
 						text={intro}
 						fallbackClassName={clsx(
 							"mt-6 text-[15px] leading-normal",
-							"text-gray-300 dark:text-gray-300"
+							"text-gray-300 dark:text-gray-300",
 						)}
 						richTextClassName={clsx(theme === "dark" && "dark:prose-invert")}
 					/>
-					<dl className={clsx(
-						"mt-10 space-y-4 text-[15px] leading-normal",
-						"text-gray-300 dark:text-gray-300"
-					)}>
+					<dl
+						className={clsx(
+							"mt-10 space-y-4 text-[15px] leading-normal",
+							"text-gray-300 dark:text-gray-300",
+						)}
+					>
 						<div className="flex items-center gap-x-4">
 							<dt className="flex-none">
 								<span className="sr-only">Address</span>
@@ -132,10 +139,12 @@ export default function ContactUs({ content = {}, theme = "light" }: ContactUsPr
 							<dd className="whitespace-pre-line">{hours}</dd>
 						</div>
 					</dl>
-					<div className={clsx(
-						"mt-8 space-y-1 text-[11px] leading-normal",
-						"text-gray-400 dark:text-gray-400"
-					)}>
+					<div
+						className={clsx(
+							"mt-8 space-y-1 text-[11px] leading-normal",
+							"text-gray-400 dark:text-gray-400",
+						)}
+					>
 						<p className="font-medium whitespace-pre-line">ABN: {abn}</p>
 						<p className="font-medium whitespace-pre-line">ACN: {acn}</p>
 						<p className="font-medium whitespace-pre-line">
@@ -143,10 +152,12 @@ export default function ContactUs({ content = {}, theme = "light" }: ContactUsPr
 						</p>
 					</div>
 					<div className="mt-10">
-						<h3 className={clsx(
-							"font-semibold text-[15px] leading-normal",
-							"text-white dark:text-gray-100"
-						)}>
+						<h3
+							className={clsx(
+								"font-semibold text-[15px] leading-normal",
+								"text-white dark:text-gray-100",
+							)}
+						>
 							Follow Us
 						</h3>
 						<ul className="mt-4 flex gap-3">
@@ -156,8 +167,8 @@ export default function ContactUs({ content = {}, theme = "light" }: ContactUsPr
 									target="_blank"
 									rel="noopener noreferrer"
 									className={clsx(
-										"flex h-10 w-10 items-center justify-center rounded-md border transition-all duration-300 ease-in-out",										
-										"border-gray-700 text-gray-400 hover:border-gray-600 hover:bg-gray-900/50 hover:text-white dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700/50 dark:hover:text-white"
+										"flex h-10 w-10 items-center justify-center rounded-md border transition-all duration-300 ease-in-out",
+										"border-gray-700 text-gray-400 hover:border-gray-600 hover:bg-gray-900/50 hover:text-white dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700/50 dark:hover:text-white",
 									)}
 								>
 									<span className="sr-only">Instagram</span>

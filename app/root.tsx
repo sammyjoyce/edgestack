@@ -1,4 +1,4 @@
-import type React from "react"; 
+import type React from "react";
 import {
 	Links,
 	Meta,
@@ -7,9 +7,9 @@ import {
 	ScrollRestoration,
 	isRouteErrorResponse,
 	useMatches,
-	useLocation, 
+	useLocation,
 } from "react-router";
-import { HashScrollHandler } from "~/routes/common/components/HashScrollHandler"; 
+import { HashScrollHandler } from "~/routes/common/components/HashScrollHandler";
 import type { Route } from "./+types/root";
 import "./global-error-logger";
 import adminThemeStylesheet from "./admin-theme.css?url";
@@ -39,7 +39,7 @@ export const links: Route.LinksFunction = () => [
 	},
 	{ rel: "stylesheet", href: stylesheet },
 ];
-export default function RootComponent() { 
+export default function RootComponent() {
 	return (
 		<html lang="en">
 			<head>
@@ -64,7 +64,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	let stack: string | undefined;
 	if (isRouteErrorResponse(error)) {
 		title = `${error.status} ${error.statusText}`;
-		message = typeof error.data === 'string' ? error.data : JSON.stringify(error.data);
+		message =
+			typeof error.data === "string" ? error.data : JSON.stringify(error.data);
 	} else if (error instanceof Error) {
 		title = error.name || "Error";
 		message = error.message;

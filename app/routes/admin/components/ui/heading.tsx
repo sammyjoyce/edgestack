@@ -1,8 +1,8 @@
 import clsx from "clsx";
-import React from "react"; 
+import React from "react";
 type HeadingProps = {
 	level?: 1 | 2 | 3 | 4 | 5 | 6;
-	as?: React.ElementType; 
+	as?: React.ElementType;
 } & React.ComponentPropsWithoutRef<"h1" | "h2" | "h3" | "h4" | "h5" | "h6">;
 const levelStyles = {
 	1: "text-3xl font-semibold text-zinc-900 dark:text-white sm:text-4xl tracking-tight",
@@ -23,7 +23,7 @@ export function Subheading({
 	...props
 }: HeadingProps) {
 	const Element = as || (`h${level}` as React.ElementType);
-	const subLevel = Math.max(2, Math.min(6, level)) as 2 | 3 | 4 | 5 | 6; 
+	const subLevel = Math.max(2, Math.min(6, level)) as 2 | 3 | 4 | 5 | 6;
 	const subheadingStyles = {
 		2: "text-xl font-medium text-zinc-700 dark:text-zinc-300 sm:text-2xl",
 		3: "text-lg font-medium text-zinc-700 dark:text-zinc-300 sm:text-xl",

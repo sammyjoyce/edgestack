@@ -1,4 +1,4 @@
-import React, { type JSX } from "react"; 
+import React, { type JSX } from "react";
 import { Link, useFetcher } from "react-router";
 import { Container } from "~/routes/common/components/ui/Container";
 import { Button } from "../ui/button";
@@ -9,14 +9,17 @@ import { AboutSectionEditor } from "~/routes/admin/components/sections/AboutSect
 import { ContactSectionEditor } from "~/routes/admin/components/sections/ContactSectionEditor";
 import { HeroSectionEditor } from "~/routes/admin/components/sections/HeroSectionEditor";
 import { ServicesSectionEditor } from "~/routes/admin/components/sections/ServicesSectionEditor";
-import type { Route } from "~/routes/admin/views/+types/index"; 
-import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload"; 
+import type { Route } from "~/routes/admin/views/+types/index";
+import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload";
 
 type ActualIndexActionData = Route.ActionData;
 type ActualUploadActionData = UploadRoute.ActionData;
 import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
 import { Heading } from "../ui/heading";
-import type { Section as SorterSection, SectionTheme as SorterSectionTheme } from "~/routes/admin/components/SectionSorter";
+import type {
+	Section as SorterSection,
+	SectionTheme as SorterSectionTheme,
+} from "~/routes/admin/components/SectionSorter";
 interface AdminDashboardProps {
 	initialContent: Record<string, string> | undefined;
 }
@@ -24,14 +27,14 @@ export default function AdminDashboard({
 	initialContent,
 }: AdminDashboardProps): React.JSX.Element {
 	const content = initialContent;
-	const heroFetcher = useFetcher<ActualIndexActionData>(); 
-	const introFetcher = useFetcher<ActualIndexActionData>(); 
-	const servicesFetcher = useFetcher<ActualIndexActionData>(); 
-	const aboutFetcher = useFetcher<ActualIndexActionData>(); 
-	const contactFetcher = useFetcher<ActualIndexActionData>(); 
-	const sorterFetcher = useFetcher<ActualIndexActionData>(); 
-	const projectsFetcher = useFetcher<ActualIndexActionData>(); 
-	const uploadFetcher = useFetcher<ActualUploadActionData>(); 
+	const heroFetcher = useFetcher<ActualIndexActionData>();
+	const introFetcher = useFetcher<ActualIndexActionData>();
+	const servicesFetcher = useFetcher<ActualIndexActionData>();
+	const aboutFetcher = useFetcher<ActualIndexActionData>();
+	const contactFetcher = useFetcher<ActualIndexActionData>();
+	const sorterFetcher = useFetcher<ActualIndexActionData>();
+	const projectsFetcher = useFetcher<ActualIndexActionData>();
+	const uploadFetcher = useFetcher<ActualUploadActionData>();
 	const safeContent =
 		content && typeof content === "object" && !("error" in content)
 			? (content as Record<string, string>)
@@ -55,17 +58,21 @@ export default function AdminDashboard({
 	]);
 	const uploadImage = React.useCallback(
 		async (
-			fetcherInstance: ReturnType<typeof useFetcher<ActualUploadActionData | ActualIndexActionData >>,
+			fetcherInstance: ReturnType<
+				typeof useFetcher<ActualUploadActionData | ActualIndexActionData>
+			>,
 			key: string,
 			file: File,
 			setUploading: (v: boolean) => void,
 			setUrl: (url: string) => void,
 		) => {
-			const getActionData = (data: unknown): ActualUploadActionData | ActualIndexActionData | undefined => {
+			const getActionData = (
+				data: unknown,
+			): ActualUploadActionData | ActualIndexActionData | undefined => {
 				if (
 					data &&
 					typeof data === "object" &&
-					("success" in data || "url" in data || "error" in data) 
+					("success" in data || "url" in data || "error" in data)
 				) {
 					return data as ActualUploadActionData | ActualIndexActionData;
 				}
@@ -81,18 +88,22 @@ export default function AdminDashboard({
 				encType: "multipart/form-data",
 			});
 			const actionData = getActionData(fetcherInstance.data);
-			if (actionData?.success && 'url' in actionData && typeof actionData.url === 'string') {
+			if (
+				actionData?.success &&
+				"url" in actionData &&
+				typeof actionData.url === "string"
+			) {
 				setUrl(actionData.url);
 			} else if (actionData?.success) {
 				console.log("Update successful for key (via IndexAction):", key);
 			}
 			setUploading(false);
 		},
-		[], 
+		[],
 	);
 	const handleHeroImageUpload = (file: File) =>
 		uploadImage(
-			uploadFetcher, 
+			uploadFetcher,
 			"hero_image_url",
 			file,
 			setHeroUploading,
@@ -100,7 +111,7 @@ export default function AdminDashboard({
 		);
 	const handleAboutImageUpload = (file: File) =>
 		uploadImage(
-			uploadFetcher, 
+			uploadFetcher,
 			"about_image_url",
 			file,
 			setAboutUploading,
@@ -108,7 +119,7 @@ export default function AdminDashboard({
 		);
 	const handleServiceImageUpload = (idx: number, file: File) =>
 		uploadImage(
-			uploadFetcher, 
+			uploadFetcher,
 			`service_${idx + 1}_image`,
 			file,
 			(v) =>
@@ -123,21 +134,21 @@ export default function AdminDashboard({
 	const sectionsOrder = safeContent.home_sections_order as string | undefined;
 	const sectionDetailsMap: Record<string, { label: string; themeKey: string }> =
 		{
-			hero: { label: "Hero", themeKey: "hero_title_theme" }, 
+			hero: { label: "Hero", themeKey: "hero_title_theme" },
 			services: {
 				label: "Services",
 				themeKey: "services_intro_title_theme",
-			}, 
+			},
 			projects: {
 				label: "Projects",
 				themeKey: "projects_intro_title_theme",
-			}, 
-			about: { label: "About", themeKey: "about_title_theme" }, 
-			contact: { label: "Contact", themeKey: "contact_title_theme" }, 
+			},
+			about: { label: "About", themeKey: "about_title_theme" },
+			contact: { label: "Contact", themeKey: "contact_title_theme" },
 		};
 	const orderedSectionIds = sectionsOrder
 		? sectionsOrder.split(",")
-		: Object.keys(sectionDetailsMap); 
+		: Object.keys(sectionDetailsMap);
 	const sorterSections: SorterSection[] = orderedSectionIds
 		.map((id) => {
 			const details = sectionDetailsMap[id];
@@ -157,8 +168,8 @@ export default function AdminDashboard({
 			content: (
 				<SectionSorter
 					initialSections={sorterSections}
-					orderFetcher={sorterFetcher} 
-					themeUpdateFetcher={heroFetcher} 
+					orderFetcher={sorterFetcher}
+					themeUpdateFetcher={heroFetcher}
 				/>
 			),
 		},
@@ -222,16 +233,22 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
-							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.message && ( 
-								<p className={`mt-2 text-sm ${projectsFetcher.data.success ? 'text-green-600' : 'text-red-600'}`}>
-									{projectsFetcher.data.message}
-								</p>
-							)}
-							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.error && ( 
-								<p className="mt-2 text-sm text-red-600">
-									{projectsFetcher.data.error}
-								</p>
-							)}
+							{projectsFetcher.data &&
+								projectsFetcher.state === "idle" &&
+								projectsFetcher.data.message && (
+									<p
+										className={`mt-2 text-sm ${projectsFetcher.data.success ? "text-green-600" : "text-red-600"}`}
+									>
+										{projectsFetcher.data.message}
+									</p>
+								)}
+							{projectsFetcher.data &&
+								projectsFetcher.state === "idle" &&
+								projectsFetcher.data.error && (
+									<p className="mt-2 text-sm text-red-600">
+										{projectsFetcher.data.error}
+									</p>
+								)}
 						</div>
 						<div>
 							<label
@@ -259,16 +276,22 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
-							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.message && ( 
-								<p className={`mt-2 text-sm ${projectsFetcher.data.success ? 'text-green-600' : 'text-red-600'}`}>
-									{projectsFetcher.data.message}
-								</p>
-							)}
-							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.error && ( 
-								<p className="mt-2 text-sm text-red-600">
-									{projectsFetcher.data.error}
-								</p>
-							)}
+							{projectsFetcher.data &&
+								projectsFetcher.state === "idle" &&
+								projectsFetcher.data.message && (
+									<p
+										className={`mt-2 text-sm ${projectsFetcher.data.success ? "text-green-600" : "text-red-600"}`}
+									>
+										{projectsFetcher.data.message}
+									</p>
+								)}
+							{projectsFetcher.data &&
+								projectsFetcher.state === "idle" &&
+								projectsFetcher.data.error && (
+									<p className="mt-2 text-sm text-red-600">
+										{projectsFetcher.data.error}
+									</p>
+								)}
 						</div>
 					</div>
 					<div className="mt-4 text-sm text-gray-600 space-y-1">
@@ -358,10 +381,7 @@ export default function AdminDashboard({
 						<span>Open site</span>
 					</Button>
 				</div>
-				<Tabs
-					tabs={tabs}
-					containerClassName="mb-8" 
-				/>
+				<Tabs tabs={tabs} containerClassName="mb-8" />
 			</div>
 		</Container>
 	);

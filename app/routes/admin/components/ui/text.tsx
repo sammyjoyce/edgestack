@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React from "react"; 
+import React from "react";
 import { Link } from "./link";
 export function Text({
 	className,

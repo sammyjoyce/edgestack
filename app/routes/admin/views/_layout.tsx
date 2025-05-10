@@ -6,12 +6,12 @@ import {
 } from "@heroicons/react/24/outline";
 import type React from "react";
 import {
-	NavLink,
 	Outlet,
 	type To,
 	redirect,
 	useLoaderData,
 	useNavigation,
+	useLocation,
 } from "react-router";
 import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
@@ -21,7 +21,10 @@ import type { Route } from "./+types/_layout";
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
 ];
-export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Route.LoaderData | Response> => { 
+export const loader = async ({
+	request,
+	context,
+}: Route.LoaderArgs): Promise<Route.LoaderData | Response> => {
 	const url = new URL(request.url);
 	const isLoginRoute = url.pathname === "/admin/login";
 	const isLogoutRoute = url.pathname === "/admin/logout";
@@ -45,27 +48,32 @@ export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Ro
 	if (loggedIn && isLoginRoute) {
 		return redirect("/admin");
 	}
-	return { isAuthenticated: loggedIn }; 
+	return { isAuthenticated: loggedIn };
 };
-export const action = async ({ request, context }: Route.ActionArgs): Promise<null | Route.ActionData> => {
+export const action = async ({
+	request,
+	context,
+}: Route.ActionArgs): Promise<null | Route.ActionData> => {
 	return null;
 };
 interface NavItem {
 	name: string;
-	href: To | string; 
+	href: To | string;
 	icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 const navigation: NavItem[] = [
 	{ name: "Dashboard", href: "/admin", icon: HomeIcon },
 	{ name: "Projects", href: "/admin/projects", icon: FolderIcon },
-	{ name: "Live Site", href: "/", icon: DocumentDuplicateIcon }, 
+	{ name: "Live Site", href: "/", icon: DocumentDuplicateIcon },
 	{ name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
 export default function AdminLayout() {
 	const navigationHook = useNavigation();
-	const loaderData = useLoaderData<typeof loader>(); 
+	const loaderData = useLoaderData<typeof loader>();
+	const location = useLocation();
+
 	const sidebarNav = (
-		<nav className="flex h-full flex-col bg-gray-900 px-6 py-4">
+		<Sidebar className="flex h-full flex-col bg-gray-900 px-6 py-4">
 			<div className="flex h-16 items-center border-b border-gray-800 mb-2 pb-2">
 				<img
 					src="/assets/logo_284x137-KoakP1Oi.png"
@@ -77,7 +85,7 @@ export default function AdminLayout() {
 				Admin Menu
 			</div>
 			<hr className="border-gray-700 mb-2" />
-			<ul className="flex flex-1 flex-col gap-y-4">
+			<SidebarSection>
 				{navigation.map((item) => (
 					<li key={item.name}>
 						{item.name === "Live Site" ? (
@@ -91,25 +99,24 @@ export default function AdminLayout() {
 								{item.name}
 							</a>
 						) : (
-							<NavLink
-								to={item.href as To}
-								end={item.href === "/admin"}
-								className={({ isActive }) =>
-									`group flex items-center gap-x-3 rounded-md p-2 text-sm font-medium ${
-										isActive
-											? "bg-gray-700 text-white"
-											: "text-gray-400 hover:bg-gray-700 hover:text-white"
-									}`
+							<SidebarItem
+								as={"a"}
+								href={item.href as string}
+								current={
+									location.pathname === item.href ||
+									(item.href !== "/admin" &&
+										location.pathname.startsWith(item.href as string))
 								}
+								className="group flex items-center gap-x-3 rounded-md p-2 text-sm font-medium"
 							>
 								<item.icon aria-hidden="true" className="size-5 shrink-0" />
 								{item.name}
-							</NavLink>
+							</SidebarItem>
 						)}
 					</li>
 				))}
-			</ul>
-		</nav>
+			</SidebarSection>
+		</Sidebar>
 	);
 	return (
 		<SidebarLayout
@@ -132,9 +139,9 @@ export default function AdminLayout() {
 						height: "3px",
 						background: "var(--color-primary)",
 						zIndex: 9999,
-						transition: "width 0.2s ease-out", 
+						transition: "width 0.2s ease-out",
 					}}
-					className="global-loading-indicator" 
+					className="global-loading-indicator"
 				/>
 			)}
 			<Outlet context={loaderData} /> {}

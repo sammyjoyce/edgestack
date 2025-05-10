@@ -1,11 +1,6 @@
 import type React from "react";
 import { useState } from "react";
-import {
-	Form,
-	redirect,
-	useActionData,
-	data,
-} from "react-router";
+import { Form, redirect, useActionData, data } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import {
 	COOKIE_MAX_AGE,
@@ -20,8 +15,11 @@ import { Label } from "../components/ui/fieldset";
 import { Input } from "../components/ui/input";
 import type { Route } from "./+types/login";
 const DEBUG = process.env.NODE_ENV !== "production";
-type LoginActionData = { success: false; error: string } | { success: true }; 
-export const action = async ({ request, context }: Route.ActionArgs): Promise<Response | LoginActionData> => { 
+type LoginActionData = { success: false; error: string } | { success: true };
+export const action = async ({
+	request,
+	context,
+}: Route.ActionArgs): Promise<Response | LoginActionData> => {
 	try {
 		const formData = await request.formData();
 		const username = formData.get("username")?.toString() ?? "";
@@ -36,14 +34,20 @@ export const action = async ({ request, context }: Route.ActionArgs): Promise<Re
 			});
 		}
 		if (!jwtSecret) {
-			console.error("JWT_SECRET not configured."); 
-			return data({ success: false, error: "Server configuration error." }, { status: 500});
+			console.error("JWT_SECRET not configured.");
+			return data(
+				{ success: false, error: "Server configuration error." },
+				{ status: 500 },
+			);
 		}
 		const adminUsername = env?.ADMIN_USERNAME as string;
 		const adminPassword = env?.ADMIN_PASSWORD as string;
 		if (!adminUsername || !adminPassword) {
-			console.error("Admin credentials not configured."); 
-			return data({ success: false, error: "Server configuration error." }, { status: 500});
+			console.error("Admin credentials not configured.");
+			return data(
+				{ success: false, error: "Server configuration error." },
+				{ status: 500 },
+			);
 		}
 		if (username === adminUsername && password === adminPassword) {
 			const token = await sign(username, jwtSecret);
@@ -52,18 +56,27 @@ export const action = async ({ request, context }: Route.ActionArgs): Promise<Re
 				"Set-Cookie",
 				`${COOKIE_NAME}=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${COOKIE_MAX_AGE}`,
 			);
-			return response; 
+			return response;
 		}
-		return data({ 
-			success: false,
-			error: "Invalid username or password",
-		}, { status: 401 });
+		return data(
+			{
+				success: false,
+				error: "Invalid username or password",
+			},
+			{ status: 401 },
+		);
 	} catch (error) {
 		if (DEBUG) console.error("[ADMIN LOGIN] ActionError:", error);
-		return data({ success: false, error: "Unexpected server error during login." }, { status: 500 });
+		return data(
+			{ success: false, error: "Unexpected server error during login." },
+			{ status: 500 },
+		);
 	}
 };
-export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Response | null> => { 
+export const loader = async ({
+	request,
+	context,
+}: Route.LoaderArgs): Promise<Response | null> => {
 	try {
 		const sessionValue = getSessionCookie(request);
 		const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -80,14 +93,14 @@ export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Re
 		return null;
 	} catch (error) {
 		if (DEBUG) console.error("[ADMIN LOGIN] Loader Error:", error);
-		throw new Response( 
+		throw new Response(
 			"Unexpected server error during login loader process. Please check logs for details.",
 			{ status: 500 },
 		);
 	}
 };
-export default function Component() { 
-	const actionData = useActionData<typeof action>(); 
+export default function Component() {
+	const actionData = useActionData<typeof action>();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	return (

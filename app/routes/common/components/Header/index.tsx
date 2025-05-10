@@ -1,5 +1,5 @@
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import React, { type JSX, type MouseEvent, useCallback, useState } from "react"; 
+import React, { type JSX, type MouseEvent, useCallback, useState } from "react";
 import { NavLink, type To, useNavigate } from "react-router";
 import { Button } from "../ui/Button";
 import DesktopNav from "./DesktopNav";

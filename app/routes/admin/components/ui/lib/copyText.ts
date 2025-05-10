@@ -6,8 +6,7 @@ export async function copyText(
 		try {
 			await navigator.clipboard.writeText(text);
 			return true;
-		} catch (error) {
-		}
+		} catch (error) {}
 	}
 	const textArea = document.createElement("textarea");
 	textArea.value = text;
@@ -21,8 +20,7 @@ export async function copyText(
 	let succeeded = false;
 	try {
 		succeeded = document.execCommand("copy");
-	} catch (error) {
-	}
+	} catch (error) {}
 	container.removeChild(textArea);
 	return succeeded;
 }

@@ -76,7 +76,7 @@ export const NavbarItem = forwardRef(function NavbarItem(
 		<span className={clsx(className, "relative")}>
 			{current && (
 				<motion.span
-					layoutId="current-navbar-indicator" 
+					layoutId="current-navbar-indicator"
 					className="absolute inset-x-0 -bottom-px h-0.5 bg-primary dark:bg-primary-dark"
 				/>
 			)}
@@ -92,7 +92,7 @@ export const NavbarItem = forwardRef(function NavbarItem(
 			) : (
 				<Headless.Button
 					{...props}
-					className={clsx("cursor-default", itemClasses)} 
+					className={clsx("cursor-default", itemClasses)}
 					data-current={current ? "true" : undefined}
 					ref={ref}
 				>

@@ -1,5 +1,12 @@
 import React from "react";
-import { Form, Link, redirect, useLoaderData, useActionData, data } from "react-router";
+import {
+	Form,
+	Link,
+	redirect,
+	useLoaderData,
+	useActionData,
+	data,
+} from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { ProjectImageSelector } from "~/routes/admin/components/ProjectImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
@@ -16,32 +23,38 @@ import { Button } from "../../../components/ui/button";
 import type { Route } from "./+types/projectId/edit";
 
 export async function loader({
-	params, 
-	context, 
-}: Route.LoaderArgs): Promise<Route.LoaderData | Response> { 
+	params,
+	context,
+}: Route.LoaderArgs): Promise<Route.LoaderData | Response> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
-		throw data({ error: "Invalid Project ID" }, { status: 400 }); 
+		throw data({ error: "Invalid Project ID" }, { status: 400 });
 	}
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw data({ error: "Project not found" }, { status: 404 }); 
+			throw data({ error: "Project not found" }, { status: 404 });
 		}
-		return { project }; 
+		return { project };
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw data({ error: error.message || "Failed to load project" }, { status: 500 }); 
+		throw data(
+			{ error: error.message || "Failed to load project" },
+			{ status: 500 },
+		);
 	}
 }
 export async function action({
 	request,
 	params,
-	context, 
-}: Route.ActionArgs): Promise<Response | Route.ActionData> { 
+	context,
+}: Route.ActionArgs): Promise<Response | Route.ActionData> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
-		return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
+		return data(
+			{ success: false, error: "Invalid Project ID" },
+			{ status: 400 },
+		);
 	}
 	const formData = await request.formData();
 	const title = formData.get("title")?.toString() ?? "";
@@ -56,7 +69,10 @@ export async function action({
 		if (imageFile && imageFile.size > 0) {
 			const env = context.cloudflare?.env;
 			if (!env) {
-				return data({ success: false, error: "Environment not available" }, { status: 500 });
+				return data(
+					{ success: false, error: "Environment not available" },
+					{ status: 500 },
+				);
 			}
 			try {
 				const imageKey = `project-${projectId}-${Date.now()}`;
@@ -68,17 +84,29 @@ export async function action({
 				if (uploadResult && typeof uploadResult === "string") {
 					imageUrl = uploadResult;
 				} else {
-					const errorMsg = typeof uploadResult === 'object' && uploadResult !== null && 'error' in uploadResult ? (uploadResult as {error: string}).error : "Failed to upload image";
+					const errorMsg =
+						typeof uploadResult === "object" &&
+						uploadResult !== null &&
+						"error" in uploadResult
+							? (uploadResult as { error: string }).error
+							: "Failed to upload image";
 					return data({ success: false, error: errorMsg }, { status: 400 });
 				}
 			} catch (error) {
 				console.error("Image upload error:", error);
-				return data({ success: false, error: "Failed to upload image" }, { status: 500 });
+				return data(
+					{ success: false, error: "Failed to upload image" },
+					{ status: 500 },
+				);
 			}
 		}
 		if (!title) {
 			return data(
-				{ success: false, error: "Title is required", errors: { title: "Title is required" } }, 
+				{
+					success: false,
+					error: "Title is required",
+					errors: { title: "Title is required" },
+				},
 				{ status: 400 },
 			);
 		}
@@ -86,7 +114,7 @@ export async function action({
 			title,
 			description: description || "",
 			details: details || "",
-			imageUrl: imageUrl || null, 
+			imageUrl: imageUrl || null,
 			isFeatured,
 			sortOrder,
 		};
@@ -106,23 +134,29 @@ export async function action({
 	} catch (error: any) {
 		console.error("Error updating project:", error);
 		const errors: Record<string, string> = {};
-		if (error.issues && Array.isArray(error.issues)) { 
+		if (error.issues && Array.isArray(error.issues)) {
 			for (const issue of error.issues) {
 				const fieldName = issue.path?.[0]?.key;
-				if (typeof fieldName === 'string' && !errors[fieldName]) {
+				if (typeof fieldName === "string" && !errors[fieldName]) {
 					errors[fieldName] = issue.message;
 				}
 			}
 		}
 		if (Object.keys(errors).length > 0) {
-			return data({ success: false, errors, error: "Validation failed." }, { status: 400 }); 
+			return data(
+				{ success: false, errors, error: "Validation failed." },
+				{ status: 400 },
+			);
 		}
-		return data({ success: false, error: error.message || "Failed to update project" }, { status: 500 });
+		return data(
+			{ success: false, error: error.message || "Failed to update project" },
+			{ status: 500 },
+		);
 	}
 }
 export default function EditProjectPage() {
-	const { project } = useLoaderData<typeof loader>(); 
-	const actionData = useActionData<typeof action>(); 
+	const { project } = useLoaderData<typeof loader>();
+	const actionData = useActionData<typeof action>();
 	const errors = actionData?.errors as Record<string, string> | undefined;
 	return (
 		<FadeIn>
@@ -130,7 +164,10 @@ export default function EditProjectPage() {
 				Edit Project: {project?.title} {}
 			</Heading>
 			{actionData?.error && !errors && (
-				<Text className="p-4 mb-4 text-red-700 bg-red-100 rounded-lg border border-red-200" role="alert">
+				<Text
+					className="p-4 mb-4 text-red-700 bg-red-100 rounded-lg border border-red-200"
+					role="alert"
+				>
 					{actionData.error}
 				</Text>
 			)}
@@ -153,7 +190,11 @@ export default function EditProjectPage() {
 						aria-invalid={!!errors?.title}
 						aria-describedby={errors?.title ? "title-error" : undefined}
 					/>
-					{errors?.title && <Text id="title-error" className="text-sm text-red-600">{errors.title}</Text>}
+					{errors?.title && (
+						<Text id="title-error" className="text-sm text-red-600">
+							{errors.title}
+						</Text>
+					)}
 				</div>
 				<div>
 					<Label htmlFor="description" className="mb-1">

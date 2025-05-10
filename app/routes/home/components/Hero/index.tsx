@@ -1,19 +1,19 @@
-import React, { type JSX } from "react"; 
+import React, { type JSX } from "react";
 import { Button } from "~/routes/common/components/ui/Button";
-import clsx from "clsx"; 
+import clsx from "clsx";
 interface HeroProps {
 	title: string;
 	subtitle?: string;
 	imageUrl?: string;
 	altText?: string;
-	theme?: 'light' | 'dark'; 
+	theme?: "light" | "dark";
 }
 export default function Hero({
 	title,
 	subtitle,
 	imageUrl,
 	altText = "Modern home extension background",
-	theme = "light", 
+	theme = "light",
 }: HeroProps): JSX.Element {
 	const backgroundUrl = imageUrl ?? "/assets/rozelle.jpg";
 	return (
@@ -44,10 +44,10 @@ export default function Hero({
 							</div>
 						)}
 						<div className="mt-6 flex items-center justify-center gap-x-6">
-							<Button invert={theme === 'light'} to="#contact">
+							<Button invert={theme === "light"} to="#contact">
 								Enquire Now
 							</Button>
-							<Button invert={theme === 'light'} to="#services">
+							<Button invert={theme === "light"} to="#services">
 								Our Services <span aria-hidden="true">→</span>
 							</Button>
 						</div>

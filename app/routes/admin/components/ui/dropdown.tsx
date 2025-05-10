@@ -2,15 +2,18 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import React from "react";
-import { Button } from "./button"; 
-import { Link } from "./link"; 
+import { Button } from "./button";
+import { Link } from "./link";
 export function Dropdown(props: Headless.MenuProps) {
 	return <Headless.Menu {...props} />;
 }
 export function DropdownButton<T extends React.ElementType = typeof Button>({
 	as,
 	...props
-}: { className?: string; as?: T } & Omit<Headless.MenuButtonProps<T>, "className" | "as">) {
+}: { className?: string; as?: T } & Omit<
+	Headless.MenuButtonProps<T>,
+	"className" | "as"
+>) {
 	const Component = as || Button;
 	return <Headless.MenuButton as={Component as React.ElementType} {...props} />;
 }
@@ -85,10 +88,7 @@ export function DropdownSection({
 	"as" | "className"
 >) {
 	return (
-		<Headless.MenuSection
-			{...props}
-			className={clsx(className, "py-1")} 
-		/>
+		<Headless.MenuSection {...props} className={clsx(className, "py-1")} />
 	);
 }
 export function DropdownHeading({
@@ -174,7 +174,7 @@ export function DropdownShortcut({
 					key={index}
 					className={clsx(
 						"min-w-[1.5ch] text-center font-sans",
-						index > 0 && char.length > 1 && "pl-0.5", 
+						index > 0 && char.length > 1 && "pl-0.5",
 					)}
 				>
 					{char}

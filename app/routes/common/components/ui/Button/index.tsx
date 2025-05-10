@@ -1,12 +1,12 @@
-import clsx from "clsx"; 
+import clsx from "clsx";
 import type { ForwardedRef, ReactNode } from "react";
-import React, { forwardRef } from "react"; 
-import { Link, type To } from "react-router"; 
+import React, { forwardRef } from "react";
+import { Link, type To } from "react-router";
 type ButtonProps = {
 	invert?: boolean;
 	className?: string;
 	children?: ReactNode;
-	to?: To; 
+	to?: To;
 	href?: string;
 	as?: any;
 	[key: string]: any;
@@ -18,8 +18,9 @@ export const Button = forwardRef(function Button(
 	className = clsx(
 		className,
 		"inline-flex rounded-full px-4 py-1.5 text-sm font-semibold transition",
-		invert ? "bg-white text-neutral-950 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-700"
-			   : "bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-neutral-200 dark:text-neutral-950 dark:hover:bg-neutral-300"
+		invert
+			? "bg-white text-neutral-950 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-700"
+			: "bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-neutral-200 dark:text-neutral-950 dark:hover:bg-neutral-300",
 	);
 	const inner = <span className="relative top-px">{children}</span>;
 	if (to !== undefined) {

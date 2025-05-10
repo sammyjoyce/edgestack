@@ -2,7 +2,7 @@ import React from "react";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { deleteProject, getProjectById } from "~/routes/common/db"; 
+import { deleteProject, getProjectById } from "~/routes/common/db";
 import type { Project } from "../../../../../../database/schema";
 import { Heading } from "../../../components/ui/heading";
 import { Input } from "../../../components/ui/input";
@@ -10,21 +10,24 @@ import { Label } from "../../../components/ui/fieldset";
 import { Text } from "../../../components/ui/text";
 import { Button } from "../../../components/ui/button";
 import type { Route } from "./+types/projectId/delete";
-import { data } from "react-router"; 
-export async function loader({ params, context }: Route.LoaderArgs): Promise<Route.LoaderData | Response> { 
+import { data } from "react-router";
+export async function loader({
+	params,
+	context,
+}: Route.LoaderArgs): Promise<Route.LoaderData | Response> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
-		throw data({ error: "Invalid Project ID" }, { status: 400 }); 
+		throw data({ error: "Invalid Project ID" }, { status: 400 });
 	}
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw data({ error: "Project not found" }, { status: 404 }); 
+			throw data({ error: "Project not found" }, { status: 404 });
 		}
-		return { project }; 
+		return { project };
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw data( 
+		throw data(
 			{ error: error.message || "Failed to load project" },
 			{ status: 500 },
 		);
@@ -34,15 +37,21 @@ export async function action({
 	request,
 	params,
 	context,
-}: Route.ActionArgs): Promise<Response | Route.ActionData> { 
+}: Route.ActionArgs): Promise<Response | Route.ActionData> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
-		return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
+		return data(
+			{ success: false, error: "Invalid Project ID" },
+			{ status: 400 },
+		);
 	}
 	const formData = await request.formData();
 	const confirmDelete = formData.get("confirmDelete") === "true";
 	if (!confirmDelete) {
-		return data({ success: false, error: "Deletion was not confirmed" }, { status: 400 });
+		return data(
+			{ success: false, error: "Deletion was not confirmed" },
+			{ status: 400 },
+		);
 	}
 	try {
 		await deleteProject(context.db, projectId);
@@ -56,7 +65,7 @@ export async function action({
 	}
 }
 export default function DeleteProjectPage() {
-	const { project } = useLoaderData<typeof loader>(); 
+	const { project } = useLoaderData<typeof loader>();
 	const navigate = useNavigate();
 	return (
 		<FadeIn>

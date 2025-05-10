@@ -1,5 +1,5 @@
-import clsx from "clsx"; 
-import type React from "react"; 
+import clsx from "clsx";
+import type React from "react";
 type ContainerProps<T extends React.ElementType = "div"> = {
 	as?: T;
 	className?: string;

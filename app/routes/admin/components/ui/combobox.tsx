@@ -41,8 +41,8 @@ export function Combobox<T>({
 			virtual={{ options: filteredOptions }}
 			onClose={() => setQuery("")}
 		>
-			<div 
-				data-slot="control-wrapper" 
+			<div
+				data-slot="control-wrapper"
 				className={clsx(
 					"relative w-full",
 					"focus-within:ring-2 focus-within:ring-primary dark:focus-within:ring-primary-dark focus-within:ring-offset-0 rounded-lg",
@@ -57,7 +57,7 @@ export function Combobox<T>({
 					onChange={(event) => setQuery(event.target.value)}
 					placeholder={placeholder}
 					className={clsx(
-						className, 
+						className,
 						"relative block w-full appearance-none rounded-lg px-3.5 py-2.5 sm:px-3 sm:py-1.5",
 						"text-base text-zinc-950 placeholder:text-zinc-500 sm:text-sm dark:text-white dark:placeholder:text-zinc-400",
 						"border border-zinc-300 hover:border-zinc-400 dark:border-zinc-600 dark:hover:border-zinc-500",

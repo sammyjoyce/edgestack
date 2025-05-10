@@ -3,7 +3,7 @@ import type { JSX } from "react";
 import { useCallback, useEffect, useState } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
-import RichTextField from "~/routes/admin/components/RichTextField"; 
+import RichTextField from "~/routes/admin/components/RichTextField";
 import {
 	FieldLabel,
 	FieldRow,
@@ -19,7 +19,9 @@ interface ServiceField {
 	label: string;
 }
 interface ServicesSectionEditorProps {
-	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData | AdminUploadRoute.ActionData>;
+	fetcher: FetcherWithComponents<
+		AdminIndexRoute.ActionData | AdminUploadRoute.ActionData
+	>;
 	initialContent: Record<string, string>;
 	onImageUpload: (idx: number, file: File) => void;
 	imageUploading: boolean[];
@@ -100,60 +102,51 @@ export function ServicesSectionEditor({
 		<SectionCard>
 			<SectionHeading>Services Section</SectionHeading>
 			<div className="px-4 py-5 sm:p-6">
-				<FieldRow>
-					<FieldLabel htmlFor="services_intro_title">
-						Services Intro Title
-					</FieldLabel>
-					<textarea
-						name="services_intro_title"
-						id="services_intro_title"
-						rows={2}
-						defaultValue={initialContent.services_intro_title || ""}
-						className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
-						onBlur={handleBlur}
-					/>
-				</FieldRow>
-				<FieldRow>
-					<FieldLabel htmlFor="services_intro_text">
-						Services Intro Text
-					</FieldLabel>
-					<RichTextField
-						name="services_intro_text"
-						initialJSON={initialContent.services_intro_text || ""}
-						disabled={
-							fetcher.state === "submitting" || fetcher.state === "loading"
-						}
-					/>
-				</FieldRow>
+				<div className="flex flex-col gap-1">
+  <FieldLabel htmlFor="services_intro_title">Services Intro Title</FieldLabel>
+  <Textarea
+    name="services_intro_title"
+    id="services_intro_title"
+    rows={2}
+    defaultValue={initialContent.services_intro_title || ""}
+    onBlur={handleBlur}
+  />
+  {/* Placeholder for error/help text */}
+</div>
+<div className="flex flex-col gap-1 mt-4">
+  <FieldLabel htmlFor="services_intro_text">Services Intro Text</FieldLabel>
+  <RichTextField
+    name="services_intro_text"
+    initialJSON={initialContent.services_intro_text || ""}
+    disabled={fetcher.state === "submitting" || fetcher.state === "loading"}
+  />
+  {/* Placeholder for error/help text */}
 				{serviceFields.map((field, idx) => (
 					<div
 						key={field.label}
 						className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-neutral-light pt-6 mt-6"
 					>
-						<FieldRow>
-							<FieldLabel htmlFor={field.titleKey}>
-								{field.label} Title
-							</FieldLabel>
-							<textarea
+						<div className="flex flex-col gap-1">
+							<FieldLabel htmlFor={field.titleKey}>{field.label} Title</FieldLabel>
+							<Textarea
 								name={field.titleKey}
 								id={field.titleKey}
 								rows={2}
 								defaultValue={initialContent[field.titleKey] || ""}
-								className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
 								onBlur={handleBlur}
 							/>
-							<FieldLabel htmlFor={field.textKey} className="pt-3">
-								{field.label} Text
-							</FieldLabel>
+							{/* Placeholder for error/help text */}
+						</div>
+						<div className="flex flex-col gap-1">
+							<FieldLabel htmlFor={field.textKey}>{field.label} Text</FieldLabel>
 							<RichTextField
 								name={field.textKey}
 								initialJSON={initialContent[field.textKey] || ""}
-								disabled={
-									fetcher.state === "submitting" || fetcher.state === "loading"
-								}
+								disabled={fetcher.state === "submitting" || fetcher.state === "loading"}
 							/>
-						</FieldRow>
-						<FieldRow>
+							{/* Placeholder for error/help text */}
+						</div>
+						<div className="flex flex-col gap-1">
 							<FieldLabel
 								className="self-start"
 								htmlFor={`service-image-upload-${idx}`}

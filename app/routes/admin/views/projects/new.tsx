@@ -16,7 +16,7 @@ import { Textarea } from "../../components/ui/textarea";
 export async function action({
 	request,
 	context,
-}: Route.ActionArgs): Promise<Response | Route.ActionData> { 
+}: Route.ActionArgs): Promise<Response | Route.ActionData> {
 	const formData = await request.formData();
 	const title = formData.get("title")?.toString() ?? "";
 	const description = formData.get("description")?.toString() ?? "";
@@ -30,9 +30,9 @@ export async function action({
 			: 0;
 	const projectData = {
 		title,
-		description, 
-		details, 
-		imageUrl, 
+		description,
+		details,
+		imageUrl,
 		isFeatured,
 		sortOrder,
 	};
@@ -49,20 +49,26 @@ export async function action({
 		if (error.issues && Array.isArray(error.issues)) {
 			for (const issue of error.issues) {
 				const fieldName = issue.path?.[0]?.key;
-				if (typeof fieldName === 'string' && !errors[fieldName]) {
+				if (typeof fieldName === "string" && !errors[fieldName]) {
 					errors[fieldName] = issue.message;
 				}
 			}
 		}
 		if (Object.keys(errors).length > 0) {
-			return data({ success: false, errors, error: "Validation failed." }, { status: 400 }); 
+			return data(
+				{ success: false, errors, error: "Validation failed." },
+				{ status: 400 },
+			);
 		}
-		return data({ success: false, error: error.message || "Failed to create project" }, { status: 500 });
+		return data(
+			{ success: false, error: error.message || "Failed to create project" },
+			{ status: 500 },
+		);
 	}
 }
 export default function NewProjectPage() {
 	const navigate = useNavigate();
-	const actionData = useActionData<typeof action>(); 
+	const actionData = useActionData<typeof action>();
 	const errors = actionData?.errors as Record<string, string> | undefined;
 	assert(
 		typeof navigate === "function",
@@ -98,7 +104,11 @@ export default function NewProjectPage() {
 						aria-invalid={!!errors?.title}
 						aria-describedby={errors?.title ? "title-error" : undefined}
 					/>
-					{errors?.title && <Text id="title-error" className="text-sm text-red-600">{errors.title}</Text>}
+					{errors?.title && (
+						<Text id="title-error" className="text-sm text-red-600">
+							{errors.title}
+						</Text>
+					)}
 				</Fieldset>
 				<Fieldset>
 					<Label htmlFor="description">Description</Label>

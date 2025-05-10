@@ -1,5 +1,5 @@
-import clsx from "clsx"; 
-import type React from "react"; 
+import clsx from "clsx";
+import type React from "react";
 function FacebookIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
@@ -70,8 +70,8 @@ export function SocialMedia({
 					<a
 						href={socialMediaProfile.href}
 						aria-label={socialMediaProfile.title}
-						target="_blank" 
-						rel="noopener noreferrer" 
+						target="_blank"
+						rel="noopener noreferrer"
 						className={clsx(
 							"transition",
 							invert ? "hover:text-neutral-200" : "hover:text-neutral-700",

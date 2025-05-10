@@ -1,6 +1,6 @@
-import clsx from "clsx"; 
+import clsx from "clsx";
 import React, { type JSX } from "react";
-import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; 
+import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
 import { Button } from "~/routes/common/components/ui/Button";
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
@@ -14,7 +14,7 @@ interface OurServicesProps {
 	introTitle?: string;
 	introText?: string;
 	servicesData?: ServiceItem[];
-	theme?: 'light' | 'dark'; 
+	theme?: "light" | "dark";
 }
 const defaultServices: ServiceItem[] = [
 	{
@@ -42,19 +42,24 @@ export default function OurServices({
 	introTitle = "Renovation and Extension Specialists",
 	introText,
 	servicesData,
-	theme = "light", 
+	theme = "light",
 }: OurServicesProps): JSX.Element {
 	const defaultIntroText =
 		"Qualified & Professional Building Services from Start to Finish";
 	const services = servicesData ?? defaultServices;
 	return (
-		<div className={clsx(
-			"relative py-16 sm:py-24 bg-white dark:bg-gray-900",
-			theme === "dark" && "dark",
-		)} id="services">
-			<div className={clsx(
-				"absolute inset-x-0 top-0 h-40 bg-linear-to-b from-gray-50 dark:from-gray-800"
-			)} />
+		<div
+			className={clsx(
+				"relative py-16 sm:py-24 bg-white dark:bg-gray-900",
+				theme === "dark" && "dark",
+			)}
+			id="services"
+		>
+			<div
+				className={clsx(
+					"absolute inset-x-0 top-0 h-40 bg-linear-to-b from-gray-50 dark:from-gray-800",
+				)}
+			/>
 			<Container>
 				<section className="mt-12 mb-6 sm:mt-16 sm:mb-8 lg:mt-20 lg:mb-10">
 					<SectionIntro centered title={introTitle}>
@@ -62,10 +67,12 @@ export default function OurServices({
 							text={introText || defaultIntroText}
 							fallbackClassName="text-gray-700 dark:text-gray-300"
 							richTextClassName={clsx(theme === "dark" && "dark:prose-invert")}
-							fallbackTag="p" 
+							fallbackTag="p"
 						/>
 						<div className="mt-6 flex justify-center">
-							<Button to="#contact" invert={theme === 'light'}>Get Started</Button>
+							<Button to="#contact" invert={theme === "light"}>
+								Get Started
+							</Button>
 						</div>
 					</SectionIntro>
 				</section>

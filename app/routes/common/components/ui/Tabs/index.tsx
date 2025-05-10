@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import type React from "react"; 
+import type React from "react";
 import { useState } from "react";
 function cn(...inputs: (string | undefined | null | boolean)[]) {
 	return clsx(inputs);
@@ -16,23 +16,33 @@ export const Tabs = ({
 	activeTabClassName,
 	tabClassName,
 	contentClassName,
+	activeTabValue: controlledActiveTabValue,
+	onTabChange,
 }: {
 	tabs: Tab[];
 	containerClassName?: string;
 	activeTabClassName?: string;
 	tabClassName?: string;
 	contentClassName?: string;
+	activeTabValue?: string;
+	onTabChange?: (value: string) => void;
 }) => {
-	const [active, setActive] = useState<Tab>(propTabs[0]);
-	const [tabs, setTabs] = useState<Tab[]>(propTabs);
-	const moveSelectedTabToTop = (idx: number) => {
-		const newTabs = [...propTabs];
-		const selectedTab = newTabs.splice(idx, 1);
-		newTabs.unshift(selectedTab[0]);
-		setTabs(newTabs);
-		setActive(newTabs[0]);
+	// If parent controls tab state, use that; otherwise, use internal state
+	const [internalActiveValue, setInternalActiveValue] = useState<string>(
+		propTabs[0]?.value || "",
+	);
+	const activeValue = controlledActiveTabValue ?? internalActiveValue;
+	const activeTab =
+		propTabs.find((tab) => tab.value === activeValue) || propTabs[0];
+
+	const handleTabClick = (value: string) => {
+		if (onTabChange) {
+			onTabChange(value);
+		} else {
+			setInternalActiveValue(value);
+		}
 	};
-	const isActive = (tab: Tab) => tab.value === active.value;
+
 	return (
 		<>
 			<div
@@ -41,15 +51,13 @@ export const Tabs = ({
 					containerClassName,
 				)}
 			>
-				{propTabs.map((tab, idx) => (
+				{propTabs.map((tab) => (
 					<button
-						key={tab.title}
-						onClick={() => {
-							moveSelectedTabToTop(idx);
-						}}
+						key={tab.value}
+						onClick={() => handleTabClick(tab.value)}
 						className={cn(
 							"relative px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors duration-150 ease-in-out border-b-2",
-							isActive(tab)
+							activeValue === tab.value
 								? activeTabClassName || "text-primary border-primary"
 								: tabClassName ||
 										"text-neutral-600 hover:text-foreground border-transparent hover:border-neutral-400",
@@ -61,9 +69,9 @@ export const Tabs = ({
 				))}
 			</div>
 			<FadeInDiv
-				tabs={tabs}
-				active={active}
-				key={active.value}
+				tabs={propTabs}
+				active={activeTab}
+				key={activeTab.value}
 				className={cn("mt-6", contentClassName)}
 			/>
 		</>

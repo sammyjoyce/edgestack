@@ -1,6 +1,6 @@
 import type React from "react";
 import type { FetcherWithComponents } from "react-router";
-import { Input } from "~/routes/admin/components/ui/input"; 
+import { Input } from "~/routes/admin/components/ui/input";
 import { Textarea } from "~/routes/admin/components/ui/textarea";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import {
@@ -11,7 +11,7 @@ import {
 } from "~/routes/admin/components/ui/section";
 import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
 interface ContactSectionEditorProps {
-	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData>; 
+	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData>;
 	initialContent: Record<string, string>;
 }
 const contactFields = [
@@ -98,7 +98,7 @@ export function ContactSectionEditor({
 			</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
 				{contactFields.map(({ key, label, rows, placeholder, isRichText }) => (
-					<FieldRow key={key}>
+					<div key={key} className="flex flex-col gap-1">
 						<FieldLabel htmlFor={key}>{label}</FieldLabel>
 						{isRichText ? (
 							<RichTextField
@@ -125,7 +125,11 @@ export function ContactSectionEditor({
 								disabled={fetcher.state === "submitting"}
 							/>
 						)}
-					</FieldRow>
+						{/* Placeholder for error/help text, e.g.,
+        <Alert variant="error" className="mt-1 text-xs" showIcon={false}>...</Alert>
+        <span className="text-xs text-neutral-500 mt-1">Help text</span>
+    */}
+					</div>
 				))}
 			</div>
 		</SectionCard>

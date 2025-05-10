@@ -21,32 +21,38 @@ import { Heading } from "../components/ui/heading";
 import { Input } from "../components/ui/input";
 import { Text } from "../components/ui/text";
 import type { Route } from "./+types/upload";
-export async function loader({ context, request }: Route.LoaderArgs): Promise<Route.LoaderData | Response> { 
+export async function loader({
+	context,
+	request,
+}: Route.LoaderArgs): Promise<Route.LoaderData | Response> {
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		throw redirect("/admin/login"); 
+		throw redirect("/admin/login");
 	}
 	try {
 		const images = await listStoredImages(context);
-		return { images }; 
+		return { images };
 	} catch (error: any) {
 		console.error("Error listing images:", error);
-		throw data( 
+		throw data(
 			{ error: `Failed to list images: ${error.message || "Unknown error"}` },
 			{ status: 500 },
 		);
 	}
 }
-export async function action({ request, context }: Route.ActionArgs): Promise<Response | Route.ActionData> { 
+export async function action({
+	request,
+	context,
+}: Route.ActionArgs): Promise<Response | Route.ActionData> {
 	const unauthorized = () => {
-		return redirect("/admin/login"); 
+		return redirect("/admin/login");
 	};
-	const badRequest = (msg: string, errors?: Record<string, string>) => { 
-		return data({ success: false, error: msg, errors }, { status: 400 }); 
+	const badRequest = (msg: string, errors?: Record<string, string>) => {
+		return data({ success: false, error: msg, errors }, { status: 400 });
 	};
 	const serverError = (msg: string) => {
-		return data({ success: false, error: msg }, { status: 500 }); 
+		return data({ success: false, error: msg }, { status: 500 });
 	};
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -58,13 +64,13 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
 			const formData = await request.formData();
 			const intent = formData.get("intent");
 			if (intent === "deleteImage") {
-				const filename = formData.get("filename")?.toString(); 
+				const filename = formData.get("filename")?.toString();
 				if (!filename) {
 					return badRequest("Missing filename for deletion.");
 				}
 				const r2Deleted = await deleteStoredImage(filename, context);
 				if (!r2Deleted) {
-					return serverError("Failed to delete image from storage."); 
+					return serverError("Failed to delete image from storage.");
 				}
 				const publicUrlBase =
 					context.cloudflare?.env?.PUBLIC_R2_URL || "/assets";
@@ -82,13 +88,13 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
 					if (mediaToDelete?.id) {
 						await tx
 							.update(schema.content)
-							.set({ mediaId: null, value: "" }) 
+							.set({ mediaId: null, value: "" })
 							.where(eq(schema.content.mediaId, mediaToDelete.id))
 							.run();
 					}
 					await tx
 						.update(schema.content)
-						.set({ value: "", mediaId: null }) 
+						.set({ value: "", mediaId: null })
 						.where(eq(schema.content.value, fullUrl))
 						.run();
 				});
@@ -104,26 +110,34 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
 					return badRequest("Missing image URL.");
 				}
 				try {
-					validateContentInsert({ key, value: imageUrl, page: "unknown", section: "image", type: "image" });
-				} catch (e: unknown) { 
+					validateContentInsert({
+						key,
+						value: imageUrl,
+						page: "unknown",
+						section: "image",
+						type: "image",
+					});
+				} catch (e: unknown) {
 					const errors: Record<string, string> = {};
-					if (e instanceof ValiError) { 
+					if (e instanceof ValiError) {
 						for (const issue of e.issues) {
 							const fieldName = issue.path?.[0]?.key as string | undefined;
 							if (fieldName && !errors[fieldName]) {
 								errors[fieldName] = issue.message;
-							} else if (!fieldName && issue.message && !errors[key]){
+							} else if (!fieldName && issue.message && !errors[key]) {
 								errors[key] = issue.message;
 							}
 						}
-						return badRequest(`Validation failed for key '${key}'.`, errors); 
+						return badRequest(`Validation failed for key '${key}'.`, errors);
 					} else if (e instanceof Error) {
-						errors[key] = e.message; 
+						errors[key] = e.message;
 					} else {
 						errors[key] = "An unknown validation error occurred.";
 					}
 					const errorMessage = e instanceof Error ? e.message : String(e);
-					return badRequest(`Validation failed for key '${key}': ${errorMessage}`);
+					return badRequest(
+						`Validation failed for key '${key}': ${errorMessage}`,
+					);
 				}
 				await context.db.transaction(async (tx) => {
 					const mediaRecord = await tx
@@ -136,7 +150,7 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
 						value: imageUrl,
 						mediaId: mediaRecord?.id ?? null,
 					};
-					validateContentInsert(contentKeyVal); 
+					validateContentInsert(contentKeyVal);
 					await tx
 						.insert(schema.content)
 						.values(contentKeyVal)
@@ -165,30 +179,46 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
 			}
 			const publicUrl = await handleImageUpload(file, key, context);
 			if (!publicUrl || typeof publicUrl !== "string") {
-				const errorMsg = typeof publicUrl === 'object' && publicUrl !== null && 'error' in publicUrl ? (publicUrl as {error: string}).error : "Failed to upload image";
+				const errorMsg =
+					typeof publicUrl === "object" &&
+					publicUrl !== null &&
+					"error" in publicUrl
+						? (publicUrl as { error: string }).error
+						: "Failed to upload image";
 				return badRequest(errorMsg);
 			}
 			try {
-				validateContentInsert({ key, value: publicUrl, page: "unknown", section: "image", type: "image" });
-			} catch (e: unknown) { 
+				validateContentInsert({
+					key,
+					value: publicUrl,
+					page: "unknown",
+					section: "image",
+					type: "image",
+				});
+			} catch (e: unknown) {
 				const errors: Record<string, string> = {};
-				if (e instanceof ValiError) { 
+				if (e instanceof ValiError) {
 					for (const issue of e.issues) {
 						const fieldName = issue.path?.[0]?.key as string | undefined;
 						if (fieldName && !errors[fieldName]) {
 							errors[fieldName] = issue.message;
-						} else if (!fieldName && issue.message && !errors[key]){
+						} else if (!fieldName && issue.message && !errors[key]) {
 							errors[key] = issue.message;
 						}
 					}
-					return badRequest(`Validation failed for key '${key}' (URL).`, errors); 
+					return badRequest(
+						`Validation failed for key '${key}' (URL).`,
+						errors,
+					);
 				} else if (e instanceof Error) {
-					errors[key] = e.message; 
+					errors[key] = e.message;
 				} else {
 					errors[key] = "An unknown validation error occurred.";
 				}
 				const errorMessage = e instanceof Error ? e.message : String(e);
-				return badRequest(`Validation failed for key '${key}' (URL): ${errorMessage}`);
+				return badRequest(
+					`Validation failed for key '${key}' (URL): ${errorMessage}`,
+				);
 			}
 			const mediaAltText = file.name;
 			await context.db.transaction(async (tx) => {
@@ -227,7 +257,7 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
 					value: publicUrl,
 					mediaId: newMediaId,
 				};
-				validateContentInsert(contentKeyVal); 
+				validateContentInsert(contentKeyVal);
 				await tx
 					.insert(schema.content)
 					.values(contentKeyVal)
@@ -243,12 +273,12 @@ export async function action({ request, context }: Route.ActionArgs): Promise<Re
 			return data({ success: true, url: publicUrl, key, action: "upload" });
 		} catch (error: any) {
 			console.error("Upload error or action processing error:", error);
-			return serverError(error.message || "An unexpected error occurred"); 
+			return serverError(error.message || "An unexpected error occurred");
 		}
 	}
 	return data({ success: false, error: "Method not allowed" }, { status: 405 });
 }
-export default function Component() { 
+export default function Component() {
 	return (
 		<FadeIn>
 			<div className="flex flex-col gap-8">

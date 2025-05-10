@@ -1,4 +1,4 @@
-import type React from "react"; 
+import type React from "react";
 import { type JSX, useRef, useState } from "react";
 import { useFetcher } from "react-router";
 import { Drawer } from "vaul";
@@ -23,7 +23,7 @@ export function ImageSelector({
 	imageUrl,
 	label = "Upload Image",
 	className = "",
-	fileInputRef, 
+	fileInputRef,
 	fieldKey,
 }: ImageSelectorProps): JSX.Element {
 	const [isOpen, setIsOpen] = useState(false);

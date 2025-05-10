@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import React, { createContext, useContext, useState } from "react"; 
+import React, { createContext, useContext, useState } from "react";
 import { Link } from "./link";
 const TableContext = createContext<{
 	bleed: boolean;
@@ -34,7 +34,7 @@ export function Table({
 					{...props}
 					className={clsx(
 						className,
-						"-mx-4 overflow-x-auto whitespace-nowrap sm:-mx-6 lg:-mx-8", 
+						"-mx-4 overflow-x-auto whitespace-nowrap sm:-mx-6 lg:-mx-8",
 					)}
 				>
 					<div
@@ -152,7 +152,7 @@ export function TableCell({
 			{href && (
 				<Link
 					data-row-link
-					to={href} 
+					to={href}
 					target={target}
 					aria-label={title}
 					tabIndex={cellRef?.previousElementSibling === null ? 0 : -1}

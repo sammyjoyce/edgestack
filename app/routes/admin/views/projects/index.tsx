@@ -1,5 +1,13 @@
 import React from "react";
-import { Form, Link, redirect, useLoaderData, data, Outlet, useLocation } from "react-router";
+import {
+	Form,
+	Link,
+	redirect,
+	useLoaderData,
+	data,
+	Outlet,
+	useLocation,
+} from "react-router";
 import { assert } from "~/routes/common/utils/assert";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
@@ -12,7 +20,7 @@ import type { Route } from "./+types/index";
 export async function loader({
 	request,
 	context,
-}: Route.LoaderArgs): Promise<Route.LoaderData | Response> { 
+}: Route.LoaderArgs): Promise<Route.LoaderData | Response> {
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -20,11 +28,11 @@ export async function loader({
 	}
 	try {
 		const projects = await getAllProjects(context.db);
-		return { projects }; 
+		return { projects };
 	} catch (error: any) {
 		console.error("Failed to load projects:", error);
-		throw data( 
-			{ error: error.message || "Failed to load projects" }, 
+		throw data(
+			{ error: error.message || "Failed to load projects" },
 			{ status: 500 },
 		);
 	}
@@ -32,45 +40,47 @@ export async function loader({
 export async function action({
 	request,
 	context,
-}: Route.ActionArgs): Promise<Route.ActionData | Response> { 
+}: Route.ActionArgs): Promise<Route.ActionData | Response> {
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		return redirect("/admin/login"); 
+		return redirect("/admin/login");
 	}
 	if (intent === "deleteProject") {
 		const projectIdStr = formData.get("projectId")?.toString();
 		if (!projectIdStr) {
-			return data( 
+			return data(
 				{ success: false, error: "Missing project ID" },
 				{ status: 400 },
 			);
 		}
 		const projectId = Number(projectIdStr);
 		if (Number.isNaN(projectId)) {
-			return data( 
+			return data(
 				{ success: false, error: "Invalid project ID" },
 				{ status: 400 },
 			);
 		}
 		try {
 			await deleteProject(context.db, projectId);
-			return data({ success: true, projectId }); 
+			return data({ success: true, projectId });
 		} catch (error: unknown) {
 			console.error("Failed to delete project:", error);
 			const message =
 				error instanceof Error ? error.message : "Failed to delete project";
-			return data({ success: false, error: message }, { status: 500 }); 
+			return data({ success: false, error: message }, { status: 500 });
 		}
 	}
-	return data({ success: false, error: "Unknown intent" }, { status: 400 }); 
+	return data({ success: false, error: "Unknown intent" }, { status: 400 });
 }
 export default function AdminProjectsIndexPage() {
-	const { projects } = useLoaderData<typeof loader>(); 
+	const { projects } = useLoaderData<typeof loader>();
 	const location = useLocation();
-	const isChildActive = location.pathname !== "/admin/projects" && location.pathname.startsWith("/admin/projects/");
+	const isChildActive =
+		location.pathname !== "/admin/projects" &&
+		location.pathname.startsWith("/admin/projects/");
 	assert(
 		Array.isArray(projects),
 		"ProjectsIndexRoute: loader must return an array of projects. Check loader implementation.",
@@ -141,7 +151,12 @@ export default function AdminProjectsIndexPage() {
 										{project.title}
 									</td>
 									<td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
-										{typeof project.description === 'string' ? project.description : (project.description && typeof project.description === 'object' ? JSON.stringify(project.description) : "-")}
+										{typeof project.description === "string"
+											? project.description
+											: project.description &&
+													typeof project.description === "object"
+												? JSON.stringify(project.description)
+												: "-"}
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
 										{project.isFeatured ? (

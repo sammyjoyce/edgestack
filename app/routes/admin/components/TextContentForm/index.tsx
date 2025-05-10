@@ -3,9 +3,11 @@ import {
 	CheckCircleIcon,
 	ExclamationTriangleIcon,
 	InformationCircleIcon,
+} from "@heroicons/react/24/outline";
+import { Alert } from "../ui/alert";
 	XCircleIcon,
-} from "@heroicons/react/20/solid"; 
-import React, { type JSX, useRef } from "react"; 
+} from "@heroicons/react/20/solid";
+import React, { type JSX, useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { Label } from "~/routes/admin/components/ui/fieldset";
@@ -91,7 +93,7 @@ const textFields = [
 	},
 ];
 interface TextContentFormProps {
-	fetcher: FetcherWithComponents<ActionResponseData>; 
+	fetcher: FetcherWithComponents<ActionResponseData>;
 	initialContent: Record<string, string>;
 	formRef?: React.RefObject<HTMLFormElement>;
 }
@@ -245,9 +247,9 @@ export function TextContentForm({
 							/>
 						)}
 						{errors[key] && (
-							<span className="text-xs text-red-500 mt-1" role="alert">
+							<Alert variant="error" className="mt-1 text-xs" showIcon={false}>
 								{errors[key]}
-							</span>
+							</Alert>
 						)}
 					</div>
 				))}

@@ -13,7 +13,7 @@ import React, {
 	useCallback,
 	useEffect,
 	useState,
-} from "react"; 
+} from "react";
 import clsx from "clsx";
 import {
 	$getSelection,

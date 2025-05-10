@@ -1,16 +1,16 @@
-import clsx from "clsx"; 
+import clsx from "clsx";
 import {
 	motion,
 	useMotionTemplate,
 	useScroll,
 	useTransform,
-} from "framer-motion"; 
+} from "framer-motion";
 import type { HTMLMotionProps } from "framer-motion";
 import type React from "react";
 import { useRef } from "react";
 const MotionImage = motion.img;
 interface GrayscaleTransitionImageProps {
-	className?: string; 
+	className?: string;
 	alt?: string;
 	src?: string;
 	width?: number | string;
@@ -20,7 +20,7 @@ interface GrayscaleTransitionImageProps {
 	id?: string;
 	sizes?: string;
 	srcSet?: string;
-	[key: string]: any; 
+	[key: string]: any;
 }
 export function GrayscaleTransitionImage({
 	className,
@@ -30,7 +30,7 @@ export function GrayscaleTransitionImage({
 	height,
 	loading = "lazy",
 	decoding = "async",
-	...rest 
+	...rest
 }: GrayscaleTransitionImageProps) {
 	const ref = useRef<React.ElementRef<"div">>(null);
 	const { scrollYProgress } = useScroll({
@@ -61,8 +61,8 @@ export function GrayscaleTransitionImage({
 				className="absolute inset-0 h-full w-full object-cover"
 				loading={loading}
 				decoding={decoding}
-				style={{ filter }} 
-				{...rest} 
+				style={{ filter }}
+				{...rest}
 			/>
 			<div
 				className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"

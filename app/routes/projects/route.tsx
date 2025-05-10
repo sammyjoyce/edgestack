@@ -1,4 +1,4 @@
-import React from "react"; 
+import React from "react";
 import { type MetaFunction, Outlet, data, useLoaderData } from "react-router";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
