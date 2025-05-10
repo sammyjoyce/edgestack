@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, redirect, useActionData, useNavigate, data, SerializeFrom } from "react-router";
+import { Form, redirect, useActionData, useNavigate, data } from "react-router";
 import type { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
 import { createProject } from "~/routes/common/db";
@@ -15,8 +15,8 @@ import { Text } from "../../components/ui/text";
 import { Textarea } from "../../components/ui/textarea";
 export async function action({
 	request,
-	context, 
-}: Route.ActionArgs): Promise<Response | SerializeFrom<Route.ActionData>> { 
+	context,
+}: Route.ActionArgs): Promise<Response | Route.ActionData> { 
 	const formData = await request.formData();
 	const title = formData.get("title")?.toString() ?? "";
 	const description = formData.get("description")?.toString() ?? "";

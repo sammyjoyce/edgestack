@@ -12,7 +12,6 @@ import {
 	redirect,
 	useLoaderData,
 	useNavigation,
-	SerializeFrom, 
 } from "react-router";
 import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
@@ -22,7 +21,7 @@ import type { Route } from "./+types/_layout";
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
 ];
-export const loader = async ({ request, context }: Route.LoaderArgs): Promise<SerializeFrom<Route.LoaderData> | Response> => { 
+export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Route.LoaderData | Response> => { 
 	const url = new URL(request.url);
 	const isLoginRoute = url.pathname === "/admin/login";
 	const isLogoutRoute = url.pathname === "/admin/logout";
