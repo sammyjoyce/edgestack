@@ -1,6 +1,6 @@
+import type { Route } from "./+types/[projectId]/delete";
 import React from "react";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 // Removed data import; use plain objects or throw new Response.
 import {
 	Alert,
@@ -21,9 +21,8 @@ import { Text } from "../../../components/ui/text";
 export async function loader({
 	params,
 	context,
-}: { params: { projectId: string }; context: any }): Promise<
-	{ project: Project } | Response
-> {
+	request,
+}: Route.LoaderArgs): Promise<{ project: Project } | Response> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		throw new Response("Invalid Project ID", { status: 400 });
@@ -45,9 +44,7 @@ export async function action({
 	request,
 	params,
 	context,
-}: { request: Request; params: { projectId: string }; context: any }): Promise<
-	Response | { success: boolean; error?: string }
-> {
+}: Route.ActionArgs): Promise<Response | { success: boolean; error?: string }> {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		return { success: false, error: "Invalid Project ID" };
@@ -68,8 +65,7 @@ export async function action({
 		};
 	}
 }
-export default function DeleteProjectPage() {
-	const loaderData = useLoaderData() as { project?: Project };
+export default function DeleteProjectPage({ loaderData, params }: Route.ComponentProps) {
 	const project = loaderData?.project;
 	const navigate = useNavigate();
 	return (

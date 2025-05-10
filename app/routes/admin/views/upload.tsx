@@ -1,3 +1,4 @@
+import type { Route } from "./+types/upload";
 import { eq } from "drizzle-orm";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
 import React, { type JSX, useState } from "react";
@@ -46,6 +47,7 @@ export async function loader({
 export async function action({
 	request,
 	context,
+	params,
 }: Route.ActionArgs): Promise<Response | Route.ActionData> {
 	const unauthorized = () => {
 		return redirect("/admin/login");
@@ -280,7 +282,7 @@ export async function action({
 	}
 	return data({ success: false, error: "Method not allowed" }, { status: 405 });
 }
-export default function Component() {
+export default function Component({ loaderData, actionData, params }: Route.ComponentProps) {
 	return (
 		<FadeIn>
 			<FormCard>

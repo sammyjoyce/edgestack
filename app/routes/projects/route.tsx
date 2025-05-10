@@ -14,7 +14,7 @@ export const meta: MetaFunction = () => {
 		},
 	];
 };
-export const loader = async ({ context }: Route.LoaderArgs) => {
+export const loader = async ({ context, request, params }: Route.LoaderArgs) => {
 	try {
 		const content = await getAllContent(context.db);
 		const projects = await getAllProjects(context.db);
@@ -24,8 +24,8 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
 		throw data({ message: "Failed to load projects data" }, { status: 500 });
 	}
 };
-export default function Projects() {
-	const { content, projects } = useLoaderData<typeof loader>();
+export default function Projects({ loaderData }: Route.ComponentProps) {
+	const { content, projects } = loaderData;
 	return (
 		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
 			<Header />

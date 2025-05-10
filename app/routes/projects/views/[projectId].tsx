@@ -29,8 +29,8 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 	}
 };
 import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout";
-export function ProjectDetailRoute() {
-	const { project } = useLoaderData<typeof loader>();
+export function ProjectDetailRoute({ loaderData, params: routeParams }: Route.ComponentProps) {
+	const { project } = loaderData;
 	const { content } =
 		useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
 	const projectDetailTheme =

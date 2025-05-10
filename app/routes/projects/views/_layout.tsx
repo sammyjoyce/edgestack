@@ -25,8 +25,7 @@ export const loader = async ({ context }: any) => {
 		);
 	}
 };
-export function ProjectsLayout() {
-	const loaderData = useLoaderData<typeof loader>();
+export function ProjectsLayout({ loaderData }: Route.ComponentProps) {
 	const projectsPageIntroTheme =
 		loaderData.content.projects_page_intro_theme === "dark" ? "dark" : "light";
 	return (

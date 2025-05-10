@@ -53,6 +53,7 @@ export const loader = async ({
 export const action = async ({
 	request,
 	context,
+	params,
 }: Route.ActionArgs): Promise<null | Route.ActionData> => {
 	return null;
 };
@@ -67,9 +68,8 @@ const navigation: NavItem[] = [
 	{ name: "Live Site", href: "/", icon: DocumentDuplicateIcon },
 	{ name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
-export default function AdminLayout() {
+export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 	const navigationHook = useNavigation();
-	const loaderData = useLoaderData<typeof loader>();
 	const location = useLocation();
 
 	const sidebarNav = (
