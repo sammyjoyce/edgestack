@@ -1,8 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import type React from "react"; // Ensured React is imported
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react"; // Ensured React is imported
 import { Link } from "./link";
 
 const TableContext = createContext<{

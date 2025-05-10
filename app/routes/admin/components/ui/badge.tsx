@@ -1,7 +1,6 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
-import type React from "react";
-import { forwardRef } from "react";
+import React, { forwardRef } from "react";
 import { TouchTarget } from "./button"; // Assuming TouchTarget is appropriately styled
 import { Link } from "./link"; // Assuming Link is appropriately styled
 

@@ -1,5 +1,4 @@
-import type React from "react"; // Import React
-import { type JSX, useCallback } from "react";
+import React, { type JSX, useCallback } from "react"; // Import React
 import { useDropzone } from "react-dropzone";
 
 interface ImageUploadZoneProps {

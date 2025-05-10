@@ -28,6 +28,6 @@
 		},
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
-		"verbatimModuleSyntax": false
+		"verbatimModuleSyntax": true
 	}
 }

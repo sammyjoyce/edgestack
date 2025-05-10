@@ -1,6 +1,5 @@
 import {} from "@heroicons/react/20/solid";
-import type React from "react"; // Import React and JSX type
-import { type JSX, useRef } from "react";
+import React, { type JSX, useRef } from "react"; // Import React and JSX type
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 // Pull Label from the shared fieldset, Textarea from the admin ui folder

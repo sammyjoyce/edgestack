@@ -42,14 +42,14 @@ export default function AdminDashboard({
 
 	// Use React Router 7's built-in type inference - no explicit type parameters
 	// This lets React Router handle the complex type relationships correctly
-	const heroFetcher = useFetcher<typeof adminIndexAction>();
-	const introFetcher = useFetcher<typeof adminIndexAction>();
-	const servicesFetcher = useFetcher<typeof adminIndexAction>();
-	const aboutFetcher = useFetcher<typeof adminIndexAction>();
-	const contactFetcher = useFetcher<typeof adminIndexAction>();
-	const sorterFetcher = useFetcher<typeof adminIndexAction>();
-	const projectsFetcher = useFetcher<typeof adminIndexAction>();
-	const uploadFetcher = useFetcher<typeof adminUploadAction>();
+	const heroFetcher = useFetcher<typeof adminIndexAction>(); // For text content related to hero
+	const introFetcher = useFetcher<typeof adminIndexAction>(); // For text content related to intro
+	const servicesFetcher = useFetcher<typeof adminIndexAction>(); // For text content related to services
+	const aboutFetcher = useFetcher<typeof adminIndexAction>(); // For text content related to about
+	const contactFetcher = useFetcher<typeof adminIndexAction>(); // For text content related to contact
+	const sorterFetcher = useFetcher<typeof adminIndexAction>(); // For section sorting
+	const projectsFetcher = useFetcher<typeof adminIndexAction>(); // For projects intro text
+	const uploadFetcher = useFetcher<typeof adminUploadAction>(); // Dedicated for all image uploads
 
 	// Access content safely, handle null/error case
 	const safeContent =
@@ -117,7 +117,7 @@ export default function AdminDashboard({
 
 	const handleHeroImageUpload = (file: File) =>
 		uploadImage(
-			heroFetcher,
+			uploadFetcher, // Use dedicated uploadFetcher
 			"hero_image_url",
 			file,
 			setHeroUploading,
@@ -126,7 +126,7 @@ export default function AdminDashboard({
 
 	const handleAboutImageUpload = (file: File) =>
 		uploadImage(
-			aboutFetcher,
+			uploadFetcher, // Use dedicated uploadFetcher
 			"about_image_url",
 			file,
 			setAboutUploading,
@@ -135,7 +135,7 @@ export default function AdminDashboard({
 
 	const handleServiceImageUpload = (idx: number, file: File) =>
 		uploadImage(
-			servicesFetcher, // Use servicesFetcher for service images
+			uploadFetcher, // Use dedicated uploadFetcher
 			`service_${idx + 1}_image`,
 			file,
 			(v) =>

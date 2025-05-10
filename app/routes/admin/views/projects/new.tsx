@@ -58,10 +58,10 @@ export async function action({
 		// 	validateProjectInsert(projectData);
 		// } catch (validationError: any) {
 		// 	console.error("Validation error:", validationError);
-		// 	return {
+		// 	return data({
 		// 		success: false,
 		// 		error: validationError.message || "Invalid project data",
-		// 	};
+		// 	}, { status: 400 });
 		// }
 
 		await createProject(

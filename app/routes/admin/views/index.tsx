@@ -88,12 +88,7 @@ export async function action({
 				console.log("[ADMIN ACTION] updateTextContent updates:", updates);
 			await updateContent(context.db, updates);
 			invariant(true, "action: reached end of updateTextContent branch");
-			const revalidateParam = `revalidate=true&t=${Date.now()}`;
-			invariant(
-				typeof revalidateParam === "string",
-				"action: revalidateParam must be a string",
-			);
-			return redirect(`/?${revalidateParam}`);
+			return redirect("/");
 		}
 		const updates: Record<string, string> = {};
 		for (const [key, value] of formData.entries()) {
@@ -104,12 +99,7 @@ export async function action({
 		invariant(Object.keys(updates).length > 0, "action: No updates provided");
 		if (DEBUG) console.log("[ADMIN ACTION] other updates:", updates);
 		// Here we would call a different function to handle project updates
-		const revalidateParam = `revalidate=true&t=${Date.now()}`;
-		invariant(
-			typeof revalidateParam === "string",
-			"action: revalidateParam must be a string",
-		);
-		return redirect(`/admin/projects?${revalidateParam}`);
+		return redirect("/admin/projects");
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
 		if (DEBUG) console.error("[ADMIN ACTION] Error processing updates:", err);

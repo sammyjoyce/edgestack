@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type React from "react"; // Added React import
+import React from "react"; // Added React import
 import { Link } from "./link";
 
 export function Text({

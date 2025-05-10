@@ -35,13 +35,13 @@ export async function loader({
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		throw new Error("Invalid Project ID");
+		throw data({ error: "Invalid Project ID" }, { status: 400 });
 	}
 
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw new Error("Project not found");
+			throw data({ error: "Project not found" }, { status: 404 });
 		}
 		return { project };
 	} catch (error: any) {
@@ -62,7 +62,7 @@ export async function action({
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		return { success: false, error: "Invalid Project ID" };
+		return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
 	}
 
 	const formData = await request.formData();
@@ -84,7 +84,7 @@ export async function action({
 			// Access bucket from context
 			const env = context.cloudflare?.env;
 			if (!env) {
-				return { success: false, error: "Environment not available" };
+				return data({ success: false, error: "Environment not available" }, { status: 500 });
 			}
 
 			try {
@@ -100,11 +100,11 @@ export async function action({
 				if (uploadResult && typeof uploadResult === "string") {
 					imageUrl = uploadResult;
 				} else {
-					return { success: false, error: "Failed to upload image" };
+					return data({ success: false, error: "Failed to upload image" }, { status: 400 });
 				}
 			} catch (error) {
 				console.error("Image upload error:", error);
-				return { success: false, error: "Failed to upload image" };
+				return data({ success: false, error: "Failed to upload image" }, { status: 500 });
 			}
 		}
 

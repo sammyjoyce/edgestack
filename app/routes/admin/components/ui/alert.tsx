@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type React from "react";
+import React from "react";
 import { Text } from "./text"; // Assuming Text component is styled or not a priority
 
 // Define icons for different alert types (example using Heroicons or similar SVG strings)
