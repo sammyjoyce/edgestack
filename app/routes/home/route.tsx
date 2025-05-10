@@ -73,7 +73,7 @@ export async function loader({ request, context }: Route.LoaderArgs): Promise<{
 
 export default function HomeRoute(): JSX.Element {
 	const { content, projects, revalidatedAt } = useLoaderData<typeof loader>();
-	if (DEBUG) console.log("[HOME ROUTE] Revalidated at:", revalidatedAt);
+	if (DEBUG && revalidatedAt) console.log("[HOME ROUTE] Revalidated at:", revalidatedAt);
 
 	invariant(
 		typeof content === "object",

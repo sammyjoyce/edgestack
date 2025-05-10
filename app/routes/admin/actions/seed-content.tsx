@@ -53,7 +53,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 			message: `Successfully seeded ${missingKeys.length} missing content items.`,
 		});
 	} catch (error: any) {
-		console.error("[Seed Content Action Error]:", error);
+		if (DEBUG) console.error("[Seed Content Action Error]:", error);
 		return data(
 			{ success: false, error: "Failed to seed default content." },
 			{ status: 500 },

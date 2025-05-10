@@ -39,10 +39,11 @@ export function HeroSectionEditor({
 		(e: React.FocusEvent<HTMLTextAreaElement>) => {
 			const { name, value } = e.currentTarget;
 
-			// Debug log
-			console.log(
-				`[HeroSectionEditor] handleBlur triggered for ${name} with value: "${value}"`,
-			);
+			if (DEBUG) {
+				console.log(
+					`[HeroSectionEditor] handleBlur triggered for ${name} with value: "${value}"`,
+				);
+			}
 
 			// Create and populate form data
 			const formData = new FormData();
@@ -52,6 +53,7 @@ export function HeroSectionEditor({
 			console.log(
 				`[HeroSectionEditor] Submitting form with intent: updateTextContent, ${name}: "${value}"`,
 			);
+			}
 
 			// Submit form with explicit method and action
 			try {
@@ -59,9 +61,9 @@ export function HeroSectionEditor({
 					method: "post",
 					action: "/admin",
 				});
-				console.log("[HeroSectionEditor] Form submitted successfully");
+				if (DEBUG) console.log("[HeroSectionEditor] Form submitted successfully");
 			} catch (error) {
-				console.error("[HeroSectionEditor] Error submitting form:", error);
+				if (DEBUG) console.error("[HeroSectionEditor] Error submitting form:", error);
 			}
 		},
 		[fetcher],

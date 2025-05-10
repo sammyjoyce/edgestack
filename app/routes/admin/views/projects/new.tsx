@@ -4,6 +4,7 @@ import type { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
 import { createProject } from "~/routes/common/db";
 import type { NewProject } from "../../../../../database/schema";
+import { validateProjectInsert } from "../../../../../database/valibot-validation";
 
 import type { Route } from "./+types/new";
 
@@ -52,17 +53,7 @@ export async function action({
 	};
 
 	try {
-		// Commented out validation due to missing file
-		// try {
-		// 	// Validate using Valibot schema before DB operation (optional if you have strict schemas elsewhere)
-		// 	validateProjectInsert(projectData);
-		// } catch (validationError: any) {
-		// 	console.error("Validation error:", validationError);
-		// 	return data({
-		// 		success: false,
-		// 		error: validationError.message || "Invalid project data",
-		// 	}, { status: 400 });
-		// }
+		validateProjectInsert(projectData);
 
 		await createProject(
 			context.db,
@@ -74,24 +65,26 @@ export async function action({
 	} catch (error: any) {
 		console.error("Error creating project:", error);
 		// Check for Valibot validation error structure
+		const errors: Record<string, string> = {};
 		if (error.issues && Array.isArray(error.issues)) {
-			const issueMessages = error.issues
-				.map(
-					(
-						issue: any, // Consider typing 'issue' more strictly if possible
-					) =>
-						`${issue.path?.map((p: any) => p.key).join(".") || "field"}: ${issue.message}`,
-				)
-				.join("; ");
-			throw new Response(`Validation Error: ${issueMessages}`, { status: 400 });
+			for (const issue of error.issues) {
+				const fieldName = issue.path?.[0]?.key;
+				if (typeof fieldName === 'string' && !errors[fieldName]) {
+					errors[fieldName] = issue.message;
+				}
+			}
 		}
-		throw data({ error: error.message || "Failed to create project" }, { status: 500 });
+		if (Object.keys(errors).length > 0) {
+			return data({ success: false, errors }, { status: 400 });
+		}
+		return data({ success: false, error: error.message || "Failed to create project" }, { status: 500 });
 	}
 }
 
 export function NewProjectRoute() {
 	const navigate = useNavigate();
 	const actionData = useActionData<typeof action>();
+	const errors = actionData?.errors as Record<string, string> | undefined;
 
 	// TigerStyle runtime assertions
 	invariant(
@@ -111,7 +104,7 @@ export function NewProjectRoute() {
 				</Legend>
 			</Fieldset>
 
-			{actionData?.error && (
+			{actionData?.error && !errors && (
 				<Text
 					className="p-4 mb-4 text-red-700 bg-red-100 rounded-lg border border-red-200"
 					role="alert"
@@ -128,7 +121,10 @@ export function NewProjectRoute() {
 						name="title"
 						required
 						placeholder="Enter project title"
+						aria-invalid={!!errors?.title}
+						aria-describedby={errors?.title ? "title-error" : undefined}
 					/>
+					{errors?.title && <Text id="title-error" className="text-sm text-red-600">{errors.title}</Text>}
 				</Fieldset>
 
 				<Fieldset>

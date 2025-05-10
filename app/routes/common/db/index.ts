@@ -1,7 +1,7 @@
 import { asc, desc, eq, sql } from "drizzle-orm";
 import type { BatchItem, BatchResponse } from "drizzle-orm/batch";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
-// import { validateProjectUpdate, validateContentUpdate } from "../../../../database/valibot-validation";
+import { validateContentUpdate } from "../../../../database/valibot-validation";
 import { assert } from "~/routes/common/utils/assert";
 import type {
 	NewContent,
@@ -65,9 +65,11 @@ export async function updateContent(
 			typeof valueOrObj === "string" ? { value: valueOrObj } : valueOrObj;
 
 		if (typeof dataToSet.value !== "string") {
-			console.warn(
-				`Skipping content update for key '${key}' because value is not a string. Value: ${JSON.stringify(dataToSet.value)}`,
-			);
+			if (process.env.NODE_ENV !== "production") {
+				console.warn(
+					`Skipping content update for key '${key}' because value is not a string. Value: ${JSON.stringify(dataToSet.value)}`,
+				);
+			}
 			// Skip adding this item to the batch if its value is not a string
 			continue;
 		}
@@ -107,13 +109,9 @@ export async function updateContent(
 		if (mediaId !== undefined) setDataPayload.mediaId = mediaId;
 		if (metadata !== undefined) setDataPayload.metadata = metadata;
 
-		// Commented out validation due to missing file
-		// try {
-		// 	validateContentUpdate(setDataPayload);
-		// } catch (validationError: any) {
-		// 	console.error(`Validation error for content key ${key}:`, validationError);
-		// 	return [];
-		// }
+		// Validate before creating the statement
+		// This will throw if validation fails, and the error should be caught by the calling action.
+		validateContentUpdate(setDataPayload);
 
 		const upsertStatement = db
 			.insert(schema.content)
@@ -159,7 +157,7 @@ export async function getAllProjects(
 		.from(schema.projects)
 		.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt))
 		.all();
-	console.log(`getAllProjects took ${performance.now() - t0}ms`);
+	if (process.env.NODE_ENV !== "production") console.log(`getAllProjects took ${performance.now() - t0}ms`);
 	assert(Array.isArray(result), "getAllProjects: must return array");
 	return result;
 }
@@ -175,7 +173,7 @@ export async function getFeaturedProjects(
 		.where(eq(schema.projects.isFeatured, true))
 		.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt))
 		.all();
-	console.log(`getFeaturedProjects took ${performance.now() - t0}ms`);
+	if (process.env.NODE_ENV !== "production") console.log(`getFeaturedProjects took ${performance.now() - t0}ms`);
 	assert(Array.isArray(result), "getFeaturedProjects: must return array");
 	return result;
 }

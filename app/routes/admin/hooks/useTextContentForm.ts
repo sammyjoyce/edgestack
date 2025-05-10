@@ -109,29 +109,25 @@ export function useTextContentForm({
 			if (isRichTextField(name)) return;
 
 			if (autoSave) {
-				// Pass isRichText flag to validation
-				const err = validateField(name, value, false); // Always false here as we skipped rich text above
+				const err = validateField(name, value, false); 
 				if (!err) {
 					const data = new FormData();
-					data.append("intent", "updateTextContent"); // Add intent
+					data.append("intent", "updateTextContent"); 
 					data.append(name, value);
-					isSubmittingRef.current = true; // Set submitting flag
-					// Use typed path for action
-					fetcher.submit(data, { method: "post", action: "/admin" }); // Explicitly use /admin
-					setFeedback(`Saving '${labelForKey(name)}'...`); // Use label for feedback
+					isSubmittingRef.current = true; 
+					fetcher.submit(data, { method: "post", action: "/admin" }); 
+					setFeedback(`Saving '${labelForKey(name)}'...`); 
 					setErrors((prev) => {
 						const next = { ...prev };
 						delete next[name];
 						return next;
 					});
-					// Update the 'saved' fields state immediately for auto-save
 					setFields((prev) => ({ ...prev, [name]: value }));
 				} else {
 					setErrors((prev) => ({ ...prev, [name]: err }));
 					setFeedback(`Validation failed for '${labelForKey(name)}': ${err}`);
 				}
 			} else {
-				// Only update pending state if not auto-saving
 				setPendingFields((prev) => ({ ...prev, [name]: value }));
 			}
 		},
@@ -221,21 +217,25 @@ export function useTextContentForm({
 
 			if (data) {
 				if (data.success) {
-					// If auto-save was successful, fields state is already updated
-					// If manual save was successful, fields state was updated in handleSave
-					setErrors({}); // Clear errors on success
-				} else if (data.error) {
-					// Safely use error which is now properly typed as string
-					setFeedback(data.error);
-
-					// If manual save failed, revert pendingFields back to the last saved state (fields)
+					setErrors({}); 
+					// Feedback for successful save is usually handled by the component showing "Saved"
+					// setFeedback(data.message || "Changes saved successfully.");
+				} else if (data.errors && typeof data.errors === 'object') {
+					// Handle structured errors from Valibot
+					setErrors(data.errors as Record<string, string>);
+					setFeedback("Validation failed. Please check the fields.");
 					if (!autoSave) {
-						setPendingFields(fields);
+						// Keep pendingFields as they are so user can correct them
+					}
+				} else if (data.error) {
+					setFeedback(data.error);
+					if (!autoSave) {
+						setPendingFields(fields); // Revert if general error and not auto-saving
 					}
 				}
 			}
 		}
-	}, [fetcher.state, fetcher.data, autoSave, fields]);
+	}, [fetcher.state, fetcher.data, autoSave, fields, labelForKey]);
 
 	return {
 		autoSave,
