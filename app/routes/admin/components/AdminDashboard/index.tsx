@@ -326,7 +326,7 @@ export default function AdminDashboard({
 					<Heading level={2}>{"Home Page Editor"}</Heading>
 					<Button
 						type="button"
-						onClick={() => window.open("/", "_blank")}
+						onClick={() => window.open("/?bustCache=true", "_blank")}
 						className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
 					>
 						<svg
