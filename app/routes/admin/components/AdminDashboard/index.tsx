@@ -311,12 +311,7 @@ export default function AdminDashboard({
 		},
 	];
 
-	// Function to view the site with cache bypass using a hard refresh
-	// This opens the main site in a new tab, ensuring a fresh page load
-	const viewLiveSite = () => {
-		// Use window.open to force a complete page reload
-		window.open("/", "_blank");
-	};
+
 
 	return (
 		<Container className="mt-8">
