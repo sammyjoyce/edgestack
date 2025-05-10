@@ -4,7 +4,11 @@ import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { deleteProject, getProjectById } from "~/routes/common/db"; // Import deleteProject and getProjectById statically
 import type { Project } from "../../../../../../database/schema";
-import { Button } from "../../../components/ui/Button";
+import { Heading } from "../../../components/ui/Heading";
+import { Input } from "../../../components/ui/Input";
+import { Label } from "../../../components/ui/Label";
+import { Text } from "../../../components/ui/Text";
+import { Button } from "../components/ui/button";
 import type { Route } from "./+types/delete";
 
 // Return plain objects for type safety
@@ -71,9 +75,7 @@ export function DeleteProjectRoute() {
 		<FadeIn>
 			<div className="flex flex-col gap-8">
 				<div className="flex justify-between items-center">
-					<h1 className="text-2xl font-semibold text-gray-900">
-						Delete Project
-					</h1>
+					<Heading level={1}>Delete Project</Heading>
 					<Button
 						variant="secondary"
 						onClick={() => navigate("/admin/projects")}
@@ -87,26 +89,28 @@ export function DeleteProjectRoute() {
 					<div className="rounded-md bg-yellow-50 p-4 mb-6">
 						<div className="flex">
 							<div className="ml-3">
-								<h3 className="text-sm font-medium text-yellow-800">
+								<Heading level={3} className="text-yellow-800">
 									Warning: This action cannot be undone
-								</h3>
-								<p className="mt-2 text-sm text-yellow-700">
+								</Heading>
+								<Text className="mt-2 text-sm text-yellow-700">
 									You are about to permanently delete the project "
 									{project.title}".
-								</p>
+								</Text>
 							</div>
 						</div>
 					</div>
 
 					<div className="mb-6">
-						<h2 className="text-xl font-semibold mb-2">{project.title}</h2>
-						<p className="text-gray-600">{project.description}</p>
+						<Heading level={2} className="mb-2">
+							{project.title}
+						</Heading>
+						<Text className="text-gray-600">{project.description}</Text>
 					</div>
 
 					<Form method="post" className="flex flex-col gap-6">
 						<div className="flex items-start">
 							<div className="flex items-center h-5">
-								<input
+								<Input
 									id="confirmDelete"
 									name="confirmDelete"
 									type="checkbox"
@@ -115,12 +119,12 @@ export function DeleteProjectRoute() {
 								/>
 							</div>
 							<div className="ml-3 text-sm">
-								<label
+								<Label
 									htmlFor="confirmDelete"
 									className="font-medium text-gray-700"
 								>
-									I confirm that I want to delete this project
-								</label>
+									<Text>I confirm that I want to delete this project</Text>
+								</Label>
 							</div>
 						</div>
 

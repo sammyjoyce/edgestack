@@ -1,8 +1,8 @@
+import type { ExecutionContext } from "@cloudflare/workers-types"; // Ensure ExecutionContext is imported
 /// <reference types="../worker-configuration" />
-import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
+import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1";
 import { createRequestHandler } from "react-router";
 import * as schema from "../database/schema";
-import type { ExecutionContext } from "@cloudflare/workers-types"; // Ensure ExecutionContext is imported
 // AppLoadContext is augmented globally by `load-context.ts`.
 
 const serverBuildModuleResolver = () => {
@@ -14,20 +14,56 @@ const serverBuildModuleResolver = () => {
 };
 
 const requestHandler = createRequestHandler(
-  serverBuildModuleResolver,
-  import.meta.env.MODE
+	serverBuildModuleResolver,
+	import.meta.env.MODE,
 );
 
 export default {
-  async fetch(request, env, ctx) {
-    const db = drizzle(env.DB, { schema });
-
-    // The type for AppLoadContext should be picked up from `load-context.ts`
-    const loadContext = {
-      cloudflare: { env, ctx: ctx as Omit<ExecutionContext, "props"> }, // Cast ctx to match stricter type from load-context.ts
-      db,
-    };
-
-    return requestHandler(request, loadContext);
-  },
+	async fetch(request, env, ctx) {
+		const url = new URL(request.url);
+		// 1. Proxy /assets/* requests to R2 with cache headers
+		if (url.pathname.startsWith("/assets/")) {
+			const key = url.pathname.slice("/assets/".length);
+			if (!key) {
+				return new Response("Missing asset key", { status: 400 });
+			}
+			try {
+				const object = await env.ASSETS_BUCKET.get(key);
+				if (!object) {
+					return new Response("Not found", { status: 404 });
+				}
+				// Guess content type from extension (simple heuristic)
+				const ext = key.split(".").pop()?.toLowerCase() as
+					| keyof typeof typeMap
+					| undefined;
+				const typeMap: Record<string, string> = {
+					jpg: "image/jpeg",
+					jpeg: "image/jpeg",
+					png: "image/png",
+					webp: "image/webp",
+					gif: "image/gif",
+					svg: "image/svg+xml",
+				};
+				const contentType =
+					ext && typeMap[ext] ? typeMap[ext] : "application/octet-stream";
+				return new Response(object.body, {
+					status: 200,
+					headers: {
+						"Content-Type": contentType,
+						"Cache-Control": "public, max-age=86400, immutable", // 1 day
+						"Access-Control-Allow-Origin": "*",
+					},
+				});
+			} catch (err) {
+				return new Response("Error fetching asset", { status: 500 });
+			}
+		}
+		// 2. All other requests go to React Router
+		const db = drizzle(env.DB, { schema });
+		const loadContext = {
+			cloudflare: { env, ctx: ctx as Omit<ExecutionContext, "props"> },
+			db,
+		};
+		return requestHandler(request, loadContext);
+	},
 } satisfies ExportedHandler<Env>;

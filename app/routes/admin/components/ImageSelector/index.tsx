@@ -4,8 +4,8 @@ import { useFetcher } from "react-router";
 import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";
 import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
-import { Button } from "~/routes/admin/components/ui/button";
 import type { StoredImage } from "~/utils/upload.server";
+import { Button } from "../ui/button";
 
 interface ImageSelectorProps {
 	onDrop: (files: File[]) => void;

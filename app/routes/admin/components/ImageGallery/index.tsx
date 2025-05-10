@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { Drawer } from "vaul";
-import { Button } from "~/routes/admin/components/ui/button";
+import { Button } from "../ui/button";
 
 import type {
 	action as uploadRouteAction,

@@ -15,7 +15,7 @@ import {
 	verify,
 } from "~/routes/common/utils/auth";
 
-import { Button } from "~/routes/admin/components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Fieldset } from "../components/ui/fieldset";
 import { Label } from "../components/ui/fieldset";
 import { Input } from "../components/ui/input";

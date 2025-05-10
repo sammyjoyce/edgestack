@@ -32,10 +32,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	];
 };
 
-export async function loader({
-	request,
-	context,
-}: Route.LoaderArgs): Promise<{
+export async function loader({ request, context }: Route.LoaderArgs): Promise<{
 	content: Record<string, string>;
 	projects: Project[];
 	revalidatedAt?: number;

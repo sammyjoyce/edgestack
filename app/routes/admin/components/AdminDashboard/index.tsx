@@ -1,8 +1,8 @@
 import React, { type JSX } from "react"; // Ensure React is imported for JSX
 import { Link, useFetcher } from "react-router";
 
-import { Button } from "~/routes/admin/components/ui/button";
 import { Container } from "~/routes/common/components/ui/Container";
+import { Button } from "../ui/button";
 
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 
@@ -84,6 +84,17 @@ export default function AdminDashboard({
 			setUploading: (v: boolean) => void,
 			setUrl: (url: string) => void,
 		) => {
+			// Type guard for action data
+			const getActionData = (data: unknown): ActionData | undefined => {
+				if (
+					data &&
+					typeof data === "object" &&
+					("success" in data || "url" in data)
+				) {
+					return data as ActionData;
+				}
+				return undefined;
+			};
 			setUploading(true);
 			const fd = new FormData();
 			fd.append("image", file);
@@ -95,8 +106,9 @@ export default function AdminDashboard({
 				encType: "multipart/form-data",
 			});
 			// Use the fetcher instance's data with safer access
-			if (fetcherInstance.data?.success && fetcherInstance.data.url) {
-				setUrl(fetcherInstance.data.url);
+			const actionData = getActionData(fetcherInstance.data);
+			if (actionData?.success && actionData.url) {
+				setUrl(actionData.url);
 			}
 			setUploading(false);
 		},
@@ -312,26 +324,29 @@ export default function AdminDashboard({
 			<div className="flex flex-col space-y-4">
 				<div className="flex justify-between items-center">
 					<Heading level={2}>{"Home Page Editor"}</Heading>
-					<button
+					<Button
+						type="button"
 						onClick={() => window.open("/", "_blank")}
 						className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							className="h-4 w-4 mr-2"
 							fill="none"
 							viewBox="0 0 24 24"
+							strokeWidth={1.5}
 							stroke="currentColor"
+							aria-hidden="true"
+							focusable="false"
 						>
+							<title>Open site in new tab</title>
 							<path
 								strokeLinecap="round"
 								strokeLinejoin="round"
-								strokeWidth={2}
-								d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+								d="M17.25 6.75v-2.25a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 003.75 4.5v15a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-2.25m-10.5-6.75h14.25m0 0l-3-3m3 3l-3 3"
 							/>
 						</svg>
-						View Live Site
-					</button>
+						<span>Open site</span>
+					</Button>
 				</div>
 
 				<Tabs
