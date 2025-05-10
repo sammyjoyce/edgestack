@@ -13,7 +13,7 @@ import {
 	useLoaderData,
 	useNavigation, // Add this import
 } from "react-router";
-import adminThemeStylesheet from "../../admin-theme.css?url";
+import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 // Import generated Route type for this route
 import type { Route } from "./+types/_layout";
