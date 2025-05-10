@@ -38,16 +38,30 @@ export async function action({
 	request,
 	context,
 }: Route.ActionArgs): Promise<Response> {
-	console.log("Action triggered in admin/route.tsx - checking intent");
-	console.log("Request URL:", request.url);
-	console.log("Request method:", request.method);
-	const formData = await request.formData();
-	console.log("Form data received:", Object.fromEntries(formData));
+	if (DEBUG) {
+		console.log("Action triggered in admin/route.tsx - checking intent");
+		console.log("Request URL:", request.url);
+		console.log("Request method:", request.method);
+		const formData = await request.formData(); // Re-parse or clone if needed after logging
+		console.log("Form data received:", Object.fromEntries(formData));
+		console.warn(
+			`Action received in admin layout for intent: ${formData.get("intent")}. ` +
+			"This might indicate a misconfigured form action.",
+		);
+	}
 	// This layout action should ideally not handle specific form submissions.
 	// Those should be handled by the specific child routes.
-	console.warn(
-		`Action received in admin layout for intent: ${formData.get("intent")}. ` +
-		"This might indicate a misconfigured form action.",
+	// Re-parse formData if it was consumed by logging and is needed below.
+	// However, this action currently doesn't use formData beyond logging.
+	// const formDataForLogic = await request.formData(); // Example if needed for logic
+
+	return data(
+		{ error: "Action not handled at this layout level. Target a specific resource route." },
+		{ status: 405 } // Method Not Allowed is appropriate
+	);
+}
+
+interface NavItem {
 	);
 	return data(
 		{ error: "Action not handled at this layout level. Target a specific resource route." },

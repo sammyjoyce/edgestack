@@ -6,7 +6,7 @@ import RichTextField from "~/routes/admin/components/RichTextField";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
-// The validateProjectUpdate function is not found, we'll implement inline validation
+import { validateProjectUpdate } from "../../../../../../database/valibot-validation";
 import type { Project } from "../../../../../database/schema";
 import { Label } from "../../../components/ui/fieldset";
 import { Heading } from "../../../components/ui/heading";
@@ -124,26 +124,7 @@ export async function action({
 		};
 
 		// Validate project data before updating
-		try {
-			validateProjectUpdate(projectData);
-		} catch (validationError: any) {
-			console.error("Project validation failed:", validationError);
-			// Consider extracting Valibot error messages like in new.tsx if desired
-			return data(
-				{
-					success: false,
-					error: validationError.message || "Validation failed",
-				},
-				{ status: 400 },
-			);
-		}
-
-		if (!title.trim()) {
-			return data({
-				success: false,
-				error: "Title is required",
-			});
-		}
+		validateProjectUpdate(projectData);
 
 		// Update the project in the database
 		const updated = await updateProject(context.db, projectId, projectData);
@@ -163,21 +144,38 @@ export async function action({
 		return redirect("/admin/projects");
 	} catch (error: any) {
 		console.error("Error updating project:", error);
-		return data(
-			{ success: false, error: error.message || "Failed to update project" },
-			{ status: 500 },
-		);
+		const errors: Record<string, string> = {};
+		if (error.issues && Array.isArray(error.issues)) { // Check for Valibot error structure
+			for (const issue of error.issues) {
+				const fieldName = issue.path?.[0]?.key;
+				if (typeof fieldName === 'string' && !errors[fieldName]) {
+					errors[fieldName] = issue.message;
+				}
+			}
+		}
+		if (Object.keys(errors).length > 0) {
+			return data({ success: false, errors }, { status: 400 });
+		}
+		return data({ success: false, error: error.message || "Failed to update project" }, { status: 500 });
 	}
 }
 
 export default function Component() {
 	const { project } = useLoaderData<typeof loader>();
+	const actionData = useActionData<typeof action>();
+	const errors = actionData?.errors as Record<string, string> | undefined;
 
 	return (
 		<FadeIn>
 			<Heading level={1} className="mb-8">
 				Edit Project: {project.title}
 			</Heading>
+
+			{actionData?.error && !errors && (
+				<Text className="p-4 mb-4 text-red-700 bg-red-100 rounded-lg border border-red-200" role="alert">
+					{actionData.error}
+				</Text>
+			)}
 
 			<Form
 				method="post"
@@ -195,7 +193,10 @@ export default function Component() {
 						required
 						defaultValue={project.title}
 						className="block w-full rounded-md border-gray-300 bg-white shadow-(--shadow-input-default) focus:border-primary focus:ring-primary text-sm"
+						aria-invalid={!!errors?.title}
+						aria-describedby={errors?.title ? "title-error" : undefined}
 					/>
+					{errors?.title && <Text id="title-error" className="text-sm text-red-600">{errors.title}</Text>}
 				</div>
 
 				<div>

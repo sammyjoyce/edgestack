@@ -39,7 +39,7 @@ export async function loader({
 		"loader: items must be an object",
 	);
 	if (DEBUG)
-		console.log("[ADMIN DASHBOARD LOADER] Loaded content keys:", Object.keys(items));
+		console.log("[ADMIN LOADER] Loaded content keys:", Object.keys(items));
 	return { content: items };
 }
 
@@ -47,8 +47,8 @@ export async function loader({
 export async function action({
 	request,
 	context,
-}: Route.ActionArgs) { // Adjusted return type
-	console.log(
+}: Route.ActionArgs): Promise<Response | { success: boolean; error?: string; message?: string; errors?: Record<string, string>}> {
+	if (DEBUG) console.log(
 		"Action triggered in admin/views/index.tsx - THIS IS THE CORRECT ROUTE",
 	);
 	invariant(request instanceof Request, "action: request must be a Request");
@@ -106,12 +106,23 @@ export async function action({
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
 		if (DEBUG) console.error("[ADMIN DASHBOARD ACTION] Error processing updates:", err);
-		// Ensure a Response object is returned for errors
+		
+		const errors: Record<string, string> = {};
+		// Attempt to parse Valibot issues if they exist on the error
+		if (err.issues && Array.isArray(err.issues)) {
+			for (const issue of err.issues) {
+				const fieldName = issue.path?.[0]?.key;
+				if (typeof fieldName === 'string' && !errors[fieldName]) {
+					errors[fieldName] = issue.message;
+				}
+			}
+		}
+		if (Object.keys(errors).length > 0) {
+			return data({ success: false, errors }, { status: 400 });
+		}
+		
 		const errorMessage = err.message || "Internal server error";
-		return new Response(JSON.stringify({ error: errorMessage }), {
-			status: 500,
-			headers: { "Content-Type": "application/json" },
-		});
+		return data({ success: false, error: errorMessage }, { status: 500 });
 	}
 }
 

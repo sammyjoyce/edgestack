@@ -34,12 +34,13 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		const env = context.cloudflare?.env;
 		const jwtSecret = env?.JWT_SECRET;
 
-		// Log environment variable access
-		console.log("[ADMIN LOGIN] Accessing environment variables:", {
-			adminUsernameDefined: !!env?.ADMIN_USERNAME,
-			adminPasswordDefined: !!env?.ADMIN_PASSWORD,
-			jwtSecretDefined: !!jwtSecret,
-		});
+		if (DEBUG) {
+			console.log("[ADMIN LOGIN] Accessing environment variables:", {
+				adminUsernameDefined: !!env?.ADMIN_USERNAME,
+				adminPasswordDefined: !!env?.ADMIN_PASSWORD,
+				jwtSecretDefined: !!jwtSecret,
+			});
+		}
 
 		// Provide clear error if JWT_SECRET is missing
 		if (!jwtSecret) {
@@ -83,7 +84,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 			error: "Invalid username or password",
 		};
 	} catch (error) {
-		console.error("[ADMIN LOGIN] Action Error:", error);
+		if (DEBUG) console.error("[ADMIN LOGIN] Action Error:", error);
 		throw new Response(
 			"Unexpected server error during login process. Please check logs for details.",
 			{ status: 500 },
@@ -106,7 +107,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 				}
 			} catch (e) {
 				// Ignore verification errors, just means they aren't logged in
-				console.error("Login loader verification error:", e);
+				if (DEBUG) console.error("Login loader verification error:", e);
 			}
 		}
 
@@ -114,7 +115,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 		// Returning null is standard practice here
 		return null;
 	} catch (error) {
-		console.error("[ADMIN LOGIN] Loader Error:", error);
+		if (DEBUG) console.error("[ADMIN LOGIN] Loader Error:", error);
 		throw new Response(
 			"Unexpected server error during login loader process. Please check logs for details.",
 			{ status: 500 },

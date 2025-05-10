@@ -12,6 +12,7 @@ import {
 	listStoredImages,
 } from "~/utils/upload.server";
 import { schema } from "../../../../database/schema";
+import { validateContentInsert } from "../../../../database/valibot-validation";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
 import { Heading } from "../components/ui/heading";
@@ -123,15 +124,23 @@ export async function action({ request, context }: Route.ActionArgs) {
 					return badRequest("Missing image URL.");
 				}
 
-				// Commented out validation due to missing file
-				// try {
-				// 	validateContentInsert({ key, value: imageUrl });
-				// } catch (e: any) {
-				// 	return data({
-				// 		success: false,
-				// 		error: `Validation failed for key '${key}': ${e.message || e}`,
-				// 	}, { status: 400 });
-				// }
+				try {
+					validateContentInsert({ key, value: imageUrl });
+				} catch (e: any) {
+					const errors: Record<string, string> = {};
+					if (e.issues && Array.isArray(e.issues)) {
+						for (const issue of e.issues) {
+							const fieldName = issue.path?.[0]?.key;
+							if (typeof fieldName === 'string' && !errors[fieldName]) {
+								errors[fieldName] = issue.message;
+							}
+						}
+					}
+					if (Object.keys(errors).length > 0) {
+						return data({ success: false, errors, key }, { status: 400 });
+					}
+					return data({ success: false, error: `Validation failed for key '${key}': ${e.message || e}`, key }, { status: 400 });
+				}
 
 				// updateContent uses batch internally. To ensure atomicity with media selection,
 				// we perform the content update within the same transaction.
@@ -147,8 +156,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 						value: imageUrl,
 						mediaId: mediaRecord?.id ?? null,
 					};
-					// Commented out validation due to missing file
-					// validateContentInsert(contentKeyVal); // Validate before db operation
+					validateContentInsert(contentKeyVal); // Validate before db operation
 
 					await tx
 						.insert(schema.content)
@@ -185,18 +193,26 @@ export async function action({ request, context }: Route.ActionArgs) {
 			// Use the helper function for upload with type assertion for consistency
 			const publicUrl = await handleImageUpload(file, key, context);
 			if (!publicUrl || typeof publicUrl !== "string") {
-				return badRequest("Failed to upload image"); // This already returns data() with 400
+				return badRequest("Failed to upload image"); 
 			}
 
-			// Commented out validation due to missing file
-			// try {
-			// 	validateContentInsert({ key, value: publicUrl });
-			// } catch (e: any) {
-			// 	return data({
-			// 		success: false,
-			// 		error: `Validation failed for key '${key}' (URL): ${e.message || e}`,
-			// 	}, { status: 400 });
-			// }
+			try {
+				validateContentInsert({ key, value: publicUrl });
+			} catch (e: any) {
+				const errors: Record<string, string> = {};
+				if (e.issues && Array.isArray(e.issues)) {
+					for (const issue of e.issues) {
+						const fieldName = issue.path?.[0]?.key;
+						if (typeof fieldName === 'string' && !errors[fieldName]) {
+							errors[fieldName] = issue.message;
+						}
+					}
+				}
+				if (Object.keys(errors).length > 0) {
+					return data({ success: false, errors, key }, { status: 400 });
+				}
+				return data({ success: false, error: `Validation failed for key '${key}' (URL): ${e.message || e}`, key }, { status: 400 });
+			}
 
 			const mediaAltText = file.name;
 
@@ -245,8 +261,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 					value: publicUrl,
 					mediaId: newMediaId,
 				};
-				// Commented out validation due to missing file
-				// validateContentInsert(contentKeyVal); // Validate before db operation
+				validateContentInsert(contentKeyVal); // Validate before db operation
 
 				await tx
 					.insert(schema.content)

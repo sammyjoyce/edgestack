@@ -147,7 +147,6 @@ export async function handleImageUpload(
 		});
 
 		// Construct the public URL
-		// TODO: Restore types.d.ts for proper typing of PUBLIC_R2_URL
 		const publicUrlBase = context.cloudflare.env.PUBLIC_R2_URL;
 		if (!publicUrlBase) {
 			console.warn(
