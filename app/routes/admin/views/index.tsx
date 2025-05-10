@@ -17,7 +17,7 @@ import AdminDashboard from "../components/AdminDashboard";
 import { Fieldset, Legend } from "../components/ui/fieldset";
 import { Heading } from "../components/ui/heading";
 import { Text } from "../components/ui/text";
-import type { Route } from "./+types/index";
+
 const DEFAULT_CONTENT = {
 	hero_title: "Building Dreams, Creating Spaces",
 	hero_subtitle: "Your trusted partner in construction and renovation.",
@@ -46,6 +46,7 @@ export async function loader({
 }
 import { validateContentInsert, validateContentUpdate } from "../../../../database/valibot-validation.js"; 
 import { ValiError } from "valibot";
+import type { Route } from "./+types";
 export async function action({
 	request,
 	context,
