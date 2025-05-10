@@ -17,20 +17,21 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		throw new Error("Invalid Project ID");
+		throw data({ message: "Invalid Project ID" }, { status: 400 });
 	}
 
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw new Error("Project not found");
+			throw data({ message: "Project not found" }, { status: 404 });
 		}
-		return { project };
+		return { project }; // Return plain object for success
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw new Response(error.message || "Failed to load project", {
-			status: 500,
-		});
+		throw data(
+			{ message: error.message || "Failed to load project" },
+			{ status: 500 },
+		);
 	}
 }
 
@@ -44,14 +45,14 @@ export async function action({
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		throw new Response("Invalid Project ID", { status: 400 });
+		return data({ error: "Invalid Project ID" }, { status: 400 });
 	}
 
 	const formData = await request.formData();
 	const confirmDelete = formData.get("confirmDelete") === "true";
 
 	if (!confirmDelete) {
-		throw new Response("Deletion was not confirmed", { status: 400 });
+		return data({ error: "Deletion was not confirmed" }, { status: 400 });
 	}
 
 	try {
@@ -59,9 +60,10 @@ export async function action({
 		return redirect("/admin/projects");
 	} catch (error: any) {
 		console.error("Error deleting project:", error);
-		throw new Response(error.message || "Failed to delete project", {
-			status: 500,
-		});
+		return data(
+			{ error: error.message || "Failed to delete project" },
+			{ status: 500 },
+		);
 	}
 }
 
