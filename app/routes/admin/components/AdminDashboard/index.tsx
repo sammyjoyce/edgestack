@@ -223,6 +223,11 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
+							{projectsFetcher.data && projectsFetcher.state === "idle" && (
+								<p className={`mt-2 text-sm ${projectsFetcher.data.success ? 'text-green-600' : 'text-red-600'}`}>
+									{projectsFetcher.data.success ? projectsFetcher.data.message : projectsFetcher.data.error}
+								</p>
+							)}
 						</div>
 						<div>
 							<label
@@ -250,6 +255,11 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
+							{projectsFetcher.data && projectsFetcher.state === "idle" && (
+								<p className={`mt-2 text-sm ${projectsFetcher.data.success ? 'text-green-600' : 'text-red-600'}`}>
+									{projectsFetcher.data.success ? projectsFetcher.data.message : projectsFetcher.data.error}
+								</p>
+							)}
 						</div>
 					</div>
 					<div className="mt-4 text-sm text-gray-600 space-y-1">
