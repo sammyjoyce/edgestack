@@ -1,5 +1,5 @@
-import type { FetcherWithComponents } from "@remix-run/react";
-import { useFetcher } from "@remix-run/react";
+import type { FetcherWithComponents } from "react-router";
+import { useFetcher } from "react-router";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import type { Active, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
@@ -9,7 +9,7 @@ import * as React from "react";
 import clsx from "clsx";
 import { Switch, Label as SwitchLabel } from "~/routes/admin/components/ui/switch";
 import { Button } from "~/routes/admin/components/ui/button";
-import type { SerializeFrom } from "@remix-run/node";
+import type { SerializeFrom } from "react-router";
 import SwitchField from "../../../../common/components/ui/SwitchField"; 
 import type { Route as AdminIndexRoute } from "../../views/+types";
 

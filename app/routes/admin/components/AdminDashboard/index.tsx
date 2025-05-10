@@ -11,7 +11,7 @@ import { HeroSectionEditor } from "~/routes/admin/components/sections/HeroSectio
 import { ServicesSectionEditor } from "~/routes/admin/components/sections/ServicesSectionEditor";
 import type { Route } from "~/routes/admin/views/+types/index"; 
 import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload"; 
-import type { SerializeFrom } from "@remix-run/node"; 
+import type { SerializeFrom } from "react-router"; 
 type ActualIndexActionData = SerializeFrom<Route.ActionData>;
 type ActualUploadActionData = SerializeFrom<UploadRoute.ActionData>;
 import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
