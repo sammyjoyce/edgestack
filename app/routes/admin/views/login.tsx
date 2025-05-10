@@ -6,6 +6,7 @@ import {
 	useActionData,
 	// useLoaderData, // Not needed if loader only redirects or returns null
 } from "react-router";
+import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import {
 	COOKIE_MAX_AGE,
 	COOKIE_NAME,
@@ -13,14 +14,13 @@ import {
 	sign,
 	verify,
 } from "~/routes/common/utils/auth";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 
 import { Button } from "~/routes/admin/components/ui/Button";
-// Import generated types from proper path
-import type { Route } from "./+types/login";
 import { Fieldset } from "../components/ui/fieldset";
 import { Label } from "../components/ui/fieldset";
 import { Input } from "../components/ui/input";
+// Import generated types from proper path
+import type { Route } from "./+types/login";
 
 // Define a specific type for the data part of the action's return
 type LoginActionData = { success: false; error: string };
@@ -45,7 +45,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		if (!jwtSecret) {
 			throw new Response(
 				"JWT_SECRET not configured. Please set JWT_SECRET in your environment variables.",
-				{ status: 500 }
+				{ status: 500 },
 			);
 		}
 
@@ -56,7 +56,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		if (!adminUsername || !adminPassword) {
 			throw new Response(
 				"Admin credentials not configured. Please set ADMIN_USERNAME and ADMIN_PASSWORD in your environment variables.",
-				{ status: 500 }
+				{ status: 500 },
 			);
 		}
 
@@ -80,13 +80,13 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 		// Return error data directly
 		return {
 			success: false,
-			error: "Invalid username or password"
+			error: "Invalid username or password",
 		};
 	} catch (error) {
 		console.error("[ADMIN LOGIN] Action Error:", error);
 		throw new Response(
 			"Unexpected server error during login process. Please check logs for details.",
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 };
@@ -117,7 +117,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 		console.error("[ADMIN LOGIN] Loader Error:", error);
 		throw new Response(
 			"Unexpected server error during login loader process. Please check logs for details.",
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 };

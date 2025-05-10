@@ -4,7 +4,7 @@ import {
 	FolderIcon,
 	HomeIcon,
 } from "@heroicons/react/24/outline";
-import React from "react";
+import type React from "react";
 import {
 	NavLink,
 	Outlet,
@@ -12,16 +12,16 @@ import {
 	redirect,
 	useLoaderData,
 } from "react-router";
+import { SidebarLayout } from "~/routes/admin/components/ui/sidebar-layout";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
+import adminThemeStylesheet from "../../admin-theme.css?url";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 // Import generated Route type for this route
 import type { Route } from "./+types/_layout";
-import adminThemeStylesheet from "../../admin-theme.css?url";
-import { SidebarLayout } from "~/routes/admin/components/ui/sidebar-layout";
 
 // Only include the admin theme stylesheet for admin routes
 export const links: Route.LinksFunction = () => [
-  { rel: "stylesheet", href: adminThemeStylesheet },
+	{ rel: "stylesheet", href: adminThemeStylesheet },
 ];
 
 // Define loader with the generated LoaderArgs type

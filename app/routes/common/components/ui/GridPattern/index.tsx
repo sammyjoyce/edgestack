@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"; // Use direct import
-import React, { useEffect, useId, useRef, useState } from "react"; // Import React
+import type React from "react"; // Import React
+import { useEffect, useId, useRef, useState } from "react";
 
 function Block({
 	x,

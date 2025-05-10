@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLoaderData, data } from "react-router";
+import { Link, data, useLoaderData } from "react-router";
 import type { Project } from "~/database/schema";
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
@@ -9,13 +9,19 @@ import type { Route } from "./+types/[projectId]";
 
 // Loader using the generated type for params and context
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
-	assert(typeof params.projectId === "string", "params.projectId must be a string");
+	assert(
+		typeof params.projectId === "string",
+		"params.projectId must be a string",
+	);
 	const projectId = Number(params.projectId);
 	assert(!Number.isNaN(projectId), "projectId must be a valid number");
 
 	try {
 		const project = await getProjectById(context.db, projectId);
-		assert(project && typeof project === "object" && project.id != null, "loader must return a project");
+		assert(
+			project && typeof project === "object" && project.id != null,
+			"loader must return a project",
+		);
 		return { project };
 	} catch (error: any) {
 		throw data(

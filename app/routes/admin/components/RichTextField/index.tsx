@@ -11,6 +11,7 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text"; // Import heading and quote nodes
 import type { EditorState, LexicalEditor } from "lexical"; // Import LexicalEditor
 
+import clsx from "clsx";
 import React, { type JSX, useCallback, useMemo, useRef } from "react"; // Import React
 import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
 
@@ -76,13 +77,30 @@ export default function RichTextField({
 			<LexicalComposer initialConfig={initialConfig}>
 				{/* Formatting Toolbar for bold, italic, headings, lists, links, etc. */}
 				<LexicalToolbar />
-				<div className="relative">
+				<span
+					data-slot="control"
+					className={clsx([
+						"relative block w-full",
+						// Background color + shadow applied to inset pseudo element
+						"before:absolute before:inset-px before:rounded-[calc(var(--radius-md)-1px)] before:bg-screen before:shadow-textarea",
+						"dark:before:hidden",
+						// Focus ring (keeping existing focus style)
+						"after:pointer-events-none after:absolute after:inset-0 after:rounded-md after:ring-transparent after:ring-inset sm:focus-within:after:ring-2 sm:focus-within:after:ring-blue-500",
+						disabled
+							? "opacity-50 before:bg-zinc-950/5 before:shadow-none"
+							: undefined,
+					])}
+				>
 					<RichTextPlugin
 						contentEditable={
 							<ContentEditable
-								className={`prose prose-sm max-w-none min-h-[8rem] border border-gray-300 rounded-b-md rounded-tr-md p-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary bg-white ${
-									disabled ? "opacity-50 bg-gray-50" : ""
-								}`}
+								className={clsx([
+									"relative block h-full w-full appearance-none rounded-md px-3 py-2 sm:px-2.5 sm:py-1.5",
+									"text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white",
+									"bg-transparent",
+									"focus:outline-hidden",
+									disabled ? "opacity-50 bg-gray-50" : undefined,
+								])}
 							/>
 						}
 						placeholder={
@@ -92,7 +110,7 @@ export default function RichTextField({
 						}
 						ErrorBoundary={LexicalErrorBoundary}
 					/>
-				</div>
+				</span>
 				<HistoryPlugin />
 				<ListPlugin />
 				<LinkPlugin />

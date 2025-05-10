@@ -1,20 +1,13 @@
-import {
-	ArrowPathIcon,
-	CheckCircleIcon,
-	ArrowPathIcon,
-	CheckCircleIcon,
-	ExclamationTriangleIcon,
-	InformationCircleIcon,
-	XCircleIcon,
-} from "@heroicons/react/20/solid";
-import React, { type JSX, useRef } from "react"; // Import React and JSX type
+import {} from "@heroicons/react/20/solid";
+import type React from "react"; // Import React and JSX type
+import { type JSX, useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
-import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";
+import { Button } from "~/routes/admin/components/ui/button";
 // Pull Label from the shared fieldset, Textarea from the admin ui folder
 import { Label } from "~/routes/admin/components/ui/fieldset";
 import { Textarea } from "~/routes/admin/components/ui/textarea";
-import { Button } from "~/routes/admin/components/ui/Button";
+import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";
 import { Pill, PillStatusComponent } from "~/routes/common/components/ui/Pill";
 
 type ActionResponseData = {

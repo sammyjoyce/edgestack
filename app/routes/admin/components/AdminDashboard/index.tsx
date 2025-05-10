@@ -1,29 +1,31 @@
 import React, { type JSX } from "react"; // Ensure React is imported for JSX
 import { Link, useFetcher } from "react-router";
-import type { Tab } from "~/routes/common/components/ui/Tabs";
 
-import { Button } from "~/routes/admin/components/ui/Button";
+import { Button } from "~/routes/admin/components/ui/button";
 import { Container } from "~/routes/common/components/ui/Container";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
-import { Tabs } from "~/routes/common/components/ui/Tabs"; // Import Tabs component
 
-import { AboutSectionEditor } from "~/routes/admin/components/AboutSectionEditor";
-import { ContactSectionEditor } from "~/routes/admin/components/ContactSectionEditor";
-import { HeroSectionEditor } from "~/routes/admin/components/HeroSectionEditor";
+import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
+
 import { ImageUploadSection } from "~/routes/admin/components/ImageUploadSection";
 // Admin components
 import SectionSorter from "~/routes/admin/components/SectionSorter";
-import { ServicesSectionEditor } from "~/routes/admin/components/ServicesSectionEditor";
+import { AboutSectionEditor } from "~/routes/admin/components/sections/AboutSectionEditor";
+import { ContactSectionEditor } from "~/routes/admin/components/sections/ContactSectionEditor";
+import { HeroSectionEditor } from "~/routes/admin/components/sections/HeroSectionEditor";
+import { ServicesSectionEditor } from "~/routes/admin/components/sections/ServicesSectionEditor";
 // Import action types for fetchers
 import type { action as adminIndexAction } from "~/routes/admin/views/index";
 import type { action as adminUploadAction } from "~/routes/admin/views/upload";
+import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
+import { Heading } from "../ui/heading";
 
 interface AdminDashboardProps {
 	initialContent: Record<string, string> | undefined;
 }
 
-export default function AdminDashboard({ initialContent }: AdminDashboardProps): React.JSX.Element {
+export default function AdminDashboard({
+	initialContent,
+}: AdminDashboardProps): React.JSX.Element {
 	// Use initialContent prop as the only source of content
 	const content = initialContent;
 
@@ -98,7 +100,7 @@ export default function AdminDashboard({ initialContent }: AdminDashboardProps):
 			}
 			setUploading(false);
 		},
-		[], 
+		[],
 	);
 
 	const handleHeroImageUpload = (file: File) =>
@@ -309,7 +311,7 @@ export default function AdminDashboard({ initialContent }: AdminDashboardProps):
 			{/* Adjusted container */}
 			<div className="flex flex-col space-y-4">
 				<div className="flex justify-between items-center">
-					<h2 className="text-2xl font-bold">{"Home Page Editor"}</h2>
+					<Heading level={2}>{"Home Page Editor"}</Heading>
 					<button
 						onClick={() => window.open("/", "_blank")}
 						className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
@@ -332,52 +334,9 @@ export default function AdminDashboard({ initialContent }: AdminDashboardProps):
 					</button>
 				</div>
 
-				{/* Direct test form for content updates - Conditionally render for development */}
-				{process.env.NODE_ENV === "development" && (
-					<div className="bg-gray-50 p-4 border rounded mb-4">
-						<h3 className="text-lg font-medium mb-2">
-							Debug Tool: Direct Content Update
-						</h3>
-						<form
-							method="post"
-							action="/admin"
-							className="flex flex-col space-y-2"
-							onSubmit={(e) => {
-								console.log("Direct form submitted!");
-							}}
-						>
-							<input type="hidden" name="intent" value="updateTextContent" />
-							<div>
-								<label
-									htmlFor="debug_hero_title"
-									className="block text-sm font-medium text-gray-700"
-								>
-									Hero Title Direct Update
-								</label>
-								<input
-									type="text"
-									id="debug_hero_title"
-									name="hero_title"
-									defaultValue="Direct Update Test"
-									className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-								/>
-							</div>
-							<button
-								type="submit"
-								className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 self-start"
-							>
-								Save Content Directly
-							</button>
-						</form>
-					</div>
-				)}
-
-				{/* Render the Tabs component */}
 				<Tabs
 					tabs={tabs}
 					containerClassName="mb-8" // Add margin below tabs
-					// Apply consistent styling to content area if needed, or let individual components handle it
-					// contentClassName="bg-white p-6 rounded-lg shadow-xs border border-gray-200"
 				/>
 			</div>
 		</Container>

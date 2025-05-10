@@ -1,24 +1,35 @@
 {
 	"$schema": "https://unpkg.com/knip@5/schema.json",
 	"entry": [
-		"app/entry.server.tsx",
-		"app/entry.client.tsx",
-		"app/root.tsx",
-		"app/styles/**/*.{css,scss}"
+		"app/{entry.server,entry.client,root}.tsx",
+		"functions/**/*.{ts,tsx}",
+		"workers/**/*.{ts,tsx}",
+		"src/index.{ts,tsx}"
 	],
 	"project": [
 		"app/**/*.{ts,tsx,js,jsx}",
+		"functions/**/*.{ts,tsx,js,jsx}",
+		"workers/**/*.{ts,js}",
+		"src/**/*.{ts,tsx,js,jsx}",
+		"server/**/*.{ts,js}",
 		"database/**/*.{ts,js}",
-		"scripts/**/*.{ts,js}",
-		"server/**/*.{ts,js}"
+		"scripts/**/*.{ts,js}"
 	],
 	"ignore": [
 		"**/*.test.{ts,tsx,js,jsx}",
 		"**/__tests__/**",
+		"**/*.d.ts",
 		"**/node_modules/**",
 		"**/build/**",
 		"**/dist/**",
-		"**/*.css.{js,ts}",
-		"**/.react-router/**"
-	]
+		"**/.react-router/**",
+		"**/.wrangler/**",
+		"**/.vercel/**",
+		"**/.netlify/**",
+		"**/*.css.{js,ts}"
+	],
+	"wrangler": true,
+	"vite": true,
+	"react-router": true,
+	"tailwind": true
 }

@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react"; // Import React
+import type React from "react"; // Import React
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { validateContentInsert } from "~/database/valibot-validation";
 

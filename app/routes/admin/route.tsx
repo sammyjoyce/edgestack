@@ -4,13 +4,13 @@ import {
 	FolderIcon,
 	HomeIcon,
 } from "@heroicons/react/24/outline";
-import React from "react";
+import type React from "react";
 import { NavLink, Outlet, type To, redirect } from "react-router";
 import invariant from "tiny-invariant";
+import { SidebarLayout } from "~/routes/admin/components/ui/sidebar-layout";
 import { updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import type { Route } from "./+types/route";
-import { SidebarLayout } from "~/routes/admin/components/ui/sidebar-layout";
 
 const DEBUG = process.env.NODE_ENV !== "production";
 
@@ -26,68 +26,78 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 /* ---------------- ACTION ---------------- */
 // Minimal action function to handle misdirected form submissions
-export async function action(
-  { request, context }: Route.ActionArgs
-): Promise<Response> {
-  console.log('Action triggered in admin/route.tsx - checking intent');
-  console.log('Request URL:', request.url);
-  console.log('Request method:', request.method);
-  const formData = await request.formData();
-  console.log('Form data received:', Object.fromEntries(formData));
-  const intent = formData.get("intent");
-  if (intent === "logout") {
-    const env = context.cloudflare.env as Env;
-    return handleLogout(env);
-  } else if (intent === "updateTextContent") {
-    // Handle content update logic directly in parent route
-    console.log('Handling content update in parent route');
-    invariant(request instanceof Request, "action: request must be a Request");
-    invariant(context && context.db, "action: missing DB in context");
-    try {
-      const token = getSessionCookie(request);
-      const secret = context.cloudflare?.env?.JWT_SECRET;
-      invariant(secret, "action: JWT_SECRET is required in context");
-      if (!token || !(await verify(token, secret))) {
-        throw new Response("Unauthorized", { status: 401 });
-      }
-      if (request.method !== 'POST') {
-        return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
-      }
-      const updates: Record<string, string> = {};
-      for (const [key, value] of formData.entries()) {
-        if (key !== 'intent' && typeof value === 'string') {
-          updates[key] = value;
-        }
-      }
-      invariant(Object.keys(updates).length > 0, "action: No updates provided");
-      if (DEBUG) console.log('[ADMIN ACTION] updateTextContent updates:', updates);
-      await updateContent(context.db, updates);
-      const revalidateParam = `revalidate=true&t=${Date.now()}`;
-      invariant(typeof revalidateParam === "string", "action: revalidateParam must be a string");
-      return redirect(`/?${revalidateParam}`);
-    } catch (error: unknown) {
-      const err = error instanceof Error ? error : new Error(String(error));
-      if (DEBUG) console.error('[ADMIN ACTION] Error processing updates:', err);
-      return new Response(JSON.stringify({ error: 'Internal server error' }), { status: 500 });
-    }
-  } else {
-    // Simply return a response for other intents
-    console.log('Passing through non-logout and non-update request');
-    return new Response("Request passed to child route", { status: 200 });
-  }
+export async function action({
+	request,
+	context,
+}: Route.ActionArgs): Promise<Response> {
+	console.log("Action triggered in admin/route.tsx - checking intent");
+	console.log("Request URL:", request.url);
+	console.log("Request method:", request.method);
+	const formData = await request.formData();
+	console.log("Form data received:", Object.fromEntries(formData));
+	const intent = formData.get("intent");
+	if (intent === "logout") {
+		const env = context.cloudflare.env as Env;
+		return handleLogout(env);
+	}
+	if (intent === "updateTextContent") {
+		// Handle content update logic directly in parent route
+		console.log("Handling content update in parent route");
+		invariant(request instanceof Request, "action: request must be a Request");
+		invariant(context?.db, "action: missing DB in context");
+		try {
+			const token = getSessionCookie(request);
+			const secret = context.cloudflare?.env?.JWT_SECRET;
+			invariant(secret, "action: JWT_SECRET is required in context");
+			if (!token || !(await verify(token, secret))) {
+				throw new Response("Unauthorized", { status: 401 });
+			}
+			if (request.method !== "POST") {
+				return new Response(JSON.stringify({ error: "Method not allowed" }), {
+					status: 405,
+				});
+			}
+			const updates: Record<string, string> = {};
+			for (const [key, value] of formData.entries()) {
+				if (key !== "intent" && typeof value === "string") {
+					updates[key] = value;
+				}
+			}
+			invariant(Object.keys(updates).length > 0, "action: No updates provided");
+			if (DEBUG)
+				console.log("[ADMIN ACTION] updateTextContent updates:", updates);
+			await updateContent(context.db, updates);
+			const revalidateParam = `revalidate=true&t=${Date.now()}`;
+			invariant(
+				typeof revalidateParam === "string",
+				"action: revalidateParam must be a string",
+			);
+			return redirect(`/?${revalidateParam}`);
+		} catch (error: unknown) {
+			const err = error instanceof Error ? error : new Error(String(error));
+			if (DEBUG) console.error("[ADMIN ACTION] Error processing updates:", err);
+			return new Response(JSON.stringify({ error: "Internal server error" }), {
+				status: 500,
+			});
+		}
+	} else {
+		// Simply return a response for other intents
+		console.log("Passing through non-logout and non-update request");
+		return new Response("Request passed to child route", { status: 200 });
+	}
 }
 
 // Function to handle logout has been moved to logout.tsx
 async function handleLogout(env: Env): Promise<Response> {
-  const SESSION_COOKIE_NAME = "session";
-  const sessionCookie = env.JWT_SECRET;
-  return new Response(null, {
-    status: 302,
-    headers: {
-      Location: "/",
-      "Set-Cookie": `${SESSION_COOKIE_NAME}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Strict`,
-    },
-  });
+	const SESSION_COOKIE_NAME = "session";
+	const sessionCookie = env.JWT_SECRET;
+	return new Response(null, {
+		status: 302,
+		headers: {
+			Location: "/",
+			"Set-Cookie": `${SESSION_COOKIE_NAME}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Strict`,
+		},
+	});
 }
 
 interface NavItem {
@@ -110,8 +120,7 @@ const navigation: NavItem[] = [
 // For this change, I'll assume clsx is preferred for consistency.
 import clsx from "clsx";
 
-
-export function Component() {
+export default function Component() {
 	// build the sidebar once
 	const sidebarNav = (
 		<nav className="flex h-full flex-col bg-gray-900 px-6 py-4">

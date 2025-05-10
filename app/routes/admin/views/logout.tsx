@@ -5,7 +5,8 @@ import { COOKIE_NAME } from "~/routes/common/utils/auth";
 import type { Route } from "./+types/logout"; // Ensure this path is correct
 
 // Use the generated type with the proper format
-export const loader = async (): Promise<Response> => { // Explicit Promise<Response>
+export const loader = async (): Promise<Response> => {
+	// Explicit Promise<Response>
 	// Create response with typed redirect to login
 	const response = redirect("/admin/login");
 
@@ -18,22 +19,23 @@ export const loader = async (): Promise<Response> => { // Explicit Promise<Respo
 	return response;
 };
 
-export async function action(
-  { request, context }: Route.ActionArgs
-): Promise<Response> {
-  const env = context.cloudflare.env as Env;
-  return handleLogout(env);
+export async function action({
+	request,
+	context,
+}: Route.ActionArgs): Promise<Response> {
+	const env = context.cloudflare.env as Env;
+	return handleLogout(env);
 }
 
 async function handleLogout(env: Env): Promise<Response> {
-  const SESSION_COOKIE_NAME = "session";
-  return new Response(null, {
-    status: 302,
-    headers: {
-      Location: "/",
-      "Set-Cookie": `${SESSION_COOKIE_NAME}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Strict`,
-    },
-  });
+	const SESSION_COOKIE_NAME = "session";
+	return new Response(null, {
+		status: 302,
+		headers: {
+			Location: "/",
+			"Set-Cookie": `${SESSION_COOKIE_NAME}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Strict`,
+		},
+	});
 }
 
 export function LogoutRoute() {

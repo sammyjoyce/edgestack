@@ -15,13 +15,10 @@ export function useMenuItemInfo(item: MenuItem): UseMenuItemInfoResult {
 
 	// SSR-safe: don't use window or isBrowser in render logic
 	const isHomeWithHash =
-		isRoute &&
-		rawPath.startsWith("/") &&
-		rawPath.includes("#");
+		isRoute && rawPath.startsWith("/") && rawPath.includes("#");
 
 	const hashPart = isHomeWithHash ? rawPath.split("#")[1] : "";
-	const anchorHref =
-		!isRoute && typeof item.path === "string" ? item.path : "";
+	const anchorHref = !isRoute && typeof item.path === "string" ? item.path : "";
 
 	return { isRoute, rawPath, isHomeWithHash, hashPart, anchorHref };
 }

@@ -1,9 +1,10 @@
-import React, { type JSX, useState, useRef } from "react"; // Import React and useRef
+import type React from "react"; // Import React and useRef
+import { type JSX, useRef, useState } from "react";
 import { useFetcher } from "react-router";
 import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";
 import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
-import { Button } from "~/routes/admin/components/ui/Button";
+import { Button } from "~/routes/admin/components/ui/button";
 import type { StoredImage } from "~/utils/upload.server";
 
 interface ImageSelectorProps {
@@ -26,7 +27,8 @@ export function ImageSelector({
 	className = "",
 	fileInputRef, // This ref is passed from parent, no need to create one here if parent manages it
 	fieldKey,
-}: ImageSelectorProps): JSX.Element { // Changed to JSX.Element
+}: ImageSelectorProps): JSX.Element {
+	// Changed to JSX.Element
 	const [isOpen, setIsOpen] = useState(false);
 	const fetcher = useFetcher();
 

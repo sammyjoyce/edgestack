@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import type React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFetcher } from "react-router";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+
 import { GrayscaleTransitionImage } from "~/routes/common/components/ui/GrayscaleTransitionImage";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 
@@ -85,66 +86,68 @@ function SingleImageUpload({
 	}, [fetcher, label, setStatusText, fileInputRef]);
 
 	return (
-		<FadeIn>
-			<fetcher.Form
-				method="post"
-				action="/admin/upload"
-				encType="multipart/form-data"
-				className="flex flex-col items-center gap-2 pt-4"
-				aria-describedby={`help-${keyName}`}
+		<fetcher.Form
+			method="post"
+			action="/admin/upload"
+			encType="multipart/form-data"
+			className="flex flex-col items-center gap-2 pt-4"
+			aria-describedby={`help-${keyName}`}
+		>
+			<label
+				htmlFor={`${keyName}_input`}
+				className="block text-sm font-medium text-gray-700 mb-1 self-start"
 			>
-				<label
-					htmlFor={`${keyName}_input`}
-					className="block text-sm font-medium text-gray-700 mb-1 self-start"
+				{label}
+				<span
+					id={`help-${keyName}`}
+					className="ml-1 text-xs text-gray-500"
+					role="tooltip"
 				>
-					{label}
-					<span
-						id={`help-${keyName}`}
-						className="ml-1 text-xs text-gray-500"
-						role="tooltip"
-					>
-						Upload or drag and drop an image for the {label.toLowerCase()}.
-					</span>
-				</label>
-				<ImageSelector
-					fileInputRef={fileInputRef}
-					onDrop={makeDropHandler}
-					disabled={fetcher.state === "submitting"}
-					uploading={fetcher.state === "submitting"}
-					imageUrl={
-						(isUploadResponse(fetcher.data) && fetcher.data.success && fetcher.data.url) ||
-						initialValue ||
-						""
-					}
-					label={label}
-					className="w-full"
-					fieldKey={keyName}
-				/>
-				<input type="hidden" name="key" value={keyName} />
-				<div
-					className="text-sm text-gray-600 h-5 mt-2"
-					role="status"
-					aria-live="polite"
-				>
-					{statusText}
+					Upload or drag and drop an image for the {label.toLowerCase()}.
+				</span>
+			</label>
+			<ImageSelector
+				fileInputRef={fileInputRef}
+				onDrop={makeDropHandler}
+				disabled={fetcher.state === "submitting"}
+				uploading={fetcher.state === "submitting"}
+				imageUrl={
+					(isUploadResponse(fetcher.data) &&
+						fetcher.data.success &&
+						fetcher.data.url) ||
+					initialValue ||
+					""
+				}
+				label={label}
+				className="w-full"
+				fieldKey={keyName}
+			/>
+			<input type="hidden" name="key" value={keyName} />
+			<div
+				className="text-sm text-gray-600 h-5 mt-2"
+				role="status"
+				aria-live="polite"
+			>
+				{statusText}
+			</div>
+			<GrayscaleTransitionImage
+				id={`${keyName}_preview`}
+				src={
+					(isUploadResponse(fetcher.data) &&
+						fetcher.data.success &&
+						fetcher.data.url) ||
+					initialValue ||
+					""
+				}
+				alt={`${label} Preview`}
+				className="rounded border border-gray-200 mt-2 max-w-full w-48 h-auto object-cover bg-gray-100"
+			/>
+			{isUploadResponse(fetcher.data) && fetcher.data.error && (
+				<div className="text-red-600 mt-2 text-xs" role="alert">
+					{fetcher.data.error}
 				</div>
-				<GrayscaleTransitionImage
-					id={`${keyName}_preview`}
-					src={
-						(isUploadResponse(fetcher.data) && fetcher.data.success && fetcher.data.url) ||
-						initialValue ||
-						""
-					}
-					alt={`${label} Preview`}
-					className="rounded border border-gray-200 mt-2 max-w-full w-48 h-auto object-cover bg-gray-100"
-				/>
-				{isUploadResponse(fetcher.data) && fetcher.data.error && (
-					<div className="text-red-600 mt-2 text-xs" role="alert">
-						{fetcher.data.error}
-					</div>
-				)}
-			</fetcher.Form>
-		</FadeIn>
+			)}
+		</fetcher.Form>
 	);
 }
 

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import React, { useState } from "react"; // Import React
+import type React from "react"; // Import React
+import { useState } from "react";
 
 // Basic cn utility function (replace with your preferred library if available)
 function cn(...inputs: (string | undefined | null | boolean)[]) {
@@ -59,7 +60,7 @@ export const Tabs = ({
 							isActive(tab)
 								? activeTabClassName || "text-primary border-primary"
 								: tabClassName ||
-								  "text-neutral-600 hover:text-foreground border-transparent hover:border-neutral-400",
+										"text-neutral-600 hover:text-foreground border-transparent hover:border-neutral-400",
 						)}
 						type="button"
 					>

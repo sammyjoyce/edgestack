@@ -1,11 +1,11 @@
 import React from "react";
-import { Outlet, useLoaderData, redirect } from "react-router";
-import type { Project } from "../../../../../database/schema";
+import { Outlet, redirect, useLoaderData } from "react-router";
 import { getAllProjects } from "~/routes/common/db";
-import type { Route } from "./+types/_layout";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
-import { AdminErrorBoundary } from "../../components/AdminErrorBoundary";
+import type { Project } from "../../../../../database/schema";
 import { FadeIn } from "../../../common/components/ui/FadeIn";
+import { AdminErrorBoundary } from "../../components/AdminErrorBoundary";
+import type { Route } from "./+types/_layout";
 // Define the loader data type
 type ProjectsLoaderData = {
 	projects: Project[];
@@ -35,9 +35,9 @@ export async function loader({
 export default function ProjectsLayout() {
 	const loaderData = useLoaderData<typeof loader>();
 	return (
-		<FadeIn>
+		<>
 			<Outlet context={loaderData} />
-		</FadeIn>
+		</>
 	);
 }
 

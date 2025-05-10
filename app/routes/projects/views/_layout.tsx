@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData, data } from "react-router";
+import { Outlet, data, useLoaderData } from "react-router";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
@@ -12,12 +12,12 @@ type ProjectsLayoutLoaderData = {
 	error?: string;
 };
 
-export const loader = async ({
-	context,
-}: any) => { // Adjusted type for LoaderArgs
+export const loader = async ({ context }: any) => {
+	// Adjusted type for LoaderArgs
 	try {
-		const { getAllContent, getAllProjects } =
-			await import("~/routes/common/db");
+		const { getAllContent, getAllProjects } = await import(
+			"~/routes/common/db"
+		);
 		const content = await getAllContent(context.db);
 		const projects = await getAllProjects(context.db);
 		// Return data directly without helper for clearer typing
