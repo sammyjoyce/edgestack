@@ -1,7 +1,6 @@
-import { motion } from "framer-motion"; // Use direct import
-import type React from "react"; // Import React
+import { motion } from "framer-motion"; 
+import type React from "react"; 
 import { useEffect, useId, useRef, useState } from "react";
-
 function Block({
 	x,
 	y,
@@ -18,7 +17,6 @@ function Block({
 		/>
 	);
 }
-
 export function GridPattern({
 	yOffset = 0,
 	interactive = false,
@@ -42,36 +40,29 @@ export function GridPattern({
 		[7, 4],
 		[5, 5],
 	];
-
 	useEffect(() => {
 		if (!interactive) {
 			return;
 		}
-
 		function onMouseMove(event: MouseEvent) {
 			if (!ref.current) {
 				return;
 			}
-
 			const rect = ref.current.getBoundingClientRect();
 			let x = event.clientX - rect.left;
 			let y = event.clientY - rect.top;
 			if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
 				return;
 			}
-
 			x = x - rect.width / 2 - 32;
 			y = y - yOffset;
 			x += Math.tan(32 / 160) * y;
 			x = Math.floor(x / 96);
 			y = Math.floor(y / 160);
-
 			if (currentBlock.current?.[0] === x && currentBlock.current?.[1] === y) {
 				return;
 			}
-
 			currentBlock.current = [x, y];
-
 			setHoveredBlocks((blocks) => {
 				const key = counter.current++;
 				const block = [x, y, key] as (typeof hoveredBlocks)[number];
@@ -80,14 +71,11 @@ export function GridPattern({
 				);
 			});
 		}
-
 		window.addEventListener("mousemove", onMouseMove);
-
 		return () => {
 			window.removeEventListener("mousemove", onMouseMove);
 		};
 	}, [yOffset, interactive]);
-
 	return (
 		<svg ref={ref} aria-hidden="true" {...props}>
 			<rect width="100%" height="100%" fill={`url(#${id})`} strokeWidth="0" />

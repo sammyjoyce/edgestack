@@ -1,13 +1,10 @@
 "use client";
-
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import { LayoutGroup, motion } from "framer-motion";
 import React, { forwardRef, useId } from "react";
-// Assuming TouchTarget and Link are already styled according to openai-fm
 import { TouchTarget } from "./button";
 import { Link } from "./link";
-
 export function Navbar({
 	className,
 	...props
@@ -22,7 +19,6 @@ export function Navbar({
 		/>
 	);
 }
-
 export function NavbarDivider({
 	className,
 	...props
@@ -35,13 +31,11 @@ export function NavbarDivider({
 		/>
 	);
 }
-
 export function NavbarSection({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"div">) {
 	const id = useId();
-
 	return (
 		<LayoutGroup id={id}>
 			<div
@@ -51,7 +45,6 @@ export function NavbarSection({
 		</LayoutGroup>
 	);
 }
-
 export function NavbarSpacer({
 	className,
 	...props
@@ -60,7 +53,6 @@ export function NavbarSpacer({
 		<div aria-hidden="true" {...props} className={clsx(className, "flex-1")} />
 	);
 }
-
 export const NavbarItem = forwardRef(function NavbarItem(
 	{
 		current,
@@ -78,15 +70,13 @@ export const NavbarItem = forwardRef(function NavbarItem(
 		current
 			? "text-primary dark:text-primary-dark bg-primary/10 dark:bg-primary-dark/10"
 			: "text-zinc-700 hover:text-primary hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-primary-dark dark:hover:bg-zinc-800",
-		// Icon styling (if any)
 		"*:data-[slot=icon]:size-5 *:data-[slot=icon]:fill-current",
 	);
-
 	return (
 		<span className={clsx(className, "relative")}>
 			{current && (
 				<motion.span
-					layoutId="current-navbar-indicator" // Ensure unique layoutId if multiple Navbars exist
+					layoutId="current-navbar-indicator" 
 					className="absolute inset-x-0 -bottom-px h-0.5 bg-primary dark:bg-primary-dark"
 				/>
 			)}
@@ -102,7 +92,7 @@ export const NavbarItem = forwardRef(function NavbarItem(
 			) : (
 				<Headless.Button
 					{...props}
-					className={clsx("cursor-default", itemClasses)} // cursor-default for non-link buttons
+					className={clsx("cursor-default", itemClasses)} 
 					data-current={current ? "true" : undefined}
 					ref={ref}
 				>
@@ -112,7 +102,6 @@ export const NavbarItem = forwardRef(function NavbarItem(
 		</span>
 	);
 });
-
 export function NavbarLabel({
 	className,
 	...props

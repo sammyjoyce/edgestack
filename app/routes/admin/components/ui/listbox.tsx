@@ -1,9 +1,7 @@
 "use client";
-
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
-import React, { Fragment } from "react"; // Added React import
-
+import React, { Fragment } from "react"; 
 const CheckIcon = () => (
 	<svg
 		className="size-4 stroke-current group-data-selected/option:inline"
@@ -19,7 +17,6 @@ const CheckIcon = () => (
 		/>
 	</svg>
 );
-
 const ChevronUpDownIcon = () => (
 	<svg
 		className="size-5 stroke-zinc-500 group-data-disabled:stroke-zinc-600 dark:stroke-zinc-400"
@@ -41,16 +38,14 @@ const ChevronUpDownIcon = () => (
 		/>
 	</svg>
 );
-
 export function Listbox<TValue>({
-	// Changed T to TValue for clarity
 	className,
 	placeholder,
 	autoFocus,
 	"aria-label": ariaLabel,
 	children: options,
-	value, // Added value prop
-	onChange, // Added onChange prop
+	value, 
+	onChange, 
 	...props
 }: {
 	className?: string;
@@ -58,8 +53,8 @@ export function Listbox<TValue>({
 	autoFocus?: boolean;
 	"aria-label"?: string;
 	children?: React.ReactNode;
-	value: TValue; // Explicitly define value prop
-	onChange: (value: TValue) => void; // Explicitly define onChange prop
+	value: TValue; 
+	onChange: (value: TValue) => void; 
 } & Omit<
 	Headless.ListboxProps<typeof Fragment, TValue>,
 	"as" | "multiple" | "value" | "onChange"
@@ -100,10 +95,9 @@ export function Listbox<TValue>({
 			</Headless.ListboxButton>
 			<Headless.ListboxOptions
 				transition
-				anchor="bottom start" // Simplified anchor
+				anchor="bottom start" 
 				className={clsx(
 					"isolate z-10 mt-1 w-full min-w-(--button-width) overflow-auto rounded-md bg-white p-1 shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-zinc-800 dark:ring-white/10",
-					// Transitions
 					"transition ease-out duration-100 data-closed:transform data-closed:opacity-0 data-closed:scale-95",
 					"data-enter:transform data-enter:opacity-100 data-enter:scale-100",
 				)}
@@ -113,29 +107,27 @@ export function Listbox<TValue>({
 		</Headless.Listbox>
 	);
 }
-
 export function ListboxOption<TValue>({
-	// Changed T to TValue
 	children,
 	className,
-	value, // Added value prop
+	value, 
 	...props
 }: {
 	className?: string;
 	children?: React.ReactNode;
-	value: TValue; // Explicitly define value prop
+	value: TValue; 
 } & Omit<
 	Headless.ListboxOptionProps<"div", TValue>,
 	"as" | "className" | "value"
 >) {
 	return (
 		<Headless.ListboxOption
-			as={Fragment} // Use Fragment to avoid rendering an extra div
+			as={Fragment} 
 			value={value}
 			{...props}
 		>
 			{({ selected, active }) => (
-				<div // This div is the actual rendered option item
+				<div 
 					className={clsx(
 						className,
 						"group/option relative flex cursor-default select-none items-center gap-x-2 rounded-md py-1.5 px-2.5 text-sm",
@@ -155,16 +147,12 @@ export function ListboxOption<TValue>({
 		</Headless.ListboxOption>
 	);
 }
-
 export function ListboxLabel({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"span">) {
-	// ListboxOption now handles its own content, ListboxLabel might be less needed
-	// or used for more complex option rendering if desired.
 	return <span {...props} className={clsx(className, "truncate")} />;
 }
-
 export function ListboxDescription({
 	className,
 	children,

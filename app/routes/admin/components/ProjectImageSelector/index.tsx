@@ -4,12 +4,10 @@ import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";
 import { Button } from "~/routes/admin/components/ui/button";
 import type { StoredImage } from "~/utils/upload.server";
-
 interface ProjectImageSelectorProps {
 	currentImage?: string;
 	className?: string;
 }
-
 export function ProjectImageSelector({
 	currentImage,
 	className = "",
@@ -17,16 +15,12 @@ export function ProjectImageSelector({
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
-
-	// Handle selection of an existing image
 	const handleSelectImage = (image: StoredImage) => {
 		setSelectedImage(image.url);
 		setIsOpen(false);
 	};
-
 	return (
 		<div className={`${className} w-full`}>
-			{/* Current image display */}
 			{(currentImage || selectedImage) && (
 				<div className="mb-4">
 					<img
@@ -41,9 +35,7 @@ export function ProjectImageSelector({
 					/>
 				</div>
 			)}
-
 			<div className="flex flex-col space-y-2">
-				{/* File upload */}
 				<div>
 					<label
 						htmlFor="image"
@@ -67,8 +59,6 @@ export function ProjectImageSelector({
 					<span className="shrink mx-4 text-gray-400 text-sm">OR</span>
 					<div className="grow border-t border-gray-200" />
 				</div>
-
-				{/* Browse existing images button */}
 				<div>
 					<Drawer.Root open={isOpen} onOpenChange={setIsOpen}>
 						<Drawer.Trigger asChild>
@@ -81,12 +71,10 @@ export function ProjectImageSelector({
 							<Drawer.Content className="fixed bottom-0 left-0 right-0 mt-24 flex flex-col rounded-t-2xl bg-white z-50">
 								<div className="flex-1 rounded-t-2xl p-4 bg-white max-h-[90vh] overflow-auto">
 									<div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 mb-4" />
-
 									<div className="max-w-4xl mx-auto">
 										<h3 className="text-lg font-medium text-gray-900 mb-4">
 											Select an Existing Image
 										</h3>
-
 										<div className="image-gallery-container">
 											<ImageGallery onSelectImage={handleSelectImage} />
 										</div>

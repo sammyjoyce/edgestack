@@ -1,38 +1,31 @@
-import { clsx } from "clsx"; // Ensure clsx is imported if not already
+import { clsx } from "clsx"; 
 import React from "react";
-import { Link, type To } from "react-router"; // Import To type
-import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; // Import the new component
+import { Link, type To } from "react-router"; 
+import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer"; 
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 import type { Project } from "~/database/schema";
-
-// Define props interface
 interface RecentProjectsProps {
 	introTitle?: string;
 	introText?: string;
-	projects: Project[]; // Expect projects array as a prop
-	theme?: 'light' | 'dark'; // Add theme prop
+	projects: Project[]; 
+	theme?: 'light' | 'dark'; 
 }
-
 export default function RecentProjects({
 	introTitle,
 	introText,
 	projects = [],
-	theme = "light", // Default theme
+	theme = "light", 
 }: RecentProjectsProps) {
-	// No longer use hardcoded data
-
-	return ( // Apply theme to the section's root element
+	return ( 
 		<section id="projects" className={clsx("w-full py-20 bg-white dark:bg-gray-900", theme === "dark" && "dark")}>
-			{/* Use props for intro title and text, with defaults */}
 			<SectionIntro
 				title={introTitle ?? "Recent Projects"}
 				className="mb-16 max-w-6xl px-4 lg:px-8"
-				invert={theme === 'dark'} // Invert SectionIntro if the section theme is dark
+				invert={theme === 'dark'} 
 			>
 				{introText && <p>{introText}</p>}
-				{/* Conditionally render intro text if provided */}
 			</SectionIntro>
 			<Container className="max-w-6xl px-4 lg:px-8">
 				<FadeInStagger>
@@ -42,7 +35,6 @@ export default function RecentProjects({
 								<div
 									className={clsx(
 										"grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12",
-										// Alternate layout direction based on index
 										idx % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row",
 									)}
 								>
@@ -75,7 +67,6 @@ export default function RecentProjects({
 											richTextClassName={clsx(theme === "dark" && "dark:prose-invert")}
 											fallbackTag="p"
 										/>
-										{/* Use Link with typed 'to' prop */}
 										<Link
 											to={`/projects/${project.id}`}
 											className="font-semibold text-base text-black underline underline-offset-4 transition hover:text-gray-700 dark:text-white dark:hover:text-gray-300"

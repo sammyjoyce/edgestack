@@ -2,60 +2,48 @@ import React from "react";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { deleteProject, getProjectById } from "~/routes/common/db"; // Import deleteProject and getProjectById statically
+import { deleteProject, getProjectById } from "~/routes/common/db"; 
 import type { Project } from "../../../../../../database/schema";
 import { Heading } from "../../../components/ui/heading";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/fieldset";
 import { Text } from "../../../components/ui/text";
 import { Button } from "../../../components/ui/button";
-import type { Route } from "./+types/delete";
-import { data } from "react-router"; // Import data helper
-
-// Return plain objects for type safety
-export async function loader({ params, context }: Route.LoaderArgs): Promise<Route.LoaderData | Response> { // Update return type
-	// Use generated type
+import type { Route } from "./+types/projectId/delete";
+import { data, SerializeFrom } from "react-router"; 
+export async function loader({ params, context }: Route.LoaderArgs): Promise<SerializeFrom<Route.LoaderData> | Response> { 
 	const projectId = Number(params.projectId);
-
 	if (Number.isNaN(projectId)) {
-		throw data({ error: "Invalid Project ID" }, { status: 400 }); // throw data()
+		throw data({ error: "Invalid Project ID" }, { status: 400 }); 
 	}
-
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw data({ error: "Project not found" }, { status: 404 }); // throw data()
+			throw data({ error: "Project not found" }, { status: 404 }); 
 		}
-		return { project }; // Return plain object
+		return { project }; 
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw data( // throw data()
+		throw data( 
 			{ error: error.message || "Failed to load project" },
 			{ status: 500 },
 		);
 	}
 }
-
-// Return plain objects or Response for type safety
 export async function action({
 	request,
 	params,
-	context, // context will be typed by Route.ActionArgs
-}: Route.ActionArgs): Promise<Response | Route.ActionData> { // Update return type
-	// Use generated type
+	context, 
+}: Route.ActionArgs): Promise<Response | SerializeFrom<Route.ActionData>> { 
 	const projectId = Number(params.projectId);
-
 	if (Number.isNaN(projectId)) {
 		return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
 	}
-
 	const formData = await request.formData();
 	const confirmDelete = formData.get("confirmDelete") === "true";
-
 	if (!confirmDelete) {
 		return data({ success: false, error: "Deletion was not confirmed" }, { status: 400 });
 	}
-
 	try {
 		await deleteProject(context.db, projectId);
 		return redirect("/admin/projects");
@@ -67,13 +55,9 @@ export async function action({
 		);
 	}
 }
-
 export default function DeleteProjectPage() {
-	const { project } = useLoaderData<Route.LoaderData>(); // Or Route.LoaderData
+	const { project } = useLoaderData<SerializeFrom<typeof loader>>(); 
 	const navigate = useNavigate();
-
-	// The loader guarantees 'project' is available if no error was thrown.
-	// Error cases (including not found) are handled by the ErrorBoundary.
 	return (
 		<FadeIn>
 			<div className="flex flex-col gap-8">
@@ -87,7 +71,6 @@ export default function DeleteProjectPage() {
 						Cancel
 					</Button>
 				</div>
-
 				<div className="bg-gray-50 p-6 rounded-lg shadow-(--shadow-input-default) border border-gray-200">
 					<div className="rounded-md bg-yellow-50 p-4 mb-6">
 						<div className="flex">
@@ -97,19 +80,17 @@ export default function DeleteProjectPage() {
 								</Heading>
 								<Text className="mt-2 text-sm text-yellow-700">
 									You are about to permanently delete the project "
-									{project!.title}". {/* project is guaranteed by loader */}
+									{project!.title}". {}
 								</Text>
 							</div>
 						</div>
 					</div>
-
 					<div className="mb-6">
 						<Heading level={2} className="mb-2">
-							{project!.title} {/* project is guaranteed by loader */}
+							{project!.title} {}
 						</Heading>
-						<Text className="text-gray-600">{project!.description}</Text> {/* project is guaranteed by loader */}
+						<Text className="text-gray-600">{project!.description}</Text> {}
 					</div>
-
 					<Form method="post" className="flex flex-col gap-6">
 						<div className="flex items-start">
 							<div className="flex items-center h-5">
@@ -130,7 +111,6 @@ export default function DeleteProjectPage() {
 								</Label>
 							</div>
 						</div>
-
 						<div className="flex justify-end gap-3 pt-4 border-t border-gray-200 mt-6">
 							<Button
 								type="button"

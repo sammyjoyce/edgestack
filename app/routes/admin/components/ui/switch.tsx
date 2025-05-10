@@ -1,14 +1,12 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
-import React from "react"; // Added React import
-
+import React from "react"; 
 export function SwitchGroup({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"div">) {
 	return <div {...props} className={clsx(className, "space-y-3")} />;
 }
-
 export function SwitchField({
 	className,
 	...props
@@ -20,7 +18,6 @@ export function SwitchField({
 		/>
 	);
 }
-
 export function Switch({
 	className,
 	...props
@@ -48,8 +45,6 @@ export function Switch({
 		</Headless.Switch>
 	);
 }
-
-// Add Label, Description, ErrorMessage components if needed, similar to Fieldset
 export function Label({
 	className,
 	...props
@@ -65,7 +60,6 @@ export function Label({
 		/>
 	);
 }
-
 export function Description({
 	className,
 	...props
@@ -78,7 +72,6 @@ export function Description({
 		/>
 	);
 }
-
 export function ErrorMessage({
 	className,
 	...props

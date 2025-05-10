@@ -1,9 +1,5 @@
 import clsx from "clsx";
 import type React from "react";
-
-/**
- * SectionCard: Wraps a section in the standard admin container style.
- */
 export function SectionCard({
 	children,
 	className,
@@ -19,10 +15,6 @@ export function SectionCard({
 		</div>
 	);
 }
-
-/**
- * SectionHeading: Large heading for a section.
- */
 export function SectionHeading({
 	children,
 	className,
@@ -33,10 +25,6 @@ export function SectionHeading({
 		</h2>
 	);
 }
-
-/**
- * FieldRow: For grouping a label and input/field together in a vertical stack.
- */
 export function FieldRow({
 	children,
 	className,
@@ -45,10 +33,6 @@ export function FieldRow({
 		<div className={clsx("flex flex-col gap-y-1.5", className)}>{children}</div>
 	);
 }
-
-/**
- * FieldLabel: Standard label styling for section forms.
- */
 export function FieldLabel({
 	htmlFor,
 	children,

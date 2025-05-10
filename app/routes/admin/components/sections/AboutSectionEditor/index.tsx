@@ -1,6 +1,5 @@
-import React, { type JSX, useState, useEffect, useCallback } from "react"; // Added useCallback
+import React, { type JSX, useState, useEffect, useCallback } from "react"; 
 import type { FetcherWithComponents } from "react-router";
-
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import {
@@ -9,10 +8,8 @@ import {
 	SectionCard,
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
-// Import the specific action types
 import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
 import type { Route as AdminUploadRoute } from "~/routes/admin/views/+types/upload";
-
 interface AboutSectionEditorProps {
 	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData | AdminUploadRoute.ActionData>;
 	initialContent: Record<string, string>;
@@ -20,28 +17,24 @@ interface AboutSectionEditorProps {
 	imageUploading: boolean;
 	aboutImageUrl?: string;
 }
-
 export function AboutSectionEditor({
 	fetcher,
 	initialContent,
 	onImageUpload,
-	imageUploading: isUploading, // Renamed destructured prop
+	imageUploading: isUploading, 
 	aboutImageUrl,
 }: AboutSectionEditorProps): React.JSX.Element {
 	const [uploadStatus, setUploadStatus] = useState<string | null>(null);
-
 	const handleBlur = React.useCallback(
 		(e: React.FocusEvent<HTMLTextAreaElement>) => {
 			const { name, value } = e.currentTarget;
 			const formData = new FormData();
-			formData.append("intent", "updateTextContent"); // Add intent
+			formData.append("intent", "updateTextContent"); 
 			formData.append(name, value);
-			// Use typed action path
 			fetcher.submit(formData, { method: "post", action: "/admin" });
 		},
 		[fetcher],
 	);
-
 	const handleDrop = React.useCallback(
 		(files: File[]) => {
 			const [file] = files;
@@ -51,15 +44,11 @@ export function AboutSectionEditor({
 		},
 		[onImageUpload],
 	);
-
-	// Update status message when upload completes
 	useEffect(() => {
 		if (!isUploading && uploadStatus === "Uploading About Image...") {
-			// Use renamed prop
 			setUploadStatus("About Image uploaded successfully!");
 		}
-	}, [isUploading, uploadStatus]); // Use renamed prop in dependency array
-
+	}, [isUploading, uploadStatus]); 
 	return (
 		<SectionCard>
 			<SectionHeading>About Section</SectionHeading>

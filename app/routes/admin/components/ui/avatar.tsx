@@ -1,18 +1,16 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import React, { forwardRef } from "react";
-import { TouchTarget } from "./button"; // Assuming TouchTarget is appropriately styled or not a priority
-import { Link } from "./link"; // Assuming Link is appropriately styled
-
+import { TouchTarget } from "./button"; 
+import { Link } from "./link"; 
 type AvatarProps = {
 	src?: string | null;
 	square?: boolean;
 	initials?: string;
 	alt?: string;
 	className?: string;
-	size?: "xs" | "sm" | "md" | "lg" | "xl"; // Added size prop
+	size?: "xs" | "sm" | "md" | "lg" | "xl"; 
 };
-
 const avatarSizes = {
 	xs: "size-6 text-xs",
 	sm: "size-8 text-sm",
@@ -20,18 +18,16 @@ const avatarSizes = {
 	lg: "size-12 text-lg",
 	xl: "size-14 text-xl",
 };
-
 export function Avatar({
 	src = null,
 	square = false,
 	initials,
 	alt = "",
 	className,
-	size = "md", // Default size
+	size = "md", 
 	...props
 }: AvatarProps & React.ComponentPropsWithoutRef<"span">) {
 	const sizeClasses = avatarSizes[size] || avatarSizes.md;
-
 	return (
 		<span
 			data-slot="avatar"
@@ -39,15 +35,13 @@ export function Avatar({
 			className={clsx(
 				className,
 				"inline-grid shrink-0 align-middle relative group",
-				sizeClasses, // Apply size-specific classes
-				square ? "rounded-md" : "rounded-full", // Simpler rounding
-				// Optional: Add a subtle ring for better visibility, similar to openai-fm's subtle borders
+				sizeClasses, 
+				square ? "rounded-md" : "rounded-full", 
 				"ring-1 ring-inset ring-black/10 dark:ring-white/10",
 			)}
 		>
 			{initials && (
 				<svg
-					// Adjusted SVG classes for better scaling and centering of initials
 					className={clsx(
 						"absolute inset-0 size-full fill-current select-none",
 						square ? "rounded-md" : "rounded-full",
@@ -80,12 +74,9 @@ export function Avatar({
 					alt={alt}
 				/>
 			)}
-			{/* Optional: add a border inside the ring for a more defined edge if needed */}
-			{/* <span className={clsx('absolute inset-0 ring-1 ring-inset ring-white/10 dark:ring-black/10', square ? 'rounded-md' : 'rounded-full')} aria-hidden="true" /> */}
 		</span>
 	);
 }
-
 export const AvatarButton = forwardRef(function AvatarButton(
 	{
 		src,
@@ -93,7 +84,7 @@ export const AvatarButton = forwardRef(function AvatarButton(
 		initials,
 		alt,
 		className,
-		size = "md", // Pass size to AvatarButton as well
+		size = "md", 
 		...props
 	}: AvatarProps &
 		(
@@ -105,12 +96,11 @@ export const AvatarButton = forwardRef(function AvatarButton(
 	const sizeClasses = avatarSizes[size] || avatarSizes.md;
 	const classes = clsx(
 		className,
-		sizeClasses, // Apply size to the button wrapper as well for consistent hit area
+		sizeClasses, 
 		square ? "rounded-md" : "rounded-full",
 		"relative inline-flex items-center justify-center",
-		"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-primary dark:focus:ring-primary-dark", // Consistent focus styling
+		"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-primary dark:focus:ring-primary-dark", 
 	);
-
 	const avatarContent = (
 		<Avatar
 			src={src}
@@ -120,7 +110,6 @@ export const AvatarButton = forwardRef(function AvatarButton(
 			size={size}
 		/>
 	);
-
 	return "href" in props ? (
 		<Link
 			{...props}

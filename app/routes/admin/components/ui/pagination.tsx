@@ -1,7 +1,6 @@
 import clsx from "clsx";
-import React from "react"; // Added React import
-import { Button } from "./button"; // Assuming Button is styled
-
+import React from "react"; 
+import { Button } from "./button"; 
 const ChevronLeftIcon = () => (
 	<svg
 		className="size-4 stroke-current"
@@ -17,7 +16,6 @@ const ChevronLeftIcon = () => (
 		/>
 	</svg>
 );
-
 const ChevronRightIcon = () => (
 	<svg
 		className="size-4 stroke-current"
@@ -33,7 +31,6 @@ const ChevronRightIcon = () => (
 		/>
 	</svg>
 );
-
 export function Pagination({
 	"aria-label": ariaLabel = "Page navigation",
 	className,
@@ -50,7 +47,6 @@ export function Pagination({
 		/>
 	);
 }
-
 export function PaginationPrevious({
 	href = null,
 	className,
@@ -60,7 +56,7 @@ export function PaginationPrevious({
 		<Button
 			href={href === null ? undefined : href}
 			disabled={href === null}
-			variant="ghost" // Use a ghost or plain variant for pagination buttons
+			variant="ghost" 
 			aria-label="Previous page"
 			className={clsx(className, "gap-x-1 pr-2.5")}
 		>
@@ -69,7 +65,6 @@ export function PaginationPrevious({
 		</Button>
 	);
 }
-
 export function PaginationNext({
 	href = null,
 	className,
@@ -88,7 +83,6 @@ export function PaginationNext({
 		</Button>
 	);
 }
-
 export function PaginationList({
 	className,
 	...props
@@ -100,7 +94,6 @@ export function PaginationList({
 		/>
 	);
 }
-
 export function PaginationPage({
 	href,
 	className,
@@ -114,7 +107,7 @@ export function PaginationPage({
 	return (
 		<Button
 			href={href}
-			variant={current ? "outline" : "ghost"} // Active page has outline, others are ghost
+			variant={current ? "outline" : "ghost"} 
 			aria-label={`Page ${children}`}
 			aria-current={current ? "page" : undefined}
 			className={clsx(
@@ -130,7 +123,6 @@ export function PaginationPage({
 		</Button>
 	);
 }
-
 export function PaginationGap({
 	className,
 	children = <>&hellip;</>,

@@ -1,13 +1,10 @@
-import clsx from "clsx"; // Use direct import
-import type React from "react"; // Import React
-
+import clsx from "clsx"; 
+import type React from "react"; 
 type ContainerProps<T extends React.ElementType = "div"> = {
-	// Add default type
 	as?: T;
 	className?: string;
 	children: React.ReactNode;
 };
-
 export function Container<T extends React.ElementType = "div">({
 	as,
 	className,
@@ -15,7 +12,6 @@ export function Container<T extends React.ElementType = "div">({
 }: Omit<React.ComponentPropsWithoutRef<T>, keyof ContainerProps<T>> &
 	ContainerProps<T>) {
 	const Component = as ?? "div";
-
 	return (
 		<Component className={clsx("mx-auto max-w-7xl px-6 lg:px-8", className)}>
 			<div className="mx-auto max-w-2xl lg:max-w-none">{children}</div>

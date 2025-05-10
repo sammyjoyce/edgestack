@@ -1,9 +1,7 @@
-import clsx from "clsx"; // Use direct import
-import type React from "react"; // Import React
-
+import clsx from "clsx"; 
+import type React from "react"; 
 import { Container } from "~/routes/common/components/ui/Container";
-import { FadeIn } from "~/routes/common/components/ui/FadeIn"; // Corrected path
-
+import { FadeIn } from "~/routes/common/components/ui/FadeIn"; 
 export function SectionIntro({
 	title,
 	eyebrow,
@@ -32,10 +30,9 @@ export function SectionIntro({
 							<span
 								className={clsx(
 									"mb-6 block font-display text-base font-semibold",
-									// If invert is true, text is light.
 									invert
-										? "text-white dark:text-neutral-950" // White on dark bg (light mode), Dark on light bg (dark mode, if section inverts)
-										: "text-neutral-950 dark:text-white" // Dark on light bg (light mode), White on dark bg (dark mode)
+										? "text-white dark:text-neutral-950" 
+										: "text-neutral-950 dark:text-white" 
 								)}
 							>
 								{eyebrow}
@@ -62,8 +59,8 @@ export function SectionIntro({
 						className={clsx(
 							"mt-6 text-xl",
 							invert
-								? "text-neutral-300 dark:text-neutral-700" // Lighter gray on dark bg (light mode), Mid-gray on light bg (dark mode, if section inverts)
-								: "text-neutral-600 dark:text-neutral-300" // Mid-gray on light bg (light mode), Lighter-gray on dark bg (dark mode)
+								? "text-neutral-300 dark:text-neutral-700" 
+								: "text-neutral-600 dark:text-neutral-300" 
 						)}
 					>
 						{children}

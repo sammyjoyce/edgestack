@@ -1,6 +1,5 @@
-import clsx from "clsx"; // Use direct import
-import type React from "react"; // Import React
-
+import clsx from "clsx"; 
+import type React from "react"; 
 export function TagList({
 	children,
 	className,
@@ -12,7 +11,6 @@ export function TagList({
 		<ul className={clsx(className, "flex flex-wrap gap-4")}>{children}</ul>
 	);
 }
-
 export function TagListItem({
 	children,
 	className,

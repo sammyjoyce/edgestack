@@ -1,4 +1,3 @@
-// @ts-ignore
 import type { D1Database } from "@cloudflare/workers-types";
 import { eq } from "drizzle-orm";
 import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1";
@@ -16,34 +15,21 @@ import type { NewContent, NewProject } from "./schema";
 
 // Main seed function that populates the database
 export async function seedDatabase(d1: D1Database) {
-	// Changed parameter name for clarity
 	const drizzleDb = drizzle(d1, { schema });
-
 	console.log("🌱 Starting database seed...");
-
-	// Wipe existing data
 	console.log("Wiping existing data...");
 	await drizzleDb.delete(schema.content).run();
 	await drizzleDb.delete(schema.projects).run();
 	await drizzleDb.delete(schema.media).run();
 	console.log("Data wiped.");
-
-	// Seed content
 	console.log("Seeding content...");
 	await seedContent(drizzleDb);
-
-	// Seed projects
 	console.log("Seeding projects...");
 	await seedProjects(drizzleDb);
-
 	console.log("✅ Database seed completed successfully!");
 }
-
-// Seed all the content for pages
 async function seedContent(db: DrizzleD1Database<typeof schema>) {
-	// Define the content for the site
 	const contentItems: NewContent[] = [
-		// Hero Section
 		{
 			key: "hero_title",
 			value: "Building Excellence in Every Project",
@@ -69,8 +55,6 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "image",
 			sortOrder: 3,
 		},
-
-		// Services Section
 		{
 			key: "services_intro_title",
 			value: "Our Services",
@@ -188,8 +172,6 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "image",
 			sortOrder: 14,
 		},
-
-		// About Section
 		{
 			key: "about_title",
 			value: "About Lush Constructions",
@@ -215,8 +197,6 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "image",
 			sortOrder: 3,
 		},
-
-		// Contact Section
 		{
 			key: "contact_phone",
 			value: "0404 289 437",
@@ -241,8 +221,6 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "text",
 			sortOrder: 3,
 		},
-
-		// Projects Section
 		{
 			key: "projects_intro_title",
 			value: "Featured Projects",
@@ -260,8 +238,6 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "text",
 			sortOrder: 2,
 		},
-
-		// Meta Information
 		{
 			key: "meta_title",
 			value: "Lush Constructions | Sydney Building & Renovation Specialists",
@@ -279,8 +255,6 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "text",
 			sortOrder: 2,
 		},
-
-		// Section Ordering
 		{
 			key: "home_sections_order",
 			value: "hero,services,projects,about,contact",
@@ -290,8 +264,6 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			sortOrder: 1,
 		},
 	];
-
-	// Insert all content items
 	for (const item of contentItems) {
 		try {
 			await db.insert(schema.content).values(item).run();
@@ -301,10 +273,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		}
 	}
 }
-
-// Seed sample projects
 async function seedProjects(db: DrizzleD1Database<typeof schema>) {
-	// Define sample projects
 	const projects: NewProject[] = [
 		{
 			title: "Modern Waterfront Home",
@@ -367,8 +336,6 @@ async function seedProjects(db: DrizzleD1Database<typeof schema>) {
 			sortOrder: 5,
 		},
 	];
-
-	// Insert all projects
 	for (const project of projects) {
 		try {
 			await db.insert(schema.projects).values(project).run();
@@ -378,8 +345,6 @@ async function seedProjects(db: DrizzleD1Database<typeof schema>) {
 		}
 	}
 }
-
-// Wrangler will execute this when running the script with D1
 export default async function (db: D1Database) {
 	try {
 		await seedDatabase(db);

@@ -1,9 +1,8 @@
-import clsx from "clsx"; // Use direct import
-import type { HTMLMotionProps } from "framer-motion"; // Keep this if motion props are directly used, otherwise can be part of ...rest
+import clsx from "clsx"; 
+import type { HTMLMotionProps } from "framer-motion"; 
 import { motion } from "framer-motion";
-import type React from "react"; // Import React
+import type React from "react"; 
 import { useId } from "react";
-
 const shapes = [
 	{
 		width: 655,
@@ -21,10 +20,8 @@ const shapes = [
 		path: "M60 120 L659 120 L639 560 L40 560 Z",
 	},
 ];
-
 type ImageProps = React.ImgHTMLAttributes<HTMLImageElement>;
 type ImagePropsWithOptionalAlt = Omit<ImageProps, "alt"> & { alt?: string };
-
 export function StylizedImage({
 	shape = 0,
 	className,
@@ -36,7 +33,6 @@ export function StylizedImage({
 }: ImagePropsWithOptionalAlt & { shape?: 0 | 1 | 2 }) {
 	const id = useId();
 	const { width, height, path } = shapes[shape];
-
 	return (
 		<div
 			className={clsx(

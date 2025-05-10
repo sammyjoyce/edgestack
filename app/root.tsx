@@ -1,4 +1,4 @@
-import type React from "react"; // Import React
+import type React from "react"; 
 import {
 	Links,
 	Meta,
@@ -7,16 +7,13 @@ import {
 	ScrollRestoration,
 	isRouteErrorResponse,
 	useMatches,
-	useLocation, // Added for HashScrollHandler if it uses it internally, or if we place it here
+	useLocation, 
 } from "react-router";
-import { HashScrollHandler } from "~/routes/common/components/HashScrollHandler"; // Import HashScrollHandler
-
+import { HashScrollHandler } from "~/routes/common/components/HashScrollHandler"; 
 import type { Route } from "./+types/root";
-// Import global error logger for client-side diagnostics
 import "./global-error-logger";
 import adminThemeStylesheet from "./admin-theme.css?url";
 import stylesheet from "./app.css?url";
-
 const darkModeScript = `
   (function() {
     try {
@@ -29,7 +26,6 @@ const darkModeScript = `
     } catch (_) {}
   })();
 `;
-
 export const links: Route.LinksFunction = () => [
 	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
 	{
@@ -43,8 +39,7 @@ export const links: Route.LinksFunction = () => [
 	},
 	{ rel: "stylesheet", href: stylesheet },
 ];
-
-export default function RootComponent() { // Renamed from Layout, made default
+export default function RootComponent() { 
 	return (
 		<html lang="en">
 			<head>
@@ -55,7 +50,7 @@ export default function RootComponent() { // Renamed from Layout, made default
 				<Links />
 			</head>
 			<body>
-				<Outlet /> {/* Render Outlet directly */}
+				<Outlet /> {}
 				<ScrollRestoration />
 				<Scripts />
 				<HashScrollHandler />
@@ -63,13 +58,10 @@ export default function RootComponent() { // Renamed from Layout, made default
 		</html>
 	);
 }
-
-// Update ErrorBoundary to return full HTML structure
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	let title = "Error";
 	let message = "An unexpected error occurred.";
 	let stack: string | undefined;
-
 	if (isRouteErrorResponse(error)) {
 		title = `${error.status} ${error.statusText}`;
 		message = typeof error.data === 'string' ? error.data : JSON.stringify(error.data);
@@ -78,7 +70,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 		message = error.message;
 		stack = error.stack;
 	}
-
 	return (
 		<html lang="en">
 			<head>

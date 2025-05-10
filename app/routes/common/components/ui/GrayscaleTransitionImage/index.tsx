@@ -1,19 +1,16 @@
-import clsx from "clsx"; // Use direct import
+import clsx from "clsx"; 
 import {
 	motion,
 	useMotionTemplate,
 	useScroll,
 	useTransform,
-} from "framer-motion"; // Use direct import
+} from "framer-motion"; 
 import type { HTMLMotionProps } from "framer-motion";
 import type React from "react";
 import { useRef } from "react";
-
 const MotionImage = motion.img;
-
-// Define a more compatible props interface that works with both HTML and Motion props
 interface GrayscaleTransitionImageProps {
-	className?: string; // For the wrapper div
+	className?: string; 
 	alt?: string;
 	src?: string;
 	width?: number | string;
@@ -23,9 +20,8 @@ interface GrayscaleTransitionImageProps {
 	id?: string;
 	sizes?: string;
 	srcSet?: string;
-	[key: string]: any; // Allow other props but don't enforce type checking on them
+	[key: string]: any; 
 }
-
 export function GrayscaleTransitionImage({
 	className,
 	alt = "",
@@ -34,7 +30,7 @@ export function GrayscaleTransitionImage({
 	height,
 	loading = "lazy",
 	decoding = "async",
-	...rest // Capture remaining props
+	...rest 
 }: GrayscaleTransitionImageProps) {
 	const ref = useRef<React.ElementRef<"div">>(null);
 	const { scrollYProgress } = useScroll({
@@ -43,9 +39,6 @@ export function GrayscaleTransitionImage({
 	});
 	const grayscale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0, 1]);
 	const filter = useMotionTemplate`grayscale(${grayscale})`;
-
-	// Define props specifically for the underlying img elements
-	// Only include explicitly supported standard img attributes
 	const imgProps = {
 		src,
 		alt,
@@ -54,14 +47,11 @@ export function GrayscaleTransitionImage({
 		className: "absolute inset-0 h-full w-full object-cover",
 		loading,
 		decoding,
-		// Exclude event handlers from regular img element
 		onDrag: undefined,
 		onDragEnd: undefined,
 		onDragStart: undefined,
 	};
-
 	return (
-		// Apply passed className to the wrapper div
 		<div ref={ref} className={clsx("group relative", className)}>
 			<MotionImage
 				src={src}
@@ -71,15 +61,13 @@ export function GrayscaleTransitionImage({
 				className="absolute inset-0 h-full w-full object-cover"
 				loading={loading}
 				decoding={decoding}
-				style={{ filter }} // Type-safe without 'as any'
-				{...rest} // Spread remaining props
+				style={{ filter }} 
+				{...rest} 
 			/>
-			{/* Static image for hover effect */}
 			<div
 				className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
 				aria-hidden="true"
 			>
-				{/* Use the same controlled props for the static image */}
 				<img {...imgProps} />
 			</div>
 		</div>

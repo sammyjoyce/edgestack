@@ -2,7 +2,6 @@ import React from "react";
 import type { FetcherWithComponents } from "react-router";
 import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
 import type { Route as AdminUploadRoute } from "~/routes/admin/views/+types/upload";
-
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import {
@@ -13,9 +12,7 @@ import {
 } from "~/routes/admin/components/ui/section";
 import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { Input } from "../../ui/input";
-
 const DEBUG = process.env.NODE_ENV !== "production";
-
 interface HeroSectionEditorProps {
 	fetcher: FetcherWithComponents<AdminIndexRoute.ActionData | AdminUploadRoute.ActionData>;
 	initialContent: Record<string, string>;
@@ -23,7 +20,6 @@ interface HeroSectionEditorProps {
 	imageUploading: boolean;
 	heroImageUrl?: string;
 }
-
 export function HeroSectionEditor({
 	fetcher,
 	initialContent,
@@ -32,28 +28,20 @@ export function HeroSectionEditor({
 	heroImageUrl,
 }: HeroSectionEditorProps): React.ReactElement {
 	const [uploadStatus, setUploadStatus] = React.useState<string | null>(null);
-
 	const handleBlur = React.useCallback(
 		(e: React.FocusEvent<HTMLTextAreaElement>) => {
 			const { name, value } = e.currentTarget;
-
 			if (DEBUG) {
 				console.log(
 					`[HeroSectionEditor] handleBlur triggered for ${name} with value: "${value}"`,
 				);
 			}
-
-			// Create and populate form data
 			const formData = new FormData();
 			formData.append("intent", "updateTextContent");
 			formData.append(name, value);
-
 			console.log(
 				`[HeroSectionEditor] Submitting form with intent: updateTextContent, ${name}: "${value}"`,
 			);
-			// Removed extra closing brace here
-
-			// Submit form with explicit method and action
 			try {
 				fetcher.submit(formData, {
 					method: "post",
@@ -66,7 +54,6 @@ export function HeroSectionEditor({
 		},
 		[fetcher],
 	);
-
 	const handleDrop = React.useCallback(
 		(files: File[]) => {
 			const [file] = files;
@@ -76,13 +63,11 @@ export function HeroSectionEditor({
 		},
 		[onImageUpload],
 	);
-
 	React.useEffect(() => {
 		if (!imageUploading && uploadStatus === "Uploading Hero Image…") {
 			setUploadStatus("Hero Image uploaded successfully!");
 		}
 	}, [imageUploading, uploadStatus]);
-
 	return (
 		<SectionCard>
 			<SectionHeading>Hero Section</SectionHeading>

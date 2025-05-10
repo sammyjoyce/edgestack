@@ -2,10 +2,8 @@ import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFetcher } from "react-router";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
-
 import { GrayscaleTransitionImage } from "~/routes/common/components/ui/GrayscaleTransitionImage";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
-
 const imageFields = [
 	{ key: "hero_image_url", label: "Hero Image" },
 	{ key: "about_image_url", label: "About Image" },
@@ -14,7 +12,6 @@ const imageFields = [
 	{ key: "service_3_image", label: "Service 3 Image" },
 	{ key: "service_4_image", label: "Service 4 Image" },
 ];
-
 type UploadActionData = {
 	success?: boolean;
 	url?: string;
@@ -22,7 +19,6 @@ type UploadActionData = {
 	error?: string;
 	action?: "upload" | "select" | "delete";
 };
-
 function isUploadResponse(data: unknown): data is UploadActionData {
 	return (
 		typeof data === "object" &&
@@ -30,12 +26,10 @@ function isUploadResponse(data: unknown): data is UploadActionData {
 		("success" in data || "error" in data)
 	);
 }
-
 interface ImageUploadSectionProps {
 	initialContent: Record<string, string>;
 	sectionRef?: React.RefObject<HTMLDivElement>;
 }
-
 function SingleImageUpload({
 	keyName,
 	label,
@@ -57,23 +51,19 @@ function SingleImageUpload({
 		(files: File[]) => {
 			const [file] = files;
 			if (!file) return;
-
 			const formData = new FormData();
 			formData.append("intent", "uploadImage");
 			formData.append("image", file);
 			formData.append("key", keyName);
-
 			fetcher.submit(formData, {
 				method: "post",
 				action: "/admin/upload",
 				encType: "multipart/form-data",
 			});
-
 			setStatusText(`Uploading ${label}…`);
 		},
 		[fetcher, keyName, label, setStatusText],
 	);
-
 	useEffect(() => {
 		if (fetcher.state === "idle" && isUploadResponse(fetcher.data)) {
 			if (fetcher.data.success && fetcher.data.action === "upload") {
@@ -84,7 +74,6 @@ function SingleImageUpload({
 			}
 		}
 	}, [fetcher, label, setStatusText, fileInputRef]);
-
 	return (
 		<fetcher.Form
 			method="post"
@@ -150,21 +139,17 @@ function SingleImageUpload({
 		</fetcher.Form>
 	);
 }
-
 export function ImageUploadSection({
 	initialContent,
 	sectionRef,
 }: ImageUploadSectionProps) {
 	const localRef = useRef<HTMLDivElement>(null);
 	const ref = sectionRef || localRef;
-
 	const [statusTexts, setStatusTexts] = useState<string[]>(
 		Array(imageFields.length).fill(""),
 	);
-
 	const fetchers = imageFields.map(() => useFetcher<UploadActionData>());
 	const fileInputRefs = imageFields.map(() => useRef<HTMLInputElement>(null));
-
 	return (
 		<section
 			id="image-uploads"

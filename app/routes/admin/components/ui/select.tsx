@@ -1,7 +1,6 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import React, { forwardRef } from "react";
-
 const ChevronUpDownIcon = () => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
@@ -17,13 +16,12 @@ const ChevronUpDownIcon = () => (
 		/>
 	</svg>
 );
-
 export const Select = forwardRef(function Select(
 	{
 		className,
 		multiple,
 		...props
-	}: { className?: string } & Omit<Headless.SelectProps, "as" | "className">,
+	}: { className?: string } & Omit<Headless.SelectProps, "as" | "className" | "remove">,
 	ref: React.ForwardedRef<HTMLSelectElement>,
 ) {
 	return (

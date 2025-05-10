@@ -1,6 +1,5 @@
-import React, { type JSX, useCallback } from "react"; // Import React
+import React, { type JSX, useCallback } from "react"; 
 import { useDropzone } from "react-dropzone";
-
 interface ImageUploadZoneProps {
 	onDrop: (files: File[]) => void;
 	disabled?: boolean;
@@ -10,7 +9,6 @@ interface ImageUploadZoneProps {
 	className?: string;
 	fileInputRef?: React.RefObject<HTMLInputElement>;
 }
-
 export default function ImageUploadZone({
 	onDrop,
 	disabled = false,
@@ -28,7 +26,6 @@ export default function ImageUploadZone({
 		},
 		[onDrop, disabled],
 	);
-
 	const { getRootProps, getInputProps, isDragActive, isDragReject } =
 		useDropzone({
 			accept: { "image/*": [] },
@@ -43,18 +40,16 @@ export default function ImageUploadZone({
 			<div
 				{...getRootProps()}
 				className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition w-full max-w-xs min-h-32 bg-gray-50 hover:bg-gray-100 cursor-pointer ${
-					/* Reduced min-height, added hover */
 					isDragReject
-						? "border-red-400 bg-red-50" /* Adjusted colors */
+						? "border-red-400 bg-red-50" 
 						: isDragActive
-							? "border-primary bg-primary/10" /* Adjusted colors */
+							? "border-primary bg-primary/10" 
 							: "border-gray-300"
 				} ${disabled ? "opacity-50 pointer-events-none" : ""}`}
 				aria-label="Image upload drop zone"
 			>
 				<input ref={fileInputRef} {...getInputProps()} />
 				<p className="text-sm text-center text-gray-600">
-					{/* Adjusted color */}
 					{uploading
 						? "Uploading..."
 						: isDragActive
@@ -66,7 +61,7 @@ export default function ImageUploadZone({
 				<img
 					src={imageUrl}
 					alt={`Preview of ${label}`}
-					className="rounded border border-gray-200 mt-3 max-w-full w-48 h-auto object-cover bg-gray-100" /* Adjusted margin/border */
+					className="rounded border border-gray-200 mt-3 max-w-full w-48 h-auto object-cover bg-gray-100" 
 				/>
 			)}
 		</section>

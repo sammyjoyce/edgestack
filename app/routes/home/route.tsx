@@ -1,6 +1,5 @@
 import { type MetaFunction, useLoaderData } from "react-router";
-import type { Route } from "./+types/route"; // Ensure this is present or generated
-
+import type { Route } from "./+types/route"; 
 const DEBUG = process.env.NODE_ENV !== "production";
 import type { JSX } from "react";
 import invariant from "tiny-invariant";
@@ -14,15 +13,12 @@ import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import Hero from "./components/Hero";
 import OurServices from "./components/OurServices";
-
 export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
-	// Access loader data safely. The loader ensures 'content' is an object.
 	const content = data?.content ?? {};
 	const pageTitle = content.meta_title ?? "Lush Constructions";
 	const pageDescription =
 		content.meta_description ??
 		"High-Quality Solutions for Home & Office Improvement";
-
 	return [
 		{ title: pageTitle },
 		{
@@ -31,7 +27,6 @@ export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
 		},
 	];
 };
-
 export async function loader({ request, context }: Route.LoaderArgs): Promise<{
 	content: Record<string, string>;
 	projects: Project[];
@@ -42,7 +37,6 @@ export async function loader({ request, context }: Route.LoaderArgs): Promise<{
 	const url = new URL(request.url);
 	const revalidate = url.searchParams.get("revalidate") === "true";
 	if (DEBUG) console.log("[HOME LOADER] Revalidation requested:", revalidate);
-
 	let content: Record<string, string> = {};
 	let projects: Project[] = [];
 	try {
@@ -63,26 +57,21 @@ export async function loader({ request, context }: Route.LoaderArgs): Promise<{
 	}
 	invariant(typeof content === "object", "loader: content must be an object");
 	invariant(Array.isArray(projects), "loader: projects must be an array");
-	// Return a plain object without headers
 	return {
 		content,
 		projects,
 		revalidatedAt: revalidate ? Date.now() : undefined,
 	};
 }
-
 export default function HomeRoute(): JSX.Element {
 	const { content, projects, revalidatedAt } = useLoaderData<typeof loader>();
 	if (DEBUG && revalidatedAt) console.log("[HOME ROUTE] Revalidated at:", revalidatedAt);
-
 	invariant(
 		typeof content === "object",
 		"HomeRoute: content must be an object",
 	);
 	invariant(Array.isArray(projects), "HomeRoute: projects must be an array");
-
 	const typedContent = content as unknown as Record<string, string>;
-
 	const sectionBlocks: Record<string, JSX.Element> = {
 		hero: (
 			<Hero
@@ -154,25 +143,20 @@ export default function HomeRoute(): JSX.Element {
 		),
 		contact: <ContactUs key="contact" content={typedContent} />,
 	};
-
 	invariant(
 		typeof sectionBlocks === "object",
 		"HomeRoute: sectionBlocks must be an object",
 	);
-
-	// Determine section order from database or use default
 	const DEFAULT_ORDER = ["hero", "services", "projects", "about", "contact"];
 	const orderString = typedContent?.home_sections_order as string | undefined;
 	const order = orderString
 		? orderString.split(",").filter((id) => id in sectionBlocks)
 		: DEFAULT_ORDER;
-
 	invariant(Array.isArray(order), "HomeRoute: order must be an array");
 	invariant(
 		order.every((id) => typeof id === "string"),
 		"HomeRoute: all order ids must be strings",
 	);
-
 	return (
 		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
 			<Header />
