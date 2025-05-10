@@ -6,7 +6,7 @@ import { deleteProject, getProjectById } from "~/routes/common/db"; // Import de
 import type { Project } from "../../../../../../database/schema";
 import { Heading } from "../../../components/ui/Heading";
 import { Input } from "../../../components/ui/Input";
-import { Label } from "../../../components/ui/Label";
+import { Label } from "../../../components/ui/label";
 import { Text } from "../../../components/ui/Text";
 import { Button } from "../components/ui/button";
 import type { Route } from "./+types/delete";
