@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Link, redirect, useLoaderData } from "react-router";
+import { Form, Link, redirect, useLoaderData, data } from "react-router";
 import invariant from "tiny-invariant";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
 import type { Project } from "../../../../../database/schema";
@@ -38,7 +38,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		return { projects };
 	} catch (error) {
 		console.error("Failed to load projects:", error);
-		throw new Error("Failed to load projects");
+		throw data({ message: "Failed to load projects" }, { status: 500 });
 	}
 }
 

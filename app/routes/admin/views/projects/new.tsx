@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, redirect, useActionData, useNavigate } from "react-router";
+import { Form, redirect, useActionData, useNavigate, data } from "react-router";
 import type { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
 import { createProject } from "~/routes/common/db";
@@ -85,7 +85,7 @@ export async function action({
 				.join("; ");
 			throw new Response(`Validation Error: ${issueMessages}`, { status: 400 });
 		}
-		throw new Error(error.message || "Failed to create project");
+		throw data({ error: error.message || "Failed to create project" }, { status: 500 });
 	}
 }
 
