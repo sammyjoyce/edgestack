@@ -33,7 +33,7 @@ export const projects = sqliteTable("projects", {
 	title: text("title").notNull(),
 	description: text("description", { mode: "json" }), 
 	details: text("details", { mode: "json" }), 
-	imageUrl: text("image_url"), 
+	imageId: integer("image_id").references(() => media.id), // Changed from imageUrl to imageId FK
 	slug: text("slug").unique(), 
 	published: integer("published", { mode: "boolean" }).default(true), 
 	isFeatured: integer("is_featured", { mode: "boolean" }).default(false), 
@@ -58,16 +58,18 @@ export const contentRelations = relations(content, ({ one }) => ({
 
 export const mediaRelations = relations(media, ({ many }) => ({
 	contents: many(content),
+	// A media item could be the image for multiple projects, or for one if unique constraint added to projects.imageId
+	// For now, assuming a media item could potentially be reused or is at least referenced by projects.
+	projectsAsImage: many(projects, { relationName: "projectImage" }),
 }));
 
-// Example: If projects can have associated media (e.g., a project cover image)
-// export const projectsRelations = relations(projects, ({ one, many }) => ({
-//   coverMedia: one(media, { // Assuming a direct foreign key in projects table like 'coverMediaId'
-//     fields: [projects.coverMediaId], // You would need to add coverMediaId to projects table
-//     references: [media.id]
-//   }),
-//   // Or if a project can have many media items through a join table, that would be more complex
-// }));
+export const projectsRelations = relations(projects, ({ one }) => ({
+	image: one(media, {
+		fields: [projects.imageId],
+		references: [media.id],
+		relationName: "projectImage",
+	}),
+}));
 
 export const schema = {
 	content,
@@ -75,5 +77,5 @@ export const schema = {
 	media,
 	contentRelations, // Add relations to the exported schema
 	mediaRelations,
-	// projectsRelations, // Add if defined
+	projectsRelations,
 };
