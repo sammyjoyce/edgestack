@@ -1,4 +1,5 @@
 import { type MetaFunction, useLoaderData } from "react-router";
+import type { Route } from "./+types/route"; // Ensure this is present or generated
 
 const DEBUG = process.env.NODE_ENV !== "production";
 import type { JSX } from "react";
@@ -9,13 +10,12 @@ import RecentProjects from "~/routes/common/components/RecentProjects";
 import { getFeaturedProjects } from "~/routes/common/db";
 import { getAllContent } from "~/routes/common/db";
 import type { Project } from "../../../database/schema";
-import type { Route } from "./+types/route";
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import Hero from "./components/Hero";
 import OurServices from "./components/OurServices";
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
 	// Access loader data safely. The loader ensures 'content' is an object.
 	const content = data?.content ?? {};
 	const pageTitle = content.meta_title ?? "Lush Constructions";

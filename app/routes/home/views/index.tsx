@@ -1,28 +1,25 @@
 import React, { type JSX } from "react"; // Import React
+import { type MetaFunction, useOutletContext } from "react-router"; // Import MetaFunction
 const DEBUG = process.env.NODE_ENV !== "production";
-import { useOutletContext } from "react-router";
 import invariant from "tiny-invariant";
 import RecentProjects from "~/routes/common/components/RecentProjects";
 // Import parent route loader function for typing
-import type { loader as parentLoader } from "~/routes/home/views/_layout";
+import type { loader as parentLayoutLoader } from "~/routes/home/views/_layout";
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
 
-export const meta: any = ({ matches }: { matches: any[] }) => {
-	// Adjusted type for meta function and matches
+export const meta: MetaFunction<never, { "routes/home/views/_layout": typeof parentLayoutLoader }> = ({ matches }) => {
 	// Access loader data safely from parent layout match using the correct type (Awaited to unwrap the Promise)
 	const parentLayoutMatch = matches.find(
 		(match) => match?.id === "routes/home/views/_layout",
 	);
-	const parentLayoutData = parentLayoutMatch?.data as
-		| Awaited<ReturnType<typeof parentLoader>>
-		| undefined;
-	const c = parentLayoutData?.content as Record<string, string> | undefined;
-	const pageTitle = c?.meta_title ?? "Lush Constructions";
+	const parentLayoutData = parentLayoutMatch?.data as Awaited<ReturnType<typeof parentLayoutLoader>> | undefined;
+	const c = parentLayoutData?.content ?? {};
+	const pageTitle = c.meta_title ?? "Lush Constructions";
 	const pageDescription =
-		c?.meta_description ??
+		c.meta_description ??
 		"High-Quality Solutions for Home & Office Improvement";
 
 	return [
@@ -37,7 +34,7 @@ export const meta: any = ({ matches }: { matches: any[] }) => {
 export function HomeRoute(): JSX.Element {
 	// Use useOutletContext with Awaited<ReturnType> to unwrap the Promise
 	const { content: rawContent, projects = [] } =
-		useOutletContext<Awaited<ReturnType<typeof parentLoader>>>();
+		useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
 	const content = (rawContent ?? {}) as Record<string, string>;
 
 	invariant(
