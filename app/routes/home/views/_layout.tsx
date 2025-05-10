@@ -56,7 +56,7 @@ export async function loader({ request, context }: any) {
 	} catch (error) {
 		console.error("Error fetching data from D1:", error);
 		// Throw an error to be caught by the ErrorBoundary
-		throw new Error({ message: "Failed to load layout data" }, { status: 500 });
+		throw new Response("Failed to load layout data", { status: 500 });
 	}
 }
 
@@ -90,11 +90,6 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 	actionResult,
 	defaultShouldRevalidate,
 }) => {
-	// Always revalidate after actions (form submissions)
-	if (formMethod && formMethod !== "GET") {
-		return true;
-	}
-
 	// Check for our custom cache-busting flag with timestamp value
 	if (nextUrl.searchParams.has("t")) {
 		return true;

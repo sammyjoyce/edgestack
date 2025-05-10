@@ -110,18 +110,6 @@ export async function action({
 }
 
 /* ---------------- COMPONENT -------------- */
-function logFormSubmission(formData: FormData) {
-	console.log(
-		"[CLIENT FORM SUBMISSION] Submitting form with data:",
-		Object.fromEntries(formData),
-	);
-	console.log(
-		"[CLIENT FORM SUBMISSION] Form is targeting route:",
-		window.location.pathname,
-	);
-	console.log("[CLIENT FORM SUBMISSION] Full URL:", window.location.href);
-}
-
 export default function AdminIndexRoute(): JSX.Element {
 	const data = useLoaderData<typeof loader>();
 
