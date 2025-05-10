@@ -13,40 +13,29 @@ import { Heading } from "../../../components/ui/heading";
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import type { Route } from "./+types/edit";
-
-// Define return types for loader and action
-type ProjectLoaderData = {
-	project: Project | null;
-	error?: string;
-};
-
-type ProjectActionData = {
-	success: boolean;
-	error?: string;
-	project?: Project;
-};
+import { data } from "react-router"; // Import data helper
 
 // Return plain objects with proper typing
 export async function loader({
 	params, // params will be typed by Route.LoaderArgs
 	context, // context will be typed by Route.LoaderArgs
-}: Route.LoaderArgs) {
+}: Route.LoaderArgs): Promise<Route.LoaderData | Response> { // Update return type
 	// Use generated type
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		throw data({ error: "Invalid Project ID" }, { status: 400 });
+		throw data({ error: "Invalid Project ID" }, { status: 400 }); // throw data()
 	}
 
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw data({ error: "Project not found" }, { status: 404 });
+			throw data({ error: "Project not found" }, { status: 404 }); // throw data()
 		}
-		return { project };
+		return { project }; // Return plain object
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw data({ message: error.message || "Failed to load project" }, { status: 500 });
+		throw data({ error: error.message || "Failed to load project" }, { status: 500 }); // throw data()
 	}
 }
 
@@ -55,7 +44,7 @@ export async function action({
 	request,
 	params,
 	context, // context will be typed by Route.ActionArgs
-}: Route.ActionArgs) {
+}: Route.ActionArgs): Promise<Response | Route.ActionData> { // Update return type
 	// Use generated type
 	const projectId = Number(params.projectId);
 
@@ -98,7 +87,9 @@ export async function action({
 				if (uploadResult && typeof uploadResult === "string") {
 					imageUrl = uploadResult;
 				} else {
-					return data({ success: false, error: "Failed to upload image" }, { status: 400 });
+					// If uploadResult is not a string, it implies an error object from handleImageUpload
+					const errorMsg = typeof uploadResult === 'object' && uploadResult !== null && 'error' in uploadResult ? (uploadResult as {error: string}).error : "Failed to upload image";
+					return data({ success: false, error: errorMsg }, { status: 400 });
 				}
 			} catch (error) {
 				console.error("Image upload error:", error);
@@ -108,7 +99,7 @@ export async function action({
 
 		if (!title) {
 			return data(
-				{ success: false, error: "Title is required" },
+				{ success: false, error: "Title is required", errors: { title: "Title is required" } }, // Add to errors object
 				{ status: 400 },
 			);
 		}
@@ -154,21 +145,21 @@ export async function action({
 			}
 		}
 		if (Object.keys(errors).length > 0) {
-			return data({ success: false, errors }, { status: 400 });
+			return data({ success: false, errors, error: "Validation failed." }, { status: 400 }); // Add general error
 		}
 		return data({ success: false, error: error.message || "Failed to update project" }, { status: 500 });
 	}
 }
 
-export default function Component() {
-	const { project } = useLoaderData<typeof loader>();
-	const actionData = useActionData<typeof action>();
+export default function Component() { // Rename to Component
+	const { project } = useLoaderData<Route.LoaderData>(); // Or Route.LoaderData
+	const actionData = useActionData<Route.ActionData>(); // Or Route.ActionData
 	const errors = actionData?.errors as Record<string, string> | undefined;
 
 	return (
 		<FadeIn>
 			<Heading level={1} className="mb-8">
-				Edit Project: {project.title}
+				Edit Project: {project!.title} {/* project is guaranteed by loader throwing on not found */}
 			</Heading>
 
 			{actionData?.error && !errors && (

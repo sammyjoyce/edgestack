@@ -14,8 +14,8 @@ import { ContactSectionEditor } from "~/routes/admin/components/sections/Contact
 import { HeroSectionEditor } from "~/routes/admin/components/sections/HeroSectionEditor";
 import { ServicesSectionEditor } from "~/routes/admin/components/sections/ServicesSectionEditor";
 // Import action types for fetchers
-import type { action as adminIndexAction } from "~/routes/admin/views/index";
-import type { action as adminUploadAction } from "~/routes/admin/views/upload";
+import type { Route } from "~/routes/admin/views/+types/index"; // Import Route from +types
+import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload"; // Import Route as UploadRoute from +types
 import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
 import { Heading } from "../ui/heading";
 
@@ -32,24 +32,20 @@ export default function AdminDashboard({
 	// ... rest of the component remains unchanged ...
 
 	// Define the shape that we know is returned by the actions
-	type ActionData = {
-		success?: boolean;
-		error?: string;
-		url?: string;
-		message?: string;
-		action?: "upload" | "select" | "delete"; // For uploadFetcher
-	};
+	// This should align with the ActionData types defined in the respective +types files
+	type IndexActionData = Route.ActionData; // from admin/views/+types/index.ts
+	type UploadActionData = UploadRoute.ActionData; // from admin/views/+types/upload.ts
 
 	// Use React Router 7's built-in type inference - no explicit type parameters
 	// This lets React Router handle the complex type relationships correctly
-	const heroFetcher = useFetcher<typeof adminIndexAction>(); // For text content related to hero
-	const introFetcher = useFetcher<typeof adminIndexAction>(); // For text content related to intro
-	const servicesFetcher = useFetcher<typeof adminIndexAction>(); // For text content related to services
-	const aboutFetcher = useFetcher<typeof adminIndexAction>(); // For text content related to about
-	const contactFetcher = useFetcher<typeof adminIndexAction>(); // For text content related to contact
-	const sorterFetcher = useFetcher<typeof adminIndexAction>(); // For section sorting
-	const projectsFetcher = useFetcher<typeof adminIndexAction>(); // For projects intro text
-	const uploadFetcher = useFetcher<typeof adminUploadAction>(); // Dedicated for all image uploads
+	const heroFetcher = useFetcher<IndexActionData>(); // For text content related to hero
+	const introFetcher = useFetcher<IndexActionData>(); // For text content related to intro
+	const servicesFetcher = useFetcher<IndexActionData>(); // For text content related to services
+	const aboutFetcher = useFetcher<IndexActionData>(); // For text content related to about
+	const contactFetcher = useFetcher<IndexActionData>(); // For text content related to contact
+	const sorterFetcher = useFetcher<IndexActionData>(); // For section sorting
+	const projectsFetcher = useFetcher<IndexActionData>(); // For projects intro text
+	const uploadFetcher = useFetcher<UploadActionData>(); // Dedicated for all image uploads
 
 	// Access content safely, handle null/error case
 	const safeContent =
@@ -78,20 +74,20 @@ export default function AdminDashboard({
 
 	const uploadImage = React.useCallback(
 		async (
-			fetcherInstance: ReturnType<typeof useFetcher>,
+			fetcherInstance: ReturnType<typeof useFetcher<UploadActionData | IndexActionData >>, // Union type for fetcher instance
 			key: string,
 			file: File,
 			setUploading: (v: boolean) => void,
 			setUrl: (url: string) => void,
 		) => {
 			// Type guard for action data
-			const getActionData = (data: unknown): ActionData | undefined => {
+			const getActionData = (data: unknown): UploadActionData | IndexActionData | undefined => { // Return union type
 				if (
 					data &&
 					typeof data === "object" &&
-					("success" in data || "url" in data)
+					("success" in data || "url" in data) // Basic check, can be more specific
 				) {
-					return data as ActionData;
+					return data as UploadActionData | IndexActionData;
 				}
 				return undefined;
 			};
@@ -106,13 +102,17 @@ export default function AdminDashboard({
 				encType: "multipart/form-data",
 			});
 			// Use the fetcher instance's data with safer access
+			// Need to cast based on which fetcher is used or ensure a common structure
 			const actionData = getActionData(fetcherInstance.data);
-			if (actionData?.success && actionData.url) {
+			if (actionData?.success && 'url' in actionData && actionData.url) { // `url` is specific to UploadActionData
 				setUrl(actionData.url);
+			} else if (actionData?.success) {
+				// Handle success from IndexActionData if needed, though `setUrl` might not apply
+				console.log("Update successful for key (via IndexAction):", key);
 			}
 			setUploading(false);
 		},
-		[],
+		[], // Removed uploadFetcher from dependencies as it's stable
 	);
 
 	const handleHeroImageUpload = (file: File) =>
@@ -223,9 +223,14 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
-							{projectsFetcher.data && projectsFetcher.state === "idle" && (
+							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.message && ( // Check for message
 								<p className={`mt-2 text-sm ${projectsFetcher.data.success ? 'text-green-600' : 'text-red-600'}`}>
-									{projectsFetcher.data.success ? projectsFetcher.data.message : projectsFetcher.data.error}
+									{projectsFetcher.data.message}
+								</p>
+							)}
+							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.error && ( // Check for error
+								<p className="mt-2 text-sm text-red-600">
+									{projectsFetcher.data.error}
 								</p>
 							)}
 						</div>
@@ -255,9 +260,14 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
-							{projectsFetcher.data && projectsFetcher.state === "idle" && (
+							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.message && ( // Check for message
 								<p className={`mt-2 text-sm ${projectsFetcher.data.success ? 'text-green-600' : 'text-red-600'}`}>
-									{projectsFetcher.data.success ? projectsFetcher.data.message : projectsFetcher.data.error}
+									{projectsFetcher.data.message}
+								</p>
+							)}
+							{projectsFetcher.data && projectsFetcher.state === "idle" && projectsFetcher.data.error && ( // Check for error
+								<p className="mt-2 text-sm text-red-600">
+									{projectsFetcher.data.error}
 								</p>
 							)}
 						</div>

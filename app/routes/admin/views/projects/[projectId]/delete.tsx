@@ -10,26 +10,27 @@ import { Label } from "../../../components/ui/fieldset";
 import { Text } from "../../../components/ui/text";
 import { Button } from "../../../components/ui/button";
 import type { Route } from "./+types/delete";
+import { data } from "react-router"; // Import data helper
 
 // Return plain objects for type safety
-export async function loader({ params, context }: Route.LoaderArgs) {
+export async function loader({ params, context }: Route.LoaderArgs): Promise<Route.LoaderData | Response> { // Update return type
 	// Use generated type
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		throw data({ message: "Invalid Project ID" }, { status: 400 });
+		throw data({ error: "Invalid Project ID" }, { status: 400 }); // throw data()
 	}
 
 	try {
 		const project = await getProjectById(context.db, projectId);
 		if (!project) {
-			throw data({ message: "Project not found" }, { status: 404 });
+			throw data({ error: "Project not found" }, { status: 404 }); // throw data()
 		}
-		return { project }; // Return plain object for success
+		return { project }; // Return plain object
 	} catch (error: any) {
 		console.error("Error fetching project:", error);
-		throw data(
-			{ message: error.message || "Failed to load project" },
+		throw data( // throw data()
+			{ error: error.message || "Failed to load project" },
 			{ status: 500 },
 		);
 	}
@@ -40,19 +41,19 @@ export async function action({
 	request,
 	params,
 	context, // context will be typed by Route.ActionArgs
-}: Route.ActionArgs) {
+}: Route.ActionArgs): Promise<Response | Route.ActionData> { // Update return type
 	// Use generated type
 	const projectId = Number(params.projectId);
 
 	if (Number.isNaN(projectId)) {
-		return data({ error: "Invalid Project ID" }, { status: 400 });
+		return data({ success: false, error: "Invalid Project ID" }, { status: 400 });
 	}
 
 	const formData = await request.formData();
 	const confirmDelete = formData.get("confirmDelete") === "true";
 
 	if (!confirmDelete) {
-		return data({ error: "Deletion was not confirmed" }, { status: 400 });
+		return data({ success: false, error: "Deletion was not confirmed" }, { status: 400 });
 	}
 
 	try {
@@ -61,14 +62,14 @@ export async function action({
 	} catch (error: any) {
 		console.error("Error deleting project:", error);
 		return data(
-			{ error: error.message || "Failed to delete project" },
+			{ success: false, error: error.message || "Failed to delete project" },
 			{ status: 500 },
 		);
 	}
 }
 
-export function DeleteProjectRoute() {
-	const { project } = useLoaderData<typeof loader>();
+export function Component() { // Renamed to Component
+	const { project } = useLoaderData<Route.LoaderData>(); // Or Route.LoaderData
 	const navigate = useNavigate();
 
 	// The loader guarantees 'project' is available if no error was thrown.
@@ -96,7 +97,7 @@ export function DeleteProjectRoute() {
 								</Heading>
 								<Text className="mt-2 text-sm text-yellow-700">
 									You are about to permanently delete the project "
-									{project.title}".
+									{project!.title}". {/* project is guaranteed by loader */}
 								</Text>
 							</div>
 						</div>
@@ -104,9 +105,9 @@ export function DeleteProjectRoute() {
 
 					<div className="mb-6">
 						<Heading level={2} className="mb-2">
-							{project.title}
+							{project!.title} {/* project is guaranteed by loader */}
 						</Heading>
-						<Text className="text-gray-600">{project.description}</Text>
+						<Text className="text-gray-600">{project!.description}</Text> {/* project is guaranteed by loader */}
 					</div>
 
 					<Form method="post" className="flex flex-col gap-6">
@@ -152,5 +153,5 @@ export function DeleteProjectRoute() {
 	);
 }
 
-// Default export for backwards compatibility
-export default DeleteProjectRoute;
+// Default export for backwards compatibility if needed
+// export default Component;

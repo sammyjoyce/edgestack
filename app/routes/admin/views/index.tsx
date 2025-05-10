@@ -11,7 +11,6 @@ import {
 import {
 	getAllContent,
 	updateContent,
-	updateProject,
 } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import AdminDashboard from "../components/AdminDashboard";

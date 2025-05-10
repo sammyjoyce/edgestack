@@ -25,7 +25,7 @@ export const links: Route.LinksFunction = () => [
 ];
 
 // Define loader with the generated LoaderArgs type
-export const loader = async ({ request, context }: Route.LoaderArgs) => {
+export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Route.LoaderData | Response> => { // Update return type
 	const url = new URL(request.url);
 	const isLoginRoute = url.pathname === "/admin/login";
 	const isLogoutRoute = url.pathname === "/admin/logout";
@@ -61,11 +61,12 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 	// Allow access if logged in, or if accessing login/logout page
 	// Return an object directly instead of using data() helper
-	return { isAuthenticated: loggedIn };
+	return { isAuthenticated: loggedIn }; // Return plain object
 };
 
 // Add no-op action to layout to handle form submissions and prevent missing action errors
-export const action = async ({ request, context }: Route.ActionArgs) => {
+// Action can return null or a simple data response if needed.
+export const action = async ({ request, context }: Route.ActionArgs): Promise<null | Route.ActionData> => {
 	return null;
 };
 
@@ -83,8 +84,9 @@ const navigation: NavItem[] = [
 	{ name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
 
-export default function Component() {
+export default function Component() { // Renamed to Component
 	const navigationHook = useNavigation();
+	const loaderData = useLoaderData<Route.LoaderData>(); // Use inferred type or Route.LoaderData
 	const sidebarNav = (
 		<nav className="flex h-full flex-col bg-gray-900 px-6 py-4">
 			<div className="flex h-16 items-center border-b border-gray-800 mb-2 pb-2">
@@ -161,7 +163,7 @@ export default function Component() {
 					className="global-loading-indicator" // You might want to style this class for width or use a different animation
 				/>
 			)}
-			<Outlet context={useLoaderData<typeof loader>()} />
+			<Outlet context={loaderData} /> {/* Pass loaderData via context if needed by child routes, or they use their own loaders */}
 		</SidebarLayout>
 	);
 }
@@ -171,3 +173,4 @@ export function ErrorBoundary() {
 }
 
 // Default export for React Router 7 conventions
+// export default Component; // No longer needed if Component is the default export name

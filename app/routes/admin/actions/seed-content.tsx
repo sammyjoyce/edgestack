@@ -2,7 +2,9 @@
 import { data, redirect } from "react-router";
 import { getAllContent, updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
-import type { Route } from "./+types/seed-content";
+import type { Route } from "./+types/seed-content"; // Ensure this path is correct
+
+const DEBUG = process.env.NODE_ENV !== "production"; // Define DEBUG if used
 
 const DEFAULT_CONTENT = {
 	hero_title: "Building Dreams, Creating Spaces",
@@ -10,7 +12,7 @@ const DEFAULT_CONTENT = {
 	home_sections_order: "hero,services,projects,about,contact",
 } as const;
 
-export async function action({ request, context }: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs): Promise<Route.ActionData> { // Use generated type
 	// Authentication Check
 	const token = getSessionCookie(request);
 	const secret = context.cloudflare?.env?.JWT_SECRET;
