@@ -1,4 +1,10 @@
-import {} from "@heroicons/react/20/solid";
+import {
+	ArrowPathIcon,
+	CheckCircleIcon,
+	ExclamationTriangleIcon,
+	InformationCircleIcon,
+	XCircleIcon,
+} from "@heroicons/react/20/solid"; // Or /24/solid
 import React, { type JSX, useRef } from "react"; // Import React and JSX type
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
