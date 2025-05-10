@@ -25,14 +25,14 @@ export default [
 		route("login", "./routes/admin/views/login.tsx"),
 
 		// Everything else lives in the sidebar‐layout
-		layout("./routes/admin/route.tsx", [
-			index("./routes/admin/views/index.tsx"),
+		layout("./routes/admin/route.tsx", [ // Main admin layout
+			index("./routes/admin/views/index.tsx"), // Admin dashboard index
 			route("logout", "./routes/admin/views/logout.tsx"),
 			route("upload", "./routes/admin/views/upload.tsx"),
 
-			// Projects section with its own nested layout
-			layout("./routes/admin/views/projects/_layout.tsx", [
-				index("./routes/admin/views/projects/index.tsx"),
+			// Projects section, now direct children (or under a prefix)
+			...prefix("projects", [
+				index("./routes/admin/views/projects/index.tsx"), // Will have its own loader
 				route("new", "./routes/admin/views/projects/new.tsx"),
 				route(
 					":projectId/edit",
