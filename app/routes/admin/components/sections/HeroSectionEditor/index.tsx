@@ -53,7 +53,7 @@ export function HeroSectionEditor({
 			console.log(
 				`[HeroSectionEditor] Submitting form with intent: updateTextContent, ${name}: "${value}"`,
 			);
-			}
+			// Removed extra closing brace here
 
 			// Submit form with explicit method and action
 			try {
