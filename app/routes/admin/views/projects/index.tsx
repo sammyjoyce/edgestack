@@ -2,12 +2,14 @@ import React from "react";
 import { Form, Link, redirect, useLoaderData, data } from "react-router";
 import invariant from "tiny-invariant";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
+import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import type { Project } from "../../../../../database/schema";
 import { Button } from "../../components/ui/button";
 import { Fieldset, Legend } from "../../components/ui/fieldset";
 import { Heading } from "../../components/ui/heading";
 import { Text } from "../../components/ui/text";
 import type { Route } from "./+types/index";
+
 // Define return types for loader and action
 type ProjectsLoaderData = {
 	projects: Project[];
@@ -21,16 +23,14 @@ type ProjectsActionData = {
 };
 
 // Loader to fetch all projects - Return plain objects for type safety
-export async function loader({ request, context }: Route.LoaderArgs) {
-	// Auth check (redundant with layout loader but good practice)
-	const { getSessionCookie, verify } = await import(
-		"~/routes/common/utils/auth"
-	);
+export async function loader({
+	request,
+	context,
+}: Route.LoaderArgs): Promise<ProjectsLoaderData> {
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		// Prefer throwing a redirect or a data response for auth failures
-		throw redirect("/admin/login"); // Or: throw new Error("Unauthorized");
+		throw redirect("/admin/login");
 	}
 
 	try {
@@ -38,7 +38,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		return { projects };
 	} catch (error) {
 		console.error("Failed to load projects:", error);
-		throw data({ message: "Failed to load projects" }, { status: 500 });
+		// Consistent with how _layout.tsx handled it, though you might prefer `throw data(...)`
+		throw new Error("Failed to load projects");
 	}
 }
 
