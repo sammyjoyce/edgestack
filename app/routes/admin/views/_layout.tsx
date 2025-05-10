@@ -11,10 +11,16 @@ import {
 	type To,
 	redirect,
 	useLoaderData,
-	useNavigation,
+	useNavigation, // Add this import
 } from "react-router";
-import { SidebarLayout } from "~/routes/admin/components/ui/sidebar-layout";
-import { getSessionCookie, verify } from "~/routes/common/utils/auth";
+// ... other imports ...
+
+export default function Component() {
+	const navigationHook = useNavigation(); // Rename to avoid conflict with 'navigation' array
+	// The 'navigation' array for sidebar items is already correctly defined in this file.
+	// The 'sidebarNav' const is also correctly defined.
+
+	// ... (keep existing sidebarNav definition) ...
 import adminThemeStylesheet from "../../admin-theme.css?url";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 // Import generated Route type for this route
@@ -133,6 +139,7 @@ export default function Component() {
 		</nav>
 	);
 
+
 	return (
 		<SidebarLayout
 			navbar={
@@ -144,6 +151,22 @@ export default function Component() {
 			}
 			sidebar={sidebarNav}
 		>
+			{/* Add global loading indicator */}
+			{navigationHook.state === "loading" && (
+				<div
+					style={{
+						position: "fixed",
+						top: 0,
+						left: 0,
+						right: 0,
+						height: "3px",
+						background: "var(--color-primary)",
+						zIndex: 9999,
+						transition: "width 0.2s ease-out", // Note: width transition might not be visible if it's always 100%
+					}}
+					className="global-loading-indicator" // You might want to style this class for width or use a different animation
+				/>
+			)}
 			<Outlet context={useLoaderData<typeof loader>()} />
 		</SidebarLayout>
 	);
