@@ -25,7 +25,7 @@ export const loader = async ({ context }: any) => {
 	} catch (error: any) {
 		console.error("Failed to fetch content or projects:", error);
 		// Throw data response for error handling by ErrorBoundary
-		throw new Error(
+		throw data(
 			{ message: error.message || "Failed to load projects layout data" },
 			{ status: 500 },
 		);

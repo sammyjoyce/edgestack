@@ -49,7 +49,10 @@ export async function action({
 		`Action received in admin layout for intent: ${formData.get("intent")}. ` +
 		"This might indicate a misconfigured form action.",
 	);
-	return new Response("Action not handled at this level", { status: 405 });
+	return data(
+		{ error: "Action not handled at this layout level. Target a specific resource route." },
+		{ status: 405 } // Method Not Allowed is appropriate
+	);
 }
 
 interface NavItem {
