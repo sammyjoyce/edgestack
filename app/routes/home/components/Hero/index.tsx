@@ -15,7 +15,6 @@ export default function Hero({
 	imageUrl,
 	altText = "Modern home extension background",
 }: HeroProps): JSX.Element {
-	// Use JSX.Element
 	const backgroundUrl = imageUrl ?? "/assets/rozelle.jpg";
 
 	return (

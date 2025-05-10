@@ -35,7 +35,6 @@ export default function RichTextField({
 	initialJSON,
 	disabled,
 }: Props): JSX.Element {
-	// Use JSX.Element
 	/* hidden input so <fetcher.Form> sees the JSON string */
 	const inputRef = useRef<HTMLInputElement>(null);
 

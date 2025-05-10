@@ -28,7 +28,6 @@ export function ImageSelector({
 	fileInputRef, // This ref is passed from parent, no need to create one here if parent manages it
 	fieldKey,
 }: ImageSelectorProps): JSX.Element {
-	// Changed to JSX.Element
 	const [isOpen, setIsOpen] = useState(false);
 	const fetcher = useFetcher();
 

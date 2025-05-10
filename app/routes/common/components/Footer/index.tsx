@@ -55,7 +55,6 @@ const navigation = [
 const socialLinks = navigation[0].social;
 
 export default function Footer(): JSX.Element {
-	// Changed to JSX.Element
 	const currentYear = useMemo(() => new Date().getFullYear(), []);
 	return (
 		<motion.footer
