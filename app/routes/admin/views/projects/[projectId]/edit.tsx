@@ -14,11 +14,11 @@ import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
 import { Button } from "../../../components/ui/button";
 import type { Route } from "./+types/projectId/edit";
-import type { SerializeFrom } from "react-router";
+
 export async function loader({
 	params, 
 	context, 
-}: Route.LoaderArgs): Promise<SerializeFrom<Route.LoaderData> | Response> { 
+}: Route.LoaderArgs): Promise<Route.LoaderData | Response> { 
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		throw data({ error: "Invalid Project ID" }, { status: 400 }); 
@@ -121,8 +121,8 @@ export async function action({
 	}
 }
 export default function EditProjectPage() {
-	const { project } = useLoaderData<SerializeFrom<typeof loader>>(); 
-	const actionData = useActionData<SerializeFrom<typeof action>>(); 
+	const { project } = useLoaderData<typeof loader>(); 
+	const actionData = useActionData<typeof action>(); 
 	const errors = actionData?.errors as Record<string, string> | undefined;
 	return (
 		<FadeIn>

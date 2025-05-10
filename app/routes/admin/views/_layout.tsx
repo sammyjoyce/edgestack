@@ -47,7 +47,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs): Promise<Ro
 	}
 	return { isAuthenticated: loggedIn }; 
 };
-export const action = async ({ request, context }: Route.ActionArgs): Promise<null | SerializeFrom<Route.ActionData>> => {
+export const action = async ({ request, context }: Route.ActionArgs): Promise<null | Route.ActionData> => {
 	return null;
 };
 interface NavItem {
@@ -63,7 +63,7 @@ const navigation: NavItem[] = [
 ];
 export default function AdminLayout() {
 	const navigationHook = useNavigation();
-	const loaderData = useLoaderData<SerializeFrom<typeof loader>>(); 
+	const loaderData = useLoaderData<typeof loader>(); 
 	const sidebarNav = (
 		<nav className="flex h-full flex-col bg-gray-900 px-6 py-4">
 			<div className="flex h-16 items-center border-b border-gray-800 mb-2 pb-2">

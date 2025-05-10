@@ -1,6 +1,6 @@
 import clsx from "clsx"; 
 import React from "react";
-import { Link, data, useLoaderData, useOutletContext, SerializeFrom } from "react-router"; 
+import { Link, data, useLoaderData, useOutletContext } from "react-router"; 
 import type { Project } from "~/database/schema";
 import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
@@ -30,8 +30,8 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
 };
 import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout"; 
 export function ProjectDetailRoute() {
-	const { project } = useLoaderData<SerializeFrom<typeof loader>>();
-	const { content } = useOutletContext<SerializeFrom<typeof parentLayoutLoader>>();
+	const { project } = useLoaderData<typeof loader>();
+	const { content } = useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
 	const projectDetailTheme = project && content[`project_${project.id}_theme`] === 'dark' ? 'dark' : 'light';
 	return (
 		<div className={clsx("py-16 bg-white dark:bg-gray-950", projectDetailTheme === "dark" && "dark")}>

@@ -62,7 +62,7 @@ export async function action({
 }
 export default function NewProjectPage() {
 	const navigate = useNavigate();
-	const actionData = useActionData<SerializeFrom<typeof action>>(); 
+	const actionData = useActionData<typeof action>(); 
 	const errors = actionData?.errors as Record<string, string> | undefined;
 	invariant(
 		typeof navigate === "function",
