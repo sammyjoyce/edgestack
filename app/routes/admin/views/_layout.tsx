@@ -19,13 +19,6 @@ import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 import type { Route } from "./+types/_layout";
 // ... other imports ...
 
-export default function Component() {
-	const navigationHook = useNavigation(); // Rename to avoid conflict with 'navigation' array
-	// The 'navigation' array for sidebar items is already correctly defined in this file.
-	// The 'sidebarNav' const is also correctly defined.
-
-	// ... (keep existing sidebarNav definition) ...
-
 // Only include the admin theme stylesheet for admin routes
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
@@ -91,6 +84,7 @@ const navigation: NavItem[] = [
 ];
 
 export default function Component() {
+	const navigationHook = useNavigation();
 	const sidebarNav = (
 		<nav className="flex h-full flex-col bg-gray-900 px-6 py-4">
 			<div className="flex h-16 items-center border-b border-gray-800 mb-2 pb-2">
