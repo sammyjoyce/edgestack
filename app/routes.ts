@@ -25,7 +25,7 @@ export default [
 		route("login", "./routes/admin/views/login.tsx"),
 
 		// Everything else lives in the sidebar‐layout
-		layout("./routes/admin/route.tsx", [ // Main admin layout
+		layout("./routes/admin/views/_layout.tsx", [ // Main admin layout
 			index("./routes/admin/views/index.tsx"), // Admin dashboard index
 			route("logout", "./routes/admin/views/logout.tsx"),
 			route("upload", "./routes/admin/views/upload.tsx"),
