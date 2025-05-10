@@ -52,7 +52,7 @@ export async function loader({
 }
 
 // ... other imports
-import { validateContentInsert, validateContentUpdateMap } from "~/database/valibot-validation.js"; // Assuming a validation helper for maps
+import { validateContentInsert, validateContentUpdateMap } from "../../../../database/valibot-validation.js"; // Assuming a validation helper for maps
 
 // ... (loader function remains the same)
 

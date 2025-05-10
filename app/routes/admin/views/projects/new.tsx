@@ -4,7 +4,7 @@ import type { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
 import { createProject } from "~/routes/common/db";
 import type { NewProject } from "../../../../../database/schema";
-import { validateProjectInsert } from "../../../../../database/valibot-validation";
+import { validateProjectInsert } from "../../../../../database/valibot-validation.js";
 
 import type { Route } from "./+types/new";
 

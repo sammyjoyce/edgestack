@@ -6,7 +6,7 @@ import RichTextField from "~/routes/admin/components/RichTextField";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
-import { validateProjectUpdate } from "../../../../../../database/valibot-validation";
+import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
 import type { Project } from "../../../../../database/schema";
 import { Label } from "../../../components/ui/fieldset";
 import { Heading } from "../../../components/ui/heading";
