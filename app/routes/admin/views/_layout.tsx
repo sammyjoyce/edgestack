@@ -13,6 +13,10 @@ import {
 	useLoaderData,
 	useNavigation, // Add this import
 } from "react-router";
+import adminThemeStylesheet from "../../admin-theme.css?url";
+import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
+// Import generated Route type for this route
+import type { Route } from "./+types/_layout";
 // ... other imports ...
 
 export default function Component() {
@@ -21,10 +25,6 @@ export default function Component() {
 	// The 'sidebarNav' const is also correctly defined.
 
 	// ... (keep existing sidebarNav definition) ...
-import adminThemeStylesheet from "../../admin-theme.css?url";
-import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
-// Import generated Route type for this route
-import type { Route } from "./+types/_layout";
 
 // Only include the admin theme stylesheet for admin routes
 export const links: Route.LinksFunction = () => [
