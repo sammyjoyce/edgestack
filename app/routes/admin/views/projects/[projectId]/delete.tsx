@@ -18,11 +18,7 @@ import { Label } from "../../../components/ui/fieldset";
 import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
 // Removed missing Route type import.
-export async function loader({
-	params,
-	context,
-	request,
-}: Route.LoaderArgs) {
+export async function loader({ params, context, request }: Route.LoaderArgs) {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		throw new Response("Invalid Project ID", { status: 400 });
@@ -40,11 +36,7 @@ export async function loader({
 		});
 	}
 }
-export async function action({
-	request,
-	params,
-	context,
-}: Route.ActionArgs) {
+export async function action({ request, params, context }: Route.ActionArgs) {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		return { success: false, error: "Invalid Project ID" };
@@ -65,7 +57,10 @@ export async function action({
 		};
 	}
 }
-export default function DeleteProjectPage({ loaderData, params }: Route.ComponentProps) {
+export default function DeleteProjectPage({
+	loaderData,
+	params,
+}: Route.ComponentProps) {
 	const project = loaderData?.project;
 	const navigate = useNavigate();
 	return (
@@ -130,11 +125,7 @@ export default function DeleteProjectPage({ loaderData, params }: Route.Componen
 							>
 								Cancel
 							</Button>
-							<Button
-								type="submit"
-								variant="danger"
-								size="md"
-							>
+							<Button type="submit" variant="danger" size="md">
 								Delete Project
 							</Button>
 						</div>

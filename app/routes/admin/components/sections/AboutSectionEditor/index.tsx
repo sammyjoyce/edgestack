@@ -7,7 +7,7 @@ import {
 	FieldLabel,
 	FieldRow,
 	SectionCard,
-	SectionHeading
+	SectionHeading,
 } from "../../ui/section";
 import { Text } from "~/routes/admin/components/ui/text";
 import type { action as adminIndexAction } from "~/routes/admin/views/index";

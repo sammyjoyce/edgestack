@@ -15,7 +15,7 @@ import { Text, Strong } from "../ui/text";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-    
+
 import type {
 	Section as SorterSection,
 	SectionTheme as SorterSectionTheme,
@@ -27,7 +27,7 @@ interface AdminDashboardProps {
 }
 import { PageHeader } from "../ui/PageHeader";
 import { SectionCard, SectionHeading } from "../ui/section";
-    
+
 export default function AdminDashboard({
 	initialContent,
 }: AdminDashboardProps): React.JSX.Element {
@@ -70,7 +70,8 @@ export default function AdminDashboard({
 			file: File,
 			setUploading: (v: boolean) => void, // eslint-disable-line @typescript-eslint/no-unused-vars
 			setUrl: (url: string) => void, // eslint-disable-line @typescript-eslint/no-unused-vars
-		) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+		) => {
+			// eslint-disable-line @typescript-eslint/no-unused-vars
 			setUploading(true);
 			const fd = new FormData();
 			fd.append("image", file);
@@ -198,9 +199,7 @@ export default function AdminDashboard({
 			value: "projects",
 			content: (
 				<SectionCard>
-					<SectionHeading>
-						Projects Section Intro
-					</SectionHeading>
+					<SectionHeading>Projects Section Intro</SectionHeading>
 					<div className="grid grid-cols-1 gap-6 mt-4">
 						<div>
 							<label
@@ -227,8 +226,7 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
-							{projectsFetcher.data &&
-								projectsFetcher.state === "idle" && (
+							{projectsFetcher.data && projectsFetcher.state === "idle" && (
 								<>
 									{projectsFetcher.data.message && (
 										<Text
@@ -243,7 +241,7 @@ export default function AdminDashboard({
 										</Text>
 									)}
 								</>
-								)}
+							)}
 						</div>
 						<div>
 							<label
@@ -267,8 +265,7 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
-							{projectsFetcher.data &&
-								projectsFetcher.state === "idle" && (
+							{projectsFetcher.data && projectsFetcher.state === "idle" && (
 								<>
 									{projectsFetcher.data.message && (
 										<Text
@@ -283,7 +280,7 @@ export default function AdminDashboard({
 										</Text>
 									)}
 								</>
-								)}
+							)}
 						</div>
 					</div>
 					<div className="mt-4 text-sm text-gray-600 space-y-1">
@@ -372,7 +369,7 @@ export default function AdminDashboard({
 								d="M17.25 6.75v-2.25a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 003.75 4.5v15a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-2.25m-10.5-6.75h14.25m0 0l-3-3m3 3l-3 3"
 							/>
 						</svg>
-						Open site	
+						Open site
 					</Button>
 				</div>
 				<Tabs tabs={tabs} containerClassName="mb-8" />

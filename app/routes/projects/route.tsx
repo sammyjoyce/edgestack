@@ -14,7 +14,11 @@ export const meta: MetaFunction = () => {
 		},
 	];
 };
-export const loader = async ({ context, request, params }: Route.LoaderArgs) => {
+export const loader = async ({
+	context,
+	request,
+	params,
+}: Route.LoaderArgs) => {
 	try {
 		const content = await getAllContent(context.db);
 		const projects = await getAllProjects(context.db);

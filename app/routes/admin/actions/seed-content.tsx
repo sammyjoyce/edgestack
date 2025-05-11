@@ -8,11 +8,7 @@ const DEFAULT_CONTENT = {
 	hero_subtitle: "Your trusted partner in construction and renovation.",
 	home_sections_order: "hero,services,projects,about,contact",
 } as const;
-export async function action({
-	request,
-	context,
-	params,
-}: Route.ActionArgs) {
+export async function action({ request, context, params }: Route.ActionArgs) {
 	const token = getSessionCookie(request);
 	const secret = context.cloudflare?.env?.JWT_SECRET;
 	if (!token || !secret || !(await verify(token, secret))) {

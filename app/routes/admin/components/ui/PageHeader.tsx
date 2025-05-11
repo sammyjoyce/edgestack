@@ -19,7 +19,7 @@ export function PageHeader({ title, actions, className }: PageHeaderProps) {
 			<Heading level={1} className="mb-0">
 				{title}
 			</Heading>
-			{actions && <div className="flex-shrink-0">{actions}</div>}
+			{actions && <div className="shrink-0">{actions}</div>}
 		</div>
 	);
 }

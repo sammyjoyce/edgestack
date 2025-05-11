@@ -23,14 +23,13 @@ const DEFAULT_CONTENT = {
 } as const;
 
 export const links: Route.LinksFunction = () => [
-  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" },
+	{
+		rel: "stylesheet",
+		href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap",
+	},
 ];
 
-export async function loader({
-	request,
-	context,
-	params,
-}: Route.LoaderArgs) {
+export async function loader({ request, context, params }: Route.LoaderArgs) {
 	assert(request instanceof Request, "loader: request must be a Request");
 	assert(context?.db, "loader: missing DB in context");
 	const token = getSessionCookie(request);
@@ -47,15 +46,9 @@ export async function loader({
 }
 
 import { ValiError } from "valibot";
-import {
-	validateContentInsert,
-} from "../../../../database/valibot-validation.js";
+import { validateContentInsert } from "../../../../database/valibot-validation.js";
 
-export async function action({
-	request,
-	context,
-	params,
-}: Route.ActionArgs) {
+export async function action({ request, context, params }: Route.ActionArgs) {
 	if (DEBUG)
 		console.log(
 			"Action triggered in admin/views/index.tsx - THIS IS THE CORRECT ROUTE",
@@ -197,17 +190,15 @@ export async function action({
 	}
 }
 
-export default function AdminIndexPage({ loaderData }: Route.ComponentProps): JSX.Element {
-	if (!loaderData) { // Handle case where loader might have redirected or thrown
+export default function AdminIndexPage({
+	loaderData,
+}: Route.ComponentProps): JSX.Element {
+	if (!loaderData) {
+		// Handle case where loader might have redirected or thrown
 		return <div>Loading or error...</div>;
 	}
 	return (
 		<>
-			<Helmet>
-				{adminLinks().map((link, index) => (
-					<link key={index} {...link} />
-				))}
-			</Helmet>
 			<main id="admin-dashboard-main" aria-label="Admin Dashboard">
 				<AdminDashboard initialContent={loaderData.content} />
 			</main>

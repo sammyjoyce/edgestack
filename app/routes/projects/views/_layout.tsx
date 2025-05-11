@@ -10,7 +10,11 @@ type ProjectsLayoutLoaderData = {
 	projects: Project[];
 	error?: string;
 };
-export const loader = async ({ context, request, params }: Route.LoaderArgs) => {
+export const loader = async ({
+	context,
+	request,
+	params,
+}: Route.LoaderArgs) => {
 	try {
 		const { getAllContent, getAllProjects } = await import(
 			"~/routes/common/db"

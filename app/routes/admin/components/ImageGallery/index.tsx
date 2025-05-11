@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { Drawer } from "vaul";
-import type { loader as uploadLoader, action as uploadAction } from "~/routes/admin/views/upload";
+import type {
+	loader as uploadLoader,
+	action as uploadAction,
+} from "~/routes/admin/views/upload";
 import { Heading } from "../ui/heading";
 import { Text } from "../ui/text";
 import type { StoredImage } from "~/utils/upload.server";
@@ -10,7 +13,7 @@ interface ImageGalleryProps {
 	onSelectImage?: (image: StoredImage) => void;
 	forField?: string;
 }
-export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {	
+export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 	const { images = [] } = useLoaderData<typeof uploadLoader>();
 	const fetcher = useFetcher<typeof uploadAction>();
 	const [selectedImage, setSelectedImage] = useState<StoredImage | null>(null);
@@ -98,7 +101,10 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 														<div className="max-w-4xl mx-auto">
 															<div className="flex justify-between items-start mb-4">
 																<div className="truncate max-w-[250px]">
-																	<Heading level={3} className="text-lg font-medium text-gray-900">
+																	<Heading
+																		level={3}
+																		className="text-lg font-medium text-gray-900"
+																	>
 																		{selectedImage?.name}
 																	</Heading>
 																	<Text className="text-sm text-gray-500">
@@ -132,7 +138,11 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 																				name="imageUrl"
 																				value={selectedImage?.url}
 																			/>
-																			<Button type="submit" variant="primary" size="sm">
+																			<Button
+																				type="submit"
+																				variant="primary"
+																				size="sm"
+																			>
 																				Use this image
 																			</Button>
 																		</fetcher.Form>

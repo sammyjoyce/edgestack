@@ -14,18 +14,7 @@ import type { Route } from "./+types/root";
 import "./global-error-logger";
 import adminThemeStylesheet from "./admin-theme.css?url";
 import stylesheet from "./app.css?url";
-const darkModeScript = `
-  (function() {
-    try {
-      const theme = localStorage.getItem('theme');
-      if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    } catch (_) {}
-  })();
-`;
+
 export const links: Route.LinksFunction = () => [
 	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
 	{
@@ -39,13 +28,13 @@ export const links: Route.LinksFunction = () => [
 	},
 	{ rel: "stylesheet", href: stylesheet },
 ];
+
 export default function RootComponent() {
 	return (
 		<html lang="en">
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<script dangerouslySetInnerHTML={{ __html: darkModeScript }} />
 				<Meta />
 				<Links />
 			</head>
@@ -77,7 +66,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<title>{title}</title>
-				<script dangerouslySetInnerHTML={{ __html: darkModeScript }} />
 				<Meta />
 				<Links />
 			</head>

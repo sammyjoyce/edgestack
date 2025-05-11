@@ -8,7 +8,11 @@ import { getProjectById } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
 // Removed type { Route } from "./+types/projectId"; as it's moved and renamed by another change
 import type { Route } from "./+types/[projectId]";
-export const loader = async ({ params, context, request }: Route.LoaderArgs) => {
+export const loader = async ({
+	params,
+	context,
+	request,
+}: Route.LoaderArgs) => {
 	assert(
 		typeof params.projectId === "string",
 		"params.projectId must be a string",
@@ -30,7 +34,10 @@ export const loader = async ({ params, context, request }: Route.LoaderArgs) => 
 	}
 };
 import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout";
-export function ProjectDetailRoute({ loaderData, params: routeParams }: Route.ComponentProps) {
+export function ProjectDetailRoute({
+	loaderData,
+	params: routeParams,
+}: Route.ComponentProps) {
 	const { project } = loaderData;
 	const { content } =
 		useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();

@@ -24,11 +24,7 @@ import { Heading } from "../components/ui/heading";
 import { Input } from "../components/ui/input";
 import { Text } from "../components/ui/text";
 // Removed type { Route } from "./+types/upload"; as it's moved to the top by another change
-export async function loader({
-	context,
-	request,
-	params,
-}: Route.LoaderArgs) {
+export async function loader({ context, request, params }: Route.LoaderArgs) {
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -45,11 +41,7 @@ export async function loader({
 		);
 	}
 }
-export async function action({
-	request,
-	context,
-	params,
-}: Route.ActionArgs) {
+export async function action({ request, context, params }: Route.ActionArgs) {
 	const unauthorized = () => {
 		return redirect("/admin/login");
 	};
@@ -283,7 +275,11 @@ export async function action({
 	}
 	return data({ success: false, error: "Method not allowed" }, { status: 405 });
 }
-export default function Component({ loaderData, actionData, params }: Route.ComponentProps) {
+export default function Component({
+	loaderData,
+	actionData,
+	params,
+}: Route.ComponentProps) {
 	return (
 		<FadeIn>
 			<FormCard>
