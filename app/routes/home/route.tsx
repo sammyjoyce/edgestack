@@ -59,7 +59,9 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		revalidatedAt: revalidate ? Date.now() : undefined,
 	};
 }
-export default function HomeRoute({ loaderData }: Route.ComponentProps): JSX.Element {
+export default function HomeRoute({
+	loaderData,
+}: Route.ComponentProps): JSX.Element {
 	const { content, projects, revalidatedAt } = loaderData;
 	if (DEBUG && revalidatedAt)
 		console.log("[HOME ROUTE] Revalidated at:", revalidatedAt);

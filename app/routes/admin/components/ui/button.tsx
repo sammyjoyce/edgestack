@@ -36,8 +36,8 @@ export interface ButtonProps {
 	[key: string]: any;
 }
 
-export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
-	{
+export const Button = forwardRef<HTMLElement, ButtonProps>((props, ref) => {
+	const {
 		as,
 		variant = "solid", // Default to solid, which will use color prop for styling
 		color = "default", // Default color if variant is solid
@@ -51,14 +51,13 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 		to,
 		onClick,
 		disabled,
-		...props
-	}: ButtonProps,
-	ref,
-) {
+		...rest
+	} = props;
+
 	const sizeMap: Record<string, string> = {
 		xs: "px-2 py-1 text-xs",
 		sm: "px-2.5 py-1.5 text-sm", // Adjusted padding for sm
-		md: "px-3 py-2 text-sm",    // Adjusted padding for md
+		md: "px-3 py-2 text-sm", // Adjusted padding for md
 		lg: "px-4 py-2.5 text-base",
 	};
 
@@ -70,34 +69,34 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 
 	const solidColorMap: Record<ButtonColor, string> = {
 		primary:
-			"text-[var(--admin-color-white)] bg-[var(--admin-color-primary)] shadow-[var(--admin-shadow-button-primary)] active:shadow-[var(--admin-shadow-button-primary-active)]",
+			"text-admin-white bg-admin-primary shadow-admin-button-primary active:shadow-admin-button-primary-active",
 		secondary:
-			"text-[var(--admin-color-white)] bg-[var(--admin-color-secondary)] shadow-[inset_1px_1px_1px_#ffffffb3,inset_-1px_-1px_1px_#0000003b,0.444584px_0.444584px_0.628737px_-0.75px_#00000042,1.21072px_1.21072px_1.71222px_-1.5px_#0000003f,-0.5px_-0.5px_0_0_#000000af] active:shadow-[inset_0.5px_0.5px_1px_#ffffffb3,inset_-0.5px_-0.5px_1px_#0000005b,0.222px_0.222px_0.314px_-1px_#0003,-0.5px_-0.5px_0_0_#000000ac]",
+			"text-admin-white bg-admin-secondary shadow-admin-button-secondary active:shadow-admin-button-secondary-active",
 		tertiary:
-			"text-[var(--admin-color-white)] bg-[var(--admin-color-tertiary)] shadow-[inset_1px_1px_1px_#ffffffba,inset_-1px_-1px_1px_#0000003b,0.444584px_0.444584px_0.628737px_-1px_#00000042,-0.5px_-0.5px_0_0_#0000006b] active:shadow-[inset_0.5px_0.5px_1px_#ffffffba,inset_-0.5px_-0.5px_1px_#0000005b,0.222px_0.222px_0.314px_-1px_#0003,-0.5px_-0.5px_0_0_#0000007b]",
+			"text-admin-white bg-admin-tertiary shadow-admin-button-tertiary active:shadow-admin-button-tertiary-active",
 		neutral:
-			"text-[var(--admin-color-white)] bg-[var(--admin-color-neutral)] shadow-[inset_1px_1px_1px_#ffffffc2,inset_-1px_-1px_1px_#0000003b,0.444584px_0.444584px_0.628737px_-1px_#00000042,-0.5px_-0.5px_0_0_#00000012] active:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#0000005b,0.222px_0.222px_0.314px_-1px_#0003,-0.5px_-0.5px_0_0_#00000022]",
+			"text-admin-white bg-admin-neutral shadow-admin-button-neutral active:shadow-admin-button-neutral-active",
 		danger:
-			"text-[var(--admin-color-white)] bg-[var(--admin-color-error)] shadow-[var(--admin-shadow-button-primary)] hover:brightness-90 active:shadow-[var(--admin-shadow-button-primary-active)] active:brightness-80",
+			"text-admin-white bg-admin-error shadow-admin-button-primary hover:brightness-90 active:shadow-admin-button-primary-active active:brightness-80",
 		default:
-			"text-[var(--admin-color-foreground)] bg-[var(--admin-color-default-button-bg)] shadow-[var(--admin-shadow-button-default)] active:shadow-[var(--admin-shadow-button-default-active)]",
+			"text-admin-foreground bg-admin-default-button-bg shadow-admin-button-default active:shadow-admin-button-default-active",
 	};
 
 	const ghostClasses =
-		"bg-transparent shadow-none text-[var(--admin-color-foreground)] hover:bg-black/5 dark:hover:bg-white/8";
+		"bg-transparent shadow-none text-admin-foreground hover:bg-black/5 dark:hover:bg-white/8";
 
 	const outlineBase =
-		"bg-transparent border border-[var(--admin-color-border)] text-[var(--admin-color-foreground)] shadow-none hover:bg-black/3 dark:hover:bg-white/5 hover:border-[var(--admin-color-foreground)]";
+		"bg-transparent border border-admin-border text-admin-foreground shadow-none hover:bg-black/3 dark:hover:bg-white/5 hover:border-admin-foreground";
 
 	const outlineSelected =
-		"bg-[var(--admin-color-primary)] text-[var(--admin-color-white)] border-[var(--admin-color-primary)]";
+		"bg-admin-primary text-admin-white border-admin-primary";
 
 	const variantClasses =
 		variant === "ghost"
 			? ghostClasses
 			: variant === "outline"
-			? clsx(outlineBase, selected && outlineSelected)
-			: solidColorMap[color ?? "default"];
+				? clsx(outlineBase, selected && outlineSelected)
+				: solidColorMap[(color ?? "default") as ButtonColor];
 
 	const stateClasses = clsx(
 		block && "w-full",
@@ -118,13 +117,14 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 		"data-selected": selected ? "true" : undefined,
 		"data-disabled": disabled ? "true" : undefined,
 		"data-block": block ? "true" : undefined,
-		"data-color": variant === "solid" ? color : undefined, // Apply color attribute only for solid variant
-		"data-variant": variant !== "solid" ? variant : undefined, // Apply variant attribute for ghost/outline
+		"data-color": variant === "solid" ? color : undefined,
+		"data-variant": variant !== "solid" ? variant : undefined,
 		onClick: disabled ? undefined : onClick,
-		...props, // Pass through other props like aria-label
+		...rest,
 	};
 
-	const ComponentToRender = as ?? (to ? RouterLink : href ? "a" : Headless.Button);
+	const ComponentToRender =
+		as ?? (to ? RouterLink : href ? "a" : Headless.Button);
 
 	const finalProps: any = { ...commonProps };
 
@@ -142,12 +142,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 		delete finalProps.type;
 	}
 
-
-	return (
-		<ComponentToRender {...finalProps}>
-			{children}
-		</ComponentToRender>
-	);
+	return <ComponentToRender {...finalProps}>{children}</ComponentToRender>;
 });
 
 export function TouchTarget({ children }: { children: React.ReactNode }) {
@@ -164,6 +159,6 @@ export function TouchTarget({ children }: { children: React.ReactNode }) {
 
 export const ButtonLED = () => {
 	return (
-		<span className="block w-[7px] h-[7px] rounded-full bg-black/10 shadow-[inset_1px_1px_2px_#0000001c,0_1px_0_0_#ffffff30] transition-colors group-data-[selected=true]:bg-[var(--admin-color-primary)]" />
+		<span className="block w-[7px] h-[7px] rounded-full bg-black/10 shadow-admin-led transition-colors group-data-[selected=true]:bg-admin-primary" />
 	);
 };

@@ -16,11 +16,7 @@ import { Input } from "../../components/ui/input";
 import { Text } from "../../components/ui/text";
 import { Textarea } from "../../components/ui/textarea";
 
-export async function action({
-	request,
-	context,
-	params,
-}: Route.ActionArgs) {
+export async function action({ request, context, params }: Route.ActionArgs) {
 	const formData = await request.formData();
 	const title = formData.get("title")?.toString() ?? "";
 	const description = formData.get("description")?.toString() ?? "";

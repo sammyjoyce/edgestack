@@ -61,38 +61,38 @@ export default function RichTextField({
 						"focus-within:ring-2 focus-within:ring-blue-500",
 					])}
 				>
-				<LexicalToolbar />
-				<span
-					data-slot="control"
-					className={clsx([
-						"relative block w-full ring-1 ring-gray-300 rounded-md bg-white dark:ring-zinc-700 focus-within:ring-2 focus-within:ring-blue-500 disabled:opacity-50",
-						disabled ? "opacity-50" : undefined,
-					])}
-				>
-					<RichTextPlugin
-						contentEditable={
-							<ContentEditable
-								className={clsx([
-									"relative block h-full w-full appearance-none rounded-md px-3 py-2 sm:px-2.5 sm:py-1.5",
-									"text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white",
-									"bg-transparent",
-									"focus:outline-hidden",
-									disabled ? "opacity-50 bg-gray-50" : undefined,
-								])}
-							/>
-						}
-						placeholder={
-							<p className="text-sm text-gray-400 absolute top-3 left-3 pointer-events-none">
-								Start typing…
-							</p>
-						}
-						ErrorBoundary={LexicalErrorBoundary}
-					/>
-				</span>
-				<HistoryPlugin />
-				<ListPlugin />
-				<LinkPlugin />
-				<OnChangePlugin onChange={handleChange} />
+					<LexicalToolbar />
+					<span
+						data-slot="control"
+						className={clsx([
+							"relative block w-full ring-1 ring-gray-300 rounded-md bg-white dark:ring-zinc-700 focus-within:ring-2 focus-within:ring-blue-500 disabled:opacity-50",
+							disabled ? "opacity-50" : undefined,
+						])}
+					>
+						<RichTextPlugin
+							contentEditable={
+								<ContentEditable
+									className={clsx([
+										"relative block h-full w-full appearance-none rounded-md px-3 py-2 sm:px-2.5 sm:py-1.5",
+										"text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white",
+										"bg-transparent",
+										"focus:outline-hidden",
+										disabled ? "opacity-50 bg-gray-50" : undefined,
+									])}
+								/>
+							}
+							placeholder={
+								<p className="text-sm text-gray-400 absolute top-3 left-3 pointer-events-none">
+									Start typing…
+								</p>
+							}
+							ErrorBoundary={LexicalErrorBoundary}
+						/>
+					</span>
+					<HistoryPlugin />
+					<ListPlugin />
+					<LinkPlugin />
+					<OnChangePlugin onChange={handleChange} />
 				</div>
 			</LexicalComposer>
 		</>

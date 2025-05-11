@@ -23,7 +23,12 @@ export function ConditionalRichTextRenderer({
 		// If successful, pass the parsed object to RichTextRenderer.
 		// Using 'as any' to bypass string type for testing if RichTextRenderer handles objects.
 		// If this works, RichTextRenderer's props might need adjustment.
-		return <RichTextRenderer json={parsedJson as any} className={richTextClassName} />;
+		return (
+			<RichTextRenderer
+				json={parsedJson as any}
+				className={richTextClassName}
+			/>
+		);
 	} catch {
 		return <FallbackTag className={fallbackClassName}>{text}</FallbackTag>;
 	}

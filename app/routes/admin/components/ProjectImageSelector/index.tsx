@@ -73,7 +73,10 @@ export function ProjectImageSelector({
 								<div className="flex-1 rounded-t-2xl p-4 bg-white max-h-[90vh] overflow-auto">
 									<div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 mb-4" />
 									<div className="max-w-4xl mx-auto">
-										<Heading level={3} className="text-lg font-medium text-gray-900 mb-4">
+										<Heading
+											level={3}
+											className="text-lg font-medium text-gray-900 mb-4"
+										>
 											Select an Existing Image
 										</Heading>
 										<div className="image-gallery-container">

@@ -136,11 +136,15 @@ export default function Component({ actionData }: Route.ComponentProps) {
 							/>
 						</Fieldset>
 					</div>
-					{actionData && typeof actionData === 'object' && actionData !== null && !actionData.success && "error" in actionData && (
-						<Alert variant="error" className="mb-4">
-							{actionData.error}
-						</Alert>
-					)}
+					{actionData &&
+						typeof actionData === "object" &&
+						actionData !== null &&
+						!actionData.success &&
+						"error" in actionData && (
+							<Alert variant="error" className="mb-4">
+								{actionData.error}
+							</Alert>
+						)}
 					<div>
 						<Button type="submit" variant="primary" className="w-full">
 							Sign in

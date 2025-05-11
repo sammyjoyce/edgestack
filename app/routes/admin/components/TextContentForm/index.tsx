@@ -141,7 +141,9 @@ export function TextContentForm({
 			onSubmit={handleSave}
 		>
 			<div className="flex flex-wrap items-center justify-between gap-4 mb-2">
-				<Heading level={3} className="text-lg font-semibold text-foreground">Text Content</Heading>
+				<Heading level={3} className="text-lg font-semibold text-foreground">
+					Text Content
+				</Heading>
 				<div className="flex items-center gap-2 ml-auto">
 					<label
 						htmlFor="auto-save-toggle"

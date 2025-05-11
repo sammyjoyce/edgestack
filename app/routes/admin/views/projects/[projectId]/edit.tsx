@@ -28,12 +28,7 @@ import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
 import { Heading } from "~/routes/admin/components/ui/heading";
 
-
-export async function loader({
-	params,
-	context,
-	request,
-}: Route.LoaderArgs) {
+export async function loader({ params, context, request }: Route.LoaderArgs) {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		throw new Response("Invalid Project ID", { status: 400 });
@@ -52,11 +47,7 @@ export async function loader({
 	}
 }
 
-export async function action({
-	request,
-	params,
-	context,
-}: Route.ActionArgs) {
+export async function action({ request, params, context }: Route.ActionArgs) {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		return { success: false, error: "Invalid Project ID" };
@@ -145,7 +136,11 @@ export async function action({
 	}
 }
 
-export default function EditProjectPage({ loaderData, actionData, params }: Route.ComponentProps) {
+export default function EditProjectPage({
+	loaderData,
+	actionData,
+	params,
+}: Route.ComponentProps) {
 	const project = loaderData?.project;
 	const errors = actionData?.errors;
 	const handleCancel = () => window.location.assign("/admin/projects");

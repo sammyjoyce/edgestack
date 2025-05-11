@@ -1,4 +1,3 @@
-"use client";
 import * as Headless from "@headlessui/react";
 import type React from "react";
 import { useState } from "react";

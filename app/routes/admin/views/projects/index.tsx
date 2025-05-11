@@ -18,10 +18,7 @@ import { Button } from "../../components/ui/button";
 import { Text } from "../../components/ui/text";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer/index";
 import type { Route } from "./+types/index";
-export async function loader({
-	request,
-	context,
-}: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -38,10 +35,7 @@ export async function loader({
 		);
 	}
 }
-export async function action({
-	request,
-	context,
-}: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
 	const sessionValue = getSessionCookie(request);
@@ -76,10 +70,13 @@ export async function action({
 	}
 	return data({ success: false, error: "Unknown intent" }, { status: 400 });
 }
-export default function AdminProjectsIndexPage({ loaderData }: Route.ComponentProps) {
-	const actionData = useActionData<Route.ActionData>();
+export default function AdminProjectsIndexPage({
+	loaderData,
+}: Route.ComponentProps) {
+	const actionData = useActionData<typeof action>();
 
-	if (!loaderData) { // Handle case where loader might have redirected or thrown
+	if (!loaderData) {
+		// Handle case where loader might have redirected or thrown
 		return <div>Loading projects...</div>;
 	}
 	const { projects } = loaderData;

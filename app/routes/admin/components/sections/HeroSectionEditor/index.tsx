@@ -76,7 +76,7 @@ export function HeroSectionEditor({
 	return (
 		<SectionCard>
 			<SectionHeading>Hero Section</SectionHeading>
-				
+
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 				<div className="flex flex-col gap-1">
 					<FieldLabel htmlFor="hero_title">Hero Title</FieldLabel>

@@ -57,8 +57,9 @@ export const loader = async ({
 export const action = async ({
 	request, // eslint-disable-line @typescript-eslint/no-unused-vars
 	context, // eslint-disable-line @typescript-eslint/no-unused-vars
-	params,  // eslint-disable-line @typescript-eslint/no-unused-vars
-}: Route.ActionArgs) => { // ActionData will be null
+	params, // eslint-disable-line @typescript-eslint/no-unused-vars
+}: Route.ActionArgs) => {
+	// ActionData will be null
 	return null;
 };
 interface NavItem {
@@ -77,18 +78,18 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 	const location = useLocation();
 
 	const sidebarNav = (
-		<div className="flex h-full flex-col bg-[var(--color-admin-screen)] px-6 py-4">
-			<div className="flex h-16 items-center border-b border-[var(--color-admin-border)] mb-2 pb-2">
+		<div className="flex h-full flex-col bg-admin-screen px-6 py-4">
+			<div className="flex h-16 items-center border-b border-admin-border mb-2 pb-2">
 				<img
 					src="/assets/logo_284x137-KoakP1Oi.png"
 					alt="LUSH CONSTRUCTIONS"
 					className="h-8 mx-auto"
 				/>
 			</div>
-			<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-[var(--color-admin-text-muted)]">
+			<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-admin-text-muted">
 				Admin Menu
 			</div>
-			<hr className="border-[var(--color-admin-border)] mb-2" />
+			<hr className="border-admin-border mb-2" />
 			<ul className="flex flex-col">
 				{navigation.map((item) => (
 					<li
@@ -96,13 +97,15 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 						className={clsx(
 							"group rounded-md text-sm font-medium",
 							// Base text color for all items
-							"text-[var(--color-admin-text-muted)]",
+							"text-admin-text-muted",
 							// Hover styles for all items
-							"hover:bg-[var(--color-admin-border-light)] hover:text-[var(--color-admin-text)]",
+							"hover:bg-admin-border-light hover:text-(--color-admin-text)",
 							// Active styles for regular navigation items (not "Live Site" or "Logout")
-							(location.pathname === item.href || (item.href !== "/admin" && location.pathname.startsWith(item.href as string))) &&
-							!(item.name === "Live Site" || item.name === "Logout") &&
-								"bg-[var(--color-admin-secondary)] text-[var(--color-admin-white)]"
+							(location.pathname === item.href ||
+								(item.href !== "/admin" &&
+									location.pathname.startsWith(item.href as string))) &&
+								!(item.name === "Live Site" || item.name === "Logout") &&
+								"bg-(--color-admin-secondary) text-admin-white",
 						)}
 					>
 						{item.name === "Live Site" ? (
@@ -132,15 +135,21 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 
 	// If loaderData indicates not authenticated and not on login/logout, render nothing or a redirect signal
 	// This check might be redundant if the loader already handles redirection, but good for clarity.
-	if (!loaderData?.isAuthenticated && !['/admin/login', '/admin/logout'].includes(location.pathname)) {
+	if (
+		!loaderData?.isAuthenticated &&
+		!["/admin/login", "/admin/logout"].includes(location.pathname)
+	) {
 		// The loader should have redirected, but as a fallback, don't render the layout.
 		// Or, you could render a minimal loading/redirecting state here.
-		return null; 
+		return null;
 	}
 
 	// If on login/logout page and authenticated, loader should redirect.
 	// If on login/logout page and not authenticated, render Outlet without SidebarLayout.
-	if (['/admin/login', '/admin/logout'].includes(location.pathname) && !loaderData?.isAuthenticated) {
+	if (
+		["/admin/login", "/admin/logout"].includes(location.pathname) &&
+		!loaderData?.isAuthenticated
+	) {
 		return (
 			<>
 				{navigationHook.state === "loading" && (
