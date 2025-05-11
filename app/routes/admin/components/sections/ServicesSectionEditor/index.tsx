@@ -1,4 +1,5 @@
-import type React, {JSX} from "react";
+import type React from "react";
+import type { JSX } from "react";
 import {useCallback, useEffect, useState} from "react";
 import {Textarea} from "../../ui/textarea"; // Add missing Textarea import
 import {useFetcher} from "react-router";
