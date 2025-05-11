@@ -29,6 +29,8 @@ import {
 	SwitchField,
 	Label as SwitchLabel,
 } from "../ui/switch";
+import { Heading } from "../ui/heading";
+import { Text } from "../ui/text";
 import { Alert } from "../ui/alert";
     
 // import SwitchField from "~/routes/common/components/ui/SwitchField.tsx";
