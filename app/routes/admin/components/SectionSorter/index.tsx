@@ -28,7 +28,7 @@ import {
 	Switch,
 	SwitchField,
 	Label as SwitchLabel,
-} from "./ui/switch";
+} from "../ui/switch";
 import { Alert } from "./ui/alert";
     
 // import SwitchField from "~/routes/common/components/ui/SwitchField.tsx";
