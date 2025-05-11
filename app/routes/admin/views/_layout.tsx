@@ -19,6 +19,7 @@ import { getSessionCookie, verify } from "~/routes/common/utils/auth"; // Keep
 import adminThemeStylesheet from "../../../admin-theme.css?url"; // Keep
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary"; // Keep
 import { SidebarLayout } from "../components/ui/sidebar-layout"; // Keep only SidebarLayout
+import clsx from "clsx";
 import * as Headless from "@headlessui/react";
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
