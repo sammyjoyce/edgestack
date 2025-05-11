@@ -100,7 +100,7 @@ export default function AdminProjectsIndexPage({ loaderData }: Route.ComponentPr
 			<PageHeader
 				title="Manage Projects"
 				actions={
-					<Button as={Link} to="/admin/projects/new">
+					<Button as={Link} to="/admin/projects/new" variant="primary">
 						Add New Project
 					</Button>
 				}

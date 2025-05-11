@@ -54,11 +54,12 @@ export function PaginationPrevious({
 }: React.PropsWithChildren<{ href?: string | null; className?: string }>) {
 	return (
 		<Button
+			size="sm"
 			href={href === null ? undefined : href}
 			disabled={href === null}
 			variant="ghost"
 			aria-label="Previous page"
-			className={clsx(className, "gap-x-1 pr-2.5")}
+			className={clsx(className, "gap-x-1")}
 		>
 			<ChevronLeftIcon />
 			{children}
@@ -72,11 +73,12 @@ export function PaginationNext({
 }: React.PropsWithChildren<{ href?: string | null; className?: string }>) {
 	return (
 		<Button
+			size="sm"
 			href={href === null ? undefined : href}
 			disabled={href === null}
 			variant="ghost"
 			aria-label="Next page"
-			className={clsx(className, "gap-x-1 pl-2.5")}
+			className={clsx(className, "gap-x-1")}
 		>
 			{children}
 			<ChevronRightIcon />

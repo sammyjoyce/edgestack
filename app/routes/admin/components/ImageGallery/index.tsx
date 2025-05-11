@@ -81,7 +81,7 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 										<Drawer.Root>
 											<Drawer.Trigger asChild>
 												<Button
-													variant="primary"
+													variant="outline"
 													size="sm"
 													onClick={() => setSelectedImage(image)}
 												>
@@ -130,13 +130,14 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 																				name="imageUrl"
 																				value={selectedImage?.url}
 																			/>
-																			<Button type="submit" variant="primary">
+																			<Button type="submit" variant="primary" size="sm">
 																				Use this image
 																			</Button>
 																		</fetcher.Form>
 																	)}
 																	<Button
 																		variant="danger"
+																		size="sm"
 																		onClick={() =>
 																			selectedImage &&
 																			handleDelete(selectedImage)
