@@ -12,7 +12,7 @@ export async function action({
 	request,
 	context,
 	params,
-}: Route.ActionArgs): Promise<Route.ActionData> {
+}: Route.ActionArgs) {
 	const token = getSessionCookie(request);
 	const secret = context.cloudflare?.env?.JWT_SECRET;
 	if (!token || !secret || !(await verify(token, secret))) {

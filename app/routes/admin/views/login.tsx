@@ -25,7 +25,7 @@ export const action = async ({
 	request,
 	context,
 	params,
-}: Route.ActionArgs): Promise<LoginActionData | Response> => {
+}: Route.ActionArgs) => {
 	try {
 		const formData = await request.formData();
 		const username = formData.get("username")?.toString() ?? "";
@@ -68,7 +68,7 @@ export const loader = async ({
 	request,
 	context,
 	params,
-}: Route.LoaderArgs): Promise<Response | null> => {
+}: Route.LoaderArgs) => {
 	try {
 		const sessionValue = getSessionCookie(request);
 		const jwtSecret = context.cloudflare?.env?.JWT_SECRET;

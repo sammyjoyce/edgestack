@@ -10,13 +10,13 @@ async function handleLogout(): Promise<Response> {
 	);
 	return response;
 }
-export const loader = async ({ request, context, params }: Route.LoaderArgs): Promise<Response> => {
+export const loader = async ({ request, context, params }: Route.LoaderArgs) => {
 	return handleLogout();
 };
 export async function action({
 	request,
 	context,
 	params,
-}: Route.ActionArgs): Promise<Response> {
+}: Route.ActionArgs) {
 	return handleLogout();
 }

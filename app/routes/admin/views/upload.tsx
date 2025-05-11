@@ -28,7 +28,7 @@ export async function loader({
 	context,
 	request,
 	params,
-}: Route.LoaderArgs): Promise<Route.LoaderData | Response> {
+}: Route.LoaderArgs) {
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -49,7 +49,7 @@ export async function action({
 	request,
 	context,
 	params,
-}: Route.ActionArgs): Promise<Response | Route.ActionData> {
+}: Route.ActionArgs) {
 	const unauthorized = () => {
 		return redirect("/admin/login");
 	};
