@@ -21,11 +21,16 @@ const DEFAULT_CONTENT = {
 	hero_subtitle: "Your trusted partner in construction and renovation.",
 	home_sections_order: "hero,services,projects,about,contact",
 } as const;
+
+export const links: Route.LinksFunction = () => [
+  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" },
+];
+
 export async function loader({
 	request,
 	context,
 	params,
-}: Route.LoaderArgs): Promise<Route.LoaderData> {
+}: Route.LoaderArgs) {
 	assert(request instanceof Request, "loader: request must be a Request");
 	assert(context?.db, "loader: missing DB in context");
 	const token = getSessionCookie(request);
@@ -40,10 +45,12 @@ export async function loader({
 		console.log("[ADMIN LOADER] Loaded content keys:", Object.keys(items));
 	return { content: items };
 }
+
 import { ValiError } from "valibot";
 import {
 	validateContentInsert,
 } from "../../../../database/valibot-validation.js";
+
 export async function action({
 	request,
 	context,
@@ -189,13 +196,21 @@ export async function action({
 		);
 	}
 }
+
 export default function AdminIndexPage({ loaderData }: Route.ComponentProps): JSX.Element {
 	if (!loaderData) { // Handle case where loader might have redirected or thrown
 		return <div>Loading or error...</div>;
 	}
 	return (
-		<main id="admin-dashboard-main" aria-label="Admin Dashboard">
-			<AdminDashboard initialContent={loaderData.content} />
-		</main>
+		<>
+			<Helmet>
+				{adminLinks().map((link, index) => (
+					<link key={index} {...link} />
+				))}
+			</Helmet>
+			<main id="admin-dashboard-main" aria-label="Admin Dashboard">
+				<AdminDashboard initialContent={loaderData.content} />
+			</main>
+		</>
 	);
 }
