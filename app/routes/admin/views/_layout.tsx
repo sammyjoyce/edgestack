@@ -77,29 +77,32 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 	const location = useLocation();
 
 	const sidebarNav = (
-		<div className="flex h-full flex-col bg-gray-900 px-6 py-4">
-			<div className="flex h-16 items-center border-b border-gray-800 mb-2 pb-2">
+		<div className="flex h-full flex-col bg-[var(--color-admin-screen)] px-6 py-4">
+			<div className="flex h-16 items-center border-b border-[var(--color-admin-border)] mb-2 pb-2">
 				<img
 					src="/assets/logo_284x137-KoakP1Oi.png"
 					alt="LUSH CONSTRUCTIONS"
 					className="h-8 mx-auto"
 				/>
 			</div>
-			<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
+			<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-[var(--color-admin-text-muted)]">
 				Admin Menu
 			</div>
-			<hr className="border-gray-700 mb-2" />
+			<hr className="border-[var(--color-admin-border)] mb-2" />
 			<ul className="flex flex-col">
 				{navigation.map((item) => (
 					<li
 						key={item.name}
 						className={clsx(
 							"group rounded-md text-sm font-medium",
-							(item.name === "Live Site" || item.name === "Logout")
-								? "text-gray-400 hover:bg-gray-700 hover:text-white"
-								: (location.pathname === item.href || (item.href !== "/admin" && location.pathname.startsWith(item.href as string)))
-									? "bg-gray-800 text-white"
-									: "text-gray-400 hover:bg-gray-700 hover:text-white"
+							// Base text color for all items
+							"text-[var(--color-admin-text-muted)]",
+							// Hover styles for all items
+							"hover:bg-[var(--color-admin-border-light)] hover:text-[var(--color-admin-text)]",
+							// Active styles for regular navigation items (not "Live Site" or "Logout")
+							(location.pathname === item.href || (item.href !== "/admin" && location.pathname.startsWith(item.href as string))) &&
+							!(item.name === "Live Site" || item.name === "Logout") &&
+								"bg-[var(--color-admin-secondary)] text-[var(--color-admin-white)]"
 						)}
 					>
 						{item.name === "Live Site" ? (
