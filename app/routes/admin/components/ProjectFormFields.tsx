@@ -90,6 +90,7 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 				<RichTextField name="details" initialJSON={initial.details || ""} />
 			</FieldRow>
 			<FieldRow>
+				<span className="max-w-min">
 				<div className="flex items-center gap-x-2">
 					<Input
 						type="checkbox"
@@ -106,6 +107,7 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 						Feature on Home Page
 					</label>
 				</div>
+				</span>
 			</FieldRow>
 			<FieldRow>
 				<FieldLabel>Project Image</FieldLabel>
