@@ -256,7 +256,7 @@ export function TextContentForm({
 			{!autoSave && (
 				<div className="flex gap-3 mt-6 pt-6 border-t border-neutral-200">
 					<Button type="submit" variant="primary">
-						Save
+						Save All Changes
 					</Button>
 					<Button type="button" variant="neutral" onClick={handleUndo}>
 						Undo

@@ -77,7 +77,7 @@ export default function DeleteProjectPage({ loaderData, params }: Route.Componen
 						<Button
 							variant="secondary"
 							onClick={() => navigate("/admin/projects")}
-							className="text-sm"
+							size="sm"
 						>
 							Cancel
 						</Button>
@@ -125,13 +125,15 @@ export default function DeleteProjectPage({ loaderData, params }: Route.Componen
 							<Button
 								type="button"
 								variant="secondary"
+								size="md"
 								onClick={() => navigate("/admin/projects")}
 							>
 								Cancel
 							</Button>
 							<Button
 								type="submit"
-								className="bg-red-600 hover:bg-red-700 focus:ring-red-500"
+								variant="danger"
+								size="md"
 							>
 								Delete Project
 							</Button>
