@@ -1,18 +1,19 @@
 import React, { type JSX, useState, useEffect, useCallback } from "react";
 import type { FetcherWithComponents } from "react-router";
+import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import {
 	FieldLabel,
 	FieldRow,
 	SectionCard,
-	SectionHeading,
-} from "~/routes/admin/components/ui/section";
-import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
-import type { Route as AdminUploadRoute } from "~/routes/admin/views/+types/upload";
+	SectionHeading
+} from "../ui/section";
+import type { action as adminIndexAction } from "~/routes/admin/views/index";
+import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 interface AboutSectionEditorProps {
 	fetcher: FetcherWithComponents<
-		AdminIndexRoute.ActionData | AdminUploadRoute.ActionData
+		typeof adminIndexAction | typeof adminUploadAction
 	>;
 	initialContent: Record<string, string>;
 	onImageUpload: (file: File) => void;

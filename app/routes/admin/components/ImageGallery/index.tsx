@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { Drawer } from "vaul";
-import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload";
+import type { loader as uploadLoader, action as uploadAction } from "~/routes/admin/views/upload";
 import type { StoredImage } from "~/utils/upload.server";
 import { Button } from "../ui/button";
 interface ImageGalleryProps {
 	onSelectImage?: (image: StoredImage) => void;
 	forField?: string;
 }
-export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
-	const { images = [] } = useLoaderData<UploadRoute.LoaderData>();
-	const fetcher = useFetcher<UploadRoute.ActionData>();
+export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {	
+	const { images = [] } = useLoaderData<typeof uploadLoader>();
+	const fetcher = useFetcher<typeof uploadAction>();
 	const [selectedImage, setSelectedImage] = useState<StoredImage | null>(null);
 	const formatDate = (dateString: string) => {
 		const date = new Date(dateString);

@@ -13,7 +13,7 @@ interface ImageSelectorProps {
 	imageUrl?: string;
 	label?: string;
 	className?: string;
-	fileInputRef?: React.RefObject<HTMLInputElement | null>;
+	fileInputRef?: React.RefObject<HTMLInputElement>; // Make stricter to match ImageUploadZone if it's strict
 	fieldKey: string;
 }
 export function ImageSelector({

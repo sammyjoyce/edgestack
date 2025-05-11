@@ -6,38 +6,36 @@ import { AboutSectionEditor } from "~/routes/admin/components/sections/AboutSect
 import { ContactSectionEditor } from "~/routes/admin/components/sections/ContactSectionEditor";
 import { HeroSectionEditor } from "~/routes/admin/components/sections/HeroSectionEditor";
 import { ServicesSectionEditor } from "~/routes/admin/components/sections/ServicesSectionEditor";
-import type { Route } from "~/routes/admin/views/+types/index";
-import type { Route as UploadRoute } from "~/routes/admin/views/+types/upload";
+import type { action as adminIndexAction } from "~/routes/admin/views/index";
+import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 import { Container } from "~/routes/common/components/ui/Container";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 import { FormCard } from "../ui/FormCard";
 import { Button } from "../ui/button";
-
-type ActualIndexActionData = Route.ActionData;
-type ActualUploadActionData = UploadRoute.ActionData;
+    
 import type {
 	Section as SorterSection,
 	SectionTheme as SorterSectionTheme,
-} from "~/routes/admin/components/SectionSorter";
+} from "./SectionSorter";
 import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
 import { Heading } from "../ui/heading";
 interface AdminDashboardProps {
-	initialContent: Record<string, string> | undefined;
+	initialContent?: Record<string, string>;
 }
 import { PageHeader } from "../ui/PageHeader";
-
+    
 export default function AdminDashboard({
 	initialContent,
 }: AdminDashboardProps): React.JSX.Element {
 	const content = initialContent;
-	const heroFetcher = useFetcher<ActualIndexActionData>();
-	const introFetcher = useFetcher<ActualIndexActionData>();
-	const servicesFetcher = useFetcher<ActualIndexActionData>();
-	const aboutFetcher = useFetcher<ActualIndexActionData>();
-	const contactFetcher = useFetcher<ActualIndexActionData>();
-	const sorterFetcher = useFetcher<ActualIndexActionData>();
-	const projectsFetcher = useFetcher<ActualIndexActionData>();
-	const uploadFetcher = useFetcher<ActualUploadActionData>();
+	const heroFetcher = useFetcher<typeof adminIndexAction>();
+	const introFetcher = useFetcher<typeof adminIndexAction>();
+	const servicesFetcher = useFetcher<typeof adminIndexAction>();
+	const aboutFetcher = useFetcher<typeof adminIndexAction>();
+	const contactFetcher = useFetcher<typeof adminIndexAction>();
+	const sorterFetcher = useFetcher<typeof adminIndexAction>();
+	const projectsFetcher = useFetcher<typeof adminIndexAction>();
+	const uploadFetcher = useFetcher<typeof adminUploadAction>();
 	const safeContent =
 		content && typeof content === "object" && !("error" in content)
 			? (content as Record<string, string>)
@@ -62,25 +60,13 @@ export default function AdminDashboard({
 	const uploadImage = React.useCallback(
 		async (
 			fetcherInstance: ReturnType<
-				typeof useFetcher<ActualUploadActionData | ActualIndexActionData>
+				typeof useFetcher<typeof adminUploadAction | typeof adminIndexAction>
 			>,
 			key: string,
 			file: File,
-			setUploading: (v: boolean) => void,
-			setUrl: (url: string) => void,
-		) => {
-			const getActionData = (
-				data: unknown,
-			): ActualUploadActionData | ActualIndexActionData | undefined => {
-				if (
-					data &&
-					typeof data === "object" &&
-					("success" in data || "url" in data || "error" in data)
-				) {
-					return data as ActualUploadActionData | ActualIndexActionData;
-				}
-				return undefined;
-			};
+			setUploading: (v: boolean) => void, // eslint-disable-line @typescript-eslint/no-unused-vars
+			setUrl: (url: string) => void, // eslint-disable-line @typescript-eslint/no-unused-vars
+		) => { // eslint-disable-line @typescript-eslint/no-unused-vars
 			setUploading(true);
 			const fd = new FormData();
 			fd.append("image", file);
@@ -90,7 +76,7 @@ export default function AdminDashboard({
 				action: "/admin/upload",
 				encType: "multipart/form-data",
 			});
-			const actionData = getActionData(fetcherInstance.data);
+			const actionData = fetcherInstance.data;
 			if (
 				actionData?.success &&
 				"url" in actionData &&

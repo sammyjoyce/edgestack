@@ -34,6 +34,7 @@ export const projects = sqliteTable("projects", {
 	description: text("description", { mode: "json" }),
 	details: text("details", { mode: "json" }),
 	imageId: integer("image_id").references(() => media.id), // Changed from imageUrl to imageId FK
+	imageUrl: text("image_url"), // Add this line for direct URL storage
 	slug: text("slug").unique(),
 	published: integer("published", { mode: "boolean" }).default(true),
 	isFeatured: integer("is_featured", { mode: "boolean" }).default(false),
