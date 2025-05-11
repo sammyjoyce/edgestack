@@ -91,38 +91,76 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 			<hr className="border-gray-700 mb-2" />
 			<ul className="flex flex-col">
 				{navigation.map((item) => (
-					<li key={item.name}>
+					<li
+						key={item.name}
+						className={clsx(
+							"group rounded-md text-sm font-medium",
+							(item.name === "Live Site" || item.name === "Logout")
+								? "text-gray-400 hover:bg-gray-700 hover:text-white"
+								: (location.pathname === item.href || (item.href !== "/admin" && location.pathname.startsWith(item.href as string)))
+									? "bg-gray-800 text-white"
+									: "text-gray-400 hover:bg-gray-700 hover:text-white"
+						)}
+					>
 						{item.name === "Live Site" ? (
 							<a
 								href={item.href as string}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="group flex items-center gap-x-3 rounded-md p-2 text-sm font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+								className="flex items-center gap-x-3 p-2 w-full"
 							>
 								<item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
 								{item.name}
 							</a>
 						) : (
-							<Headless.Description // Assuming SidebarItem was a styled li, using a generic wrapper
-								as="li"
-								className={clsx(
-									"group flex items-center gap-x-3 rounded-md p-2 text-sm font-medium",
-									(location.pathname === item.href || (item.href !== "/admin" && location.pathname.startsWith(item.href as string)))
-										? "bg-gray-800 text-white"
-										: "text-gray-400 hover:bg-gray-700 hover:text-white"
-								)}
+							<RouterLink
+								to={item.href as string}
+								className="flex items-center gap-x-3 p-2 w-full"
 							>
-								<RouterLink to={item.href as string} className="flex items-center gap-x-3">
-									<item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
-									{item.name}
-								</RouterLink>
-							</Headless.Description>
+								<item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
+								{item.name}
+							</RouterLink>
 						)}
 					</li>
 				))}
 			</ul>
 		</div>
 	);
+
+	// If loaderData indicates not authenticated and not on login/logout, render nothing or a redirect signal
+	// This check might be redundant if the loader already handles redirection, but good for clarity.
+	if (!loaderData?.isAuthenticated && !['/admin/login', '/admin/logout'].includes(location.pathname)) {
+		// The loader should have redirected, but as a fallback, don't render the layout.
+		// Or, you could render a minimal loading/redirecting state here.
+		return null; 
+	}
+
+	// If on login/logout page and authenticated, loader should redirect.
+	// If on login/logout page and not authenticated, render Outlet without SidebarLayout.
+	if (['/admin/login', '/admin/logout'].includes(location.pathname) && !loaderData?.isAuthenticated) {
+		return (
+			<>
+				{navigationHook.state === "loading" && (
+					<div
+						style={{
+							position: "fixed",
+							top: 0,
+							left: 0,
+							right: 0,
+							height: "3px",
+							background: "var(--color-primary)",
+							zIndex: 9999,
+							transition: "width 0.2s ease-out",
+						}}
+						className="global-loading-indicator"
+					/>
+				)}
+				<Outlet context={loaderData} />
+			</>
+		);
+	}
+
+	// Default case: authenticated user on an admin page (not login/logout)
 	return (
 		<SidebarLayout
 			navbar={
