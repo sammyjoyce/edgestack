@@ -29,7 +29,7 @@ import {
 	SwitchField,
 	Label as SwitchLabel,
 } from "../ui/switch";
-import { Alert } from "./ui/alert";
+import { Alert } from "../ui/alert";
     
 // import SwitchField from "~/routes/common/components/ui/SwitchField.tsx";
 import type { Route as AdminIndexRoute } from "../../views/+types";
