@@ -75,8 +75,13 @@ export async function action({
 	}
 	return data({ success: false, error: "Unknown intent" }, { status: 400 });
 }
-export default function AdminProjectsIndexPage() {
-	const { projects } = useLoaderData<typeof loader>();
+export default function AdminProjectsIndexPage({ loaderData }: Route.ComponentProps) {
+	const actionData = useActionData<Route.ActionData>();
+
+	if (!loaderData) { // Handle case where loader might have redirected or thrown
+		return <div>Loading projects...</div>;
+	}
+	const { projects } = loaderData;
 	const location = useLocation();
 	const isChildActive =
 		location.pathname !== "/admin/projects" &&
