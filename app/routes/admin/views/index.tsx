@@ -190,6 +190,9 @@ export async function action({
 	}
 }
 export default function AdminIndexPage({ loaderData }: Route.ComponentProps): JSX.Element {
+	if (!loaderData) { // Handle case where loader might have redirected or thrown
+		return <div>Loading or error...</div>;
+	}
 	return (
 		<main id="admin-dashboard-main" aria-label="Admin Dashboard">
 			<AdminDashboard initialContent={loaderData.content} />
