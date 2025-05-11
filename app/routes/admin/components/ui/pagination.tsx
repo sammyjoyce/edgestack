@@ -108,13 +108,14 @@ export function PaginationPage({
 }>) {
 	return (
 		<Button
+			size="sm"
 			href={href}
 			variant={current ? "outline" : "ghost"}
 			aria-label={`Page ${children}`}
 			aria-current={current ? "page" : undefined}
 			className={clsx(
 				className,
-				"min-w-9 px-2.5 py-1.5 text-sm",
+				"min-w-9", // size="sm" handles padding and text-sm. Keep min-w-9 for consistent width.
 				current &&
 					"font-semibold ring-1 ring-primary dark:ring-primary-dark text-primary dark:text-primary-dark",
 				!current &&
