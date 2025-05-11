@@ -1,72 +1,72 @@
 @import "tailwindcss";
 
-@theme {
+@theme inline {
 	/* Base Colors from openai-fm, prefixed with --admin- for clarity */
-	--admin-color-primary: hsl(16, 100%, 50%); /* #ff4a00 */
-	--admin-color-background: hsl(0, 0%, 93%); /* #ececec */
-	--admin-color-foreground: hsl(0, 0%, 13%); /* #222 */
-	--admin-color-screen: hsl(0, 0%, 95%); /* #f3f3f3 - for input backgrounds, content areas */
+	--color-admin-primary: hsl(16, 100%, 50%); /* #ff4a00 */
+	--color-admin-background: hsl(0, 0%, 93%); /* #ececec */
+	--color-admin-foreground: hsl(0, 0%, 13%); /* #222 */
+	--color-admin-screen: hsl(0, 0%, 95%); /* #f3f3f3 - for input backgrounds, content areas */
 
 	/* Neutral & Accent Colors - adapted for admin UI needs */
-	--admin-color-secondary: hsl(0, 0%, 13%); /* #222 - for secondary buttons */
-	--admin-color-tertiary: hsl(0, 0%, 42%); /* #6a6a6a */
-	--admin-color-neutral: hsl(0, 0%, 67%); /* #aaa */
-	--admin-color-default-button-bg: hsl(0, 0%, 96%); /* #f4f4f4 */
+	--color-admin-secondary: hsl(0, 0%, 13%); /* #222 - for secondary buttons */
+	--color-admin-tertiary: hsl(0, 0%, 42%); /* #6a6a6a */
+	--color-admin-neutral: hsl(0, 0%, 67%); /* #aaa */
+	--color-admin-default-button-bg: hsl(0, 0%, 96%); /* #f4f4f4 */
 
-	--admin-color-white: hsl(0, 0%, 100%);
-	--admin-color-black: hsl(0, 0%, 0%);
+	--color-admin-white: hsl(0, 0%, 100%);
+	--color-admin-black: hsl(0, 0%, 0%);
 
 	/* Borders - using more subtle grays from typical admin UIs, can be adjusted */
-	--admin-color-border: hsl(0, 0%, 85%); /* #d9d9d9 */
-	--admin-color-border-light: hsl(0, 0%, 90%); /* #e5e5e5 */
-	--admin-color-border-dark: hsl(0, 0%, 20%); /* #333333 */
+	--color-admin-border: hsl(0, 0%, 85%); /* #d9d9d9 */
+	--color-admin-border-light: hsl(0, 0%, 90%); /* #e5e5e5 */
+	--color-admin-border-dark: hsl(0, 0%, 20%); /* #333333 */
 
 	/* Text colors */
-	--admin-color-text: var(--admin-color-foreground);
-	--admin-color-text-muted: hsl(0, 0%, 40%); /* #666 */
-	--admin-color-text-placeholder: hsl(0, 0%, 60%); /* #999 */
+	--color-admin-text: var(--color-admin-foreground);
+	--color-admin-text-muted: hsl(0, 0%, 40%); /* #666 */
+	--color-admin-text-placeholder: hsl(0, 0%, 60%); /* #999 */
 
 	/* Semantic colors for alerts, etc. */
-	--admin-color-error: hsl(0, 72%, 51%); /* approx. #d93030 */
-	--admin-color-success: hsl(145, 63%, 42%); /* approx. #28a745 */
-	--admin-color-warning: hsl(45, 100%, 51%); /* approx. #ffc107 */
-	--admin-color-info: hsl(208, 93%, 50%); /* approx. #17a2b8 */
+	--color-admin-error: hsl(0, 72%, 51%); /* approx. #d93030 */
+	--color-admin-success: hsl(145, 63%, 42%); /* approx. #28a745 */
+	--color-admin-warning: hsl(45, 100%, 51%); /* approx. #ffc107 */
+	--color-admin-info: hsl(208, 93%, 50%); /* approx. #17a2b8 */
 
 	/* Typography from openai-fm */
-	--admin-font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	--font-admin-main: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
 	/* Radii from openai-fm */
-	--admin-radius-xs: 0.125rem; /* 2px */
-	--admin-radius-sm: 0.25rem; /* 4px */
-	--admin-radius-md: 0.375rem; /* 6px */
-	--admin-radius-lg: 0.5rem; /* 8px */
-	--admin-radius-xl: 0.75rem; /* 12px */
+	--radius-admin-xs: 0.125rem; /* 2px */
+	--radius-admin-sm: 0.25rem; /* 4px */
+	--radius-admin-md: 0.375rem; /* 6px */
+	--radius-admin-lg: 0.5rem; /* 8px */
+	--radius-admin-xl: 0.75rem; /* 12px */
 
 	/* Shadows from openai-fm (simplified for broader use) */
-	--admin-shadow-input: rgba(0, 0, 0, 0.15) 0px 1px 2px 0px inset,
+	--shadow-admin-input: rgba(0, 0, 0, 0.15) 0px 1px 2px 0px inset,
 		rgba(0, 0, 0, 0.08) 1px -2px 2px 0px inset;
-	--admin-shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-	--admin-shadow-dialog: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* Similar to shadow-elegant */
+	--shadow-admin-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+	--shadow-admin-dialog: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* Similar to shadow-elegant */
 
 
 	/* Button specific shadows - these are complex and will be applied via CSS modules or more specific classes */
 	/* These are conceptual placeholders based on openai-fm Button.module.css */
-	--admin-shadow-button-default:
+	--shadow-admin-button-default:
 		rgb(255, 255, 255) 1px 1px 1px 0px inset,
 		rgba(0, 0, 0, 0.15) -1px -1px 1px 0px inset,
 		rgba(0, 0, 0, 0.26) 0.444584px 0.444584px 0.628737px -1px,
 		-0.5px -0.5px 0 0 rgb(0 0 0 / 5%);
-	--admin-shadow-button-default-active:
-		inset 0.5px 0.5px 1px var(--admin-color-white),
+	--shadow-admin-button-default-active:
+		inset 0.5px 0.5px 1px var(--color-admin-white),
 		inset -0.5px -0.5px 1px rgba(0,0,0,0.26);
 
-	--admin-shadow-button-primary:
+	--shadow-admin-button-primary:
 		inset 1px 1px 1px rgba(255,255,255,0.83),
 		inset -1px -1px 1px rgba(0,0,0,0.23),
 		0.444584px 0.444584px 0.628737px -1px #00000042,
 		-0.5px -0.5px 0 0 hsl(16 100% 29% / 0.53); /* Adjusted from openai-fm primary */
-	--admin-shadow-button-primary-active:
-		inset 0.5px 0.5px 1px var(--admin-color-white),
+	--shadow-admin-button-primary-active:
+		inset 0.5px 0.5px 1px var(--color-admin-white),
 		inset -0.5px -0.5px 1px rgba(0,0,0,0.35);
 
 	/* Add more for secondary, tertiary, neutral if needed, following openai-fm patterns */
@@ -76,9 +76,9 @@
    This assumes your admin layout root can be targeted or has a specific class.
    If not, these might need to be applied more globally or via a wrapper component. */
 :root { /* Or a more specific selector like body.admin-theme or .admin-layout-root */
-  font-family: var(--admin-font-family);
-  background-color: var(--admin-color-background);
-  color: var(--admin-color-foreground);
+  font-family: var(--font-admin-main);
+  background-color: var(--color-admin-background);
+  color: var(--color-admin-foreground);
   font-size: 14px; /* Match openai-fm html font-size */
   line-height: 130%; /* Match openai-fm html line-height */
 }
@@ -86,23 +86,23 @@
 /* Dark mode specific variables for admin */
 /* This assumes a similar dark mode strategy to the main app.css */
 :where(.dark, .dark *) {
-	--admin-color-background: hsl(0, 0%, 10%);
-	--admin-color-foreground: hsl(0, 0%, 93%);
-	--admin-color-screen: hsl(0, 0%, 15%);
-	--admin-color-border: hsl(0, 0%, 22%);
-	--admin-color-border-light: hsl(0, 0%, 30%);
-	--admin-color-border-dark: hsl(0, 0%, 15%);
+	--color-admin-background: hsl(0, 0%, 10%);
+	--color-admin-foreground: hsl(0, 0%, 93%);
+	--color-admin-screen: hsl(0, 0%, 15%);
+	--color-admin-border: hsl(0, 0%, 22%);
+	--color-admin-border-light: hsl(0, 0%, 30%);
+	--color-admin-border-dark: hsl(0, 0%, 15%);
 
-	--admin-color-text: var(--admin-color-foreground);
-	--admin-color-text-muted: hsl(0, 0%, 67%);
-	--admin-color-text-placeholder: hsl(0, 0%, 50%);
+	--color-admin-text: var(--color-admin-foreground);
+	--color-admin-text-muted: hsl(0, 0%, 67%);
+	--color-admin-text-placeholder: hsl(0, 0%, 50%);
 
-	--admin-color-default-button-bg: hsl(0, 0%, 20%);
+	--color-admin-default-button-bg: hsl(0, 0%, 20%);
 
-	--admin-shadow-input: rgba(255, 255, 255, 0.05) 0px 1px 2px 0px inset,
+	--shadow-admin-input: rgba(255, 255, 255, 0.05) 0px 1px 2px 0px inset,
 		rgba(255, 255, 255, 0.03) 1px -2px 2px 0px inset;
-	--admin-shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.2), 0 1px 2px -1px rgb(0 0 0 / 0.2);
-	--admin-shadow-dialog: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+	--shadow-admin-card: 0 1px 3px 0 rgb(0 0 0 / 0.2), 0 1px 2px -1px rgb(0 0 0 / 0.2);
+	--shadow-admin-dialog: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
 }
 
 /* Ensure Tailwind utilities can pick up these variables if needed,
