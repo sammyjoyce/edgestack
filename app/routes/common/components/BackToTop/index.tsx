@@ -1,4 +1,5 @@
 import React from "react";
+
 function BackToTop() {
 	return (
 		<button
@@ -26,4 +27,5 @@ function BackToTop() {
 		</button>
 	);
 }
+
 export default BackToTop;

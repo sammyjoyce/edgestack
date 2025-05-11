@@ -1,20 +1,14 @@
 import type { Route } from "./+types/index";
 import React, { type JSX } from "react";
 import { assert } from "~/routes/common/utils/assert";
-const DEBUG = process.env.NODE_ENV !== "production";
-import {
-	data,
-	redirect,
-	useFetcher,
-	useLoaderData,
-	useNavigation,
-} from "react-router";
+import { data, redirect } from "react-router";
 import { getAllContent, updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import AdminDashboard from "../components/AdminDashboard";
-import { Fieldset, Legend } from "../components/ui/fieldset";
-import { Heading } from "../components/ui/heading";
-import { Text } from "../components/ui/text";
+import { ValiError } from "valibot";
+import { validateContentInsert } from "../../../../database/valibot-validation.js";
+
+const DEBUG = process.env.NODE_ENV !== "production";
 
 const DEFAULT_CONTENT = {
 	hero_title: "Building Dreams, Creating Spaces",
@@ -44,9 +38,6 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
 		console.log("[ADMIN LOADER] Loaded content keys:", Object.keys(items));
 	return { content: items };
 }
-
-import { ValiError } from "valibot";
-import { validateContentInsert } from "../../../../database/valibot-validation.js";
 
 export async function action({ request, context, params }: Route.ActionArgs) {
 	if (DEBUG)

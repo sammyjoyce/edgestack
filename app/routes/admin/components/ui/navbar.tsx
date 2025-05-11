@@ -5,6 +5,7 @@ import type React from "react";
 import { forwardRef, useId } from "react";
 import { TouchTarget } from "./button";
 import { Link } from "./link";
+
 export function Navbar({
 	className,
 	...props
@@ -19,6 +20,7 @@ export function Navbar({
 		/>
 	);
 }
+
 export function NavbarDivider({
 	className,
 	...props
@@ -31,6 +33,7 @@ export function NavbarDivider({
 		/>
 	);
 }
+
 export function NavbarSection({
 	className,
 	...props
@@ -45,6 +48,7 @@ export function NavbarSection({
 		</LayoutGroup>
 	);
 }
+
 export function NavbarSpacer({
 	className,
 	...props
@@ -53,6 +57,7 @@ export function NavbarSpacer({
 		<div aria-hidden="true" {...props} className={clsx(className, "flex-1")} />
 	);
 }
+
 export const NavbarItem = forwardRef(function NavbarItem(
 	{
 		current,
@@ -102,6 +107,7 @@ export const NavbarItem = forwardRef(function NavbarItem(
 		</span>
 	);
 });
+
 export function NavbarLabel({
 	className,
 	...props

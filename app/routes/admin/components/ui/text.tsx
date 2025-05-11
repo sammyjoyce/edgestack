@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import type React from "react";
 import { Link } from "./link";
+
 export function Text({
 	className,
 	...props
@@ -12,6 +13,7 @@ export function Text({
 		/>
 	);
 }
+
 export function TextLink({
 	className,
 	...props
@@ -26,6 +28,7 @@ export function TextLink({
 		/>
 	);
 }
+
 export function Strong({
 	className,
 	...props
@@ -37,6 +40,7 @@ export function Strong({
 		/>
 	);
 }
+
 export function Code({
 	className,
 	...props

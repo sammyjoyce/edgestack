@@ -4,17 +4,22 @@ import { NavLink, type To, useNavigate } from "react-router";
 import { Button } from "../ui/Button";
 import DesktopNav from "./DesktopNav";
 import MobileMenu from "./MobileMenu";
+
 export type Path = To | `#${string}` | `http${string}`;
+
 interface MenuItemBase {
 	name: string;
 	path: Path;
 }
+
 export interface MenuItemRoute extends MenuItemBase {
 	isRouteLink: true;
 }
+
 export interface MenuItemAnchor extends MenuItemBase {
 	isRouteLink?: false;
 }
+
 export type MenuItem = MenuItemRoute | MenuItemAnchor;
 const MENU_ITEMS: readonly MenuItem[] = [
 	{ name: "Home", path: "/", isRouteLink: true },

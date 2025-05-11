@@ -3,6 +3,7 @@ import clsx from "clsx";
 import type React from "react";
 import { createContext, useContext, useState } from "react";
 import { Link } from "./link";
+
 const TableContext = createContext<{
 	bleed: boolean;
 	dense: boolean;
@@ -14,6 +15,7 @@ const TableContext = createContext<{
 	grid: false,
 	striped: false,
 });
+
 export function Table({
 	bleed = false,
 	dense = false,
@@ -53,6 +55,7 @@ export function Table({
 		</TableContext.Provider>
 	);
 }
+
 export function TableHead({
 	className,
 	...props
@@ -67,6 +70,7 @@ export function TableHead({
 		/>
 	);
 }
+
 export function TableBody(props: React.ComponentPropsWithoutRef<"tbody">) {
 	return (
 		<tbody
@@ -75,6 +79,7 @@ export function TableBody(props: React.ComponentPropsWithoutRef<"tbody">) {
 		/>
 	);
 }
+
 const TableRowContext = createContext<{
 	href?: string;
 	target?: string;
@@ -84,6 +89,7 @@ const TableRowContext = createContext<{
 	target: undefined,
 	title: undefined,
 });
+
 export function TableRow({
 	href,
 	target,
@@ -111,6 +117,7 @@ export function TableRow({
 		</TableRowContext.Provider>
 	);
 }
+
 export function TableHeader({
 	className,
 	...props
@@ -129,6 +136,7 @@ export function TableHeader({
 		/>
 	);
 }
+
 export function TableCell({
 	className,
 	children,

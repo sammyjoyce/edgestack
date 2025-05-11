@@ -63,7 +63,8 @@
 	}
 
 	::selection {
-		@apply bg-primary/20; /* Or your desired primary color with opacity */
+		@apply bg-primary/20;
+		/* Or your desired primary color with opacity */
 	}
 
 	header {
@@ -80,14 +81,18 @@
 	h1 {
 		@apply text-5xl sm:text-6xl font-serif leading-tight;
 	}
+
 	h2 {
 		@apply text-4xl sm:text-5xl font-serif leading-snug;
 	}
+
 	h3 {
 		@apply text-3xl sm:text-4xl font-serif leading-normal;
 	}
+
 	p {
-		@apply text-base leading-relaxed text-gray-700; /* Keep default p style for now, review later */
+		@apply text-base leading-relaxed text-gray-700;
+		/* Keep default p style for now, review later */
 	}
 
 	/* Remove custom h1-h3 base styles, apply via utilities */

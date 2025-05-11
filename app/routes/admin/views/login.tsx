@@ -1,7 +1,7 @@
 import type { Route } from "./+types/login";
 import type React from "react";
 import { useState } from "react";
-import { Form, redirect, useActionData } from "react-router";
+import { Form, redirect } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import {
 	COOKIE_MAX_AGE,
@@ -14,10 +14,8 @@ import { FormCard } from "../components/ui/FormCard";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Alert } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
-import { Fieldset } from "../components/ui/fieldset";
-import { Label } from "../components/ui/fieldset";
+import { Fieldset, Label } from "../components/ui/fieldset";
 import { Input } from "../components/ui/input";
-import { Text } from "../components/ui/text";
 // Removed unused Route type import.
 const DEBUG = process.env.NODE_ENV !== "production";
 type LoginActionData = { success: false; error: string } | { success: true };

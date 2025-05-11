@@ -1,13 +1,14 @@
 import clsx from "clsx";
 import React from "react";
-import { Link, data, useLoaderData, useOutletContext } from "react-router";
-import type { Project } from "~/database/schema";
+import { data, Link, useOutletContext } from "react-router";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
 // Removed type { Route } from "./+types/projectId"; as it's moved and renamed by another change
 import type { Route } from "./+types/[projectId]";
+import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout";
+
 export const loader = async ({
 	params,
 	context,
@@ -33,7 +34,7 @@ export const loader = async ({
 		);
 	}
 };
-import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout";
+
 export function ProjectDetailRoute({
 	loaderData,
 	params: routeParams,
@@ -106,4 +107,5 @@ export function ProjectDetailRoute({
 		</div>
 	);
 }
+
 export default ProjectDetailRoute;

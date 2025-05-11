@@ -7,7 +7,7 @@ import {
 import { XCircleIcon } from "@heroicons/react/24/solid"; // Or /20/solid if that's your version
 import { Heading } from "../ui/heading";
 import { Alert } from "../ui/alert";
-import { useRef, type JSX } from "react";
+import { type JSX, useRef } from "react";
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { Label } from "~/routes/admin/components/ui/fieldset";
@@ -15,6 +15,7 @@ import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";
 import { Pill, PillStatusComponent } from "~/routes/common/components/ui/Pill";
 import { Button } from "../ui/button";
+
 type ActionResponseData = {
 	success?: boolean;
 	error?: string;
@@ -92,11 +93,13 @@ const textFields = [
 		help: "Description for the second service.",
 	},
 ];
+
 interface TextContentFormProps {
 	fetcher: FetcherWithComponents<ActionResponseData>;
 	initialContent: Record<string, string>;
 	formRef?: React.RefObject<HTMLFormElement>;
 }
+
 function Tooltip({ id, children }: { id: string; children: React.ReactNode }) {
 	return (
 		<span
@@ -108,6 +111,7 @@ function Tooltip({ id, children }: { id: string; children: React.ReactNode }) {
 		</span>
 	);
 }
+
 export function TextContentForm({
 	fetcher,
 	initialContent,

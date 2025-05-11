@@ -7,20 +7,19 @@ import {
 import type { Route } from "./+types/_layout";
 import type React from "react";
 import {
+	Link as RouterLink,
 	Outlet,
-	type To,
 	redirect,
-	useLoaderData,
+	type To,
 	useLocation,
 	useNavigation,
-	Link as RouterLink,
 } from "react-router";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth"; // Keep
 import adminThemeStylesheet from "../../../admin-theme.css?url"; // Keep
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary"; // Keep
 import { SidebarLayout } from "../components/ui/sidebar-layout"; // Keep only SidebarLayout
 import clsx from "clsx";
-import * as Headless from "@headlessui/react";
+
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
 ];
@@ -62,11 +61,13 @@ export const action = async ({
 	// ActionData will be null
 	return null;
 };
+
 interface NavItem {
 	name: string;
 	href: To | string;
 	icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
+
 const navigation: NavItem[] = [
 	{ name: "Dashboard", href: "/admin", icon: HomeIcon },
 	{ name: "Projects", href: "/admin/projects", icon: FolderIcon },
@@ -203,6 +204,7 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 		</SidebarLayout>
 	);
 }
+
 export function ErrorBoundary() {
 	return <AdminErrorBoundary />;
 }

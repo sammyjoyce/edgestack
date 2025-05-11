@@ -1,18 +1,15 @@
 import type React from "react";
 import {
+	isRouteErrorResponse,
 	Links,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	isRouteErrorResponse,
-	useLocation,
-	useMatches,
 } from "react-router";
 import { HashScrollHandler } from "~/routes/common/components/HashScrollHandler";
 import type { Route } from "./+types/root";
 import "./global-error-logger";
-import adminThemeStylesheet from "./admin-theme.css?url";
 import stylesheet from "./app.css?url";
 
 export const links: Route.LinksFunction = () => [
@@ -47,6 +44,7 @@ export default function RootComponent() {
 		</html>
 	);
 }
+
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	let title = "Error";
 	let message = "An unexpected error occurred.";

@@ -4,6 +4,7 @@ import type React from "react";
 import { forwardRef } from "react";
 import { TouchTarget } from "./button";
 import { Link } from "./link";
+
 type AvatarProps = {
 	src?: string | null;
 	square?: boolean;
@@ -19,6 +20,7 @@ const avatarSizes = {
 	lg: "size-12 text-lg",
 	xl: "size-14 text-xl",
 };
+
 export function Avatar({
 	src = null,
 	square = false,
@@ -78,6 +80,7 @@ export function Avatar({
 		</span>
 	);
 }
+
 export const AvatarButton = forwardRef(function AvatarButton(
 	{
 		src,

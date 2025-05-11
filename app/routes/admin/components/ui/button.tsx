@@ -32,6 +32,7 @@ export interface ButtonProps {
 	to?: string; // For react-router Link
 	target?: "_blank";
 	"aria-label"?: string;
+
 	// Allow any other props to be passed through
 	[key: string]: any;
 }

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import React, { type JSX } from "react";
 import { Button } from "~/routes/common/components/ui/Button";
+
 interface HeroProps {
 	title: string;
 	subtitle?: string;
@@ -8,6 +9,7 @@ interface HeroProps {
 	altText?: string;
 	theme?: "light" | "dark";
 }
+
 export default function Hero({
 	title,
 	subtitle,

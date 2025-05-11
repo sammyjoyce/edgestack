@@ -6,6 +6,7 @@ import { NavLink } from "react-router";
 import type { MenuItem } from ".";
 import { Button } from "../ui/Button";
 import { useMenuItemInfo } from "./useMenuItemInfo";
+
 interface MobileMenuProps {
 	isOpen: boolean;
 	onClose: () => void;
@@ -15,6 +16,7 @@ interface MobileMenuProps {
 		sectionId: string,
 	) => void;
 }
+
 export default function MobileMenu({
 	isOpen = false,
 	onClose,

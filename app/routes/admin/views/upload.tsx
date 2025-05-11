@@ -1,28 +1,25 @@
 import type { Route } from "./+types/upload";
 import { eq } from "drizzle-orm";
-import type { DrizzleD1Database } from "drizzle-orm/d1";
-import React, { type JSX, useState } from "react";
+import React from "react";
 import { data, redirect } from "react-router";
 import { ValiError } from "valibot";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { updateContent } from "~/routes/common/db";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import {
-	type StoredImage,
 	deleteStoredImage,
 	handleImageUpload,
 	listStoredImages,
 } from "~/utils/upload.server";
-import { schema } from "../../../../database/schema";
 import * as FullSchema from "../../../../database/schema";
+import { schema } from "../../../../database/schema";
 import { validateContentInsert } from "../../../../database/valibot-validation.js";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageUploadSection } from "../components/ImageUploadSection";
 import { FormCard } from "../components/ui/FormCard";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Heading } from "../components/ui/heading";
-import { Input } from "../components/ui/input";
 import { Text } from "../components/ui/text";
+
 // Removed type { Route } from "./+types/upload"; as it's moved to the top by another change
 export async function loader({ context, request, params }: Route.LoaderArgs) {
 	const sessionValue = getSessionCookie(request);
@@ -41,6 +38,7 @@ export async function loader({ context, request, params }: Route.LoaderArgs) {
 		);
 	}
 }
+
 export async function action({ request, context, params }: Route.ActionArgs) {
 	const unauthorized = () => {
 		return redirect("/admin/login");
@@ -275,6 +273,7 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 	}
 	return data({ success: false, error: "Method not allowed" }, { status: 405 });
 }
+
 export default function Component({
 	loaderData,
 	actionData,

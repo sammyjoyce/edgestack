@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import type React from "react";
+
 function FacebookIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
@@ -11,6 +12,7 @@ function FacebookIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 		</svg>
 	);
 }
+
 function InstagramIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
@@ -22,6 +24,7 @@ function InstagramIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 		</svg>
 	);
 }
+
 function GitHubIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
@@ -33,6 +36,7 @@ function GitHubIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 		</svg>
 	);
 }
+
 function DribbbleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
@@ -44,12 +48,14 @@ function DribbbleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 		</svg>
 	);
 }
+
 export const socialMediaProfiles = [
 	{ title: "Facebook", href: "https://facebook.com", icon: FacebookIcon },
 	{ title: "Instagram", href: "https://instagram.com", icon: InstagramIcon },
 	{ title: "GitHub", href: "https://github.com", icon: GitHubIcon },
 	{ title: "Dribbble", href: "https://dribbble.com", icon: DribbbleIcon },
 ];
+
 export function SocialMedia({
 	className,
 	invert = false,

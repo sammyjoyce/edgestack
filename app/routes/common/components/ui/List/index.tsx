@@ -2,6 +2,7 @@ import clsx from "clsx";
 import type React from "react";
 import { Border } from "~/routes/common/components/ui/Border";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
+
 export function List({
 	children,
 	className,
@@ -17,6 +18,7 @@ export function List({
 		</FadeInStagger>
 	);
 }
+
 export function ListItem({
 	children,
 	title,

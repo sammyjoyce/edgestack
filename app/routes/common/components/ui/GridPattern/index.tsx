@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import type React from "react";
 import { useEffect, useId, useRef, useState } from "react";
+
 function Block({
 	x,
 	y,
@@ -17,6 +18,7 @@ function Block({
 		/>
 	);
 }
+
 export function GridPattern({
 	yOffset = 0,
 	interactive = false,
@@ -44,6 +46,7 @@ export function GridPattern({
 		if (!interactive) {
 			return;
 		}
+
 		function onMouseMove(event: MouseEvent) {
 			if (!ref.current) {
 				return;
@@ -71,6 +74,7 @@ export function GridPattern({
 				);
 			});
 		}
+
 		window.addEventListener("mousemove", onMouseMove);
 		return () => {
 			window.removeEventListener("mousemove", onMouseMove);

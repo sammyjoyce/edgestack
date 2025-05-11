@@ -1,6 +1,6 @@
 import type { Route } from "./+types/delete";
 import React from "react";
-import { Form, redirect, useLoaderData, useNavigate } from "react-router";
+import { Form, redirect, useNavigate } from "react-router";
 // Removed data import; use plain objects or throw new Response.
 import {
 	Alert,
@@ -10,13 +10,13 @@ import {
 import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { deleteProject, getProjectById } from "~/routes/common/db";
-import type { Project } from "../../../../../../database/schema";
 import { FormCard } from "../../../components/ui/FormCard";
 import { PageHeader } from "../../../components/ui/PageHeader";
 import { Button } from "../../../components/ui/button";
 import { Label } from "../../../components/ui/fieldset";
 import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
+
 // Removed missing Route type import.
 export async function loader({ params, context, request }: Route.LoaderArgs) {
 	const projectId = Number(params.projectId);
@@ -36,6 +36,7 @@ export async function loader({ params, context, request }: Route.LoaderArgs) {
 		});
 	}
 }
+
 export async function action({ request, params, context }: Route.ActionArgs) {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
@@ -57,6 +58,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 		};
 	}
 }
+
 export default function DeleteProjectPage({
 	loaderData,
 	params,

@@ -2,6 +2,7 @@ import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
 import { Text } from "./text";
+
 const sizes = {
 	xs: "sm:max-w-xs",
 	sm: "sm:max-w-sm",
@@ -13,6 +14,7 @@ const sizes = {
 	"4xl": "sm:max-w-4xl",
 	"5xl": "sm:max-w-5xl",
 };
+
 export function Dialog({
 	size = "lg",
 	className,
@@ -47,6 +49,7 @@ export function Dialog({
 		</Headless.Dialog>
 	);
 }
+
 export function DialogTitle({
 	className,
 	...props
@@ -64,6 +67,7 @@ export function DialogTitle({
 		/>
 	);
 }
+
 export function DialogDescription({
 	className,
 	...props
@@ -79,12 +83,14 @@ export function DialogDescription({
 		/>
 	);
 }
+
 export function DialogBody({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"div">) {
 	return <div {...props} className={clsx(className, "mt-4 space-y-4")} />;
 }
+
 export function DialogActions({
 	className,
 	...props

@@ -1,5 +1,5 @@
-import { useMemo } from "react";
 import type { MenuItem } from ".";
+
 interface UseMenuItemInfoResult {
 	isRoute: boolean;
 	rawPath: string;
@@ -7,6 +7,7 @@ interface UseMenuItemInfoResult {
 	hashPart: string;
 	anchorHref: string;
 }
+
 export function useMenuItemInfo(item: MenuItem): UseMenuItemInfoResult {
 	const isRoute = "isRouteLink" in item && item.isRouteLink === true;
 	const rawPath = isRoute && typeof item.path === "string" ? item.path : "";

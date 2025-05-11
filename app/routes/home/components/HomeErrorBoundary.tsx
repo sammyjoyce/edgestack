@@ -1,6 +1,7 @@
 import React from "react";
 import { isRouteErrorResponse, useRouteError } from "react-router";
 import { SharedErrorBoundary } from "~/routes/common/components/ErrorBoundary";
+
 export function HomeErrorBoundary() {
 	const error = useRouteError();
 	let title = "Error";

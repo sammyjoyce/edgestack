@@ -2,6 +2,7 @@ import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
 import { forwardRef } from "react";
+
 export function InputGroup({
 	children,
 }: React.ComponentPropsWithoutRef<"span">) {
@@ -20,6 +21,7 @@ export function InputGroup({
 		</span>
 	);
 }
+
 const dateTypes = ["date", "datetime-local", "month", "time", "week"];
 type DateType = (typeof dateTypes)[number];
 export const Input = forwardRef(function Input(

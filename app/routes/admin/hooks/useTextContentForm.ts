@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { FetcherWithComponents } from "react-router";
 import { ValiError } from "valibot";
 import { validateContentInsert } from "../../../../database/valibot-validation.js";
+
 type ActionResponseData = {
 	success?: boolean;
 	error?: string;
@@ -36,6 +37,7 @@ const validateField = (
 		return message;
 	}
 };
+
 interface TextFieldConfig {
 	key: string;
 	label: string;
@@ -43,11 +45,13 @@ interface TextFieldConfig {
 	help: string;
 	isRichText?: boolean;
 }
+
 interface UseTextContentFormArgs {
 	initialContent: Record<string, string>;
 	fetcher: FetcherWithComponents<ActionResponseData>;
 	textFieldsConfig: TextFieldConfig[];
 }
+
 export function useTextContentForm({
 	initialContent,
 	fetcher,

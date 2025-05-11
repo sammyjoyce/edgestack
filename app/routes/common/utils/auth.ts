@@ -1,8 +1,10 @@
 import { assert } from "./assert";
+
 export const COOKIE_NAME = "lush_admin_session";
 export const COOKIE_MAX_AGE = 60 * 60 * 2;
 const enc = new TextEncoder();
 const keyCache = new Map<string, Promise<CryptoKey>>();
+
 async function getKey(secret: string): Promise<CryptoKey> {
 	if (!keyCache.has(secret)) {
 		keyCache.set(
@@ -18,14 +20,17 @@ async function getKey(secret: string): Promise<CryptoKey> {
 	}
 	return keyCache.get(secret)!;
 }
+
 function bytesToHex(buf: ArrayBuffer): string {
 	return [...new Uint8Array(buf)]
 		.map((b) => b.toString(16).padStart(2, "0"))
 		.join("");
 }
+
 function toHex(buf: Uint8Array): string {
 	return [...buf].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
+
 export async function sign(value: string, secret: string): Promise<string> {
 	try {
 		const key = await getKey(secret);
@@ -36,6 +41,7 @@ export async function sign(value: string, secret: string): Promise<string> {
 		throw new Error("Failed to sign session token");
 	}
 }
+
 export async function verify(
 	signed: string,
 	secret: string,
@@ -54,6 +60,7 @@ export async function verify(
 	}
 	return diff === 0 ? value : false;
 }
+
 export function getSessionCookie(req: Request): string | null {
 	const cookieHeader = req.headers.get("cookie") ?? "";
 	for (const pair of cookieHeader.split(";")) {
@@ -62,6 +69,7 @@ export function getSessionCookie(req: Request): string | null {
 	}
 	return null;
 }
+
 export async function requireAdmin(
 	request: Request,
 	context: any,

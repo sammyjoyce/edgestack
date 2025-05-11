@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import type React from "react";
 import { Button } from "./button";
+
 const ChevronLeftIcon = () => (
 	<svg
 		className="size-4 stroke-current"
@@ -31,6 +32,7 @@ const ChevronRightIcon = () => (
 		/>
 	</svg>
 );
+
 export function Pagination({
 	"aria-label": ariaLabel = "Page navigation",
 	className,
@@ -47,6 +49,7 @@ export function Pagination({
 		/>
 	);
 }
+
 export function PaginationPrevious({
 	href = null,
 	className,
@@ -66,6 +69,7 @@ export function PaginationPrevious({
 		</Button>
 	);
 }
+
 export function PaginationNext({
 	href = null,
 	className,
@@ -85,6 +89,7 @@ export function PaginationNext({
 		</Button>
 	);
 }
+
 export function PaginationList({
 	className,
 	...props
@@ -96,6 +101,7 @@ export function PaginationList({
 		/>
 	);
 }
+
 export function PaginationPage({
 	href,
 	className,
@@ -126,6 +132,7 @@ export function PaginationPage({
 		</Button>
 	);
 }
+
 export function PaginationGap({
 	className,
 	children = <>&hellip;</>,

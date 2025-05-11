@@ -2,6 +2,7 @@ import clsx from "clsx";
 import type React from "react";
 import { Border } from "~/routes/common/components/ui/Border";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
+
 export function GridList({
 	children,
 	className,
@@ -22,6 +23,7 @@ export function GridList({
 		</FadeInStagger>
 	);
 }
+
 export function GridListItem({
 	title,
 	children,

@@ -1,18 +1,19 @@
 import type { Route } from "./+types/route";
-import { type MetaFunction, useLoaderData } from "react-router";
-const DEBUG = process.env.NODE_ENV !== "production";
+import { type MetaFunction } from "react-router";
 import type { JSX } from "react";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import RecentProjects from "~/routes/common/components/RecentProjects";
-import { getFeaturedProjects } from "~/routes/common/db";
-import { getAllContent } from "~/routes/common/db";
+import { getAllContent, getFeaturedProjects } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
 import type { Project } from "../../../database/schema";
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import Hero from "./components/Hero";
 import OurServices from "./components/OurServices";
+
+const DEBUG = process.env.NODE_ENV !== "production";
+
 export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
 	const content = data?.content ?? {};
 	const pageTitle = content.meta_title ?? "Lush Constructions";
@@ -27,6 +28,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
 		},
 	];
 };
+
 export async function loader({ request, context }: Route.LoaderArgs) {
 	assert(request instanceof Request, "loader: request must be a Request");
 	assert(context?.db, "loader: missing DB in context");
@@ -59,6 +61,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		revalidatedAt: revalidate ? Date.now() : undefined,
 	};
 }
+
 export default function HomeRoute({
 	loaderData,
 }: Route.ComponentProps): JSX.Element {

@@ -1,6 +1,6 @@
 import type { Route } from "./+types/new";
 import React from "react";
-import { Form, redirect, useActionData, useNavigate } from "react-router";
+import { Form, redirect, useNavigate } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { createProject } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
@@ -9,12 +9,7 @@ import { validateProjectInsert } from "../../../../../database/valibot-validatio
 import { ProjectFormFields } from "../../components/ProjectFormFields";
 import { SectionCard, SectionHeading } from "../../components/ui/section";
 import { PageHeader } from "../../components/ui/PageHeader";
-import { Alert, AlertDescription, AlertTitle } from "../../components/ui/alert";
-import { Button } from "../../components/ui/button";
-import { Label } from "../../components/ui/fieldset";
-import { Input } from "../../components/ui/input";
-import { Text } from "../../components/ui/text";
-import { Textarea } from "../../components/ui/textarea";
+import { Alert } from "../../components/ui/alert";
 
 export async function action({ request, context, params }: Route.ActionArgs) {
 	const formData = await request.formData();

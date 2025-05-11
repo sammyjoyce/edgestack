@@ -2,6 +2,7 @@ import clsx from "clsx";
 import type React from "react";
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
+
 export function SectionIntro({
 	title,
 	eyebrow,

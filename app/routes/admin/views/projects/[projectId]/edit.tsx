@@ -1,31 +1,13 @@
 import type { Route } from "./+types/edit";
 import React from "react";
-import {
-	Form,
-	Link,
-	redirect,
-	useActionData,
-	useLoaderData,
-} from "react-router";
-import type { Project } from "~/database/schema";
-import { ProjectImageSelector } from "~/routes/admin/components/ProjectImageSelector";
-import RichTextField from "~/routes/admin/components/RichTextField";
+import { Form, redirect } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
 import { ProjectFormFields } from "../../../components/ProjectFormFields";
 import { SectionCard, SectionHeading } from "../../../components/ui/section";
-import { PageHeader } from "../../../components/ui/PageHeader";
-import {
-	Alert,
-	AlertDescription,
-	AlertTitle,
-} from "../../../components/ui/alert";
-import { Button } from "../../../components/ui/button";
-import { Label } from "../../../components/ui/fieldset";
-import { Input } from "../../../components/ui/input";
-import { Text } from "../../../components/ui/text";
+import { Alert } from "../../../components/ui/alert";
 import { Heading } from "~/routes/admin/components/ui/heading";
 
 export async function loader({ params, context, request }: Route.LoaderArgs) {
