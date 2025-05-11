@@ -69,6 +69,8 @@
 		inset 0.5px 0.5px 1px var(--color-admin-white),
 		inset -0.5px -0.5px 1px rgba(0,0,0,0.35);
 
+	--font-admin-sans: var(--font-sans);
+
 	/* Add more for secondary, tertiary, neutral if needed, following openai-fm patterns */
 }
 
@@ -81,6 +83,15 @@
   color: var(--color-admin-foreground);
   font-size: 14px; /* Match openai-fm html font-size */
   line-height: 130%; /* Match openai-fm html line-height */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-admin-sans);
 }
 
 /* Dark mode specific variables for admin */
