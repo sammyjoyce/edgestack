@@ -27,11 +27,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
 		},
 	];
 };
-export async function loader({ request, context }: Route.LoaderArgs): Promise<{
-	content: Record<string, string>;
-	projects: Project[];
-	revalidatedAt?: number;
-}> {
+export async function loader({ request, context }: Route.LoaderArgs) {
 	assert(request instanceof Request, "loader: request must be a Request");
 	assert(context?.db, "loader: missing DB in context");
 	const url = new URL(request.url);

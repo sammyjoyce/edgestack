@@ -20,9 +20,7 @@ export async function action({
 	request,
 	context,
 	params,
-}: Route.ActionArgs): Promise<
-	Response | { success: boolean; errors?: Record<string, string>; error?: string }
-> {
+}: Route.ActionArgs) {
 	const formData = await request.formData();
 	const title = formData.get("title")?.toString() ?? "";
 	const description = formData.get("description")?.toString() ?? "";

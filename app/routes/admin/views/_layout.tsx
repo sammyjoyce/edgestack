@@ -28,7 +28,7 @@ export const loader = async ({
 	request,
 	context,
 	params,
-}: Route.LoaderArgs): Promise<Route.LoaderData | Response> => {
+}: Route.LoaderArgs) => {
 	const url = new URL(request.url);
 	const isLoginRoute = url.pathname === "/admin/login";
 	const isLogoutRoute = url.pathname === "/admin/logout";
@@ -58,7 +58,7 @@ export const action = async ({
 	request, // eslint-disable-line @typescript-eslint/no-unused-vars
 	context, // eslint-disable-line @typescript-eslint/no-unused-vars
 	params,  // eslint-disable-line @typescript-eslint/no-unused-vars
-}: Route.ActionArgs): Promise<null> => { // ActionData will be null
+}: Route.ActionArgs) => { // ActionData will be null
 	return null;
 };
 interface NavItem {

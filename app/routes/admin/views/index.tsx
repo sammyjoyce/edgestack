@@ -55,7 +55,7 @@ export async function action({
 	request,
 	context,
 	params,
-}: Route.ActionArgs): Promise<Response | Route.ActionData> {
+}: Route.ActionArgs) {
 	if (DEBUG)
 		console.log(
 			"Action triggered in admin/views/index.tsx - THIS IS THE CORRECT ROUTE",

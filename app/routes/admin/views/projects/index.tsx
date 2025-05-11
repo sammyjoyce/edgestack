@@ -21,7 +21,7 @@ import type { Route } from "./+types/index";
 export async function loader({
 	request,
 	context,
-}: Route.LoaderArgs): Promise<Route.LoaderData | Response> {
+}: Route.LoaderArgs) {
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
 	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
@@ -41,7 +41,7 @@ export async function loader({
 export async function action({
 	request,
 	context,
-}: Route.ActionArgs): Promise<Route.ActionData | Response> {
+}: Route.ActionArgs) {
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
 	const sessionValue = getSessionCookie(request);

@@ -22,7 +22,7 @@ export async function loader({
 	params,
 	context,
 	request,
-}: Route.LoaderArgs): Promise<{ project: Project } | Response> {
+}: Route.LoaderArgs) {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		throw new Response("Invalid Project ID", { status: 400 });
@@ -44,7 +44,7 @@ export async function action({
 	request,
 	params,
 	context,
-}: Route.ActionArgs): Promise<Response | { success: boolean; error?: string }> {
+}: Route.ActionArgs) {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {
 		return { success: false, error: "Invalid Project ID" };
