@@ -8,7 +8,7 @@ interface ConditionalRichTextRendererProps {
 	richTextClassName?: string;
 	fallbackTag?: keyof React.JSX.IntrinsicElements;
 }
-export default function ConditionalRichTextRenderer({
+export function ConditionalRichTextRenderer({
 	text,
 	fallbackClassName = "text-base sm:text-lg",
 	richTextClassName,
