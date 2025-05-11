@@ -53,7 +53,7 @@ export function ImageSelector({
 			<div className="flex justify-center mt-2 w-full">
 				<Drawer.Root open={isOpen} onOpenChange={setIsOpen}>
 					<Drawer.Trigger asChild>
-						<Button invert size="sm" type="button">
+						<Button invert size="sm" type="button" variant="secondary">
 							Browse Existing Images
 						</Button>
 					</Drawer.Trigger>

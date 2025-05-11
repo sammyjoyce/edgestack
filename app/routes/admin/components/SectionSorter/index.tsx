@@ -235,7 +235,8 @@ function SortableItem({
 			<div className="flex items-center">
 				<Button
 					variant="outline"
-					className="cursor-grab p-2 text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-800 border-gray-300 dark:border-slate-600 hover:bg-gray-200 dark:hover:bg-slate-600 hover:text-gray-700 dark:hover:text-white focus-visible:ring-primary-500 mr-3 shadow-none"
+					size="sm"
+					className="cursor-grab text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-800 border-gray-300 dark:border-slate-600 hover:bg-gray-200 dark:hover:bg-slate-600 hover:text-gray-700 dark:hover:text-white focus-visible:ring-primary-500 mr-3 shadow-none"
 					aria-label={`Drag ${details.label} section`}
 					{...attributes}
 					{...listeners}

@@ -62,7 +62,7 @@ export function ProjectImageSelector({
 				<div>
 					<Drawer.Root open={isOpen} onOpenChange={setIsOpen}>
 						<Drawer.Trigger asChild>
-							<Button invert type="button" className="w-full">
+							<Button invert type="button" variant="secondary" block>
 								Choose from Existing Images
 							</Button>
 						</Drawer.Trigger>

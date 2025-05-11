@@ -96,7 +96,7 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
             Cancel
           </Button>
         )}
-        <Button type="submit">
+        <Button type="submit" variant="primary">
           {isEdit ? "Save Changes" : "Create Project"}
         </Button>
       </div>
