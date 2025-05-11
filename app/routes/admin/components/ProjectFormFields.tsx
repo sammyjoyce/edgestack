@@ -88,18 +88,18 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
         <RichTextField name="details" initialJSON={initial.details || ""} />
       </FieldRow>
       <FieldRow>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-x-2">
           <Input
             type="checkbox"
             name="isFeatured"
             id="isFeatured"
             value="true"
             defaultChecked={!!initial.isFeatured}
-            className="size-4 rounded border-gray-300 text-primary focus:ring-primary"
+            className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
           />
-          <FieldLabel htmlFor="isFeatured" className="!mb-0">
+          <label htmlFor="isFeatured" className="text-sm font-medium text-gray-700 select-none">
             Feature on Home Page
-          </FieldLabel>
+          </label>
         </div>
       </FieldRow>
       <FieldRow>
@@ -129,7 +129,7 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
         <div>
           <Drawer.Root open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
             <Drawer.Trigger asChild>
-              <Button variant="secondary" type="button" className="w-full">
+              <Button variant="secondary" type="button">
                 Choose from Existing Images
               </Button>
             </Drawer.Trigger>
