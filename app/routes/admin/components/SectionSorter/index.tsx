@@ -159,7 +159,7 @@ export default function SectionSorter({
 				className="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-4"
 			>
 				Reorder & Theme Sections
-			</h2>
+			</Heading>
 			{statusMessage && (
 				<div className="sr-only" aria-live="assertive" aria-atomic="true">
 					{statusMessage}
