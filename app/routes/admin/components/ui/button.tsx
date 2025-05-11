@@ -2,152 +2,154 @@ import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
 import { forwardRef } from "react";
-import { Link } from "./link";
-const styles = {
-	base: [
-		"relative isolate inline-flex items-center justify-center gap-2 rounded-md p-3 font-semibold",
-		"transition-shadow duration-300 ease-in-out cursor-pointer select-none",
-		"focus:not-data-focus:outline-hidden data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-blue-500",
-		"data-disabled:opacity-50 data-disabled:cursor-not-allowed",
-		"*:data-[slot=icon]:size-5 *:data-[slot=icon]:shrink-0",
-	],
-	color: {
-		ghost: [
-			"bg-transparent text-foreground shadow-none",
-			"hover:bg-zinc-100 dark:hover:bg-zinc-800",
-		],
-		outline: [
-			"bg-transparent text-foreground border border-foreground shadow-none",
-			"hover:bg-foreground hover:text-white",
-		],
-		primary: [
-			"text-white bg-primary",
-			"shadow-[inset_1px_1px_1px_#ffffffd4,inset_-1px_-1px_1px_#0000003b,0.44px_0.44px_0.62px_-1px_#00000042,1.21px_1.21px_1.71px_-1.5px_#0000003f,2.65px_2.65px_3.75px_-2.25px_#0000003b,5.9px_5.9px_8.34px_-3px_#00000031,10px_10px_21.21px_-3.75px_#0000003b,-0.5px_-0.5px_0_0_#952b0087]",
-			"data-active:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,2.5px_2.5px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#00000022]",
-			"data-selected:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,2.5px_2.5px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#00000022]",
-		],
-		secondary: [
-			"text-white bg-foreground",
-			"shadow-[inset_1px_1px_1px_#ffffffb3,inset_-1px_-1px_1px_#0000003b,0.44px_0.44px_0.62px_-0.75px_#00000042,1.21px_1.21px_1.71px_-1.5px_#0000003f,2.65px_2.65px_3.75px_-2.25px_#0000003b,5.9px_5.9px_8.34px_-3px_#00000031,14px_14px_21.21px_-3.75px_#00000033,-0.5px_-0.5px_0_0_#000000af]",
-			"data-active:shadow-[inset_0.5px_0.5px_1px_#ffffffb3,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,4px_4px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#000000ac]",
-			"data-selected:shadow-[inset_0.5px_0.5px_1px_#ffffffb3,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,4px_4px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#000000ac]",
-		],
-		tertiary: [
-			"text-white bg-[#6a6a6a]",
-			"shadow-[inset_1px_1px_1px_#ffffffba,inset_-1px_-1px_1px_#0000003b,0.44px_0.44px_0.62px_-1px_#00000042,1.21px_1.21px_1.71px_-1.5px_#0000003f,2.65px_2.65px_3.75px_-2.25px_#0000003b,5.9px_5.9px_8.34px_-3px_#0000004f,12px_12px_21.21px_-3.75px_#0000001a,-0.5px_-0.5px_0_0_#0000006b]",
-			"data-active:shadow-[inset_0.5px_0.5px_1px_#ffffffba,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,4px_4px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#0000007b]",
-			"data-selected:shadow-[inset_0.5px_0.5px_1px_#ffffffba,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,4px_4px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#0000007b]",
-		],
-		neutral: [
-			"text-white bg-[#aaa]",
-			"shadow-[inset_1px_1px_1px_#ffffffc2,inset_-1px_-1px_1px_#0000003b,0.44px_0.44px_0.62px_-1px_#00000042,1.21px_1.21px_1.71px_-1.5px_#0000003f,2.65px_2.65px_3.75px_-2.25px_#0000003b,5.9px_5.9px_8.34px_-3px_#00000031,10px_10px_21.21px_-3.75px_#0000000e,-0.5px_-0.5px_0_0_#00000012]",
-			"data-active:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,2.5px_2.5px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#00000022]",
-			"data-selected:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#0000005b,0.22px_0.22px_0.31px_-1px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,2.5px_2.5px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_#00000022]",
-		],
-		default: [
-			"bg-[#f4f4f4] text-foreground",
-			"shadow-[rgb(255,255,255)_1px_1px_1px_0px_inset,rgba(0,0,0,0.15)_-1px_-1px_1px_0px_inset,rgba(0,0,0,0.26)_0.44px_0.44px_0.62px_-1px,rgba(0,0,0,0.247)_1.21px_1.21px_1.71px_-1.5px,rgba(0,0,0,0.23)_2.65px_2.65px_3.75px_-2.25px,rgba(0,0,0,0.192)_5.9px_5.9px_8.34px_-3px,rgba(0,0,0,0.056)_10px_10px_21.21px_-3.75px,-0.5px_-0.5px_0_0_rgb(0_0_0/5%)]",
-			"data-active:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#00000026,0.22px_0.22px_0.31px_-0.5px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,2.5px_2.5px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_rgb(0_0_0/10%)]",
-			"data-selected:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#00000026,0.22px_0.22px_0.31px_-0.5px_#0003,0.6px_0.6px_0.85px_-1px_#0000002e,1.32px_1.32px_1.88px_-1.5px_#00000040,2.95px_2.95px_4.17px_-2px_#0000001a,2.5px_2.5px_3px_-2.5px_#00000026,-0.5px_-0.5px_0_0_rgb(0_0_0/10%)]",
-		],
-		danger: ["text-white bg-red-600", "hover:bg-red-700"],
-	},
-};
+import { Link as RouterLink } from "react-router"; // Changed import name
+
+// Define the color prop based on openai-fm's approach + admin additions
+type ButtonColor =
+	| "primary"
+	| "secondary"
+	| "tertiary"
+	| "neutral"
+	| "default"
+	| "danger";
+
+// Define variant prop for ghost/outline, which don't have complex shadows like the colored buttons
+type ButtonVariant = "ghost" | "outline" | "solid"; // 'solid' can be the default for colored buttons
+
 export interface ButtonProps {
 	children: React.ReactNode;
 	className?: string;
-	variant?: keyof typeof styles.color | "ghost" | "outline";
-	color?: keyof typeof styles.color;
+	variant?: ButtonVariant; // For flat/outline styles
+	color?: ButtonColor; // For openai-fm like colored buttons with shadows
 	as?: React.ElementType;
-	invert?: boolean;
-	size?: "xs" | "sm" | "md" | "lg";
+	size?: "xs" | "sm" | "md" | "lg"; // Keep existing sizes
 	type?: "button" | "submit" | "reset";
 	selected?: boolean;
 	disabled?: boolean;
 	block?: boolean;
 	onClick?: (evt: React.MouseEvent<HTMLElement>) => void;
-	href?: string;
-	to?: string;
+	href?: string; // For standard anchor tags
+	to?: string; // For react-router Link
 	target?: "_blank";
 	"aria-label"?: string;
+	// Allow any other props to be passed through
+	[key: string]: any;
 }
+
 export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 	{
 		as,
-		variant,
-		color,
-		invert,
-		size,
+		variant = "solid", // Default to solid, which will use color prop for styling
+		color = "default", // Default color if variant is solid
+		size, // Keep admin's size prop
 		className,
 		children,
-		selected,
-		block,
-		type = "button",
+		selected = false,
+		block = false,
+		type = "button", // Default type for button elements
 		href,
 		to,
-		target,
 		onClick,
+		disabled,
 		...props
 	}: ButtonProps,
 	ref,
 ) {
-	const key = variant ?? color ?? "default";
-	const colorClasses =
-		styles.color[key as keyof typeof styles.color] || styles.color.default;
 	const sizeMap: Record<string, string> = {
 		xs: "px-2 py-1 text-xs",
-		sm: "px-2.5 py-1 text-sm",
-		md: "px-3 py-2 text-base",
+		sm: "px-2.5 py-1.5 text-sm", // Adjusted padding for sm
+		md: "px-3 py-2 text-sm",    // Adjusted padding for md
 		lg: "px-4 py-2.5 text-base",
 	};
-	const classes = clsx(
-		className,
-		styles.base,
-		colorClasses,
-		size ? sizeMap[size] : null,
-		invert && "invert",
-		block ? "w-full" : "inline-flex",
-		selected && "data-selected",
+
+	// ─── Tailwind‑based styling ────────────────────────────────────────────────
+	const baseClasses =
+		"group flex items-center justify-center gap-2 flex-wrap rounded-md font-medium transition-[box-shadow,background-color,color] duration-200 ease-in-out select-none";
+
+	const sizeClass = size ? sizeMap[size] : sizeMap.md;
+
+	const solidColorMap: Record<ButtonColor, string> = {
+		primary:
+			"text-[var(--admin-color-white)] bg-[var(--admin-color-primary)] shadow-[var(--admin-shadow-button-primary)] active:shadow-[var(--admin-shadow-button-primary-active)]",
+		secondary:
+			"text-[var(--admin-color-white)] bg-[var(--admin-color-secondary)] shadow-[inset_1px_1px_1px_#ffffffb3,inset_-1px_-1px_1px_#0000003b,0.444584px_0.444584px_0.628737px_-0.75px_#00000042,1.21072px_1.21072px_1.71222px_-1.5px_#0000003f,-0.5px_-0.5px_0_0_#000000af] active:shadow-[inset_0.5px_0.5px_1px_#ffffffb3,inset_-0.5px_-0.5px_1px_#0000005b,0.222px_0.222px_0.314px_-1px_#0003,-0.5px_-0.5px_0_0_#000000ac]",
+		tertiary:
+			"text-[var(--admin-color-white)] bg-[var(--admin-color-tertiary)] shadow-[inset_1px_1px_1px_#ffffffba,inset_-1px_-1px_1px_#0000003b,0.444584px_0.444584px_0.628737px_-1px_#00000042,-0.5px_-0.5px_0_0_#0000006b] active:shadow-[inset_0.5px_0.5px_1px_#ffffffba,inset_-0.5px_-0.5px_1px_#0000005b,0.222px_0.222px_0.314px_-1px_#0003,-0.5px_-0.5px_0_0_#0000007b]",
+		neutral:
+			"text-[var(--admin-color-white)] bg-[var(--admin-color-neutral)] shadow-[inset_1px_1px_1px_#ffffffc2,inset_-1px_-1px_1px_#0000003b,0.444584px_0.444584px_0.628737px_-1px_#00000042,-0.5px_-0.5px_0_0_#00000012] active:shadow-[inset_0.5px_0.5px_1px_#fff,inset_-0.5px_-0.5px_1px_#0000005b,0.222px_0.222px_0.314px_-1px_#0003,-0.5px_-0.5px_0_0_#00000022]",
+		danger:
+			"text-[var(--admin-color-white)] bg-[var(--admin-color-error)] shadow-[var(--admin-shadow-button-primary)] hover:brightness-90 active:shadow-[var(--admin-shadow-button-primary-active)] active:brightness-80",
+		default:
+			"text-[var(--admin-color-foreground)] bg-[var(--admin-color-default-button-bg)] shadow-[var(--admin-shadow-button-default)] active:shadow-[var(--admin-shadow-button-default-active)]",
+	};
+
+	const ghostClasses =
+		"bg-transparent shadow-none text-[var(--admin-color-foreground)] hover:bg-black/5 dark:hover:bg-white/8";
+
+	const outlineBase =
+		"bg-transparent border border-[var(--admin-color-border)] text-[var(--admin-color-foreground)] shadow-none hover:bg-black/3 dark:hover:bg-white/5 hover:border-[var(--admin-color-foreground)]";
+
+	const outlineSelected =
+		"bg-[var(--admin-color-primary)] text-[var(--admin-color-white)] border-[var(--admin-color-primary)]";
+
+	const variantClasses =
+		variant === "ghost"
+			? ghostClasses
+			: variant === "outline"
+			? clsx(outlineBase, selected && outlineSelected)
+			: solidColorMap[color ?? "default"];
+
+	const stateClasses = clsx(
+		block && "w-full",
+		disabled && "opacity-60 cursor-not-allowed",
 	);
+
+	const effectiveClassName = clsx(
+		baseClasses,
+		sizeClass,
+		variantClasses,
+		stateClasses,
+		className,
+	);
+
 	const commonProps = {
 		ref,
-		className: classes,
-		"data-selected": selected ? "" : undefined,
-		"data-disabled": props.disabled ? "" : undefined,
-		"aria-label": props["aria-label"],
-		onClick: props.disabled ? undefined : onClick,
+		className: effectiveClassName,
+		"data-selected": selected ? "true" : undefined,
+		"data-disabled": disabled ? "true" : undefined,
+		"data-block": block ? "true" : undefined,
+		"data-color": variant === "solid" ? color : undefined, // Apply color attribute only for solid variant
+		"data-variant": variant !== "solid" ? variant : undefined, // Apply variant attribute for ghost/outline
+		onClick: disabled ? undefined : onClick,
+		...props, // Pass through other props like aria-label
 	};
 
-	const ComponentToRender = as ?? (to || href ? Link : Headless.Button);
+	const ComponentToRender = as ?? (to ? RouterLink : href ? "a" : Headless.Button);
 
-	// Prepare props for the final component
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const effectiveProps: { [key: string]: any } = {
-		...commonProps,
-		...props, // Includes original 'to', 'href', 'type', 'target' from ButtonProps
-	};
+	const finalProps: any = { ...commonProps };
 
 	if (ComponentToRender === Headless.Button) {
-		// Ensure 'type' is set for Headless.Button, remove 'to' and 'href'
-		effectiveProps.type = type; // type defaults to 'button'
-		delete effectiveProps.to;
-		delete effectiveProps.href;
-	} else {
-		// It's a link component (either via 'as' or our internal 'Link' from ./link)
-		// Ensure 'to' or 'href' are correctly set from the original ButtonProps.
-		// 'target' will pass through via ...props.
-		// Remove 'type' as it's not standard for anchor/Link elements.
-		if (to) effectiveProps.to = to;
-		if (href) effectiveProps.href = href;
-		delete effectiveProps.type;
+		finalProps.type = type;
+		delete finalProps.to;
+		delete finalProps.href;
+	} else if (ComponentToRender === RouterLink) {
+		finalProps.to = to;
+		delete finalProps.href;
+		delete finalProps.type;
+	} else if (ComponentToRender === "a") {
+		finalProps.href = href;
+		delete finalProps.to;
+		delete finalProps.type;
 	}
 
+
 	return (
-		<ComponentToRender {...effectiveProps}>
+		<ComponentToRender {...finalProps}>
 			{children}
 		</ComponentToRender>
 	);
 });
+
 export function TouchTarget({ children }: { children: React.ReactNode }) {
 	return (
 		<>
@@ -159,8 +161,9 @@ export function TouchTarget({ children }: { children: React.ReactNode }) {
 		</>
 	);
 }
+
 export const ButtonLED = () => {
 	return (
-		<span className="block w-[7px] h-[7px] rounded-full bg-black-10 shadow-[inset_1px_1px_2px_#0000001c,0_1px_0_0px_#ffffff30] transition-colors group-data-selected:bg-primary" />
+		<span className="block w-[7px] h-[7px] rounded-full bg-black/10 shadow-[inset_1px_1px_2px_#0000001c,0_1px_0_0_#ffffff30] transition-colors group-data-[selected=true]:bg-[var(--admin-color-primary)]" />
 	);
 };

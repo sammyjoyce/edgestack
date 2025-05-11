@@ -12,3 +12,4 @@ node_modules
 .aider*
 # React Router generated types
 .react-router/
+inspiration
