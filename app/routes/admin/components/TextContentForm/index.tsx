@@ -4,11 +4,9 @@ import {
 	ExclamationTriangleIcon,
 	InformationCircleIcon,
 } from "@heroicons/react/24/outline";
+import { XCircleIcon } from "@heroicons/react/24/solid"; // Or /20/solid if that's your version
 import { Alert } from "../ui/alert";
-	XCircleIcon,
-} from "@heroicons/react/20/solid";
-import type React from "react";
-import { type JSX, useRef } from "react";
+import { useRef, type JSX } from "react";
 import type { FetcherWithComponents } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { Label } from "~/routes/admin/components/ui/fieldset";

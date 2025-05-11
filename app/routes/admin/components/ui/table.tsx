@@ -150,10 +150,10 @@ export function TableCell({
 				bleed ? "pl-4 pr-3 sm:pl-6 lg:pl-8" : "pl-3 pr-3",
 			)}
 		>
-			{href && (
+			{href && ( // href here is actually the 'to' path
 				<Link
 					data-row-link
-					to={href}
+					to={href} // This now matches the updated Link component
 					target={target}
 					aria-label={title}
 					tabIndex={cellRef?.previousElementSibling === null ? 0 : -1}

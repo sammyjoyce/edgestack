@@ -1,4 +1,4 @@
-import type { Route } from "./+types/[projectId]/delete";
+import type { Route } from "./+types/delete";
 import React from "react";
 import { Form, redirect, useLoaderData, useNavigate } from "react-router";
 // Removed data import; use plain objects or throw new Response.

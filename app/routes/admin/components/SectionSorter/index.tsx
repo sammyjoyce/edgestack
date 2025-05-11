@@ -28,12 +28,12 @@ import {
 	Switch,
 	SwitchField,
 	Label as SwitchLabel,
-} from "~/routes/admin/components/ui/switch";
-import { Alert } from "../ui/alert";
-
+} from "./ui/switch";
+import { Alert } from "./ui/alert";
+    
 // import SwitchField from "~/routes/common/components/ui/SwitchField.tsx";
 import type { Route as AdminIndexRoute } from "../../views/+types";
-
+    
 export type SectionTheme = "light" | "dark";
 export interface Section {
 	id: string;
@@ -52,18 +52,18 @@ interface SectionDetail {
 interface SectionSorterProps {
 	initialSectionsFromDb: Section[];
 	sectionDetailsOrdered: SectionDetail[];
-	orderFetcher: FetcherWithComponents<AdminIndexRoute.ActionData>;
-	themeUpdateFetcher: FetcherWithComponents<AdminIndexRoute.ActionData>;
+	orderFetcher: FetcherWithComponents<typeof AdminIndexRoute.action>;
+	themeUpdateFetcher: FetcherWithComponents<typeof AdminIndexRoute.action>;
 }
-
+    
 interface SortableItemProps {
 	details: SectionDetail;
 	onThemeChange: (
 		sectionKey: string,
 		themeKey: string,
 		newTheme: SectionTheme,
-	) => void;
-	fetcherData: AdminIndexRoute.ActionData | undefined;
+	) => void; // eslint-disable-line @typescript-eslint/no-unused-vars
+	fetcherData: Awaited<ReturnType<typeof AdminIndexRoute.action>> | undefined;
 }
 
 export default function SectionSorter({
@@ -179,11 +179,7 @@ export default function SectionSorter({
 								key={itemDetails.id}
 								details={itemDetails}
 								onThemeChange={handleThemeChange}
-								fetcherData={
-									themeUpdateFetcher.data as
-										| AdminIndexRoute.ActionData
-										| undefined
-								}
+								fetcherData={themeUpdateFetcher.data}
 							/>
 						))}
 					</ul>

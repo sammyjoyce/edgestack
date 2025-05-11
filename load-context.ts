@@ -28,9 +28,8 @@ export function getLoadContext({ context }: GetLoadContextArgs) {
 	const db = drizzle(context.cloudflare.env.DB, {
 		schema,
 		// Enable logger only in development mode
-		// Assuming import.meta.env.DEV is available or use an equivalent check
 		logger:
-			context.cloudflare.env.ENVIRONMENT === "development"
+			import.meta.env.MODE === "development" // Vite standard for mode
 				? new DefaultLogger()
 				: false,
 	});

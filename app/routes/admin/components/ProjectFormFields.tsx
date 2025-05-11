@@ -1,8 +1,8 @@
 import type React from "react";
-import { Button } from "../ui/button";
-import { Label } from "../ui/fieldset";
-import { Input } from "../ui/input";
-import { Text } from "../ui/text";
+import { Button } from "./ui/button";
+import { Label } from "./ui/fieldset";
+import { Input } from "./ui/input";
+import { Text } from "./ui/text";
 import { ProjectImageSelector } from "./ProjectImageSelector";
 import RichTextField from "./RichTextField";
 

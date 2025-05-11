@@ -1,4 +1,4 @@
-import type { Route } from "./+types/[projectId]/edit";
+import type { Route } from "./+types/edit";
 import React from "react";
 import {
 	Form,

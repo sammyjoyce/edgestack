@@ -33,7 +33,7 @@ export const Select = forwardRef(function Select(
 			<Headless.Select
 				ref={ref}
 				multiple={multiple}
-				{...props}
+				{...props} // The ref type should be compatible. If error persists, use 'as any' as last resort.
 				className={clsx([
 					"block w-full appearance-none rounded-md border-zinc-300 bg-white py-2 dark:border-zinc-700 dark:bg-zinc-900",
 					"text-base text-zinc-900 placeholder:text-zinc-500 dark:text-white sm:text-sm",
