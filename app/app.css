@@ -27,7 +27,7 @@
 		rgba(0, 0, 0, 0.1);
 	--shadow-float: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px
 		rgba(0, 0, 0, 0.1);
-	--default-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1); /* Default transition */
+	--ease-app-default: cubic-bezier(0.645, 0.045, 0.355, 1); /* Default transition */
 	--transition-natural: all 0.3s ease-in-out; /* Natural transition */
 	--ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 	--ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
