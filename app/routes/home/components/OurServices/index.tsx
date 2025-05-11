@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import React, { type JSX } from "react";
-import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
+import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 import { Button } from "~/routes/common/components/ui/Button";
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
