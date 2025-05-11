@@ -1,6 +1,7 @@
 import type React from "react";
 import { type JSX, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+
 interface ImageUploadZoneProps {
 	onDrop: (files: File[]) => void;
 	disabled?: boolean;
@@ -8,8 +9,10 @@ interface ImageUploadZoneProps {
 	imageUrl?: string;
 	label?: string;
 	className?: string;
-	fileInputRef?: React.RefObject<HTMLInputElement>;
+	fileInputRef?: React.RefObject<HTMLInputElement | null>;
+	inputName?: string;
 }
+
 export default function ImageUploadZone({
 	onDrop,
 	disabled = false,
@@ -18,6 +21,7 @@ export default function ImageUploadZone({
 	label = "Upload Image",
 	className = "",
 	fileInputRef,
+	inputName,
 }: ImageUploadZoneProps): JSX.Element {
 	const handleDrop = useCallback(
 		(accepted: File[]) => {
@@ -27,6 +31,7 @@ export default function ImageUploadZone({
 		},
 		[onDrop, disabled],
 	);
+
 	const { getRootProps, getInputProps, isDragActive, isDragReject } =
 		useDropzone({
 			accept: { "image/*": [] },
@@ -49,7 +54,7 @@ export default function ImageUploadZone({
 				} ${disabled ? "opacity-50 pointer-events-none" : ""}`}
 				aria-label="Image upload drop zone"
 			>
-				<input ref={fileInputRef} {...getInputProps()} />
+				<input ref={fileInputRef} {...getInputProps()} name={inputName} />
 				<p className="text-sm text-center text-gray-600">
 					{uploading
 						? "Uploading..."

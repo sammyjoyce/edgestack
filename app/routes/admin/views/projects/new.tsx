@@ -7,7 +7,7 @@ import { assert } from "~/routes/common/utils/assert";
 import type { NewProject } from "../../../../../database/schema";
 import { validateProjectInsert } from "../../../../../database/valibot-validation.js";
 import { ProjectFormFields } from "../../components/ProjectFormFields";
-import { FormCard } from "../../components/ui/FormCard";
+import { SectionCard, SectionHeading } from "../../components/ui/section";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Alert, AlertDescription, AlertTitle } from "../../components/ui/alert";
 import { Button } from "../../components/ui/button";
@@ -15,7 +15,7 @@ import { Label } from "../../components/ui/fieldset";
 import { Input } from "../../components/ui/input";
 import { Text } from "../../components/ui/text";
 import { Textarea } from "../../components/ui/textarea";
-// Removed unused Route type import.
+
 export async function action({
 	request,
 	context,
@@ -69,11 +69,13 @@ export async function action({
 		};
 	}
 }
+
 export default function NewProjectPage({ actionData }: Route.ComponentProps) {
 	const navigate = useNavigate();
 	const errors = actionData?.errors;
 	const initial = {};
 	const handleCancel = () => navigate("/admin/projects");
+
 	assert(
 		typeof navigate === "function",
 		"NewProjectRoute: navigate must be a function",
@@ -82,6 +84,7 @@ export default function NewProjectPage({ actionData }: Route.ComponentProps) {
 		typeof actionData === "undefined" || typeof actionData === "object",
 		"NewProjectRoute: actionData must be object or undefined",
 	);
+
 	return (
 		<FadeIn>
 			<PageHeader title="Add New Project" />
@@ -91,13 +94,16 @@ export default function NewProjectPage({ actionData }: Route.ComponentProps) {
 					{actionData.error}
 				</Alert>
 			)}
-			<FormCard as="form" method="post" className="space-y-6">
-				<ProjectFormFields
-					initial={initial}
-					errors={errors}
-					onCancel={handleCancel}
-				/>
-			</FormCard>
+			<SectionCard className="mt-4">
+				<SectionHeading>New Project Details</SectionHeading>
+				<Form method="post" encType="multipart/form-data" className="space-y-6">
+					<ProjectFormFields
+						initial={initial}
+						errors={errors}
+						onCancel={handleCancel}
+					/>
+				</Form>
+			</SectionCard>
 		</FadeIn>
 	);
 }

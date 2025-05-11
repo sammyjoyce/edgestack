@@ -55,17 +55,18 @@ export default function RichTextField({
 				value={initialJSON ?? ""}
 			/>
 			<LexicalComposer initialConfig={initialConfig}>
+				<div
+					className={clsx([
+						"ring-1 ring-gray-300 dark:ring-zinc-700 rounded-md overflow-hidden",
+						"focus-within:ring-2 focus-within:ring-blue-500",
+					])}
+				>
 				<LexicalToolbar />
 				<span
 					data-slot="control"
 					className={clsx([
-						"relative block w-full",
-						"before:absolute before:inset-px before:rounded-[calc(var(--radius-md)-1px)] before:bg-screen before:shadow-textarea",
-						"dark:before:hidden",
-						"after:pointer-events-none after:absolute after:inset-0 after:rounded-md after:ring-transparent after:ring-inset sm:focus-within:after:ring-2 sm:focus-within:after:ring-blue-500",
-						disabled
-							? "opacity-50 before:bg-zinc-950/5 before:shadow-none"
-							: undefined,
+						"relative block w-full ring-1 ring-gray-300 rounded-md bg-white dark:ring-zinc-700 focus-within:ring-2 focus-within:ring-blue-500 disabled:opacity-50",
+						disabled ? "opacity-50" : undefined,
 					])}
 				>
 					<RichTextPlugin
@@ -92,6 +93,7 @@ export default function RichTextField({
 				<ListPlugin />
 				<LinkPlugin />
 				<OnChangePlugin onChange={handleChange} />
+				</div>
 			</LexicalComposer>
 		</>
 	);

@@ -15,7 +15,7 @@ import { getProjectById, updateProject } from "~/routes/common/db";
 import { handleImageUpload } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
 import { ProjectFormFields } from "../../../components/ProjectFormFields";
-import { FormCard } from "../../../components/ui/FormCard";
+import { SectionCard, SectionHeading } from "../../../components/ui/section";
 import { PageHeader } from "../../../components/ui/PageHeader";
 import {
 	Alert,
@@ -26,7 +26,6 @@ import { Button } from "../../../components/ui/button";
 import { Label } from "../../../components/ui/fieldset";
 import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
-// Removed missing Route type import.
 
 export async function loader({
 	params,
@@ -50,6 +49,7 @@ export async function loader({
 		});
 	}
 }
+
 export async function action({
 	request,
 	params,
@@ -144,32 +144,36 @@ export async function action({
 		};
 	}
 }
+
 export default function EditProjectPage({ loaderData, actionData, params }: Route.ComponentProps) {
 	const project = loaderData?.project;
 	const errors = actionData?.errors;
 	const handleCancel = () => window.location.assign("/admin/projects");
+
 	return (
 		<FadeIn>
-			<PageHeader title={`Edit Project: ${project?.title ?? ""}`} />
+			<PageHeader title={`Edit Project: ${project?.title ?? "Loading..."}`} />
 
 			{actionData && !actionData.success && actionData.error && (
 				<Alert variant="error" className="mb-4">
 					{actionData.error}
 				</Alert>
 			)}
-			<FormCard
-				as="form"
-				method="post"
-				encType="multipart/form-data"
-				className="flex flex-col gap-6"
-			>
-				<ProjectFormFields
-					initial={project as any}
-					errors={errors}
-					isEdit
-					onCancel={handleCancel}
-				/>
-			</FormCard>
+			<SectionCard className="mt-4">
+				<SectionHeading>Project Details</SectionHeading>
+				<Form
+					method="post"
+					encType="multipart/form-data"
+					className="flex flex-col gap-6"
+				>
+					<ProjectFormFields
+						initial={project as any} // Cast as any to match existing, consider refining type
+						errors={errors}
+						isEdit
+						onCancel={handleCancel}
+					/>
+				</Form>
+			</SectionCard>
 		</FadeIn>
 	);
 }
