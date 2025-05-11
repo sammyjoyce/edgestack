@@ -10,6 +10,7 @@ import {
 } from "~/routes/admin/components/ui/section";
 import { Textarea } from "~/routes/admin/components/ui/textarea";
 import type { Route as AdminIndexRoute } from "~/routes/admin/views/+types/index";
+import { Text } from "~/routes/admin/components/ui/text";
 import type { Route as AdminUploadRoute } from "~/routes/admin/views/+types/upload";
 import { Input } from "../../ui/input";
 const DEBUG = process.env.NODE_ENV !== "production";
@@ -106,9 +107,9 @@ export function HeroSectionEditor({
 					>
 						Hero Image
 					</label>
-					<p className="text-xs text-neutral-500 mb-2">
+					<Text className="text-xs text-neutral-500 mb-2">
 						Upload or drag and drop an image for the hero section.
-					</p>
+					</Text>
 					<output
 						id="hero-image-upload-status"
 						aria-live="polite"

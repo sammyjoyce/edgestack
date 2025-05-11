@@ -11,6 +11,7 @@ import {
 	SectionCard,
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
+import { Text } from "~/routes/admin/components/ui/text";
 // Removed missing type imports. Use local types below instead.
 interface ServiceField {
 	titleKey: string;
@@ -162,12 +163,12 @@ export function ServicesSectionEditor({
 									className="self-start"
 									htmlFor={`service-image-upload-${idx}`}
 								>
-									{field.label} Image
+									{field.label} Image 
 								</FieldLabel>
-								<p className="text-xs text-neutral-dark mb-2 self-start">
+								<Text className="text-xs text-neutral-dark mb-2 self-start">
 									Upload or drag and drop an image for the{" "}
 									{field.label.toLowerCase()}.
-								</p>
+								</Text>
 								<div
 									className="text-sm text-tertiary mb-2 h-5 self-start"
 									role="status"

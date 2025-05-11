@@ -9,6 +9,7 @@ import {
 	SectionCard,
 	SectionHeading
 } from "../../ui/section";
+import { Text } from "~/routes/admin/components/ui/text";
 import type { action as adminIndexAction } from "~/routes/admin/views/index";
 import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 interface AboutSectionEditorProps {
@@ -80,9 +81,9 @@ export function AboutSectionEditor({
 					<FieldLabel htmlFor="about-image-upload" className="self-start">
 						About Image
 					</FieldLabel>
-					<p className="text-xs text-gray-500 mb-2 self-start">
+					<Text className="text-xs text-gray-500 mb-2 self-start">
 						Upload or drag and drop an image for the about section.
-					</p>
+					</Text>
 					<output
 						id="about-image-upload-status"
 						aria-live="polite"

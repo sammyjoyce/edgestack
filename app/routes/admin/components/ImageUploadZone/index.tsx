@@ -1,5 +1,6 @@
 import type React from "react";
 import { type JSX, useCallback } from "react";
+import { Text } from "../ui/text";
 import { useDropzone } from "react-dropzone";
 
 interface ImageUploadZoneProps {
@@ -55,13 +56,13 @@ export default function ImageUploadZone({
 				aria-label="Image upload drop zone"
 			>
 				<input ref={fileInputRef} {...getInputProps()} name={inputName} />
-				<p className="text-sm text-center text-gray-600">
+				<Text className="text-sm text-center text-gray-600">
 					{uploading
 						? "Uploading..."
 						: isDragActive
 							? "Drop image to upload"
 							: "Drag image here, or click to select"}
-				</p>
+				</Text>
 			</div>
 			{imageUrl && (
 				<img

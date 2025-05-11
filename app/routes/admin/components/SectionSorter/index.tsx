@@ -142,17 +142,17 @@ export default function SectionSorter({
 		}
 		setStatusMessage("");
 	}, []);
-
+ 
 	if (!orderedItems || orderedItems.length === 0) {
-		return <p className="text-slate-400">No sections available to sort.</p>;
+		return <Text className="text-slate-400">No sections available to sort.</Text>;
 	}
-
+ 
 	return (
 		<section
 			aria-labelledby="section-sorter-heading"
 			className="p-4 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg"
 		>
-			<h2
+			<Heading level={2}
 				id="section-sorter-heading"
 				className="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-4"
 			>
