@@ -13,11 +13,13 @@ import {
 	useLoaderData,
 	useLocation,
 	useNavigation,
+	Link as RouterLink,
 } from "react-router";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth"; // Keep
 import adminThemeStylesheet from "../../../admin-theme.css?url"; // Keep
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary"; // Keep
 import { SidebarLayout } from "../components/ui/sidebar-layout"; // Keep only SidebarLayout
+import * as Headless from "@headlessui/react";
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
 ];
@@ -74,7 +76,7 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 	const location = useLocation();
 
 	const sidebarNav = (
-		<Sidebar className="flex h-full flex-col bg-gray-900 px-6 py-4">
+		<div className="flex h-full flex-col bg-gray-900 px-6 py-4">
 			<div className="flex h-16 items-center border-b border-gray-800 mb-2 pb-2">
 				<img
 					src="/assets/logo_284x137-KoakP1Oi.png"
@@ -86,7 +88,7 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 				Admin Menu
 			</div>
 			<hr className="border-gray-700 mb-2" />
-			<SidebarSection>
+			<ul className="flex flex-col">
 				{navigation.map((item) => (
 					<li key={item.name}>
 						{item.name === "Live Site" ? (
@@ -117,8 +119,8 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 						)}
 					</li>
 				))}
-			</SidebarSection>
-		</Sidebar>
+			</ul>
+		</div>
 	);
 	return (
 		<SidebarLayout
