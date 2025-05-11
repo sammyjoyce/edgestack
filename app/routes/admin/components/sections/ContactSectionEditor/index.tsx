@@ -93,9 +93,6 @@ export function ContactSectionEditor({
 	return (
 		<SectionCard>
 			<SectionHeading>Contact Section (Home Page)</SectionHeading>
-			<h2 className="text-xl font-semibold text-gray-900 mb-6">
-				Contact Section (Home Page)
-			</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
 				{contactFields.map(({ key, label, rows, placeholder, isRichText }) => (
 					<div key={key} className="flex flex-col gap-1">

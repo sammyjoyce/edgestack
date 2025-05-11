@@ -117,18 +117,35 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
 		"aria-label": props["aria-label"],
 		onClick: props.disabled ? undefined : onClick,
 	};
-	const Component = as ?? (to || href ? Link : Headless.Button);
+
+	const ComponentToRender = as ?? (to || href ? Link : Headless.Button);
+
+	// Prepare props for the final component
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const effectiveProps: { [key: string]: any } = {
+		...commonProps,
+		...props, // Includes original 'to', 'href', 'type', 'target' from ButtonProps
+	};
+
+	if (ComponentToRender === Headless.Button) {
+		// Ensure 'type' is set for Headless.Button, remove 'to' and 'href'
+		effectiveProps.type = type; // type defaults to 'button'
+		delete effectiveProps.to;
+		delete effectiveProps.href;
+	} else {
+		// It's a link component (either via 'as' or our internal 'Link' from ./link)
+		// Ensure 'to' or 'href' are correctly set from the original ButtonProps.
+		// 'target' will pass through via ...props.
+		// Remove 'type' as it's not standard for anchor/Link elements.
+		if (to) effectiveProps.to = to;
+		if (href) effectiveProps.href = href;
+		delete effectiveProps.type;
+	}
+
 	return (
-		<Component
-			{...commonProps}
-			{...props}
-			to={Component === Link && to ? to : undefined}
-			href={Component === Link && href && to! ? href : undefined}
-			target={target}
-			type={Component === Headless.Button ? type : undefined}
-		>
+		<ComponentToRender {...effectiveProps}>
 			{children}
-		</Component>
+		</ComponentToRender>
 	);
 });
 export function TouchTarget({ children }: { children: React.ReactNode }) {

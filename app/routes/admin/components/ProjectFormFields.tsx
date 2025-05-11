@@ -1,11 +1,13 @@
-import type React from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "./ui/button";
 import { ErrorMessage } from "./ui/fieldset";
 import { Input } from "./ui/input";
-import { Text } from "./ui/text";
-import { ProjectImageSelector } from "./ProjectImageSelector";
+import ImageUploadZone from "./ImageUploadZone";
 import RichTextField from "./RichTextField";
 import { FieldLabel, FieldRow } from "./ui/section";
+import { Drawer } from "vaul";
+import { ImageGallery } from "./ImageGallery";
+import type { StoredImage } from "~/utils/upload.server";
 
 export interface ProjectFormFieldsProps {
   initial?: {
@@ -27,6 +29,32 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
   isEdit = false,
   onCancel,
 }) => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(
+    initial.imageUrl || null,
+  );
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageFromGallery = (image: StoredImage) => {
+    setSelectedImageUrl(image.url);
+    setSelectedFile(null); // Clear any selected file if choosing from gallery
+    setIsDrawerOpen(false);
+  };
+
+  const handleFileDrop = (files: File[]) => {
+    if (files.length > 0) {
+      setSelectedFile(files[0]);
+      setSelectedImageUrl(URL.createObjectURL(files[0])); // Show preview
+    }
+  };
+
+  const currentPreviewUrl = selectedFile
+    ? selectedImageUrl // This would be the object URL for the new file
+    : initial.imageUrl && !selectedImageUrl // If initial image exists and no new one is selected from gallery
+    ? initial.imageUrl
+    : selectedImageUrl; // This would be from gallery or initial if no new file
+
   return (
     <>
       <FieldRow>
@@ -76,7 +104,53 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
       </FieldRow>
       <FieldRow>
         <FieldLabel>Project Image</FieldLabel>
-        <ProjectImageSelector currentImage={initial.imageUrl || undefined} />
+        <ImageUploadZone
+          onDrop={handleFileDrop}
+          imageUrl={currentPreviewUrl || undefined}
+          label="Project Image Upload"
+          fileInputRef={fileInputRef}
+          inputName="image"
+        />
+        {/* Hidden input for the image URL, only if not uploading a new file */}
+        {!selectedFile && (
+          <input
+            type="hidden"
+            name="currentImageUrl"
+            value={selectedImageUrl || initial.imageUrl || ""}
+          />
+        )}
+
+        {/* Or divider and Drawer for existing images */}
+        <div className="relative flex items-center py-3 mt-3">
+          <div className="grow border-t border-gray-200" />
+          <span className="shrink mx-4 text-gray-400 text-sm">OR</span>
+          <div className="grow border-t border-gray-200" />
+        </div>
+        <div>
+          <Drawer.Root open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+            <Drawer.Trigger asChild>
+              <Button variant="secondary" type="button" className="w-full">
+                Choose from Existing Images
+              </Button>
+            </Drawer.Trigger>
+            <Drawer.Portal>
+              <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
+              <Drawer.Content className="fixed bottom-0 left-0 right-0 mt-24 flex flex-col rounded-t-2xl bg-white z-50">
+                <div className="flex-1 rounded-t-2xl p-4 bg-white max-h-[90vh] overflow-auto">
+                  <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 mb-4" />
+                  <div className="max-w-4xl mx-auto">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">
+                      Select an Existing Image
+                    </h3>
+                    <div className="image-gallery-container">
+                      <ImageGallery onSelectImage={handleImageFromGallery} />
+                    </div>
+                  </div>
+                </div>
+              </Drawer.Content>
+            </Drawer.Portal>
+          </Drawer.Root>
+        </div>
       </FieldRow>
       <FieldRow>
         <FieldLabel htmlFor="sortOrder">

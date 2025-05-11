@@ -12,6 +12,8 @@ import { Container } from "~/routes/common/components/ui/Container";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 import { FormCard } from "../ui/FormCard";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
     
 import type {
 	Section as SorterSection,
@@ -23,6 +25,7 @@ interface AdminDashboardProps {
 	initialContent?: Record<string, string>;
 }
 import { PageHeader } from "../ui/PageHeader";
+import { SectionCard, SectionHeading } from "../ui/section";
     
 export default function AdminDashboard({
 	initialContent,
@@ -193,10 +196,10 @@ export default function AdminDashboard({
 			title: "Projects Intro",
 			value: "projects",
 			content: (
-				<FormCard>
-					<h2 className="text-xl font-semibold text-gray-900 mb-4">
+				<SectionCard>
+					<SectionHeading>
 						Projects Section Intro
-					</h2>
+					</SectionHeading>
 					<div className="grid grid-cols-1 gap-6 mt-4">
 						<div>
 							<label
@@ -205,11 +208,11 @@ export default function AdminDashboard({
 							>
 								Projects Intro Title
 							</label>
-							<input
+							<Input
 								type="text"
 								name="projects_intro_title"
 								id="projects_intro_title"
-								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm"
+								className="block w-full"
 								defaultValue={
 									safeContent.projects_intro_title || "Recent Projects"
 								}
@@ -243,19 +246,15 @@ export default function AdminDashboard({
 						<div>
 							<label
 								htmlFor="projects_intro_text"
-								className="block text-sm font-medium text-gray-700 mb-1"
+								className="block text-sm font-medium text-gray-700"
 							>
-								Projects Intro Text
+								Text
 							</label>
-							<textarea
+							<Textarea
 								name="projects_intro_text"
 								id="projects_intro_text"
 								rows={3}
-								className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm"
-								defaultValue={
-									safeContent.projects_intro_text ||
-									"Take a look at some of our recent work."
-								}
+								defaultValue={safeContent.projects_intro_text || ""}
 								onBlur={(e) => {
 									const formData = new FormData();
 									formData.append("intent", "updateTextContent");
@@ -309,13 +308,13 @@ export default function AdminDashboard({
 						<Button
 							as={Link}
 							to="/admin/projects"
-							className="bg-primary text-white hover:bg-primary/90 text-sm"
+							variant="primary"
 							aria-label="Go to Projects Admin"
 						>
 							Go to Projects Admin
 						</Button>
 					</div>
-				</FormCard>
+				</SectionCard>
 			),
 		},
 		{
@@ -351,7 +350,7 @@ export default function AdminDashboard({
 					<Button
 						type="button"
 						onClick={() => window.open("/?bustCache=true", "_blank")}
-						className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+						variant="primary"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -361,6 +360,7 @@ export default function AdminDashboard({
 							stroke="currentColor"
 							aria-hidden="true"
 							focusable="false"
+							className="size-4"
 						>
 							<title>Open site in new tab</title>
 							<path
@@ -369,7 +369,7 @@ export default function AdminDashboard({
 								d="M17.25 6.75v-2.25a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 003.75 4.5v15a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-2.25m-10.5-6.75h14.25m0 0l-3-3m3 3l-3 3"
 							/>
 						</svg>
-						<span>Open site</span>
+						Open site	
 					</Button>
 				</div>
 				<Tabs tabs={tabs} containerClassName="mb-8" />

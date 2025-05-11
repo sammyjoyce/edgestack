@@ -67,7 +67,8 @@
 				{
 					"binding": "DB",
 					"database_name": "lush-content-db",
-					"database_id": "89bb8c60-84fb-4f13-9320-e5cf623f4963"
+					"database_id": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
+					"migrations_dir": "./migrations"
 				}
 			],
 			"observability": {
@@ -97,7 +98,8 @@
 				{
 					"binding": "DB",
 					"database_name": "lush-content-db",
-					"database_id": "89bb8c60-84fb-4f13-9320-e5cf623f4963"
+					"database_id": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
+					"migrations_dir": "./migrations"
 				}
 			],
 			"observability": {
