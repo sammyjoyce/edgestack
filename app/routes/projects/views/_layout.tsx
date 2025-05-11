@@ -1,10 +1,11 @@
 import clsx from "clsx";
-import { Outlet, data, useLoaderData } from "react-router";
+import { data, Outlet } from "react-router";
 import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import { ProjectsErrorBoundary } from "../components/ProjectsErrorBoundary";
 import type { Route } from "./+types/_layout";
+
 type ProjectsLayoutLoaderData = {
 	content: Record<string, string>;
 	projects: Project[];
@@ -30,6 +31,7 @@ export const loader = async ({
 		);
 	}
 };
+
 export function ProjectsLayout({ loaderData }: Route.ComponentProps) {
 	const projectsPageIntroTheme =
 		loaderData.content.projects_page_intro_theme === "dark" ? "dark" : "light";
@@ -57,7 +59,9 @@ export function ProjectsLayout({ loaderData }: Route.ComponentProps) {
 		</div>
 	);
 }
+
 export function ErrorBoundary() {
 	return <ProjectsErrorBoundary />;
 }
+
 export default ProjectsLayout;

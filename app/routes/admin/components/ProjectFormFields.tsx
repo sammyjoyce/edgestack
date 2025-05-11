@@ -1,5 +1,5 @@
 import type React from "react";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { ErrorMessage } from "./ui/fieldset";
 import { Input } from "./ui/input";
@@ -91,22 +91,22 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 			</FieldRow>
 			<FieldRow>
 				<span className="max-w-min">
-				<div className="flex items-center gap-x-2">
-					<Input
-						type="checkbox"
-						name="isFeatured"
-						id="isFeatured"
-						value="true"
-						defaultChecked={!!initial.isFeatured}
-						className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-					/>
-					<label
-						htmlFor="isFeatured"
-						className="text-sm font-medium text-gray-700 select-none"
-					>
-						Feature on Home Page
-					</label>
-				</div>
+					<div className="flex items-center gap-x-2">
+						<Input
+							type="checkbox"
+							name="isFeatured"
+							id="isFeatured"
+							value="true"
+							defaultChecked={!!initial.isFeatured}
+							className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+						/>
+						<label
+							htmlFor="isFeatured"
+							className="text-sm font-medium text-gray-700 select-none"
+						>
+							Feature on Home Page
+						</label>
+					</div>
 				</span>
 			</FieldRow>
 			<FieldRow>

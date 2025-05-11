@@ -4,6 +4,7 @@ import { useFetcher } from "react-router";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import { GrayscaleTransitionImage } from "~/routes/common/components/ui/GrayscaleTransitionImage";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
+
 const imageFields = [
 	{ key: "hero_image_url", label: "Hero Image" },
 	{ key: "about_image_url", label: "About Image" },
@@ -19,6 +20,7 @@ type UploadActionData = {
 	error?: string;
 	action?: "upload" | "select" | "delete";
 };
+
 function isUploadResponse(data: unknown): data is UploadActionData {
 	return (
 		typeof data === "object" &&
@@ -26,10 +28,12 @@ function isUploadResponse(data: unknown): data is UploadActionData {
 		("success" in data || "error" in data)
 	);
 }
+
 interface ImageUploadSectionProps {
 	initialContent: Record<string, string>;
 	sectionRef?: React.RefObject<HTMLDivElement>;
 }
+
 function SingleImageUpload({
 	keyName,
 	label,
@@ -139,6 +143,7 @@ function SingleImageUpload({
 		</fetcher.Form>
 	);
 }
+
 export function ImageUploadSection({
 	initialContent,
 	sectionRef,

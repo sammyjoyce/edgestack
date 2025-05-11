@@ -3,6 +3,7 @@ import React from "react";
 import { renderToReadableStream } from "react-dom/server";
 import type { AppLoadContext, EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
+
 export function handleError(error: unknown, { request, params, context }: any) {
 	if (process.env.NODE_ENV !== "production") {
 		console.error("[React Router handleError]", {
@@ -23,6 +24,7 @@ export function handleError(error: unknown, { request, params, context }: any) {
 		});
 	}
 }
+
 export default async function handleRequest(
 	request: Request,
 	responseStatusCode: number,

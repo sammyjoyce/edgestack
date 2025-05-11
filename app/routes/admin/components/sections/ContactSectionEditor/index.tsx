@@ -3,155 +3,161 @@ import { useFetcher } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { Input } from "~/routes/admin/components/ui/input";
 import {
-  FieldLabel,
-  FieldRow,
-  SectionCard,
-  SectionHeading,
+	FieldLabel,
+	SectionCard,
+	SectionHeading,
 } from "~/routes/admin/components/ui/section";
 import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { Text } from "~/routes/admin/components/ui/text";
 import { Alert } from "~/routes/admin/components/ui/alert";
 
 interface ContactSectionEditorProps {
-  fetcher: ReturnType<typeof useFetcher>;
-  initialContent: Record<string, string>;
+	fetcher: ReturnType<typeof useFetcher>;
+	initialContent: Record<string, string>;
 }
 
 const contactFields = [
-  {
-    key: "contact_headline",
-    label: "Contact Headline",
-    isRichText: false,
-    rows: 2,
-    placeholder: "Ready to Start Your Project?",
-  },
-  {
-    key: "contact_intro",
-    label: "Contact Intro",
-    isRichText: true,
-    rows: 3,
-    placeholder: "From concept to completion, we're here...",
-  },
-  {
-    key: "contact_address",
-    label: "Address",
-    isRichText: true,
-    rows: 2,
-    placeholder: "PO BOX 821\nMarrickville, NSW 2204",
-  },
-  {
-    key: "contact_phone",
-    label: "Phone",
-    isRichText: true,
-    rows: 1,
-    placeholder: "0404 289 437",
-  },
-  {
-    key: "contact_email",
-    label: "Email",
-    isRichText: true,
-    rows: 1,
-    placeholder: "contact@lushconstructions.com",
-  },
-  {
-    key: "contact_hours",
-    label: "Hours",
-    isRichText: true,
-    rows: 2,
-    placeholder: "Monday - Friday: 7am - 5pm\nSaturday: By appointment",
-  },
-  {
-    key: "contact_abn",
-    label: "ABN",
-    isRichText: true,
-    rows: 1,
-    placeholder: "99 652 947 528",
-  },
-  {
-    key: "contact_acn",
-    label: "ACN",
-    isRichText: true,
-    rows: 1,
-    placeholder: "141 565 746",
-  },
-  {
-    key: "contact_license",
-    label: "License Number",
-    isRichText: true,
-    rows: 1,
-    placeholder: "4632530",
-  },
-  {
-    key: "contact_instagram",
-    label: "Instagram URL",
-    isRichText: true,
-    rows: 1,
-    placeholder: "https://www.instagram.com/lushconstructions",
-  },
+	{
+		key: "contact_headline",
+		label: "Contact Headline",
+		isRichText: false,
+		rows: 2,
+		placeholder: "Ready to Start Your Project?",
+	},
+	{
+		key: "contact_intro",
+		label: "Contact Intro",
+		isRichText: true,
+		rows: 3,
+		placeholder: "From concept to completion, we're here...",
+	},
+	{
+		key: "contact_address",
+		label: "Address",
+		isRichText: true,
+		rows: 2,
+		placeholder: "PO BOX 821\nMarrickville, NSW 2204",
+	},
+	{
+		key: "contact_phone",
+		label: "Phone",
+		isRichText: true,
+		rows: 1,
+		placeholder: "0404 289 437",
+	},
+	{
+		key: "contact_email",
+		label: "Email",
+		isRichText: true,
+		rows: 1,
+		placeholder: "contact@lushconstructions.com",
+	},
+	{
+		key: "contact_hours",
+		label: "Hours",
+		isRichText: true,
+		rows: 2,
+		placeholder: "Monday - Friday: 7am - 5pm\nSaturday: By appointment",
+	},
+	{
+		key: "contact_abn",
+		label: "ABN",
+		isRichText: true,
+		rows: 1,
+		placeholder: "99 652 947 528",
+	},
+	{
+		key: "contact_acn",
+		label: "ACN",
+		isRichText: true,
+		rows: 1,
+		placeholder: "141 565 746",
+	},
+	{
+		key: "contact_license",
+		label: "License Number",
+		isRichText: true,
+		rows: 1,
+		placeholder: "4632530",
+	},
+	{
+		key: "contact_instagram",
+		label: "Instagram URL",
+		isRichText: true,
+		rows: 1,
+		placeholder: "https://www.instagram.com/lushconstructions",
+	},
 ];
 
 export function ContactSectionEditor({
-  fetcher,
-  initialContent,
+	fetcher,
+	initialContent,
 }: ContactSectionEditorProps): React.ReactElement {
-  const actionData = fetcher.data as { error?: string; errors?: Record<string, string> } | undefined;
+	const actionData = fetcher.data as
+		| { error?: string; errors?: Record<string, string> }
+		| undefined;
 
-  return (
-    <SectionCard>
-      {actionData?.error && (
-        <Alert variant="error" title="Save failed" className="mb-4">
-          {actionData.error}
-        </Alert>
-      )}
-      <SectionHeading>Contact Section (Home Page)</SectionHeading>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-        {contactFields.map(({ key, label, rows, placeholder, isRichText }) => (
-          <div key={key} className="flex flex-col gap-1">
-            <FieldLabel htmlFor={key}>{label}</FieldLabel>
-            {isRichText ? (
-              <RichTextField
-                name={key}
-                initialJSON={initialContent[key]}
-                disabled={fetcher.state === "submitting"}
-                onBlur={(val) => {
-                  if (val === initialContent[key]) return;
-                  const formData = new FormData();
-                  formData.append("intent", "updateTextContent");
-                  formData.append("page", "home");
-                  formData.append("section", "contact");
-                  formData.append(key, val);
-                  fetcher.submit(formData, { method: "post", action: "/admin" });
-                }}
-              />
-            ) : rows > 1 ? (
-              <Textarea
-                name={key}
-                id={key}
-                rows={rows}
-                defaultValue={initialContent[key] || ""}
-                placeholder={placeholder}
-                disabled={fetcher.state === "submitting"}
-              />
-            ) : (
-              <Input
-                type="text"
-                name={key}
-                id={key}
-                defaultValue={initialContent[key] || ""}
-                placeholder={placeholder}
-                disabled={fetcher.state === "submitting"}
-              />
-            )}
-            {actionData?.errors?.[key] && (
-              <Text className="text-sm text-red-600 mt-1">{actionData.errors[key]}</Text>
-            )}
-            {/* Placeholder for error/help text, e.g.,
+	return (
+		<SectionCard>
+			{actionData?.error && (
+				<Alert variant="error" title="Save failed" className="mb-4">
+					{actionData.error}
+				</Alert>
+			)}
+			<SectionHeading>Contact Section (Home Page)</SectionHeading>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+				{contactFields.map(({ key, label, rows, placeholder, isRichText }) => (
+					<div key={key} className="flex flex-col gap-1">
+						<FieldLabel htmlFor={key}>{label}</FieldLabel>
+						{isRichText ? (
+							<RichTextField
+								name={key}
+								initialJSON={initialContent[key]}
+								disabled={fetcher.state === "submitting"}
+								onBlur={(val) => {
+									if (val === initialContent[key]) return;
+									const formData = new FormData();
+									formData.append("intent", "updateTextContent");
+									formData.append("page", "home");
+									formData.append("section", "contact");
+									formData.append(key, val);
+									fetcher.submit(formData, {
+										method: "post",
+										action: "/admin",
+									});
+								}}
+							/>
+						) : rows > 1 ? (
+							<Textarea
+								name={key}
+								id={key}
+								rows={rows}
+								defaultValue={initialContent[key] || ""}
+								placeholder={placeholder}
+								disabled={fetcher.state === "submitting"}
+							/>
+						) : (
+							<Input
+								type="text"
+								name={key}
+								id={key}
+								defaultValue={initialContent[key] || ""}
+								placeholder={placeholder}
+								disabled={fetcher.state === "submitting"}
+							/>
+						)}
+						{actionData?.errors?.[key] && (
+							<Text className="text-sm text-red-600 mt-1">
+								{actionData.errors[key]}
+							</Text>
+						)}
+						{/* Placeholder for error/help text, e.g.,
         <Alert variant="error" className="mt-1 text-xs" showIcon={false}>...</Alert>
         <span className="text-xs text-neutral-500 mt-1">Help text</span>
     */}
-          </div>
-        ))}
-      </div>
-    </SectionCard>
-  );
+					</div>
+				))}
+			</div>
+		</SectionCard>
+	);
 }

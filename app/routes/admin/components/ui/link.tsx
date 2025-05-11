@@ -2,8 +2,8 @@ import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
 import { forwardRef } from "react";
-import { Link as RouterLink } from "react-router";
 import type { LinkProps as RouterLinkProps } from "react-router";
+import { Link as RouterLink } from "react-router";
 
 export const Link = forwardRef(function Link(
 	props: { to: RouterLinkProps["to"]; className?: string } & Omit<

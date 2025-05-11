@@ -1,17 +1,20 @@
 import clsx from "clsx";
 import React, { type ReactNode } from "react";
+
 export enum PillStatus {
 	Info = "info",
 	Success = "success",
 	Warning = "warning",
 	Error = "error",
 }
+
 export interface PillProps {
 	status?: PillStatus;
 	variant?: "default" | "outline" | "secondary" | "neutral";
 	children: ReactNode;
 	className?: string;
 }
+
 export function Pill({
 	status,
 	variant = "default",
@@ -53,6 +56,7 @@ export function Pill({
 		</span>
 	);
 }
+
 export function PillStatusComponent({ children }: { children: ReactNode }) {
 	return <>{children}</>;
 }

@@ -1,11 +1,13 @@
 import clsx from "clsx";
 import type React from "react";
 import { Border } from "~/routes/common/components/ui/Border";
+
 interface SimpleImageProps {
 	src: string;
 	alt?: string;
 	className?: string;
 }
+
 function BlockquoteWithImage({
 	author,
 	children,
@@ -46,6 +48,7 @@ function BlockquoteWithImage({
 		</figure>
 	);
 }
+
 function BlockquoteWithoutImage({
 	author,
 	children,
@@ -68,6 +71,7 @@ function BlockquoteWithoutImage({
 		</Border>
 	);
 }
+
 type BlockquoteBaseProps = {
 	author: { name: string; role: string };
 	children: React.ReactNode;
@@ -79,6 +83,7 @@ type BlockquoteWithImageProps = BlockquoteBaseProps & {
 type BlockquoteWithoutImageProps = BlockquoteBaseProps & {
 	image?: undefined;
 };
+
 export function Blockquote(
 	props: BlockquoteWithImageProps | BlockquoteWithoutImageProps,
 ) {

@@ -1,6 +1,7 @@
 import type React from "react";
 import { Border } from "~/routes/common/components/ui/Border";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
+
 export function StatList({
 	children,
 	...props
@@ -15,6 +16,7 @@ export function StatList({
 		</FadeInStagger>
 	);
 }
+
 export function StatListItem({
 	label,
 	value,

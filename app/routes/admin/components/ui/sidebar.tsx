@@ -6,6 +6,7 @@ import type React from "react";
 import { forwardRef, useId } from "react";
 import { TouchTarget } from "./button";
 import { Link } from "./link";
+
 export function Sidebar({
 	className,
 	...props
@@ -17,6 +18,7 @@ export function Sidebar({
 		/>
 	);
 }
+
 export function SidebarHeader({
 	className,
 	...props
@@ -31,6 +33,7 @@ export function SidebarHeader({
 		/>
 	);
 }
+
 export function SidebarBody({
 	className,
 	...props
@@ -45,6 +48,7 @@ export function SidebarBody({
 		/>
 	);
 }
+
 export function SidebarFooter({
 	className,
 	...props
@@ -59,6 +63,7 @@ export function SidebarFooter({
 		/>
 	);
 }
+
 export function SidebarSection({
 	className,
 	...props
@@ -74,6 +79,7 @@ export function SidebarSection({
 		</LayoutGroup>
 	);
 }
+
 export function SidebarDivider({
 	className,
 	...props
@@ -88,6 +94,7 @@ export function SidebarDivider({
 		/>
 	);
 }
+
 export function SidebarSpacer({
 	className,
 	...props
@@ -100,6 +107,7 @@ export function SidebarSpacer({
 		/>
 	);
 }
+
 export function SidebarHeading({
 	className,
 	...props
@@ -114,6 +122,7 @@ export function SidebarHeading({
 		/>
 	);
 }
+
 export const SidebarItem = forwardRef(function SidebarItem(
 	{
 		current,
@@ -170,6 +179,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
 		</span>
 	);
 });
+
 export function SidebarLabel({
 	className,
 	...props

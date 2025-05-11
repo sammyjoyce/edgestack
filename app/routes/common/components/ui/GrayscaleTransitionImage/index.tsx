@@ -5,10 +5,11 @@ import {
 	useScroll,
 	useTransform,
 } from "framer-motion";
-import type { HTMLMotionProps } from "framer-motion";
 import type React from "react";
 import { useRef } from "react";
+
 const MotionImage = motion.img;
+
 interface GrayscaleTransitionImageProps {
 	className?: string;
 	alt?: string;
@@ -20,8 +21,10 @@ interface GrayscaleTransitionImageProps {
 	id?: string;
 	sizes?: string;
 	srcSet?: string;
+
 	[key: string]: any;
 }
+
 export function GrayscaleTransitionImage({
 	className,
 	alt = "",

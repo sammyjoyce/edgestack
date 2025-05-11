@@ -2,6 +2,7 @@ import * as Headless from "@headlessui/react";
 import type React from "react";
 import { useState } from "react";
 import { NavbarItem } from "./navbar";
+
 function OpenMenuIcon() {
 	return (
 		<svg data-slot="icon" viewBox="0 0 20 20" aria-hidden="true">
@@ -9,6 +10,7 @@ function OpenMenuIcon() {
 		</svg>
 	);
 }
+
 function CloseMenuIcon() {
 	return (
 		<svg data-slot="icon" viewBox="0 0 20 20" aria-hidden="true">
@@ -16,6 +18,7 @@ function CloseMenuIcon() {
 		</svg>
 	);
 }
+
 function MobileSidebar({
 	open,
 	close,
@@ -43,6 +46,7 @@ function MobileSidebar({
 		</Headless.Dialog>
 	);
 }
+
 export function SidebarLayout({
 	navbar,
 	sidebar,

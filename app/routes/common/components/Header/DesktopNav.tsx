@@ -2,10 +2,12 @@ import type { JSX, MouseEvent } from "react";
 import type { MenuItem } from ".";
 import { Button } from "../ui/Button";
 import { useMenuItemInfo } from "./useMenuItemInfo";
+
 export interface DesktopNavProps {
 	menuItems: readonly MenuItem[];
 	scrollToSection: (e: MouseEvent<HTMLAnchorElement>, id: string) => void;
 }
+
 function LinkButton(
 	item: MenuItem,
 	scrollTo: DesktopNavProps["scrollToSection"],
@@ -43,6 +45,7 @@ function LinkButton(
 		</Button>
 	);
 }
+
 export default function DesktopNav({
 	menuItems,
 	scrollToSection,

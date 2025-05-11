@@ -1,6 +1,5 @@
 import React, { type JSX } from "react";
 import { type MetaFunction, useOutletContext } from "react-router";
-const DEBUG = process.env.NODE_ENV !== "production";
 import RecentProjects from "~/routes/common/components/RecentProjects";
 import { assert } from "~/routes/common/utils/assert";
 import type { loader as parentLayoutLoader } from "~/routes/home/views/_layout";
@@ -8,6 +7,9 @@ import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Hero from "../components/Hero";
 import OurServices from "../components/OurServices";
+
+const DEBUG = process.env.NODE_ENV !== "production";
+
 export const meta: MetaFunction<
 	never,
 	{ "routes/home/views/_layout": typeof parentLayoutLoader }
@@ -31,6 +33,7 @@ export const meta: MetaFunction<
 		},
 	];
 };
+
 export function HomeRoute(): JSX.Element {
 	const { content: rawContent, projects = [] } =
 		useOutletContext<Awaited<ReturnType<typeof parentLayoutLoader>>>();
@@ -119,4 +122,5 @@ export function HomeRoute(): JSX.Element {
 	);
 	return <>{order.map((id) => sectionBlocks[id])}</>;
 }
+
 export default HomeRoute;

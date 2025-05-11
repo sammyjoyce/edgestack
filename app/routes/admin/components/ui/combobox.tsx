@@ -2,6 +2,7 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import { useState } from "react";
+
 export function Combobox<T>({
 	options,
 	displayValue,
@@ -106,6 +107,7 @@ export function Combobox<T>({
 		</Headless.Combobox>
 	);
 }
+
 export function ComboboxOption<T>({
 	children,
 	className,
@@ -148,12 +150,14 @@ export function ComboboxOption<T>({
 		</Headless.ComboboxOption>
 	);
 }
+
 export function ComboboxLabel({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"span">) {
 	return <span {...props} className={clsx(className, "truncate")} />;
 }
+
 export function ComboboxDescription({
 	className,
 	children,

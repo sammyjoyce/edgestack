@@ -1,5 +1,5 @@
 import type React from "react";
-import { type JSX, useRef, useState } from "react";
+import { type JSX, useState } from "react";
 import { useFetcher } from "react-router";
 import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";
@@ -7,6 +7,7 @@ import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
 import type { StoredImage } from "~/utils/upload.server";
 import { Button } from "../ui/button";
 import { Heading } from "../ui/heading";
+
 interface ImageSelectorProps {
 	onDrop: (files: File[]) => void;
 	disabled?: boolean;
@@ -17,6 +18,7 @@ interface ImageSelectorProps {
 	fileInputRef?: React.RefObject<HTMLInputElement>; // Make stricter to match ImageUploadZone if it's strict
 	fieldKey: string;
 }
+
 export function ImageSelector({
 	onDrop,
 	disabled = false,

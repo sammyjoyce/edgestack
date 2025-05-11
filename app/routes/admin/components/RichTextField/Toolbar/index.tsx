@@ -26,14 +26,17 @@ import React, {
 	useEffect,
 	useState,
 } from "react";
+
 function Divider() {
 	return <div className="w-px h-5 bg-gray-300 mx-1" />;
 }
+
 interface ToolbarButton {
 	label: string;
 	arg: TextFormatType;
 	icon: ReactNode;
 }
+
 const TOOLBAR_BUTTONS: ToolbarButton[] = [
 	{ label: "Bold", arg: "bold", icon: <b>B</b> },
 	{ label: "Italic", arg: "italic", icon: <i>I</i> },

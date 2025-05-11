@@ -1,8 +1,10 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type React from "react";
 import { createContext, useContext } from "react";
+
 const FadeInStaggerContext = createContext(false);
 const viewport = { once: true, margin: "0px 0px -200px" };
+
 export function FadeIn(
 	props: React.ComponentPropsWithoutRef<typeof motion.div>,
 ) {
@@ -26,6 +28,7 @@ export function FadeIn(
 		/>
 	);
 }
+
 export function FadeInStagger({
 	faster = false,
 	...props

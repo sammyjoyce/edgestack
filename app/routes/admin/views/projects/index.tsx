@@ -1,23 +1,22 @@
 import React from "react";
 import {
+	data,
 	Form,
 	Link,
 	Outlet,
-	data,
 	redirect,
 	useActionData,
-	useLoaderData,
 	useLocation,
 } from "react-router";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
-import type { Project } from "../../../../../database/schema";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Button } from "../../components/ui/button";
 import { Text } from "../../components/ui/text";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer/index";
 import type { Route } from "./+types/index";
+
 export async function loader({ request, context }: Route.LoaderArgs) {
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
@@ -35,6 +34,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		);
 	}
 }
+
 export async function action({ request, context }: Route.ActionArgs) {
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
@@ -70,6 +70,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 	}
 	return data({ success: false, error: "Unknown intent" }, { status: 400 });
 }
+
 export default function AdminProjectsIndexPage({
 	loaderData,
 }: Route.ComponentProps) {

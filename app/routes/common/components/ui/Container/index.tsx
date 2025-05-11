@@ -1,10 +1,12 @@
 import clsx from "clsx";
 import type React from "react";
+
 type ContainerProps<T extends React.ElementType = "div"> = {
 	as?: T;
 	className?: string;
 	children: React.ReactNode;
 };
+
 export function Container<T extends React.ElementType = "div">({
 	as,
 	className,

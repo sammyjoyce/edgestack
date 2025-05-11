@@ -1,6 +1,7 @@
 import React from "react";
 import { isRouteErrorResponse, useRouteError } from "react-router";
 import { SharedErrorBoundary } from "~/routes/common/components/ErrorBoundary";
+
 function AdminErrorBoundary() {
 	const error = useRouteError();
 	console.error("[ADMIN ERROR BOUNDARY] Error caught:", error);
@@ -49,5 +50,6 @@ function AdminErrorBoundary() {
 		/>
 	);
 }
+
 export { AdminErrorBoundary };
 export default AdminErrorBoundary;

@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import type React from "react";
+
 type HeadingProps = {
 	level?: 1 | 2 | 3 | 4 | 5 | 6;
 	as?: React.ElementType;
@@ -12,10 +13,12 @@ const levelStyles = {
 	5: "text-base font-medium text-zinc-900 dark:text-white sm:text-lg",
 	6: "text-sm font-medium text-zinc-900 dark:text-white sm:text-base",
 };
+
 export function Heading({ className, level = 1, as, ...props }: HeadingProps) {
 	const Element = as || (`h${level}` as React.ElementType);
 	return <Element {...props} className={clsx(className, levelStyles[level])} />;
 }
+
 export function Subheading({
 	className,
 	level = 2,

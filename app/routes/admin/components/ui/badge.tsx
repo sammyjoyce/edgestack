@@ -4,6 +4,7 @@ import type React from "react";
 import { forwardRef } from "react";
 import { TouchTarget } from "./button";
 import { Link } from "./link";
+
 const simplifiedColors = {
 	neutral:
 		"bg-zinc-100 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200 group-data-hover:bg-zinc-200 dark:group-data-hover:bg-zinc-600",
@@ -24,6 +25,7 @@ const badgeSizes = {
 	sm: "px-1.5 py-0.5 text-xs/4 font-medium",
 	md: "px-2 py-1 text-sm/5 font-medium",
 };
+
 export function Badge({
 	color = "neutral",
 	size = "sm",
@@ -45,6 +47,7 @@ export function Badge({
 		/>
 	);
 }
+
 export const BadgeButton = forwardRef(function BadgeButton(
 	{
 		color = "neutral",

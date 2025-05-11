@@ -1,8 +1,7 @@
 import clsx from "clsx";
-import type { HTMLMotionProps } from "framer-motion";
-import { motion } from "framer-motion";
 import type React from "react";
 import { useId } from "react";
+
 const shapes = [
 	{
 		width: 655,
@@ -22,6 +21,7 @@ const shapes = [
 ];
 type ImageProps = React.ImgHTMLAttributes<HTMLImageElement>;
 type ImagePropsWithOptionalAlt = Omit<ImageProps, "alt"> & { alt?: string };
+
 export function StylizedImage({
 	shape = 0,
 	className,

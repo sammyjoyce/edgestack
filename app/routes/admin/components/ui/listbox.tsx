@@ -3,6 +3,7 @@ import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
 import { Fragment } from "react";
+
 const CheckIcon = () => (
 	<svg
 		className="size-4 stroke-current group-data-selected/option:inline"
@@ -39,6 +40,7 @@ const ChevronUpDownIcon = () => (
 		/>
 	</svg>
 );
+
 export function Listbox<TValue>({
 	className,
 	placeholder,
@@ -108,6 +110,7 @@ export function Listbox<TValue>({
 		</Headless.Listbox>
 	);
 }
+
 export function ListboxOption<TValue>({
 	children,
 	className,
@@ -144,12 +147,14 @@ export function ListboxOption<TValue>({
 		</Headless.ListboxOption>
 	);
 }
+
 export function ListboxLabel({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"span">) {
 	return <span {...props} className={clsx(className, "truncate")} />;
 }
+
 export function ListboxDescription({
 	className,
 	children,

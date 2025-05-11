@@ -1,6 +1,5 @@
-import React, { type JSX } from "react";
+import React from "react";
 import { Link, useFetcher } from "react-router";
-import { ImageUploadSection } from "~/routes/admin/components/ImageUploadSection";
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { AboutSectionEditor } from "~/routes/admin/components/sections/AboutSectionEditor";
 import { ContactSectionEditor } from "~/routes/admin/components/sections/ContactSectionEditor";
@@ -9,9 +8,7 @@ import { ServicesSectionEditor } from "~/routes/admin/components/sections/Servic
 import type { action as adminIndexAction } from "~/routes/admin/views/index";
 import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 import { Container } from "~/routes/common/components/ui/Container";
-import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
-import { FormCard } from "../ui/FormCard";
-import { Text, Strong } from "../ui/text";
+import { Strong, Text } from "../ui/text";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -22,11 +19,12 @@ import type {
 } from "../SectionSorter";
 import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
 import { Heading } from "../ui/heading";
+import { PageHeader } from "../ui/PageHeader";
+import { SectionCard, SectionHeading } from "../ui/section";
+
 interface AdminDashboardProps {
 	initialContent?: Record<string, string>;
 }
-import { PageHeader } from "../ui/PageHeader";
-import { SectionCard, SectionHeading } from "../ui/section";
 
 export default function AdminDashboard({
 	initialContent,

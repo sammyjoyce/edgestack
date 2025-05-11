@@ -1,13 +1,14 @@
-import clsx from "clsx";
 import type React from "react";
-import { Fragment, type JSX } from "react";
+import { type JSX } from "react";
 import RichTextRenderer from "~/routes/common/components/RichTextRenderer";
+
 interface ConditionalRichTextRendererProps {
 	text: string | undefined | null;
 	fallbackClassName?: string;
 	richTextClassName?: string;
 	fallbackTag?: keyof React.JSX.IntrinsicElements;
 }
+
 export function ConditionalRichTextRenderer({
 	text,
 	fallbackClassName = "text-base sm:text-lg",

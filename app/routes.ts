@@ -1,10 +1,11 @@
 import {
-	type RouteConfig,
 	index,
 	layout,
 	prefix,
 	route,
+	type RouteConfig,
 } from "@react-router/dev/routes";
+
 export default [
 	route("", "routes/home/route.tsx"),
 	route("projects", "routes/projects/route.tsx", [

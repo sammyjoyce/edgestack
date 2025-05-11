@@ -4,9 +4,11 @@ import clsx from "clsx";
 import type React from "react";
 import { Button } from "./button";
 import { Link } from "./link";
+
 export function Dropdown(props: Headless.MenuProps) {
 	return <Headless.Menu {...props} />;
 }
+
 export function DropdownButton<T extends React.ElementType = typeof Button>({
 	as,
 	...props
@@ -17,6 +19,7 @@ export function DropdownButton<T extends React.ElementType = typeof Button>({
 	const Component = as || Button;
 	return <Headless.MenuButton as={Component as React.ElementType} {...props} />;
 }
+
 export function DropdownMenu({
 	anchor = "bottom",
 	className,
@@ -39,6 +42,7 @@ export function DropdownMenu({
 		/>
 	);
 }
+
 export function DropdownItem({
 	className,
 	...props
@@ -66,6 +70,7 @@ export function DropdownItem({
 		/>
 	);
 }
+
 export function DropdownHeader({
 	className,
 	...props
@@ -80,6 +85,7 @@ export function DropdownHeader({
 		/>
 	);
 }
+
 export function DropdownSection({
 	className,
 	...props
@@ -91,6 +97,7 @@ export function DropdownSection({
 		<Headless.MenuSection {...props} className={clsx(className, "py-1")} />
 	);
 }
+
 export function DropdownHeading({
 	className,
 	...props
@@ -108,6 +115,7 @@ export function DropdownHeading({
 		/>
 	);
 }
+
 export function DropdownDivider({
 	className,
 	...props
@@ -122,6 +130,7 @@ export function DropdownDivider({
 		/>
 	);
 }
+
 export function DropdownLabel({
 	className,
 	...props
@@ -134,6 +143,7 @@ export function DropdownLabel({
 		/>
 	);
 }
+
 export function DropdownDescription({
 	className,
 	...props
@@ -152,6 +162,7 @@ export function DropdownDescription({
 		/>
 	);
 }
+
 export function DropdownShortcut({
 	keys,
 	className,

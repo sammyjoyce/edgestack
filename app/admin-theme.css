@@ -1,171 +1,170 @@
-@import "tailwindcss";  
-  
-@theme {  
-  /* Base Colors from openai-fm, prefixed with --admin- for clarity */  
-  --color-admin-primary: oklch(63.7% 0.237 25.331); /* #ff4a00 in OKLCH color space */  
-  --color-admin-background: oklch(93% 0 0); /* #ececec in OKLCH */  
-  --color-admin-foreground: oklch(13% 0 0); /* #222 in OKLCH */  
-  --color-admin-screen: oklch(95% 0 0); /* #f3f3f3 in OKLCH - for input backgrounds, content areas */  
-  
-  /* Neutral & Accent Colors - adapted for admin UI needs */  
-  --color-admin-secondary: oklch(13% 0 0); /* #222 in OKLCH - for secondary buttons */  
-  --color-admin-tertiary: oklch(42% 0 0); /* #6a6a6a in OKLCH */  
-  --color-admin-neutral: oklch(67% 0 0); /* #aaa in OKLCH */  
-  --color-admin-default-button-bg: oklch(96% 0 0); /* #f4f4f4 in OKLCH */  
-  
-  --color-admin-white: oklch(100% 0 0);  
-  --color-admin-black: oklch(0% 0 0);  
-  
-  /* Borders - using more subtle grays from typical admin UIs */  
-  --color-admin-border: oklch(85% 0 0); /* #d9d9d9 in OKLCH */  
-  --color-admin-border-light: oklch(90% 0 0); /* #e5e5e5 in OKLCH */  
-  --color-admin-border-dark: oklch(20% 0 0); /* #333333 in OKLCH */  
-  
-  /* Text colors */  
-  --color-admin-text: var(--color-admin-foreground);  
-  --color-admin-text-muted: oklch(40% 0 0); /* #666 in OKLCH */  
-  --color-admin-text-placeholder: oklch(60% 0 0); /* #999 in OKLCH */  
-  
-  /* Semantic colors for alerts, etc. */  
-  --color-admin-error: oklch(56% 0.19 22); /* approx. #d93030 in OKLCH */  
-  --color-admin-success: oklch(53% 0.15 155); /* approx. #28a745 in OKLCH */  
-  --color-admin-warning: oklch(85% 0.2 92); /* approx. #ffc107 in OKLCH */  
-  --color-admin-info: oklch(62% 0.21 260); /* approx. #17a2b8 in OKLCH */  
-  
-  /* Typography */  
-  --font-admin-main: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,  
-    Monaco, Consolas, "Liberation Mono", "Courier New", monospace;  
-  
-  /* Radii */  
-  --radius-admin-xs: 0.125rem; /* 2px */  
-  --radius-admin-sm: 0.25rem; /* 4px */  
-  --radius-admin-md: 0.375rem; /* 6px */  
-  --radius-admin-lg: 0.5rem; /* 8px */  
-  --radius-admin-xl: 0.75rem; /* 12px */  
-  
-  /* Shadows */  
-  --shadow-admin-input: rgba(0, 0, 0, 0.15) 0px 1px 2px 0px inset,  
-    rgba(0, 0, 0, 0.08) 1px -2px 2px 0px inset;  
-  --shadow-admin-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px  
-    rgb(0 0 0 / 0.1);  
-  --shadow-admin-dialog: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px  
-    rgb(0 0 0 / 0.1); /* Similar to shadow-elegant */  
-  
-  /* Button specific shadows */  
-  --shadow-admin-button-default:  
-    rgb(255, 255, 255) 1px 1px 1px 0px inset,  
-    rgba(0, 0, 0, 0.15) -1px -1px 1px 0px inset,  
-    rgba(0, 0, 0, 0.26) 0.444584px 0.444584px 0.628737px -1px,  
-    -0.5px -0.5px 0 0 rgb(0 0 0 / 5%);  
-  --shadow-admin-button-default-active: inset 0.5px 0.5px 1px  
-    var(--color-admin-white), inset -0.5px -0.5px 1px rgba(0, 0, 0, 0.26);  
-  
-  --shadow-admin-button-primary:  
-    inset 1px 1px 1px rgba(255, 255, 255, 0.83),  
-    inset -1px -1px 1px rgba(0, 0, 0, 0.23),  
-    0.444584px 0.444584px 0.628737px -1px #00000042,  
-    -0.5px -0.5px 0 0 hsl(16 100% 29% / 0.53); /* Adjusted from openai-fm primary */  
-  --shadow-admin-button-primary-active: inset 0.5px 0.5px 1px  
-    var(--color-admin-white), inset -0.5px -0.5px 1px rgba(0, 0, 0, 0.35);  
-  
-  --shadow-admin-button-secondary:  
-    inset 1px 1px 1px #ffffffb3,  
-    inset -1px -1px 1px #0000003b,  
-    0.444584px 0.444584px 0.628737px -0.75px #00000042,  
-    1.21072px 1.21072px 1.71222px -1.5px #0000003f,  
-    -0.5px -0.5px 0 0 #000000af;  
-  --shadow-admin-button-secondary-active:  
-    inset 0.5px 0.5px 1px #ffffffb3,  
-    inset -0.5px -0.5px 1px #0000005b,  
-    0.222px 0.222px 0.314px -1px #0003,  
-    -0.5px -0.5px 0 0 #000000ac;  
-  --shadow-admin-button-tertiary:  
-    inset 1px 1px 1px #ffffffba,  
-    inset -1px -1px 1px #0000003b,  
-    0.444584px 0.444584px 0.628737px -1px #00000042,  
-    -0.5px -0.5px 0 0 #0000006b;  
-  --shadow-admin-button-tertiary-active:  
-    inset 0.5px 0.5px 1px #ffffffba,  
-    inset -0.5px -0.5px 1px #0000005b,  
-    0.222px 0.222px 0.314px -1px #0003,  
-    -0.5px -0.5px 0 0 #0000007b;  
-  --shadow-admin-button-neutral:  
-    inset 1px 1px 1px #ffffffc2,  
-    inset -1px -1px 1px #0000003b,  
-    0.444584px 0.444584px 0.628737px -1px #00000042,  
-    -0.5px -0.5px 0 0 #00000012;  
-  --shadow-admin-button-neutral-active:  
-    inset 0.5px 0.5px 1px #fff,  
-    inset -0.5px -0.5px 1px #0000005b,  
-    0.222px 0.222px 0.314px -1px #0003,  
-    -0.5px -0.5px 0 0 #00000022;  
-  --shadow-admin-led: inset 1px 1px 2px #0000001c, 0px 1px 0px 0px #ffffff30;  
-  
-  --font-admin-sans: var(--font-sans);  
-}  
-  
-/* Apply base font and colors to the admin area */  
-:root {  
-  font-family: var(--font-admin-main);  
-  background-color: var(--color-admin-background);  
-  color: var(--color-admin-foreground);  
-  font-size: 14px; /* Match openai-fm html font-size */  
-  line-height: 130%; /* Match openai-fm html line-height */  
-}  
-  
-h1,  
-h2,  
-h3,  
-h4,  
-h5,  
-h6 {  
-  font-family: var(--font-admin-sans);  
-}  
-  
-/* Dark mode specific variables for admin */  
-:where(.dark, .dark *) {  
-  --color-admin-background: oklch(10% 0 0);  
-  --color-admin-foreground: oklch(93% 0 0);  
-  --color-admin-screen: oklch(15% 0 0);  
-  --color-admin-border: oklch(22% 0 0);  
-  --color-admin-border-light: oklch(30% 0 0);  
-  --color-admin-border-dark: oklch(15% 0 0);  
-  
-  --color-admin-text: var(--color-admin-foreground);  
-  --color-admin-text-muted: oklch(67% 0 0);  
-  --color-admin-text-placeholder: oklch(50% 0 0);  
-  
-  --color-admin-default-button-bg: oklch(20% 0 0);  
-  
-  --shadow-admin-input: rgba(255, 255, 255, 0.05) 0px 1px 2px 0px inset,  
-    rgba(255, 255, 255, 0.03) 1px -2px 2px 0px inset;  
-  --shadow-admin-card: 0 1px 3px 0 rgb(0 0 0 / 0.2), 0 1px 2px -1px  
-    rgb(0 0 0 / 0.2);  
-  --shadow-admin-dialog: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px  
-    rgb(0 0 0 / 0.3);  
-}  
-  
-/* Custom admin utilities */  
-@layer utilities {  
-  .shadow-admin-button-secondary {  
-    box-shadow: var(--shadow-admin-button-secondary);  
-  }  
-  .shadow-admin-button-secondary-active {  
-    box-shadow: var(--shadow-admin-button-secondary-active);  
-  }  
-  .shadow-admin-button-tertiary {  
-    box-shadow: var(--shadow-admin-button-tertiary);  
-  }  
-  .shadow-admin-button-tertiary-active {  
-    box-shadow: var(--shadow-admin-button-tertiary-active);  
-  }  
-  .shadow-admin-button-neutral {  
-    box-shadow: var(--shadow-admin-button-neutral);  
-  }  
-  .shadow-admin-button-neutral-active {  
-    box-shadow: var(--shadow-admin-button-neutral-active);  
-  }  
-  .shadow-admin-led {  
-    box-shadow: var(--shadow-admin-led);  
-  }  
+@import "tailwindcss";
+
+@theme {
+	/* Base Colors from openai-fm, prefixed with --admin- for clarity */
+	--color-admin-primary: oklch(63.7% 0.237 25.331); /* #ff4a00 in OKLCH color space */
+	--color-admin-background: oklch(93% 0 0); /* #ececec in OKLCH */
+	--color-admin-foreground: oklch(13% 0 0); /* #222 in OKLCH */
+	--color-admin-screen: oklch(95% 0 0); /* #f3f3f3 in OKLCH - for input backgrounds, content areas */
+	/* Neutral & Accent Colors - adapted for admin UI needs */
+	--color-admin-secondary: oklch(13% 0 0); /* #222 in OKLCH - for secondary buttons */
+	--color-admin-tertiary: oklch(42% 0 0); /* #6a6a6a in OKLCH */
+	--color-admin-neutral: oklch(67% 0 0); /* #aaa in OKLCH */
+	--color-admin-default-button-bg: oklch(96% 0 0); /* #f4f4f4 in OKLCH */
+	--color-admin-white: oklch(100% 0 0);
+	--color-admin-black: oklch(0% 0 0);
+
+	/* Borders - using more subtle grays from typical admin UIs */
+	--color-admin-border: oklch(85% 0 0); /* #d9d9d9 in OKLCH */
+	--color-admin-border-light: oklch(90% 0 0); /* #e5e5e5 in OKLCH */
+	--color-admin-border-dark: oklch(20% 0 0); /* #333333 in OKLCH */
+	/* Text colors */
+	--color-admin-text: var(--color-admin-foreground);
+	--color-admin-text-muted: oklch(40% 0 0); /* #666 in OKLCH */
+	--color-admin-text-placeholder: oklch(60% 0 0); /* #999 in OKLCH */
+	/* Semantic colors for alerts, etc. */
+	--color-admin-error: oklch(56% 0.19 22); /* approx. #d93030 in OKLCH */
+	--color-admin-success: oklch(53% 0.15 155); /* approx. #28a745 in OKLCH */
+	--color-admin-warning: oklch(85% 0.2 92); /* approx. #ffc107 in OKLCH */
+	--color-admin-info: oklch(62% 0.21 260); /* approx. #17a2b8 in OKLCH */
+	/* Typography */
+	--font-admin-main: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+		Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+	/* Radii */
+	--radius-admin-xs: 0.125rem; /* 2px */
+	--radius-admin-sm: 0.25rem; /* 4px */
+	--radius-admin-md: 0.375rem; /* 6px */
+	--radius-admin-lg: 0.5rem; /* 8px */
+	--radius-admin-xl: 0.75rem; /* 12px */
+	/* Shadows */
+	--shadow-admin-input: rgba(0, 0, 0, 0.15) 0px 1px 2px 0px inset,
+		rgba(0, 0, 0, 0.08) 1px -2px 2px 0px inset;
+	--shadow-admin-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px
+		rgb(0 0 0 / 0.1);
+	--shadow-admin-dialog: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px
+		rgb(0 0 0 / 0.1); /* Similar to shadow-elegant */
+	/* Button specific shadows */
+	--shadow-admin-button-default:
+		rgb(255, 255, 255) 1px 1px 1px 0px inset,
+		rgba(0, 0, 0, 0.15) -1px -1px 1px 0px inset,
+		rgba(0, 0, 0, 0.26) 0.444584px 0.444584px 0.628737px -1px,
+		-0.5px -0.5px 0 0 rgb(0 0 0 / 5%);
+	--shadow-admin-button-default-active: inset 0.5px 0.5px 1px
+		var(--color-admin-white), inset -0.5px -0.5px 1px rgba(0, 0, 0, 0.26);
+
+	--shadow-admin-button-primary:
+		inset 1px 1px 1px rgba(255, 255, 255, 0.83),
+		inset -1px -1px 1px rgba(0, 0, 0, 0.23),
+		0.444584px 0.444584px 0.628737px -1px #00000042,
+		-0.5px -0.5px 0 0 hsl(16 100% 29% / 0.53); /* Adjusted from openai-fm primary */
+	--shadow-admin-button-primary-active: inset 0.5px 0.5px 1px
+		var(--color-admin-white), inset -0.5px -0.5px 1px rgba(0, 0, 0, 0.35);
+
+	--shadow-admin-button-secondary:
+		inset 1px 1px 1px #ffffffb3,
+		inset -1px -1px 1px #0000003b,
+		0.444584px 0.444584px 0.628737px -0.75px #00000042,
+		1.21072px 1.21072px 1.71222px -1.5px #0000003f,
+		-0.5px -0.5px 0 0 #000000af;
+	--shadow-admin-button-secondary-active:
+		inset 0.5px 0.5px 1px #ffffffb3,
+		inset -0.5px -0.5px 1px #0000005b,
+		0.222px 0.222px 0.314px -1px #0003,
+		-0.5px -0.5px 0 0 #000000ac;
+	--shadow-admin-button-tertiary:
+		inset 1px 1px 1px #ffffffba,
+		inset -1px -1px 1px #0000003b,
+		0.444584px 0.444584px 0.628737px -1px #00000042,
+		-0.5px -0.5px 0 0 #0000006b;
+	--shadow-admin-button-tertiary-active:
+		inset 0.5px 0.5px 1px #ffffffba,
+		inset -0.5px -0.5px 1px #0000005b,
+		0.222px 0.222px 0.314px -1px #0003,
+		-0.5px -0.5px 0 0 #0000007b;
+	--shadow-admin-button-neutral:
+		inset 1px 1px 1px #ffffffc2,
+		inset -1px -1px 1px #0000003b,
+		0.444584px 0.444584px 0.628737px -1px #00000042,
+		-0.5px -0.5px 0 0 #00000012;
+	--shadow-admin-button-neutral-active:
+		inset 0.5px 0.5px 1px #fff,
+		inset -0.5px -0.5px 1px #0000005b,
+		0.222px 0.222px 0.314px -1px #0003,
+		-0.5px -0.5px 0 0 #00000022;
+	--shadow-admin-led: inset 1px 1px 2px #0000001c, 0px 1px 0px 0px #ffffff30;
+
+	--font-admin-sans: var(--font-sans);
+}
+
+/* Apply base font and colors to the admin area */
+:root {
+	font-family: var(--font-admin-main);
+	background-color: var(--color-admin-background);
+	color: var(--color-admin-foreground);
+	font-size: 14px; /* Match openai-fm html font-size */
+	line-height: 130%; /* Match openai-fm html line-height */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-admin-sans);
+}
+
+/* Dark mode specific variables for admin */
+:where(.dark, .dark *) {
+	--color-admin-background: oklch(10% 0 0);
+	--color-admin-foreground: oklch(93% 0 0);
+	--color-admin-screen: oklch(15% 0 0);
+	--color-admin-border: oklch(22% 0 0);
+	--color-admin-border-light: oklch(30% 0 0);
+	--color-admin-border-dark: oklch(15% 0 0);
+
+	--color-admin-text: var(--color-admin-foreground);
+	--color-admin-text-muted: oklch(67% 0 0);
+	--color-admin-text-placeholder: oklch(50% 0 0);
+
+	--color-admin-default-button-bg: oklch(20% 0 0);
+
+	--shadow-admin-input: rgba(255, 255, 255, 0.05) 0px 1px 2px 0px inset,
+		rgba(255, 255, 255, 0.03) 1px -2px 2px 0px inset;
+	--shadow-admin-card: 0 1px 3px 0 rgb(0 0 0 / 0.2), 0 1px 2px -1px
+		rgb(0 0 0 / 0.2);
+	--shadow-admin-dialog: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px
+		rgb(0 0 0 / 0.3);
+}
+
+/* Custom admin utilities */
+@layer utilities {
+	.shadow-admin-button-secondary {
+		box-shadow: var(--shadow-admin-button-secondary);
+	}
+
+	.shadow-admin-button-secondary-active {
+		box-shadow: var(--shadow-admin-button-secondary-active);
+	}
+
+	.shadow-admin-button-tertiary {
+		box-shadow: var(--shadow-admin-button-tertiary);
+	}
+
+	.shadow-admin-button-tertiary-active {
+		box-shadow: var(--shadow-admin-button-tertiary-active);
+	}
+
+	.shadow-admin-button-neutral {
+		box-shadow: var(--shadow-admin-button-neutral);
+	}
+
+	.shadow-admin-button-neutral-active {
+		box-shadow: var(--shadow-admin-button-neutral-active);
+	}
+
+	.shadow-admin-led {
+		box-shadow: var(--shadow-admin-led);
+	}
 }

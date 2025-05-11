@@ -2,6 +2,7 @@ import clsx from "clsx";
 import type { ForwardedRef, ReactNode } from "react";
 import React, { forwardRef } from "react";
 import { Link, type To } from "react-router";
+
 type ButtonProps = {
 	invert?: boolean;
 	className?: string;

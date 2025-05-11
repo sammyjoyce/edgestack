@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import type React from "react";
+
 export function DescriptionList({
 	className,
 	...props
@@ -15,6 +16,7 @@ export function DescriptionList({
 		/>
 	);
 }
+
 export function DescriptionTerm({
 	className,
 	...props
@@ -30,6 +32,7 @@ export function DescriptionTerm({
 		/>
 	);
 }
+
 export function DescriptionDetails({
 	className,
 	...props

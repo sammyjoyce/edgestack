@@ -4,31 +4,37 @@ import type {
 	SerializedLexicalNode,
 	SerializedTextNode,
 } from "lexical";
+import type React from "react";
+import { Fragment } from "react";
+
 interface SerializedHeadingNode extends SerializedLexicalNode {
 	tag: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 	children: SerializedLexicalNode[];
 }
+
 interface SerializedLinkNode extends SerializedLexicalNode {
 	url: string;
 	target?: string;
 	rel?: string;
 	children: SerializedLexicalNode[];
 }
+
 interface SerializedListItemNode extends SerializedLexicalNode {
 	value: number;
 	children: SerializedLexicalNode[];
 }
+
 interface SerializedListNode extends SerializedLexicalNode {
 	listType: "bullet" | "number" | "check";
 	tag: "ul" | "ol";
 	children: SerializedLexicalNode[];
 }
-import type React from "react";
-import { Fragment } from "react";
+
 interface Props {
 	json: string;
 	className?: string;
 }
+
 function applyTextFormat(
 	format: number,
 	children: React.ReactNode,
@@ -45,6 +51,7 @@ function applyTextFormat(
 	}
 	return element;
 }
+
 function renderNode(node: SerializedLexicalNode, key: number): React.ReactNode {
 	if (!node) return null;
 	const children =
@@ -98,6 +105,7 @@ function renderNode(node: SerializedLexicalNode, key: number): React.ReactNode {
 			) : null;
 	}
 }
+
 export default function RichTextRenderer({ json, className }: Props) {
 	let parsedState: SerializedEditorState | null = null;
 	let error = null;

@@ -1,11 +1,13 @@
 import clsx from "clsx";
 import type React from "react";
+
 type BorderProps<T extends React.ElementType = "div"> = {
 	as?: T;
 	className?: string;
 	position?: "top" | "left";
 	invert?: boolean;
 };
+
 export function Border<T extends React.ElementType = "div">({
 	as,
 	className,

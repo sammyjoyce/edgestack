@@ -2,9 +2,11 @@ import clsx from "clsx";
 import { motion } from "framer-motion";
 import type React from "react";
 import { useState } from "react";
+
 function cn(...inputs: (string | undefined | null | boolean)[]) {
 	return clsx(inputs);
 }
+
 export type Tab = {
 	title: string;
 	value: string;

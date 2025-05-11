@@ -1,4 +1,5 @@
 import type { AppLoadContext } from "react-router";
+
 export interface StoredImage {
 	name: string;
 	url: string;
@@ -6,6 +7,7 @@ export interface StoredImage {
 	size?: number;
 	contentType?: string;
 }
+
 export async function listStoredImages(
 	context: AppLoadContext,
 ): Promise<StoredImage[]> {
@@ -53,6 +55,7 @@ export async function listStoredImages(
 		throw new Error(`Failed to list images from R2. ${message}`);
 	}
 }
+
 export async function deleteStoredImage(
 	filename: string,
 	context: AppLoadContext,
@@ -75,6 +78,7 @@ export async function deleteStoredImage(
 		throw new Error(`Failed to delete image from R2. ${message}`);
 	}
 }
+
 export async function handleImageUpload(
 	file: File,
 	key: string,

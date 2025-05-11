@@ -5,17 +5,20 @@ import { Button } from "~/routes/common/components/ui/Button";
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
+
 interface ServiceItem {
 	title: string;
 	image: string;
 	link: string;
 }
+
 interface OurServicesProps {
 	introTitle?: string;
 	introText?: string;
 	servicesData?: ServiceItem[];
 	theme?: "light" | "dark";
 }
+
 const defaultServices: ServiceItem[] = [
 	{
 		title: "Kitchens",

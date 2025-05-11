@@ -1,9 +1,8 @@
 import { asc, desc, eq, sql } from "drizzle-orm";
-import type { BatchItem, BatchResponse } from "drizzle-orm/batch";
+import type { BatchItem } from "drizzle-orm/batch";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
 import { assert } from "~/routes/common/utils/assert";
 import type {
-	Content, // Assuming Content type is needed
 	NewContent,
 	NewProject,
 	Project,
@@ -36,6 +35,7 @@ function ensureGetProjectByIdPrepared(db: DrizzleD1Database<typeof schema>) {
 	}
 	return getProjectByIdPrepared;
 }
+
 export async function getAllContent(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Record<string, string>> {
@@ -77,6 +77,7 @@ export async function getAllContent(
 		return {};
 	}
 }
+
 export async function updateContent(
 	db: DrizzleD1Database<typeof schema>,
 	updates: Record<
@@ -175,6 +176,7 @@ export async function updateContent(
 		);
 	}
 }
+
 export async function getAllProjects(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Project[]> {
@@ -190,6 +192,7 @@ export async function getAllProjects(
 	assert(Array.isArray(result), "getAllProjects: must return array");
 	return result;
 }
+
 export async function getFeaturedProjects(
 	db: DrizzleD1Database<typeof schema>,
 ): Promise<Project[]> {
@@ -206,6 +209,7 @@ export async function getFeaturedProjects(
 	assert(Array.isArray(result), "getFeaturedProjects: must return array");
 	return result;
 }
+
 export async function getProjectById(
 	db: DrizzleD1Database<typeof schema>,
 	id: number,
@@ -229,6 +233,7 @@ export async function getProjectById(
 	);
 	return result[0];
 }
+
 export async function createProject(
 	db: DrizzleD1Database<typeof schema>,
 	projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">,
@@ -254,6 +259,7 @@ export async function createProject(
 	);
 	return result;
 }
+
 export async function updateProject(
 	db: DrizzleD1Database<typeof schema>,
 	id: number,
@@ -283,6 +289,7 @@ export async function updateProject(
 	);
 	return result;
 }
+
 export async function deleteProject(
 	db: DrizzleD1Database<typeof schema>,
 	id: number,

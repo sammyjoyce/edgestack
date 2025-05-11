@@ -1,6 +1,7 @@
 import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
+
 export function CheckboxGroup({
 	className,
 	...props
@@ -17,6 +18,7 @@ export function CheckboxGroup({
 		/>
 	);
 }
+
 export function CheckboxField({
 	className,
 	...props
@@ -36,6 +38,7 @@ export function CheckboxField({
 		/>
 	);
 }
+
 const baseStyles = [
 	"relative isolate flex size-4 items-center justify-center rounded-sm",
 	"border border-zinc-300 dark:border-zinc-700",
@@ -47,6 +50,7 @@ const baseStyles = [
 	"group-data-disabled:bg-zinc-100 dark:group-data-disabled:bg-zinc-800",
 	"group-data-checked:group-data-disabled:bg-primary/50 group-data-checked:group-data-disabled:border-primary/50",
 ];
+
 export function Checkbox({
 	className,
 	...props

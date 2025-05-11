@@ -1,14 +1,15 @@
-import React, { useState, useRef } from "react";
-import { useFetcher } from "react-router";
+import React, { useRef, useState } from "react";
 import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";
 import { Button } from "~/routes/admin/components/ui/button";
 import { Heading } from "../ui/heading";
 import type { StoredImage } from "~/utils/upload.server";
+
 interface ProjectImageSelectorProps {
 	currentImage?: string;
 	className?: string;
 }
+
 export function ProjectImageSelector({
 	currentImage,
 	className = "",
