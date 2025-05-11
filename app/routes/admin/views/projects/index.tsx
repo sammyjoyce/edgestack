@@ -16,6 +16,7 @@ import type { Project } from "../../../../../database/schema";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Button } from "../../components/ui/button";
 import { Text } from "../../components/ui/text";
+import { ConditionalRichTextRenderer } from "../../../common/components/ConditionalRichTextRenderer";
 import type { Route } from "./+types/index";
 export async function loader({
 	request,
@@ -156,12 +157,11 @@ export default function AdminProjectsIndexPage({ loaderData }: Route.ComponentPr
 										{project.title}
 									</td>
 									<td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
-										{typeof project.description === "string"
-											? project.description
-											: project.description &&
-													typeof project.description === "object"
-												? JSON.stringify(project.description)
-												: "-"}
+										{project.description ? (
+											<ConditionalRichTextRenderer text={project.description} />
+										) : (
+											"-"
+										)}
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
 										{project.isFeatured ? (
