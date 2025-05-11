@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import React from "react";
 import { Link, type To } from "react-router";
 import type { Project } from "~/database/schema";
-import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
+import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
