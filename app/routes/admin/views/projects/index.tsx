@@ -16,7 +16,7 @@ import type { Project } from "../../../../../database/schema";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Button } from "../../components/ui/button";
 import { Text } from "../../components/ui/text";
-import { ConditionalRichTextRenderer } from "../../../common/components/ConditionalRichTextRenderer";
+import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer/index";
 import type { Route } from "./+types/index";
 export async function loader({
 	request,

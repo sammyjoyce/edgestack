@@ -52,8 +52,8 @@ interface SectionDetail {
 interface SectionSorterProps {
 	initialSectionsFromDb: Section[];
 	sectionDetailsOrdered: SectionDetail[];
-	orderFetcher: FetcherWithComponents<typeof AdminIndexRoute.action>;
-	themeUpdateFetcher: FetcherWithComponents<typeof AdminIndexRoute.action>;
+	orderFetcher: FetcherWithComponents<AdminViewsActionData>;
+	themeUpdateFetcher: FetcherWithComponents<AdminViewsActionData>;
 }
     
 interface SortableItemProps {
@@ -150,11 +150,11 @@ export default function SectionSorter({
 	return (
 		<section
 			aria-labelledby="section-sorter-heading"
-			className="p-4 bg-slate-800 rounded-lg shadow"
+			className="p-4 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg"
 		>
 			<h2
 				id="section-sorter-heading"
-				className="text-xl font-semibold text-slate-100 mb-4"
+				className="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-4"
 			>
 				Reorder & Theme Sections
 			</h2>
@@ -228,14 +228,14 @@ function SortableItem({
 			ref={setNodeRef}
 			style={style}
 			className={clsx(
-				"p-3 bg-slate-700 rounded-md shadow flex items-center justify-between",
-				{ "opacity-50": isDragging },
+				"p-3 bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg shadow flex items-center justify-between transition-colors duration-150",
+				{ "opacity-50": isDragging }
 			)}
 		>
 			<div className="flex items-center">
 				<Button
 					variant="outline"
-					className="cursor-grab p-2 text-slate-300 hover:bg-slate-600 focus-visible:ring-primary-500 mr-3"
+					className="cursor-grab p-2 text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-800 border-gray-300 dark:border-slate-600 hover:bg-gray-200 dark:hover:bg-slate-600 hover:text-gray-700 dark:hover:text-white focus-visible:ring-primary-500 mr-3 shadow-none"
 					aria-label={`Drag ${details.label} section`}
 					{...attributes}
 					{...listeners}
@@ -254,7 +254,7 @@ function SortableItem({
 						<line x1="3" y1="18" x2="21" y2="18"></line>
 					</svg>
 				</Button>
-				<span className="text-sm font-medium text-slate-100 select-none">
+				<span className="text-sm font-medium text-gray-900 dark:text-slate-100 select-none">
 					{details.label}
 				</span>
 			</div>
@@ -275,7 +275,7 @@ function SortableItem({
 					/>
 					<SwitchLabel
 						htmlFor={`${details.id}-theme-toggle`}
-						className="text-xs text-slate-300 font-normal select-none whitespace-nowrap mt-1"
+						className="text-xs text-gray-500 dark:text-slate-400 font-normal select-none whitespace-nowrap mt-1"
 					>
 						Current: {isLight ? "Light" : "Dark"}
 					</SwitchLabel>
