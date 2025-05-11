@@ -7,7 +7,7 @@ import {
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import React from "react";
-import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
+import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 interface ContactUsProps {
 	content?: Record<string, string>;
 	theme?: "light" | "dark";
