@@ -8,7 +8,7 @@ import {
 	FieldRow,
 	SectionCard,
 	SectionHeading
-} from "../ui/section";
+} from "../../ui/section";
 import type { action as adminIndexAction } from "~/routes/admin/views/index";
 import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 interface AboutSectionEditorProps {
