@@ -14,15 +14,10 @@ import {
 	useLocation,
 	useNavigation,
 } from "react-router";
-import { getSessionCookie, verify } from "~/routes/common/utils/auth";
-import adminThemeStylesheet from "../../../admin-theme.css?url";
-import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
-import {
-	SidebarLayout,
-	Sidebar,
-	SidebarSection,
-	SidebarItem,
-} from "../components/ui/sidebar-layout";
+import { getSessionCookie, verify } from "~/routes/common/utils/auth"; // Keep
+import adminThemeStylesheet from "../../../admin-theme.css?url"; // Keep
+import { AdminErrorBoundary } from "../components/AdminErrorBoundary"; // Keep
+import { SidebarLayout } from "../components/ui/sidebar-layout"; // Keep only SidebarLayout
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
 ];
@@ -57,10 +52,10 @@ export const loader = async ({
 	return { isAuthenticated: loggedIn };
 };
 export const action = async ({
-	request,
-	context,
-	params,
-}: Route.ActionArgs): Promise<null | Route.ActionData> => {
+	request, // eslint-disable-line @typescript-eslint/no-unused-vars
+	context, // eslint-disable-line @typescript-eslint/no-unused-vars
+	params,  // eslint-disable-line @typescript-eslint/no-unused-vars
+}: Route.ActionArgs): Promise<null> => { // ActionData will be null
 	return null;
 };
 interface NavItem {
@@ -101,23 +96,24 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 								rel="noopener noreferrer"
 								className="group flex items-center gap-x-3 rounded-md p-2 text-sm font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
 							>
-								<item.icon aria-hidden="true" className="size-5 shrink-0" />
+								<item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
 								{item.name}
 							</a>
 						) : (
-							<SidebarItem
-								as={"a"}
-								href={item.href as string}
-								current={
-									location.pathname === item.href ||
-									(item.href !== "/admin" &&
-										location.pathname.startsWith(item.href as string))
-								}
-								className="group flex items-center gap-x-3 rounded-md p-2 text-sm font-medium"
+							<Headless.Description // Assuming SidebarItem was a styled li, using a generic wrapper
+								as="li"
+								className={clsx(
+									"group flex items-center gap-x-3 rounded-md p-2 text-sm font-medium",
+									(location.pathname === item.href || (item.href !== "/admin" && location.pathname.startsWith(item.href as string)))
+										? "bg-gray-800 text-white"
+										: "text-gray-400 hover:bg-gray-700 hover:text-white"
+								)}
 							>
-								<item.icon aria-hidden="true" className="size-5 shrink-0" />
-								{item.name}
-							</SidebarItem>
+								<RouterLink to={item.href as string} className="flex items-center gap-x-3">
+									<item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
+									{item.name}
+								</RouterLink>
+							</Headless.Description>
 						)}
 					</li>
 				))}

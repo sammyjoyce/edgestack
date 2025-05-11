@@ -7,6 +7,7 @@ import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
 // Removed type { Route } from "./+types/projectId"; as it's moved and renamed by another change
+import type { Route } from "./+types/[projectId]";
 export const loader = async ({ params, context, request }: Route.LoaderArgs) => {
 	assert(
 		typeof params.projectId === "string",
