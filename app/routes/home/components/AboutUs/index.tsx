@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import React, { type JSX } from "react";
-import ConditionalRichTextRenderer from "~/routes/common/components/ConditionalRichTextRenderer";
+import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 interface AboutProps {
 	title?: string;
