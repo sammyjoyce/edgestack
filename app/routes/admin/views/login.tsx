@@ -102,9 +102,6 @@ export default function Component({ actionData }: Route.ComponentProps) {
 					className="mb-2 text-center"
 					actions={null}
 				/>
-				<Text className="mb-6 text-center text-gray-600 dark:text-gray-300">
-					Sign in to your account
-				</Text>
 				<Form method="post" className="mt-8 space-y-6">
 					<input type="hidden" name="remember" defaultValue="true" />
 					<div className="space-y-4 rounded-md shadow-sm">

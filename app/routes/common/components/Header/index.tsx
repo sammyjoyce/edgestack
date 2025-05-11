@@ -23,6 +23,7 @@ const MENU_ITEMS: readonly MenuItem[] = [
 	{ name: "About Us", path: "/#about", isRouteLink: true },
 	{ name: "Contact Us", path: "/#contact", isRouteLink: true },
 ] as const;
+
 export default function Header(): JSX.Element {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const navigate = useNavigate();

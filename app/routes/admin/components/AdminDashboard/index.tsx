@@ -11,7 +11,7 @@ import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 import { Container } from "~/routes/common/components/ui/Container";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 import { FormCard } from "../ui/FormCard";
-import { Text } from "../ui/text";
+import { Text, Strong } from "../ui/text";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -19,7 +19,7 @@ import { Textarea } from "../ui/textarea";
 import type {
 	Section as SorterSection,
 	SectionTheme as SorterSectionTheme,
-} from "./SectionSorter";
+} from "../SectionSorter";
 import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
 import { Heading } from "../ui/heading";
 interface AdminDashboardProps {
@@ -311,7 +311,7 @@ export default function AdminDashboard({
 						<Button
 							as={Link}
 							to="/admin/projects"
-							variant="primary"
+							color="primary"
 							aria-label="Go to Projects Admin"
 						>
 							Go to Projects Admin
@@ -353,7 +353,7 @@ export default function AdminDashboard({
 					<Button
 						type="button"
 						onClick={() => window.open("/?bustCache=true", "_blank")}
-						variant="primary"
+						color="primary"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

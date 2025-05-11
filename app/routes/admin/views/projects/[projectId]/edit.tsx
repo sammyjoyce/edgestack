@@ -26,6 +26,8 @@ import { Button } from "../../../components/ui/button";
 import { Label } from "../../../components/ui/fieldset";
 import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
+import { Heading } from "~/routes/admin/components/ui/heading";
+
 
 export async function loader({
 	params,
@@ -152,7 +154,7 @@ export default function EditProjectPage({ loaderData, actionData, params }: Rout
 
 	return (
 		<FadeIn>
-			<PageHeader title={`Edit Project: ${project?.title ?? "Loading..."}`} />
+			<Heading level={4}>Edit Project: {project?.title}</Heading>
 
 			{actionData && !actionData.success && actionData.error && (
 				<Alert variant="error" className="mb-4">
