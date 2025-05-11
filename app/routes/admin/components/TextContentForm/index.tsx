@@ -5,6 +5,7 @@ import {
 	InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { XCircleIcon } from "@heroicons/react/24/solid"; // Or /20/solid if that's your version
+import { Heading } from "../ui/heading";
 import { Alert } from "../ui/alert";
 import { useRef, type JSX } from "react";
 import type { FetcherWithComponents } from "react-router";
@@ -140,7 +141,7 @@ export function TextContentForm({
 			onSubmit={handleSave}
 		>
 			<div className="flex flex-wrap items-center justify-between gap-4 mb-2">
-				<h3 className="text-lg font-semibold text-foreground">Text Content</h3>
+				<Heading level={3} className="text-lg font-semibold text-foreground">Text Content</Heading>
 				<div className="flex items-center gap-2 ml-auto">
 					<label
 						htmlFor="auto-save-toggle"

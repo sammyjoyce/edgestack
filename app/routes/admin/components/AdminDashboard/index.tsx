@@ -11,6 +11,7 @@ import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 import { Container } from "~/routes/common/components/ui/Container";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
 import { FormCard } from "../ui/FormCard";
+import { Text } from "../ui/text";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -227,20 +228,21 @@ export default function AdminDashboard({
 								}}
 							/>
 							{projectsFetcher.data &&
-								projectsFetcher.state === "idle" &&
-								projectsFetcher.data.message && (
-									<p
-										className={`mt-2 text-sm ${projectsFetcher.data.success ? "text-green-600" : "text-red-600"}`}
-									>
-										{projectsFetcher.data.message}
-									</p>
-								)}
-							{projectsFetcher.data &&
-								projectsFetcher.state === "idle" &&
-								projectsFetcher.data.error && (
-									<p className="mt-2 text-sm text-red-600">
-										{projectsFetcher.data.error}
-									</p>
+								projectsFetcher.state === "idle" && (
+								<>
+									{projectsFetcher.data.message && (
+										<Text
+											className={`mt-2 text-sm ${projectsFetcher.data.success ? "text-green-600" : "text-red-600"}`}
+										>
+											{projectsFetcher.data.message}
+										</Text>
+									)}
+									{projectsFetcher.data.error && (
+										<Text className="mt-2 text-sm text-red-600">
+											{projectsFetcher.data.error}
+										</Text>
+									)}
+								</>
 								)}
 						</div>
 						<div>
@@ -266,27 +268,28 @@ export default function AdminDashboard({
 								}}
 							/>
 							{projectsFetcher.data &&
-								projectsFetcher.state === "idle" &&
-								projectsFetcher.data.message && (
-									<p
-										className={`mt-2 text-sm ${projectsFetcher.data.success ? "text-green-600" : "text-red-600"}`}
-									>
-										{projectsFetcher.data.message}
-									</p>
-								)}
-							{projectsFetcher.data &&
-								projectsFetcher.state === "idle" &&
-								projectsFetcher.data.error && (
-									<p className="mt-2 text-sm text-red-600">
-										{projectsFetcher.data.error}
-									</p>
+								projectsFetcher.state === "idle" && (
+								<>
+									{projectsFetcher.data.message && (
+										<Text
+											className={`mt-2 text-sm ${projectsFetcher.data.success ? "text-green-600" : "text-red-600"}`}
+										>
+											{projectsFetcher.data.message}
+										</Text>
+									)}
+									{projectsFetcher.data.error && (
+										<Text className="mt-2 text-sm text-red-600">
+											{projectsFetcher.data.error}
+										</Text>
+									)}
+								</>
 								)}
 						</div>
 					</div>
 					<div className="mt-4 text-sm text-gray-600 space-y-1">
-						<p>
-							<strong>Note:</strong>
-						</p>
+						<Text>
+							<Strong>Note:</Strong>
+						</Text>
 						<ul className="list-disc list-inside space-y-1">
 							<li>
 								To add, edit, or reorder projects, visit the Projects admin

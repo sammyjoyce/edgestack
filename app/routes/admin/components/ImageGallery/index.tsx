@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useFetcher, useLoaderData } from "react-router";
 import { Drawer } from "vaul";
 import type { loader as uploadLoader, action as uploadAction } from "~/routes/admin/views/upload";
+import { Heading } from "../ui/heading";
+import { Text } from "../ui/text";
 import type { StoredImage } from "~/utils/upload.server";
 import { Button } from "../ui/button";
 interface ImageGalleryProps {
@@ -56,17 +58,17 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 		<div className="bg-white border border-gray-200 rounded-lg shadow-xs p-4">
 			{images.length === 0 ? (
 				<div className="text-center py-8">
-					<p className="text-gray-500">No images uploaded yet.</p>
-					<p className="text-sm text-gray-400 mt-2">
+					<Text className="text-gray-500">No images uploaded yet.</Text>
+					<Text className="text-sm text-gray-400 mt-2">
 						Upload images using the form on the left.
-					</p>
+					</Text>
 				</div>
 			) : (
 				<>
 					<div className="mb-4">
-						<p className="text-sm text-gray-500">
+						<Text className="text-sm text-gray-500">
 							{images.length} image{images.length !== 1 ? "s" : ""} available
-						</p>
+						</Text>
 					</div>
 					<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
 						{images.map((image: StoredImage) => (
@@ -95,19 +97,19 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 														<div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 mb-4" />
 														<div className="max-w-4xl mx-auto">
 															<div className="flex justify-between items-start mb-4">
-																<div>
-																	<h3 className="text-lg font-medium text-gray-900 truncate max-w-[250px]">
+																<div className="truncate max-w-[250px]">
+																	<Heading level={3} className="text-lg font-medium text-gray-900">
 																		{selectedImage?.name}
-																	</h3>
-																	<p className="text-sm text-gray-500">
+																	</Heading>
+																	<Text className="text-sm text-gray-500">
 																		Uploaded{" "}
 																		{selectedImage &&
 																			formatDate(selectedImage.uploadDate)}
-																	</p>
-																	<p className="text-sm text-gray-500">
+																	</Text>
+																	<Text className="text-sm text-gray-500">
 																		{selectedImage &&
 																			formatFileSize(selectedImage.size)}
-																	</p>
+																	</Text>
 																</div>
 																<div className="flex gap-2">
 																	{forField && (
@@ -155,9 +157,9 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 																/>
 															</div>
 															<div className="mt-4 bg-gray-50 p-3 rounded-lg">
-																<p className="text-sm font-medium text-gray-700 mb-1">
+																<Text className="text-sm font-medium text-gray-700 mb-1">
 																	Image URL:
-																</p>
+																</Text>
 																<div className="flex items-center mt-1">
 																	<code className="bg-gray-100 text-gray-800 px-2 py-1 text-xs rounded flex-1 overflow-x-auto">
 																		{selectedImage?.url}
