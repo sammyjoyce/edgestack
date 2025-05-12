@@ -160,18 +160,22 @@ export default function ContactUs({
 							<dd className="whitespace-pre-line">{hours}</dd>
 						</div>
 					</dl>
-					<div
-						className={clsx(
-							"mt-8 space-y-1 text-[11px] leading-normal",
-							"text-gray-600 dark:text-gray-200",
-						)}
-					>
-						<p className="font-medium whitespace-pre-line">ABN: {abn}</p>
-						<p className="font-medium whitespace-pre-line">ACN: {acn}</p>
-						<p className="font-medium whitespace-pre-line">
-							License Number: {license}
-						</p>
-					</div>
+					<dl className="mt-8 flex flex-col gap-1 text-xs leading-normal text-gray-100 dark:text-gray-800">
+						<div className="flex items-center gap-2">
+							<dt className="sr-only">ABN</dt>
+							<dd className="font-medium whitespace-pre-line">ABN: {abn}</dd>
+						</div>
+						<div className="flex items-center gap-2">
+							<dt className="sr-only">ACN</dt>
+							<dd className="font-medium whitespace-pre-line">ACN: {acn}</dd>
+						</div>
+						<div className="flex items-center gap-2">
+							<dt className="sr-only">License Number</dt>
+							<dd className="font-medium whitespace-pre-line">
+								License: {license}
+							</dd>
+						</div>
+					</dl>
 					<div className="mt-10">
 						<h3
 							className={clsx(

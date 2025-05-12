@@ -7,10 +7,7 @@ export function Text({
 	...props
 }: React.ComponentPropsWithoutRef<"p">) {
 	return (
-		<p
-			{...props}
-			className={clsx(className, "text-base text-zinc-700")}
-		/>
+		<p {...props} className={clsx(className, "text-base text-zinc-700")} />
 	);
 }
 

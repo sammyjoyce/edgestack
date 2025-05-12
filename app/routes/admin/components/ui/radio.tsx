@@ -63,10 +63,7 @@ export function Label({
 		<Headless.Label
 			{...props}
 			data-slot="label"
-			className={clsx(
-				className,
-				"text-sm font-medium text-zinc-900",
-			)}
+			className={clsx(className, "text-sm font-medium text-zinc-900")}
 		/>
 	);
 }

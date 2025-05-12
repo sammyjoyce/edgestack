@@ -20,9 +20,7 @@ export const lexicalTheme = {
 	text: {
 		underline: "underline",
 	},
-	code:
-		"font-mono text-sm rounded px-1.5 py-1 bg-slate-100 " +
-		"text-pink-700",
+	code: "font-mono text-sm rounded px-1.5 py-1 bg-slate-100 " + "text-pink-700",
 	codeHighlight: {
 		comment: "text-slate-500 italic",
 		keyword: "text-cyan-600",

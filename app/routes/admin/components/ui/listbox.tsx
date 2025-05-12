@@ -131,9 +131,7 @@ export function ListboxOption<TValue>({
 					className={clsx(
 						className,
 						"group/option relative flex cursor-default select-none items-center gap-x-2 rounded-md py-1.5 px-2.5 text-sm",
-						active
-							? "bg-primary/10 text-primary"
-							: "text-zinc-700",
+						active ? "bg-primary/10 text-primary" : "text-zinc-700",
 						selected ? "font-semibold" : "font-normal",
 						"data-disabled:opacity-50 data-disabled:cursor-not-allowed",
 					)}

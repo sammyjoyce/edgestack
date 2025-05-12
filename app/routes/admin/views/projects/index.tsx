@@ -150,10 +150,7 @@ export default function AdminProjectsIndexPage({
 						</thead>
 						<tbody className="bg-white divide-y divide-gray-200">
 							{projects.map((project) => (
-								<tr
-									key={project.id}
-									className="hover:bg-gray-50"
-								>
+								<tr key={project.id} className="hover:bg-gray-50">
 									<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
 										{project.title}
 									</td>

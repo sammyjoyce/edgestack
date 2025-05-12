@@ -63,21 +63,13 @@ export function TableHead({
 	return (
 		<thead
 			{...props}
-			className={clsx(
-				className,
-				"text-sm font-semibold text-zinc-900",
-			)}
+			className={clsx(className, "text-sm font-semibold text-zinc-900")}
 		/>
 	);
 }
 
 export function TableBody(props: React.ComponentPropsWithoutRef<"tbody">) {
-	return (
-		<tbody
-			{...props}
-			className="divide-y divide-zinc-200"
-		/>
-	);
+	return <tbody {...props} className="divide-y divide-zinc-200" />;
 }
 
 const TableRowContext = createContext<{
@@ -129,8 +121,7 @@ export function TableHeader({
 			className={clsx(
 				className,
 				"border-b border-zinc-200 px-3 py-3.5 text-left text-sm font-semibold text-zinc-900",
-				grid &&
-					"border-l border-zinc-200 first:border-l-0",
+				grid && "border-l border-zinc-200 first:border-l-0",
 				bleed ? "pl-4 pr-3 sm:pl-6 lg:pl-8" : "pl-3 pr-3",
 			)}
 		/>
@@ -153,8 +144,7 @@ export function TableCell({
 				className,
 				"relative px-3",
 				dense ? "py-2" : "py-4",
-				grid &&
-					"border-l border-zinc-200 first:border-l-0",
+				grid && "border-l border-zinc-200 first:border-l-0",
 				bleed ? "pl-4 pr-3 sm:pl-6 lg:pl-8" : "pl-3 pr-3",
 			)}
 		>

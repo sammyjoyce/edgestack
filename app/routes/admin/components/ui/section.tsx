@@ -8,11 +8,11 @@ export function SectionCard({
 	return (
 		<div
 			className={clsx(
-				"overflow-hidden bg-gray-50 sm:rounded-lg shadow-(--shadow-input-default) border border-gray-200",
+				"overflow-hidden bg-gray-50 rounded-lg shadow-input-default border border-gray-200",
 				className,
 			)}
 		>
-			<div className="p-6">{children}</div>
+			<div className="p-4 sm:p-5 md:p-6">{children}</div>
 		</div>
 	);
 }
@@ -22,7 +22,12 @@ export function SectionHeading({
 	className,
 }: React.PropsWithChildren<{ className?: string }>) {
 	return (
-		<h2 className={clsx("text-xl font-semibold text-gray-900 mb-6", className)}>
+		<h2
+			className={clsx(
+				"text-xl font-semibold text-gray-900 mb-4 md:mb-6",
+				className,
+			)}
+		>
 			{children}
 		</h2>
 	);

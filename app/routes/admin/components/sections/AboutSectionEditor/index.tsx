@@ -62,8 +62,8 @@ export function AboutSectionEditor({
 				</Alert>
 			)}
 			<SectionHeading>About Section</SectionHeading>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<div className="flex flex-col gap-1">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-3 sm:gap-x-6">
+				<div className="flex flex-col gap-1 min-w-0">
 					<FieldLabel htmlFor="about_title">About Title</FieldLabel>
 					<Textarea
 						name="about_title"
@@ -71,6 +71,7 @@ export function AboutSectionEditor({
 						rows={2}
 						defaultValue={initialContent.about_title || ""}
 						onBlur={handleBlur}
+						className="w-full min-w-0"
 					/>
 					{actionData?.errors?.about_title && (
 						<Text className="text-sm text-red-600 mt-1">
@@ -93,7 +94,7 @@ export function AboutSectionEditor({
 							formData.append("about_text", val);
 							fetcher.submit(formData, { method: "post", action: "/admin" });
 						}}
-						className="mt-1"
+						className="w-full min-w-0 mt-1"
 					/>
 					{actionData?.errors?.about_text && (
 						<Text className="text-sm text-red-600 mt-1">
@@ -102,27 +103,21 @@ export function AboutSectionEditor({
 					)}
 					{/* Placeholder for error/help text */}
 				</div>
-				<div className="flex flex-col items-center justify-start pt-1">
+				<div className="flex flex-col gap-4 pt-1 min-w-0">
 					<FieldLabel htmlFor="about-image-upload" className="self-start">
 						About Image
 					</FieldLabel>
 					<Text className="text-xs text-gray-500 mb-2 self-start">
 						Upload or drag and drop an image for the about section.
 					</Text>
-					<output
-						id="about-image-upload-status"
-						aria-live="polite"
-						className="text-sm text-gray-600 mb-2 h-5 self-start"
-					>
-						{uploadStatus}
-					</output>
+
 					<ImageSelector
 						onDrop={handleDrop}
 						disabled={isUploading}
 						uploading={isUploading}
 						imageUrl={aboutImageUrl}
 						label="About Image"
-						className="mt-1"
+						className="mt-1 w-full min-w-0"
 						fieldKey="about_image_url"
 					/>
 				</div>

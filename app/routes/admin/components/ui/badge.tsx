@@ -14,8 +14,7 @@ const simplifiedColors = {
 		"bg-admin-success text-admin-white group-data-hover:bg-admin-success/80",
 	warning:
 		"bg-admin-warning text-admin-black group-data-hover:bg-admin-warning/80",
-	error:
-		"bg-admin-error text-admin-white group-data-hover:bg-admin-error/80",
+	error: "bg-admin-error text-admin-white group-data-hover:bg-admin-error/80",
 };
 type BadgeProps = {
 	color?: keyof typeof simplifiedColors;

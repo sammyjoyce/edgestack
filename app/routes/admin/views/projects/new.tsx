@@ -83,7 +83,7 @@ export default function NewProjectPage({ actionData }: Route.ComponentProps) {
 					{actionData.error}
 				</Alert>
 			)}
-			<SectionCard className="mt-4">
+			<SectionCard>
 				<SectionHeading>New Project Details</SectionHeading>
 				<Form method="post" encType="multipart/form-data" className="space-y-6">
 					<ProjectFormFields
