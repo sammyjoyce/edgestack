@@ -41,9 +41,10 @@ export default function Hero({
 						</h1>
 						{subtitle && (
 							<div className="mx-auto inline-block">
-								<div className="mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg text-gray-700 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 dark:text-gray-100 sm:text-lg lg:text-2xl">
-									<RichTextRenderer json={subtitle} />
-								</div>
+								<RichTextRenderer
+									json={subtitle}
+									className="mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg text-gray-700 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 dark:text-gray-100 sm:text-lg lg:text-2xl"
+								/>
 							</div>
 						)}
 						<div className="mt-6 flex items-center justify-center gap-x-6">
