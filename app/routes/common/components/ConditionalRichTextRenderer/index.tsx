@@ -7,6 +7,7 @@ interface ConditionalRichTextRendererProps {
 	fallbackClassName?: string;
 	richTextClassName?: string;
 	fallbackTag?: keyof React.JSX.IntrinsicElements;
+	disableProseDefaults?: boolean;
 }
 
 export function ConditionalRichTextRenderer({
@@ -14,6 +15,7 @@ export function ConditionalRichTextRenderer({
 	fallbackClassName = "text-base sm:text-lg",
 	richTextClassName,
 	fallbackTag: FallbackTag = "p",
+	disableProseDefaults,
 }: ConditionalRichTextRendererProps): JSX.Element | null {
 	if (!text) {
 		return null;
@@ -26,6 +28,7 @@ export function ConditionalRichTextRenderer({
 			<RichTextRenderer
 				json={text} // Pass the original string 'text'
 				className={richTextClassName}
+				disableProseDefaults={disableProseDefaults}
 			/>
 		);
 	} catch {
