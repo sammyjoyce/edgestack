@@ -119,17 +119,22 @@ export default function HomeRoute({
 				]}
 			/>
 		),
-		projects: (
-			<RecentProjects
-				key="projects"
-				introTitle={typedContent?.projects_intro_title ?? "Recent Projects"}
-				introText={
-					typedContent?.projects_intro_text ??
-					"Take a look at some of our recent work."
-				}
-				projects={projects}
-			/>
-		),
+		// Only include the projects section if there are projects
+		...(projects.length > 0
+			? {
+				projects: (
+					<RecentProjects
+						key="projects"
+						introTitle={typedContent?.projects_intro_title ?? "Recent Projects"}
+						introText={
+							typedContent?.projects_intro_text ??
+							"Take a look at some of our recent work."
+						}
+						projects={projects}
+					/>
+				),
+			}
+			: {}),
 		about: (
 			<AboutUs
 				key="about"
@@ -158,7 +163,7 @@ export default function HomeRoute({
 	);
 	return (
 		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
-			<Header />
+			<Header hasProjects={projects.length > 0} />
 			{order.map((id) => sectionBlocks[id])}
 			<Footer />
 		</div>

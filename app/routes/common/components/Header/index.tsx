@@ -21,15 +21,20 @@ export interface MenuItemAnchor extends MenuItemBase {
 }
 
 export type MenuItem = MenuItemRoute | MenuItemAnchor;
-const MENU_ITEMS: readonly MenuItem[] = [
-	{ name: "Home", path: "/", isRouteLink: true },
-	{ name: "Our Services", path: "/#services", isRouteLink: true },
-	{ name: "Projects", path: "/projects", isRouteLink: true },
-	{ name: "About Us", path: "/#about", isRouteLink: true },
-	{ name: "Contact Us", path: "/#contact", isRouteLink: true },
-] as const;
+interface HeaderProps {
+	hasProjects?: boolean;
+}
 
-export default function Header(): JSX.Element {
+export default function Header({ hasProjects = true }: HeaderProps): JSX.Element {
+	const MENU_ITEMS: readonly MenuItem[] = [
+		{ name: "Home", path: "/", isRouteLink: true },
+		{ name: "Our Services", path: "/#services", isRouteLink: true },
+		// Only show Projects if hasProjects is true
+		...(hasProjects ? [{ name: "Projects", path: "/projects", isRouteLink: true }] : []),
+		{ name: "About Us", path: "/#about", isRouteLink: true },
+		{ name: "Contact Us", path: "/#contact", isRouteLink: true },
+	] as const;
+
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const navigate = useNavigate();
 	const scrollToSection = useCallback(
@@ -69,7 +74,7 @@ export default function Header(): JSX.Element {
 					</Button>
 					<NavLink to="/" className="absolute left-1/2 -translate-x-1/2 flex">
 						<img
-							src="/assets/logo_284x137-KoakP1Oi.png"
+							src="/assets/lush_constructions_no_black_v2.png"
 							alt="LUSH CONSTRUCTIONS"
 							className="h-8 w-auto sm:h-10"
 						/>

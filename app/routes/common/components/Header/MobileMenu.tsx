@@ -43,7 +43,7 @@ export default function MobileMenu({
 					<NavLink to="/" className="-m-1.5 p-1.5" onClick={onClose}>
 						<span className="sr-only">Lush Constructions Home</span>
 						<img
-							src="/assets/logo_284x137-KoakP1Oi.png"
+							src="/assets/lush_constructions_no_black_v2.png"
 							alt="LUSH CONSTRUCTIONS"
 							className="h-8 w-auto sm:h-10"
 						/>

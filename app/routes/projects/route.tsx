@@ -14,6 +14,7 @@ export const meta: MetaFunction = () => {
 		},
 	];
 };
+import { redirect } from "react-router";
 export const loader = async ({
 	context,
 	request,
@@ -22,6 +23,9 @@ export const loader = async ({
 	try {
 		const content = await getAllContent(context.db);
 		const projects = await getAllProjects(context.db);
+		if (!projects || projects.length === 0) {
+			return redirect("/");
+		}
 		return { content, projects };
 	} catch (error) {
 		console.error("Failed to fetch content or projects:", error);
@@ -32,7 +36,7 @@ export default function Projects({ loaderData }: Route.ComponentProps) {
 	const { content, projects } = loaderData;
 	return (
 		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
-			<Header />
+			<Header hasProjects={projects && projects.length > 0} />
 			<div className="bg-white pt-20 pb-10">
 				<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 					<h1 className="mb-4 text-center font-bold font-serif text-4xl text-black">

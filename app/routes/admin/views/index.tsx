@@ -99,19 +99,12 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 				}
 			}
 			if (Object.keys(validationErrors).length > 0) {
-				return data(
-					{
-						success: false,
-						errors: validationErrors,
-						message: "Validation failed for one or more fields.",
-					},
-					{ status: 400 },
-				);
+				return { success: false, errors: validationErrors, message: "Validation failed for one or more fields." };
 			}
 			if (DEBUG)
 				console.log(`[ADMIN DASHBOARD ACTION] ${intent} updates:`, updates);
 			await updateContent(context.db, updates);
-			return data({ success: true, message: "Content updated successfully." });
+			return { success: true, message: "Content updated successfully." };
 		} else if (intent === "reorderSections") {
 			const updates: Record<string, string> = {};
 			for (const [key, value] of formData.entries()) {
@@ -129,17 +122,11 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 					updates,
 				);
 			await updateContent(context.db, updates);
-			return data({
-				success: true,
-				message: "Sections reordered successfully.",
-			});
+			return { success: true, message: "Sections reordered successfully." };
 		}
 		if (DEBUG)
 			console.warn(`[ADMIN DASHBOARD ACTION] Unknown intent: ${intent}`);
-		return data(
-			{ success: false, error: `Unknown intent: ${intent}` },
-			{ status: 400 },
-		);
+		return { success: false, error: `Unknown intent: ${intent}` };
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
 		if (DEBUG)
@@ -160,24 +147,10 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 			errors._general = err.message;
 		}
 		if (Object.keys(errors).length > 0) {
-			return data(
-				{
-					success: false,
-					errors,
-					message: "An error occurred with specific fields.",
-				},
-				{ status: 400 },
-			);
+			return { success: false, errors, message: "An error occurred with specific fields." };
 		}
 		const errorMessage = err.message || "Internal server error";
-		return data(
-			{
-				success: false,
-				error: errorMessage,
-				message: "An internal server error occurred.",
-			},
-			{ status: 500 },
-		);
+		return { success: false, error: errorMessage, message: "An internal server error occurred." };
 	}
 }
 
