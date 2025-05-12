@@ -41,14 +41,14 @@ export function CheckboxField({
 
 const baseStyles = [
 	"relative isolate flex size-4 items-center justify-center rounded-sm",
-	"border border-zinc-300 dark:border-zinc-700",
-	"bg-white dark:bg-zinc-900",
-	"group-data-checked:bg-primary group-data-checked:border-primary",
-	"group-data-focus:outline-2 group-data-focus:outline-offset-2 group-data-focus:outline-blue-500",
+	"border border-admin-border dark:border-admin-border-dark",
+	"bg-admin-white dark:bg-admin-background",
+	"group-data-checked:bg-admin-primary group-data-checked:border-admin-primary",
+	"group-data-focus:outline-2 group-data-focus:outline-offset-2 group-data-focus:outline-admin-primary",
 	"group-data-disabled:opacity-50 group-data-disabled:cursor-not-allowed",
-	"group-data-disabled:border-zinc-400 dark:group-data-disabled:border-zinc-600",
-	"group-data-disabled:bg-zinc-100 dark:group-data-disabled:bg-zinc-800",
-	"group-data-checked:group-data-disabled:bg-primary/50 group-data-checked:group-data-disabled:border-primary/50",
+	"group-data-disabled:border-admin-border dark:group-data-disabled:border-admin-border-dark",
+	"group-data-disabled:bg-admin-background dark:group-data-disabled:bg-admin-background",
+	"group-data-checked:group-data-disabled:bg-admin-primary/50 group-data-checked:group-data-disabled:border-admin-primary/50",
 ];
 
 export function Checkbox({

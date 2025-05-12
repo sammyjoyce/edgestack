@@ -1,5 +1,5 @@
 import type { Route } from "./+types/route";
-import { type MetaFunction } from "react-router";
+import type { MetaFunction } from "react-router";
 import type { JSX } from "react";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";

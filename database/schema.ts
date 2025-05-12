@@ -31,7 +31,7 @@ export type NewMedia = typeof media.$inferInsert;
 export const projects = sqliteTable("projects", {
 	id: integer("id").primaryKey({ autoIncrement: true }),
 	title: text("title").notNull(),
-	description: text("description", { mode: "json" }),
+	description: text("description", { mode: "json" }).notNull(),
 	details: text("details", { mode: "json" }),
 	imageId: integer("image_id").references(() => media.id), // Changed from imageUrl to imageId FK
 	imageUrl: text("image_url"), // Add this line for direct URL storage

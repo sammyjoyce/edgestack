@@ -11,7 +11,7 @@ export function Fieldset({
 			{...props}
 			className={clsx(
 				className,
-				"space-y-6 rounded-lg border border-zinc-200 dark:border-zinc-700 p-4",
+				"space-y-6 rounded-lg border border-admin-border dark:border-admin-border-dark p-4",
 			)}
 		/>
 	);

@@ -46,7 +46,7 @@ export function Combobox<T>({
 				data-slot="control-wrapper"
 				className={clsx(
 					"relative w-full",
-					"focus-within:ring-2 focus-within:ring-primary dark:focus-within:ring-primary-dark focus-within:ring-offset-0 rounded-lg",
+					"focus-within:ring-2 focus-within:ring-admin-primary dark:focus-within:ring-admin-primary-dark focus-within:ring-offset-0 rounded-lg",
 					"has-data-disabled:opacity-70 has-data-disabled:cursor-not-allowed",
 				)}
 			>
@@ -61,11 +61,11 @@ export function Combobox<T>({
 						className,
 						"relative block w-full appearance-none rounded-lg px-3.5 py-2.5 sm:px-3 sm:py-1.5",
 						"text-base text-zinc-950 placeholder:text-zinc-500 sm:text-sm dark:text-white dark:placeholder:text-zinc-400",
-						"border border-zinc-300 hover:border-zinc-400 dark:border-zinc-600 dark:hover:border-zinc-500",
+						"border border-admin-border hover:border-admin-border dark:border-admin-border-dark dark:hover:border-admin-border-dark",
 						"bg-white dark:bg-zinc-800",
 						"focus:outline-none",
 						"data-invalid:border-red-500 data-invalid:hover:border-red-500 dark:data-invalid:border-red-500 dark:data-invalid:hover:border-red-500",
-						"data-disabled:border-zinc-300 data-disabled:bg-zinc-100 data-disabled:text-zinc-400 dark:data-disabled:border-zinc-700 dark:data-disabled:bg-zinc-800 dark:data-disabled:text-zinc-500",
+						"data-disabled:border-admin-border data-disabled:bg-admin-background data-disabled:text-admin-border dark:data-disabled:border-admin-border-dark dark:data-disabled:bg-admin-background dark:data-disabled:text-admin-border-dark",
 						"dark:scheme-dark",
 					)}
 				/>

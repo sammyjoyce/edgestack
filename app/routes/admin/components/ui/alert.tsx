@@ -65,10 +65,10 @@ const alertStyles = {
 	variants: {
 		info: {
 			container:
-				"bg-blue-50 border-blue-300 dark:bg-blue-900/30 dark:border-blue-700",
-			icon: "text-blue-500 dark:text-blue-400",
-			title: "text-blue-800 dark:text-blue-200",
-			description: "text-blue-700 dark:text-blue-300",
+				"bg-admin-info border-admin-info dark:bg-admin-info-dark dark:border-admin-info-dark",
+			icon: "text-admin-info dark:text-admin-info-dark",
+			title: "text-admin-info dark:text-admin-info-dark",
+			description: "text-admin-info dark:text-admin-info-dark",
 		},
 		success: {
 			container:
