@@ -74,8 +74,8 @@ export default function ImageUploadZone({
 				<div
 					className={clsx(
 						"ring-1 rounded-md overflow-hidden",
-						"bg-admin-white dark:bg-admin-background",
-						"ring-admin-border dark:ring-admin-border-dark",
+						"bg-admin-white",
+						"ring-admin-border",
 						"focus-within:ring-2 focus-within:ring-admin-primary",
 						"w-full",
 					)}

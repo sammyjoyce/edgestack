@@ -14,7 +14,7 @@ export function InputGroup({
 				"has-[[data-slot=icon]:first-child]:[&_input]:pl-10 has-[[data-slot=icon]:last-child]:[&_input]:pr-10",
 				"*:data-[slot=icon]:pointer-events-none *:data-[slot=icon]:absolute *:data-[slot=icon]:top-1/2 *:data-[slot=icon]:-translate-y-1/2 *:data-[slot=icon]:z-10 *:data-[slot=icon]:size-5",
 				"[&>[data-slot=icon]:first-child]:left-3 [&>[data-slot=icon]:last-child]:right-3",
-				"*:data-[slot=icon]:text-admin-border dark:*:data-[slot=icon]:text-admin-border-dark",
+				"*:data-[slot=icon]:text-admin-border",
 			)}
 		>
 			{children}
@@ -65,14 +65,13 @@ export const Input = forwardRef(function Input(
 					],
 				"relative block w-full appearance-none rounded-md px-3 py-2 sm:text-sm",
 				"text-admin-text placeholder:text-admin-text-placeholder",
-				"border border-admin-border dark:border-admin-border-dark",
-				"bg-admin-screen dark:bg-admin-screen",
-				"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-primary dark:focus:ring-primary-dark",
-				"data-invalid:border-red-500 data-invalid:ring-red-500 dark:data-invalid:border-red-600 dark:data-invalid:ring-red-600",
+				"border border-admin-border",
+				"bg-admin-screen",
+				"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-primary",
+				"data-invalid:border-red-500 data-invalid:ring-red-500",
 				"data-disabled:opacity-50 data-disabled:cursor-not-allowed",
-				"data-disabled:border-admin-border dark:data-disabled:border-admin-border-dark",
-				"data-disabled:bg-admin-screen dark:data-disabled:bg-admin-screen",
-				"dark:scheme-dark",
+				"data-disabled:border-admin-border",
+				"data-disabled:bg-admin-screen",
 			])}
 		/>
 	);

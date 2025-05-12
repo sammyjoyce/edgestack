@@ -41,13 +41,13 @@ export function CheckboxField({
 
 const baseStyles = [
 	"relative isolate flex size-4 items-center justify-center rounded-sm",
-	"border border-admin-border dark:border-admin-border-dark",
-	"bg-admin-white dark:bg-admin-background",
+	"border border-admin-border",
+	"bg-admin-white",
 	"group-data-checked:bg-admin-primary group-data-checked:border-admin-primary",
 	"group-data-focus:outline-2 group-data-focus:outline-offset-2 group-data-focus:outline-admin-primary",
 	"group-data-disabled:opacity-50 group-data-disabled:cursor-not-allowed",
-	"group-data-disabled:border-admin-border dark:group-data-disabled:border-admin-border-dark",
-	"group-data-disabled:bg-admin-background dark:group-data-disabled:bg-admin-background",
+	"group-data-disabled:border-admin-border",
+	"group-data-disabled:bg-admin-background",
 	"group-data-checked:group-data-disabled:bg-admin-primary/50 group-data-checked:group-data-disabled:border-admin-primary/50",
 ];
 
@@ -65,7 +65,7 @@ export function Checkbox({
 		>
 			<span className={clsx(baseStyles)}>
 				<svg
-					className="size-3.5 stroke-white opacity-0 group-data-checked:opacity-100 group-data-disabled:stroke-zinc-400 dark:group-data-disabled:stroke-zinc-500"
+					className="size-3.5 stroke-white opacity-0 group-data-checked:opacity-100 group-data-disabled:stroke-zinc-400"
 					viewBox="0 0 14 14"
 					fill="none"
 				>

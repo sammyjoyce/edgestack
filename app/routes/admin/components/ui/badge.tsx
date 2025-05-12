@@ -7,15 +7,15 @@ import { Link } from "./link";
 
 const simplifiedColors = {
 	neutral:
-		"bg-admin-background text-admin-foreground dark:bg-admin-background dark:text-admin-foreground group-data-hover:bg-admin-border dark:group-data-hover:bg-admin-border-dark",
+		"bg-admin-background text-admin-foreground group-data-hover:bg-admin-border",
 	primary:
-		"bg-admin-primary text-admin-white dark:bg-admin-primary dark:text-admin-white group-data-hover:bg-admin-primary/80 dark:group-data-hover:bg-admin-primary-dark",
+		"bg-admin-primary text-admin-white group-data-hover:bg-admin-primary/80",
 	success:
-		"bg-admin-success text-admin-white dark:bg-admin-success dark:text-admin-white group-data-hover:bg-admin-success/80 dark:group-data-hover:bg-admin-success-dark",
+		"bg-admin-success text-admin-white group-data-hover:bg-admin-success/80",
 	warning:
-		"bg-admin-warning text-admin-black dark:bg-admin-warning dark:text-admin-black group-data-hover:bg-admin-warning/80 dark:group-data-hover:bg-admin-warning-dark",
+		"bg-admin-warning text-admin-black group-data-hover:bg-admin-warning/80",
 	error:
-		"bg-admin-error text-admin-white dark:bg-admin-error dark:text-admin-white group-data-hover:bg-admin-error/80 dark:group-data-hover:bg-admin-error-dark",
+		"bg-admin-error text-admin-white group-data-hover:bg-admin-error/80",
 };
 type BadgeProps = {
 	color?: keyof typeof simplifiedColors;
@@ -63,7 +63,7 @@ export const BadgeButton = forwardRef(function BadgeButton(
 ) {
 	const baseClasses = clsx(
 		"group relative inline-flex items-center justify-center rounded-md",
-		"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-admin-primary dark:focus:ring-admin-primary-dark",
+		"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-admin-primary",
 	);
 	const badgeElement = (
 		<Badge color={color} size={size}>

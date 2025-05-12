@@ -38,17 +38,17 @@ export function Radio({
 			{...props}
 			className={clsx(
 				className,
-				"group flex size-5 items-center justify-center rounded-full border bg-white dark:bg-zinc-900",
-				"border-zinc-300 hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-600",
-				"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-primary-dark dark:ring-offset-zinc-900",
-				"data-checked:border-primary data-checked:hover:border-primary-hover dark:data-checked:border-primary-dark dark:data-checked:hover:border-primary-dark-hover",
+				"group flex size-5 items-center justify-center rounded-full border bg-white",
+				"border-zinc-300 hover:border-zinc-400",
+				"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
+				"data-checked:border-primary data-checked:hover:border-primary-hover",
 				"data-disabled:opacity-50 data-disabled:pointer-events-none",
 			)}
 		>
 			<span
 				className={clsx(
 					"size-2 rounded-full bg-transparent",
-					"group-data-checked:bg-primary dark:group-data-checked:bg-primary-dark",
+					"group-data-checked:bg-primary",
 				)}
 			/>
 		</Headless.Radio>
@@ -65,7 +65,7 @@ export function Label({
 			data-slot="label"
 			className={clsx(
 				className,
-				"text-sm font-medium text-zinc-900 dark:text-white",
+				"text-sm font-medium text-zinc-900",
 			)}
 		/>
 	);
@@ -79,7 +79,7 @@ export function Description({
 		<Headless.Description
 			{...props}
 			data-slot="description"
-			className={clsx(className, "text-sm text-zinc-600 dark:text-zinc-400")}
+			className={clsx(className, "text-sm text-zinc-600")}
 		/>
 	);
 }
@@ -92,7 +92,7 @@ export function ErrorMessage({
 		<Headless.Description
 			{...props}
 			data-slot="error"
-			className={clsx(className, "text-sm text-red-600 dark:text-red-500")}
+			className={clsx(className, "text-sm text-red-600")}
 		/>
 	);
 }

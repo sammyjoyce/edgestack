@@ -118,25 +118,25 @@ export default function AdminProjectsIndexPage({
 					</Text>
 				</div>
 			) : (
-				<div className="overflow-hidden rounded-md border border-gray-200 shadow-sm dark:border-gray-700 dark:bg-gray-800/50">
-					<table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
-						<thead className="bg-gray-50 dark:bg-gray-900/30">
+				<div className="overflow-hidden rounded-md border border-gray-200 shadow-sm">
+					<table className="w-full divide-y divide-gray-200">
+						<thead className="bg-gray-50">
 							<tr>
 								<th
 									scope="col"
-									className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+									className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 								>
 									Name
 								</th>
 								<th
 									scope="col"
-									className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+									className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 								>
 									Description
 								</th>
 								<th
 									scope="col"
-									className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+									className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 								>
 									Featured
 								</th>
@@ -148,37 +148,37 @@ export default function AdminProjectsIndexPage({
 								</th>
 							</tr>
 						</thead>
-						<tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+						<tbody className="bg-white divide-y divide-gray-200">
 							{projects.map((project) => (
 								<tr
 									key={project.id}
-									className="hover:bg-gray-50 dark:hover:bg-gray-700/30"
+									className="hover:bg-gray-50"
 								>
-									<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+									<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
 										{project.title}
 									</td>
-									<td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
+									<td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
 										{project.description ? (
 											<ConditionalRichTextRenderer
 												text={project.description}
-												fallbackClassName="text-sm text-gray-500 dark:text-gray-400" // Standard Tailwind
+												fallbackClassName="text-sm text-gray-500" // Standard Tailwind
 												richTextClassName={clsx(
 													"prose-sm", // Match td text size
 													"prose max-w-none", // Apply prose, remove max-width constraint from prose itself
-													"prose-p:text-gray-500 dark:prose-p:text-gray-400",
-													"prose-headings:text-gray-500 dark:prose-headings:text-gray-400",
-													"prose-strong:text-gray-500 dark:prose-strong:text-gray-400",
-													"prose-em:text-gray-500 dark:prose-em:text-gray-400",
-													"prose-a:text-gray-500 dark:prose-a:text-gray-400 hover:prose-a:underline",
+													"prose-p:text-gray-500",
+													"prose-headings:text-gray-500",
+													"prose-strong:text-gray-500",
+													"prose-em:text-gray-500",
+													"prose-a:text-gray-500 hover:prose-a:underline",
 												)}
 											/>
 										) : (
 											"-"
 										)}
 									</td>
-									<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+									<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 										{project.isFeatured ? (
-											<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+											<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
 												Featured
 											</span>
 										) : (
@@ -188,7 +188,7 @@ export default function AdminProjectsIndexPage({
 									<td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
 										<Link
 											to={`/admin/projects/${project.id}/edit`}
-											className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
+											className="text-indigo-600 hover:text-indigo-900"
 										>
 											Edit
 										</Link>

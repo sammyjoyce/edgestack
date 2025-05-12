@@ -72,8 +72,8 @@ export default function RichTextField({
 				<div
 					className={clsx(
 						"ring-1 rounded-md overflow-hidden",
-						"bg-admin-white dark:bg-admin-background",
-						"ring-admin-border dark:ring-admin-border-dark",
+						"bg-admin-white",
+						"ring-admin-border",
 						"focus-within:ring-2 focus-within:ring-admin-primary",
 						className,
 					)}
@@ -83,7 +83,7 @@ export default function RichTextField({
 						data-slot="control"
 						className={clsx([
 							"relative block w-full ring-0 rounded-md",
-							"bg-admin-white dark:bg-admin-background",
+							"bg-admin-white",
 							disabled ? "opacity-50" : undefined,
 						])}
 					>
@@ -92,7 +92,7 @@ export default function RichTextField({
 								<ContentEditable
 									className={clsx([
 										"relative block h-full w-full appearance-none rounded-md px-3 py-2 sm:px-2.5 sm:py-1.5",
-										"text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white",
+										"text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6",
 										"bg-transparent",
 										"focus:outline-hidden",
 										disabled ? "opacity-50 bg-gray-50" : undefined,

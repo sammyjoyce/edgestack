@@ -33,8 +33,8 @@ export function DropdownMenu({
 			className={clsx(
 				className,
 				"isolate z-10 mt-1 w-max min-w-48 rounded-md p-1",
-				"bg-white dark:bg-zinc-800",
-				"shadow-lg ring-1 ring-black/5 dark:ring-white/10",
+				"bg-white",
+				"shadow-lg ring-1 ring-black/5",
 				"focus:outline-none",
 				"transition ease-out duration-100 data-closed:transform data-closed:opacity-0 data-closed:scale-95",
 				"data-enter:transform data-enter:opacity-100 data-enter:scale-100",
@@ -53,10 +53,10 @@ export function DropdownItem({
 	const itemClasses = clsx(
 		className,
 		"group flex w-full items-center gap-x-2 rounded-md px-2.5 py-1.5 text-sm",
-		"text-zinc-700 dark:text-zinc-200",
-		"data-focus:bg-primary data-focus:text-white dark:data-focus:bg-primary-dark dark:data-focus:text-white",
+		"text-zinc-700",
+		"data-focus:bg-primary data-focus:text-white",
 		"data-disabled:opacity-50 data-disabled:cursor-not-allowed",
-		"*:data-[slot=icon]:size-4 *:data-[slot=icon]:text-zinc-500 group-data-focus:*:data-[slot=icon]:text-white dark:*:data-[slot=icon]:text-zinc-400",
+		"*:data-[slot=icon]:size-4 *:data-[slot=icon]:text-zinc-500 group-data-focus:*:data-[slot=icon]:text-white",
 		"*:data-[slot=avatar]:size-5",
 	);
 	return "href" in props ? (
@@ -80,7 +80,7 @@ export function DropdownHeader({
 			{...props}
 			className={clsx(
 				className,
-				"px-2.5 py-1 text-xs font-semibold text-zinc-500 dark:text-zinc-400",
+				"px-2.5 py-1 text-xs font-semibold text-zinc-500",
 			)}
 		/>
 	);
@@ -110,7 +110,7 @@ export function DropdownHeading({
 			{...props}
 			className={clsx(
 				className,
-				"px-2.5 pt-1.5 pb-0.5 text-xs font-medium text-zinc-600 dark:text-zinc-300",
+				"px-2.5 pt-1.5 pb-0.5 text-xs font-medium text-zinc-600",
 			)}
 		/>
 	);
@@ -126,7 +126,7 @@ export function DropdownDivider({
 	return (
 		<Headless.MenuSeparator
 			{...props}
-			className={clsx(className, "mx-1 my-1 h-px bg-zinc-200 dark:bg-zinc-700")}
+			className={clsx(className, "mx-1 my-1 h-px bg-zinc-200")}
 		/>
 	);
 }
@@ -157,7 +157,7 @@ export function DropdownDescription({
 			{...props}
 			className={clsx(
 				className,
-				"text-xs text-zinc-500 group-data-focus:text-primary-100 dark:text-zinc-400 dark:group-data-focus:text-primary-dark-100",
+				"text-xs text-zinc-500 group-data-focus:text-primary-100",
 			)}
 		/>
 	);
@@ -177,7 +177,7 @@ export function DropdownShortcut({
 			{...props}
 			className={clsx(
 				className,
-				"ml-auto text-xs text-zinc-400 group-data-focus:text-primary-100 dark:group-data-focus:text-primary-dark-100",
+				"ml-auto text-xs text-zinc-400 group-data-focus:text-primary-100",
 			)}
 		>
 			{(Array.isArray(keys) ? keys : keys.split("")).map((char, index) => (

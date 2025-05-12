@@ -21,7 +21,7 @@ const CheckIcon = () => (
 );
 const ChevronUpDownIcon = () => (
 	<svg
-		className="size-5 stroke-zinc-500 group-data-disabled:stroke-zinc-600 dark:stroke-zinc-400"
+		className="size-5 stroke-zinc-500 group-data-disabled:stroke-zinc-600"
 		viewBox="0 0 16 16"
 		aria-hidden="true"
 		fill="none"
@@ -75,9 +75,9 @@ export function Listbox<TValue>({
 				className={clsx(
 					className,
 					"relative block w-full rounded-md border bg-white py-2 pl-3 pr-10 text-left text-sm",
-					"border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800",
+					"border-zinc-300",
 					"focus:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20",
-					"data-disabled:cursor-not-allowed data-disabled:opacity-75 data-disabled:bg-zinc-100 dark:data-disabled:bg-zinc-700/50",
+					"data-disabled:cursor-not-allowed data-disabled:opacity-75 data-disabled:bg-zinc-100",
 				)}
 			>
 				<Headless.ListboxSelectedOption
@@ -85,12 +85,12 @@ export function Listbox<TValue>({
 					options={options}
 					placeholder={
 						placeholder && (
-							<span className="block truncate text-zinc-400 dark:text-zinc-500">
+							<span className="block truncate text-zinc-400">
 								{placeholder}
 							</span>
 						)
 					}
-					className="block truncate text-zinc-900 dark:text-white"
+					className="block truncate text-zinc-900"
 				/>
 				<span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
 					<ChevronUpDownIcon />
@@ -100,7 +100,7 @@ export function Listbox<TValue>({
 				transition
 				anchor="bottom start"
 				className={clsx(
-					"isolate z-10 mt-1 w-full min-w-(--button-width) overflow-auto rounded-md bg-white p-1 shadow-lg ring-1 ring-black/5 focus:outline-none dark:bg-zinc-800 dark:ring-white/10",
+					"isolate z-10 mt-1 w-full min-w-(--button-width) overflow-auto rounded-md bg-white p-1 shadow-lg ring-1 ring-black/5 focus:outline-none",
 					"transition ease-out duration-100 data-closed:transform data-closed:opacity-0 data-closed:scale-95",
 					"data-enter:transform data-enter:opacity-100 data-enter:scale-100",
 				)}
@@ -132,8 +132,8 @@ export function ListboxOption<TValue>({
 						className,
 						"group/option relative flex cursor-default select-none items-center gap-x-2 rounded-md py-1.5 px-2.5 text-sm",
 						active
-							? "bg-primary/10 text-primary dark:bg-primary-dark/20 dark:text-primary-dark"
-							: "text-zinc-700 dark:text-zinc-200",
+							? "bg-primary/10 text-primary"
+							: "text-zinc-700",
 						selected ? "font-semibold" : "font-normal",
 						"data-disabled:opacity-50 data-disabled:cursor-not-allowed",
 					)}
@@ -165,7 +165,7 @@ export function ListboxDescription({
 			{...props}
 			className={clsx(
 				className,
-				"text-xs text-zinc-500 group-data-focus/option:text-primary-100 dark:text-zinc-400 dark:group-data-focus/option:text-primary-dark-100",
+				"text-xs text-zinc-500 group-data-focus/option:text-primary-100",
 			)}
 		>
 			{children}
