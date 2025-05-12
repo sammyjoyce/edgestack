@@ -33,7 +33,13 @@ export default function RecentProjects({
 				className="mb-16 max-w-6xl px-4 lg:px-8"
 				invert={theme === "dark"}
 			>
-				{introText && <p>{introText}</p>}
+				{introText && (
+					<ConditionalRichTextRenderer
+						text={introText}
+						fallbackClassName="prose-xl" // Assuming intro text should be larger
+						richTextClassName="prose-xl" // Assuming intro text should be larger
+					/>
+				)}
 			</SectionIntro>
 			<Container className="max-w-6xl px-4 lg:px-8">
 				<FadeInStagger>
@@ -71,15 +77,14 @@ export default function RecentProjects({
 											text={
 												project.description ? String(project.description) : null
 											}
-											fallbackClassName="mb-4 text-base text-gray-700 dark:text-gray-300 md:mb-6 md:text-lg"
+											fallbackClassName="mb-4 prose md:mb-6 md:prose-lg"
 											richTextClassName={clsx(
-												"mb-4 text-base md:mb-6 md:text-lg",
+												"mb-4 prose md:mb-6 md:prose-lg",
 												"prose-p:text-gray-700 dark:prose-p:text-gray-300",
 												"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
 												"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
 												"prose-em:text-gray-700 dark:prose-em:text-gray-300",
 												"prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
-												theme === "dark" && "dark:prose-invert",
 												"prose max-w-none",
 											)}
 											fallbackTag="p"

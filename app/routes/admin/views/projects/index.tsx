@@ -161,16 +161,15 @@ export default function AdminProjectsIndexPage({
 										{project.description ? (
 											<ConditionalRichTextRenderer
 												text={project.description}
-												fallbackClassName="text-sm text-gray-500 dark:text-gray-400"
+												fallbackClassName="prose-sm"
 												richTextClassName={clsx(
-													"text-sm", // Match td text size
+													"prose-sm", // Match td text size
 													"prose max-w-none", // Apply prose, remove max-width constraint from prose itself
 													"prose-p:text-gray-500 dark:prose-p:text-gray-400",
 													"prose-headings:text-gray-500 dark:prose-headings:text-gray-400",
 													"prose-strong:text-gray-500 dark:prose-strong:text-gray-400",
 													"prose-em:text-gray-500 dark:prose-em:text-gray-400",
 													"prose-a:text-gray-500 dark:prose-a:text-gray-400 hover:prose-a:underline",
-													"dark:prose-invert", // Apply dark mode inversion for other prose elements
 												)}
 											/>
 										) : (

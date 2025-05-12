@@ -68,14 +68,14 @@ export default function OurServices({
 					<SectionIntro centered title={introTitle}>
 						<ConditionalRichTextRenderer
 							text={introText || defaultIntroText}
-							fallbackClassName="text-gray-700 dark:text-gray-300"
+							fallbackClassName="prose-xl text-center" // SectionIntro children are often text-xl
 							richTextClassName={clsx(
+								"prose-xl",
 								"prose-p:text-gray-700 dark:prose-p:text-gray-300",
 								"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
 								"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
 								"prose-em:text-gray-700 dark:prose-em:text-gray-300",
 								"prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
-								theme === "dark" && "dark:prose-invert",
 								"prose max-w-none text-center",
 							)}
 							fallbackTag="p"
