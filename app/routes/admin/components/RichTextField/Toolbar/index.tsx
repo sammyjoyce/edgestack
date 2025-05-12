@@ -1,10 +1,17 @@
+import React, {
+	type JSX,
+	type ReactNode,
+	useCallback,
+	useEffect,
+	useState,
+} from "react";
 import {
 	ArrowUturnLeftIcon,
 	ArrowUturnRightIcon,
 	Bars3BottomLeftIcon,
 	Bars3BottomRightIcon,
 	Bars3Icon,
-	BarsArrowDownIcon,
+	Bars4Icon,
 } from "@heroicons/react/20/solid";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import clsx from "clsx";
@@ -19,16 +26,69 @@ import {
 	type TextFormatType,
 	UNDO_COMMAND,
 } from "lexical";
-import React, {
-	type JSX,
-	type ReactNode,
-	useCallback,
-	useEffect,
-	useState,
-} from "react";
+import {
+	useFloating,
+	autoUpdate,
+	offset,
+	flip,
+	shift,
+	useHover,
+	useFocus,
+	useDismiss,
+	useRole,
+	useInteractions,
+} from "@floating-ui/react";
+import type { Placement } from "@floating-ui/react";
 
 function Divider() {
 	return <div className="w-px h-5 bg-gray-300 mx-1" />;
+}
+
+function Tooltip({
+	children,
+	label,
+	placement = "top",
+}: { children: React.ReactElement; label: string; placement?: Placement }) {
+	const [isOpen, setIsOpen] = useState(false);
+	const { refs, floatingStyles, context } = useFloating({
+		placement,
+		open: isOpen,
+		onOpenChange: setIsOpen,
+		middleware: [offset(5), flip(), shift()],
+		whileElementsMounted: autoUpdate,
+	});
+	const hover = useHover(context, { move: false });
+	const focus = useFocus(context);
+	const dismiss = useDismiss(context);
+	const role = useRole(context, { role: "tooltip" });
+	const { getReferenceProps, getFloatingProps } = useInteractions([
+		hover,
+		focus,
+		dismiss,
+		role,
+	]);
+
+	return (
+		<>
+			{React.cloneElement(
+				children as any,
+				{
+					...getReferenceProps(),
+					ref: refs.setReference,
+				} as any,
+			)}
+			{isOpen && (
+				<div
+					ref={refs.setFloating}
+					style={floatingStyles}
+					className="tooltip-content z-50 bg-gray-800 text-white text-xs rounded px-2 py-1"
+					{...getFloatingProps()}
+				>
+					{label}
+				</div>
+			)}
+		</>
+	);
 }
 
 interface ToolbarButton {
@@ -47,6 +107,7 @@ const TOOLBAR_BUTTONS: ToolbarButton[] = [
 		icon: <span className="line-through">S</span>,
 	},
 ];
+
 export default function LexicalToolbar(): JSX.Element {
 	const [editor] = useLexicalComposerContext();
 	const [canUndo, setCanUndo] = useState(false);
@@ -59,6 +120,7 @@ export default function LexicalToolbar(): JSX.Element {
 		underline: false,
 		strikethrough: false,
 	});
+
 	useEffect(() => {
 		return editor.registerUpdateListener(({ editorState }) => {
 			editorState.read(() => {
@@ -74,6 +136,7 @@ export default function LexicalToolbar(): JSX.Element {
 			});
 		});
 	}, [editor]);
+
 	useEffect(() => {
 		const unregisterUndo = editor.registerCommand(
 			CAN_UNDO_COMMAND,
@@ -96,88 +159,107 @@ export default function LexicalToolbar(): JSX.Element {
 			unregisterRedo();
 		};
 	}, [editor]);
+
 	const format = useCallback(
 		(formatType: TextFormatType) => {
 			editor.dispatchCommand(FORMAT_TEXT_COMMAND, formatType);
 		},
 		[editor],
 	);
+
 	return (
 		<div className="flex gap-1 bg-gray-50 border-b-0 border-admin-border px-2 py-1">
-			<button
-				type="button"
-				disabled={!canUndo}
-				onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
-				className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-				aria-label="Undo"
-			>
-				<ArrowUturnLeftIcon className="size-4" />
-			</button>
-			<button
-				type="button"
-				disabled={!canRedo}
-				onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
-				className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-				aria-label="Redo"
-			>
-				<ArrowUturnRightIcon className="size-4" />
-			</button>
-			<Divider />
-			{TOOLBAR_BUTTONS.map((btn: ToolbarButton) => (
+			<Tooltip label="Undo">
 				<button
-					key={btn.arg}
 					type="button"
-					aria-label={btn.label}
-					aria-pressed={active[btn.arg] ?? false}
-					className={clsx(
-						"px-2 py-0.5 rounded border text-xs focus:outline-hidden transition-colors",
-						active[btn.arg]
-							? "bg-primary text-white border-primary"
-							: "border-transparent text-gray-600 hover:bg-gray-200 focus:ring-1 focus:ring-primary",
-					)}
-					onMouseDown={(e) => {
-						e.preventDefault();
-						format(btn.arg);
-					}}
+					disabled={!canUndo}
+					onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
+					className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+					aria-label="Undo"
 				>
-					{btn.icon}
+					<ArrowUturnLeftIcon className="size-4" />
 				</button>
+			</Tooltip>
+			<Tooltip label="Redo">
+				<button
+					type="button"
+					disabled={!canRedo}
+					onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
+					className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+					aria-label="Redo"
+				>
+					<ArrowUturnRightIcon className="size-4" />
+				</button>
+			</Tooltip>
+			<Divider />
+			{TOOLBAR_BUTTONS.map((btn) => (
+				<Tooltip key={btn.arg} label={btn.label}>
+					<button
+						type="button"
+						aria-label={btn.label}
+						aria-pressed={active[btn.arg] ?? false}
+						className={clsx(
+							"px-2 py-0.5 rounded border text-xs focus:outline-hidden transition-colors",
+							active[btn.arg]
+								? "bg-primary text-white border-primary"
+								: "border-transparent text-gray-600 hover:bg-gray-200 focus:ring-1 focus:ring-primary",
+						)}
+						onMouseDown={(e) => {
+							e.preventDefault();
+							format(btn.arg);
+						}}
+					>
+						{btn.icon}
+					</button>
+				</Tooltip>
 			))}
 			<Divider />
-			<button
-				type="button"
-				onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left")}
-				className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200"
-				aria-label="Left Align"
-			>
-				<Bars3BottomLeftIcon className="size-4" />
-			</button>
-			<button
-				type="button"
-				onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center")}
-				className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200"
-				aria-label="Center Align"
-			>
-				<Bars3Icon className="size-4" />
-			</button>
-			<button
-				type="button"
-				onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right")}
-				className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200"
-				aria-label="Right Align"
-			>
-				<Bars3BottomRightIcon className="size-4" />
-			</button>
-			<button
-				type="button"
-				onClick={() =>
-					editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify")
-				}
-				className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200"
-				aria-label="Justify Align"
-			>
-				<BarsArrowDownIcon className="size-4" />
-			</button>
+			<Tooltip label="Left Align">
+				<button
+					type="button"
+					onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left")}
+					className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200"
+					aria-label="Left Align"
+				>
+					<Bars3BottomLeftIcon className="size-4" />
+				</button>
+			</Tooltip>
+			<Tooltip label="Center Align">
+				<button
+					type="button"
+					onClick={() =>
+						editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center")
+					}
+					className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200"
+					aria-label="Center Align"
+				>
+					<Bars3Icon className="size-4" />
+				</button>
+			</Tooltip>
+			<Tooltip label="Right Align">
+				<button
+					type="button"
+					onClick={() =>
+						editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right")
+					}
+					className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200"
+					aria-label="Right Align"
+				>
+					<Bars3BottomRightIcon className="size-4" />
+				</button>
+			</Tooltip>
+			<Tooltip label="Justify Align">
+				<button
+					type="button"
+					onClick={() =>
+						editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify")
+					}
+					className="px-2 py-0.5 rounded border border-transparent text-gray-600 hover:bg-gray-200"
+					aria-label="Justify Align"
+				>
+					<Bars4Icon className="size-4" />
+				</button>
+			</Tooltip>
 		</div>
 	);
 }

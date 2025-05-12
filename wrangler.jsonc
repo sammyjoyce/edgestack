@@ -38,12 +38,6 @@
 	"observability": {
 		"enabled": true
 	},
-	"routes": [
-		{
-			"pattern": "lushconstructions.com/*",
-			"zone_id": "ebfa9ec51be86d5b5e37f1d4a0e48c71"
-		}
-	],
 	"env": {
 		"production": {
 			"name": "lush-production",
@@ -75,43 +69,6 @@
 			"observability": {
 				"enabled": true
 			}
-		},
-		"staging": {
-			"name": "lush-staging",
-			"account_id": "427aa00a5888cad78805c7128db1f817",
-			"compatibility_date": "2025-05-08",
-			"vars": {
-				"CLOUDFLARE_ACCOUNT_ID": "427aa00a5888cad78805c7128db1f817",
-				"CLOUDFLARE_DATABASE_ID": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
-				"ADMIN_USERNAME": "sam",
-				"ADMIN_PASSWORD": "admin",
-				"JWT_SECRET": "super_secret_squidward_tentacles"
-			},
-			"r2_buckets": [
-				{
-					"binding": "ASSETS_BUCKET",
-					"bucket_name": "lush-assets",
-					"preview_bucket_name": "lush-assets-dev"
-				}
-			],
-			"d1_databases": [
-				{
-					"binding": "DB",
-					"database_name": "lush-content-db",
-					"database_id": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
-					"migrations_dir": "./migrations"
-				}
-			],
-			"observability": {
-				"enabled": true
-			},
-			"routes": [
-				{
-					"pattern": "staging.lushconstructions.com",
-					"custom_domain": true,
-					"zone_id": "6cea1ccc68750075bdf62441a26d3e09"
-				}
-			]
 		}
 	}
 	// Secrets Configuration (run via CLI):

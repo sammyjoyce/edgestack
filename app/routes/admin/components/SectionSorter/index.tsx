@@ -24,9 +24,9 @@ import * as React from "react";
 import type { FetcherWithComponents } from "react-router";
 import { Button } from "~/routes/admin/components/ui/button";
 import { Label as SwitchLabel, Switch, SwitchField } from "../ui/switch";
-import { Heading } from "../ui/heading";
 import { Text } from "../ui/text";
 import { Alert } from "../ui/alert";
+import { SectionCard, SectionHeading } from "../ui/section";
 
 // Type definitions
 export type SectionTheme = "light" | "dark";
@@ -191,13 +191,8 @@ export default function SectionSorter({
 	}
 
 	return (
-		<section
-			aria-labelledby="section-sorter-heading"
-			className="p-4 md:p-6 bg-gray-50 border border-gray-200 rounded-xl shadow-lg"
-		>
-			<Heading id="section-sorter-heading" level={4} className="mb-4">
-				Reorder & Theme Sections
-			</Heading>
+		<SectionCard>
+			<SectionHeading className="mb-4">Reorder & Theme Sections</SectionHeading>
 
 			<DndContext
 				sensors={sensors}
@@ -221,7 +216,7 @@ export default function SectionSorter({
 					</ul>
 				</SortableContext>
 			</DndContext>
-		</section>
+		</SectionCard>
 	);
 }
 
@@ -254,8 +249,8 @@ function SortableItem({
 			ref={setNodeRef}
 			style={style}
 			className={clsx(
-				"p-3 bg-white border border-admin-border rounded-lg shadow-sm flex items-center justify-between",
-				{ "shadow-xl": isDragging },
+				"p-4 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-between transition-all duration-200",
+				{ "shadow-xl bg-blue-50": isDragging },
 			)}
 		>
 			<div className="flex items-center min-w-0">
@@ -265,7 +260,7 @@ function SortableItem({
 					aria-label={`Reorder ${details.label}`}
 					variant="outline"
 					size="sm"
-					className="mr-3 cursor-grab touch-none"
+					className="mr-4 cursor-grab touch-none"
 				>
 					<svg
 						className="h-5 w-5 text-gray-500"
@@ -280,11 +275,11 @@ function SortableItem({
 						<line x1="3" y1="18" x2="21" y2="18" />
 					</svg>
 				</Button>
-				<span className="text-sm font-medium truncate text-gray-900">
+				<span className="text-sm font-semibold text-gray-900 truncate">
 					{details.label}
 				</span>
 			</div>
-			<div className="flex items-center space-x-2">
+			<div className="flex items-center space-x-3">
 				<SwitchField>
 					<Switch
 						id={switchId}
@@ -309,7 +304,7 @@ function SortableItem({
 						id={`${switchId}-error`}
 						variant="error"
 						showIcon={false}
-						className="text-xs text-right py-0.5 px-1.5"
+						className="text-xs text-red-600 py-0.5 px-1.5"
 						aria-live="polite"
 					>
 						{themeError}

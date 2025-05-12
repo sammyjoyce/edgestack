@@ -1,4 +1,4 @@
-import { parse } from "valibot";
+import { parse, ValiError } from "valibot";
 import {
 	contentInsertSchema,
 	contentUpdateSchema,
@@ -8,24 +8,108 @@ import {
 	projectInsertSchema,
 	projectUpdateSchema,
 } from "./valibot-schemas";
+
+/**
+ * Validates content insertion data.
+ * @throws Error with validation message on failure
+ */
 export function validateContentInsert(data: unknown) {
-	return parse(contentInsertSchema, data);
+	try {
+		return parse(contentInsertSchema, data);
+	} catch (error) {
+		if (error instanceof ValiError) {
+			throw new Error(`Content insert validation failed: ${error.message}`);
+		}
+		throw error;
+	}
 }
+
+/**
+ * Validates error response data.
+ * @throws Error with validation message on failure
+ */
 export function validateErrorResponse(data: unknown) {
-	return parse(errorResponseSchema, data);
+	try {
+		return parse(errorResponseSchema, data);
+	} catch (error) {
+		if (error instanceof ValiError) {
+			throw new Error(`ErrorResponse validation failed: ${error.message}`);
+		}
+		throw error;
+	}
 }
+
+/**
+ * Validates project insertion data.
+ * @throws Error with validation message on failure
+ */
 export function validateProjectInsert(data: unknown) {
-	return parse(projectInsertSchema, data);
+	try {
+		return parse(projectInsertSchema, data);
+	} catch (error) {
+		if (error instanceof ValiError) {
+			throw new Error(`Project insert validation failed: ${error.message}`);
+		}
+		throw error;
+	}
 }
+
+/**
+ * Validates media insertion data.
+ * @throws Error with validation message on failure
+ */
 export function validateMediaInsert(data: unknown) {
-	return parse(mediaInsertSchema, data);
+	try {
+		return parse(mediaInsertSchema, data);
+	} catch (error) {
+		if (error instanceof ValiError) {
+			throw new Error(`Media insert validation failed: ${error.message}`);
+		}
+		throw error;
+	}
 }
+
+/**
+ * Validates content update data.
+ * @throws Error with validation message on failure
+ */
 export function validateContentUpdate(data: unknown) {
-	return parse(contentUpdateSchema, data);
+	try {
+		return parse(contentUpdateSchema, data);
+	} catch (error) {
+		if (error instanceof ValiError) {
+			throw new Error(`Content update validation failed: ${error.message}`);
+		}
+		throw error;
+	}
 }
+
+/**
+ * Validates project update data.
+ * @throws Error with validation message on failure
+ */
 export function validateProjectUpdate(data: unknown) {
-	return parse(projectUpdateSchema, data);
+	try {
+		return parse(projectUpdateSchema, data);
+	} catch (error) {
+		if (error instanceof ValiError) {
+			throw new Error(`Project update validation failed: ${error.message}`);
+		}
+		throw error;
+	}
 }
+
+/**
+ * Validates media update data.
+ * @throws Error with validation message on failure
+ */
 export function validateMediaUpdate(data: unknown) {
-	return parse(mediaUpdateSchema, data);
+	try {
+		return parse(mediaUpdateSchema, data);
+	} catch (error) {
+		if (error instanceof ValiError) {
+			throw new Error(`Media update validation failed: ${error.message}`);
+		}
+		throw error;
+	}
 }

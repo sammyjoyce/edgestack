@@ -3,7 +3,7 @@ import React from "react";
 import { Form, redirect } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "~/routes/common/db";
-import { handleImageUpload } from "~/utils/upload.server";
+import { handleImageUpload, deleteStoredImage } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
 import { ProjectFormFields } from "../../../components/ProjectFormFields";
 import { SectionCard, SectionHeading } from "../../../components/ui/section";
@@ -44,6 +44,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 		Number.parseInt(formData.get("sortOrder") as string, 10) || 0;
 	const imageFile = formData.get("image") as File;
 	let imageUrl = formData.get("currentImageUrl") as string;
+	let uploadedKey: string | undefined;
 	try {
 		if (imageFile && imageFile.size > 0) {
 			const env = context.cloudflare?.env;
@@ -51,7 +52,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 				return { success: false, error: "Environment not available" };
 			}
 			try {
-				const imageKey = `project-${projectId}-${Date.now()}`;
+				const imageKey = `project-${projectId}`;
 				const uploadResult = await handleImageUpload(
 					imageFile,
 					imageKey,
@@ -59,6 +60,8 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 				);
 				if (uploadResult && typeof uploadResult === "string") {
 					imageUrl = uploadResult;
+					// extract R2 key from returned URL
+					uploadedKey = imageUrl.split("/").pop();
 				} else {
 					const errorMsg =
 						typeof uploadResult === "object" &&
@@ -91,6 +94,14 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 		validateProjectUpdate(projectData);
 		const updated = await updateProject(context.db, projectId, projectData);
 		if (!updated) {
+			// rollback uploaded file if DB update failed
+			if (uploadedKey) {
+				try {
+					await deleteStoredImage(uploadedKey, context);
+				} catch (delErr) {
+					console.error("Rollback R2 delete error:", delErr);
+				}
+			}
 			return {
 				success: false,
 				error:

@@ -179,54 +179,32 @@ export const Tabs = ({
 					<>
 						<motion.div
 							style={{ opacity: leftOpacity }}
-							className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white/80 to-transparent"
+							className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-linear-to-r from-white to-transparent"
 						/>
-						<motion.button
-							onClick={() =>
-								tabListRef.current?.scrollBy({ left: -200, behavior: "smooth" })
-							}
-							className="absolute left-0 inset-y-0 px-2 flex items-center justify-center bg-white/50 hover:bg-white/80 transition-colors"
-							style={{ opacity: leftOpacity }}
-							whileTap={{ scale: 0.95 }}
-							aria-hidden="true"
-						>
-							<ChevronLeftIcon />
-						</motion.button>
 						<motion.div
 							style={{ opacity: rightOpacity }}
-							className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white/80 to-transparent"
+							className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-linear-to-l from-white to-transparent"
 						/>
-						<motion.button
-							onClick={() =>
-								tabListRef.current?.scrollBy({ left: 200, behavior: "smooth" })
-							}
-							className="absolute right-0 inset-y-0 px-2 flex items-center justify-center bg-white/50 hover:bg-white/80 transition-colors"
-							style={{ opacity: rightOpacity }}
-							whileTap={{ scale: 0.95 }}
-							aria-hidden="true"
-						>
-							<ChevronRightIcon />
-						</motion.button>
 					</>
 				)}
-		
-			<div className="relative w-full h-full">
-				<AnimatePresence mode="wait" initial={false}>
-					<motion.div
-						key={activeTab.value}
-						id={`panel-${activeTab.value}`}
-						role="tabpanel"
-						aria-labelledby={`tab-${activeTab.value}`}
-						className={cn("mt-4 w-full h-full", contentClassName)}
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -20 }}
-						transition={{ type: "spring", stiffness: 300, damping: 30 }}
-					>
-						{activeTab.content}
-					</motion.div>
-				</AnimatePresence>
-			</div>
+
+				<div className="relative w-full h-full">
+					<AnimatePresence mode="wait" initial={false}>
+						<motion.div
+							key={activeTab.value}
+							id={`panel-${activeTab.value}`}
+							role="tabpanel"
+							aria-labelledby={`tab-${activeTab.value}`}
+							className={cn("mt-4 w-full h-full", contentClassName)}
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -20 }}
+							transition={{ type: "spring", stiffness: 300, damping: 30 }}
+						>
+							{activeTab.content}
+						</motion.div>
+					</AnimatePresence>
+				</div>
 			</div>
 		</LayoutGroup>
 	);
