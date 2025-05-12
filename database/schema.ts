@@ -14,10 +14,10 @@ export const content = sqliteTable(
 		sortOrder: integer("sort_order").default(0).notNull(),
 		metadata: text("metadata", { mode: "json" }),
 		createdAt: integer("created_at", { mode: "timestamp" }).default(
-			sql`(strftime('%s','now'))`,
+			sql`CURRENT_TIMESTAMP`,
 		),
 		updatedAt: integer("updated_at", { mode: "timestamp" })
-			.default(sql`(strftime('%s', 'now'))`)
+			.default(sql`CURRENT_TIMESTAMP`)
 			.$onUpdate(() => new Date()),
 	},
 	(table) => [index("content_media_id_idx").on(table.mediaId)],
@@ -35,13 +35,13 @@ export const media = sqliteTable(
 		width: integer("width"),
 		height: integer("height"),
 		createdAt: integer("created_at", { mode: "timestamp" }).default(
-			sql`(strftime('%s', 'now'))`,
+			sql`CURRENT_TIMESTAMP`,
 		),
 		type: text("type", { enum: ["image", "video"] })
 			.notNull()
 			.default("image"),
 		updatedAt: integer("updated_at", { mode: "timestamp" })
-			.default(sql`(strftime('%s', 'now'))`)
+			.default(sql`CURRENT_TIMESTAMP`)
 			.$onUpdate(() => new Date()),
 	},
 	(table) => [index("media_updated_at_idx").on(table.updatedAt)],
@@ -63,10 +63,10 @@ export const projects = sqliteTable(
 		isFeatured: integer("is_featured", { mode: "boolean" }).default(false),
 		sortOrder: integer("sort_order").default(0).notNull(),
 		createdAt: integer("created_at", { mode: "timestamp" }).default(
-			sql`(strftime('%s', 'now'))`,
+			sql`CURRENT_TIMESTAMP`,
 		),
 		updatedAt: integer("updated_at", { mode: "timestamp" })
-			.default(sql`(strftime('%s', 'now'))`)
+			.default(sql`CURRENT_TIMESTAMP`)
 			.$onUpdate(() => new Date()),
 	},
 	(table) => [index("projects_image_id_idx").on(table.imageId)],
