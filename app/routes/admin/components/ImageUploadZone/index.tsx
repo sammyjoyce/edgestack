@@ -62,7 +62,8 @@ export default function ImageUploadZone({
 						: "flex flex-col items-center w-full",
 				)}
 			>
-				{hasExistingImage && imageUrl && (
+				{/* Only show the preview image to the left when NOT in the browse drawer portal (i.e., normal usage) */}
+				{!browseDrawerPortal && hasExistingImage && imageUrl && (
 					<img
 						src={imageUrl}
 						alt={label}
