@@ -117,7 +117,7 @@ export function ServicesSectionEditor({
 			)}
 
 			{/* Services Intro Section */}
-			<SectionCard className="mb-8">
+			<SectionCard className="mb-6">
 				<SectionHeading>Services Section Intro</SectionHeading>
 				<div className="px-4 py-5 sm:p-6">
 					<div className="flex flex-col gap-3">
@@ -168,12 +168,12 @@ export function ServicesSectionEditor({
 			</SectionCard>
 
 			{/* Individual Service Cards */}
-			<div className="grid gap-8">
+			<div className="grid gap-6">
 				{serviceFields.map((field, idx) => (
 					<SectionCard key={field.label}>
 						<SectionHeading>{field.label}</SectionHeading>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4 py-5 sm:p-6">
-							{/* Left: Title & Text */}
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4 py-5 sm:p-6">
+							{/* Left: Title only */}
 							<div className="flex flex-col gap-4">
 								<div>
 									<FieldLabel htmlFor={field.titleKey}>
@@ -192,39 +192,8 @@ export function ServicesSectionEditor({
 										</TextComponent>
 									)}
 								</div>
-								<div>
-									<FieldLabel htmlFor={field.textKey}>
-										{field.label} Text
-									</FieldLabel>
-									<RichTextField
-										name={field.textKey}
-										initialJSON={initialContent[field.textKey] || ""}
-										disabled={
-											fetcher.state === "submitting" ||
-											fetcher.state === "loading"
-										}
-										onBlur={(val) => {
-											if (val === initialContent[field.textKey]) return;
-											const formData = new FormData();
-											formData.append("intent", "updateTextContent");
-											formData.append("page", "home");
-											formData.append("section", "services");
-											formData.append(field.textKey, val);
-											fetcher.submit(formData, {
-												method: "post",
-												action: "/admin",
-											});
-										}}
-										className="mt-1"
-									/>
-									{actionData?.errors?.[field.textKey] && (
-										<TextComponent className="text-sm text-red-600 mt-1">
-											{actionData.errors[field.textKey]}
-										</TextComponent>
-									)}
-								</div>
 							</div>
-							{/* Right: Image Upload */}
+							{/* Right: Image upload UI remains */}
 							<div className="flex flex-col gap-4">
 								<div>
 									<FieldLabel

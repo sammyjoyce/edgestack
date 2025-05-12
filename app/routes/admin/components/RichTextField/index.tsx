@@ -12,6 +12,7 @@ import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import clsx from "clsx";
 import type { EditorState, LexicalEditor } from "lexical";
 import React, { type JSX, useCallback, useMemo, useRef } from "react";
+import { lexicalTheme } from "./lexicalTheme";
 import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
 
 interface Props {
@@ -48,7 +49,7 @@ export default function RichTextField({
 			namespace: name,
 			onError: console.error,
 			nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, LinkNode],
-			theme: { text: { underline: "underline" } },
+			theme: lexicalTheme,
 			editorState: initialJSON
 				? (editor: LexicalEditor) => {
 						const state = editor.parseEditorState(initialJSON);

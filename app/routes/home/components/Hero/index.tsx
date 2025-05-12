@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React, { type JSX } from "react";
 import { Button } from "~/routes/common/components/ui/Button";
-import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
+import RichTextViewer from "~/routes/common/components/RichTextViewer";
 
 interface HeroProps {
 	title: string;
@@ -41,11 +41,9 @@ export default function Hero({
 						</h1>
 						{subtitle && (
 							<div className="mx-auto inline-block">
-								<ConditionalRichTextRenderer 
-									text={subtitle} 
-									fallbackClassName="mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg text-gray-700 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 dark:text-gray-100"
-									richTextClassName="prose dark:prose-invert max-w-none mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 prose-p:text-lg prose-p:text-gray-700 dark:prose-p:text-gray-100 prose-headings:font-display prose-headings:font-medium prose-headings:text-gray-700 dark:prose-headings:text-gray-100 prose-strong:text-gray-700 dark:prose-strong:text-gray-100 prose-em:text-gray-700 dark:prose-em:text-gray-100"
-								/>
+								<div className="rounded-xl bg-white/90 px-4 py-2 text-center text-gray-700 dark:text-gray-100 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out">
+									<RichTextViewer json={subtitle} />
+								</div>
 							</div>
 						)}
 						<div className="mt-6 flex items-center justify-center gap-x-6">

@@ -131,7 +131,9 @@ export default function EditProjectPage({
 	return (
 		<Container className="mt-8">
 			<FadeIn>
-				<Heading level={4} className="mb-4">Edit Project: {project?.title}</Heading>
+				<Heading level={4} className="mb-4">
+					Edit Project: {project?.title}
+				</Heading>
 
 				{actionData && !actionData.success && actionData.error && (
 					<Alert variant="error" className="mb-4">

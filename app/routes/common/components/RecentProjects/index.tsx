@@ -80,7 +80,7 @@ export default function RecentProjects({
 												"prose-em:text-gray-700 dark:prose-em:text-gray-300",
 												"prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
 												theme === "dark" && "dark:prose-invert",
-												"prose max-w-none"
+												"prose max-w-none",
 											)}
 											fallbackTag="p"
 										/>

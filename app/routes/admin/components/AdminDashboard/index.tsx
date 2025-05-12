@@ -221,22 +221,12 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
-							{projectsFetcher.data && projectsFetcher.state === "idle" && (
-								<>
-									{projectsFetcher.data.message && (
-										<Text
-											className={clsx("mt-2", "text-sm", projectsFetcher.data.success ? "text-green-600" : "text-red-600")}
-										>
-											{projectsFetcher.data.message}
-										</Text>
-									)}
-									{projectsFetcher.data.error && (
-										<Text className="mt-2 text-sm text-red-600">
-											{projectsFetcher.data.error}
-										</Text>
-									)}
-								</>
-							)}
+							{projectsFetcher.data?.success === false &&
+								projectsFetcher.data.error && (
+									<Text className="ml-2 text-sm text-red-600">
+										{projectsFetcher.data.error}
+									</Text>
+								)}
 						</div>
 						<div>
 							<label
@@ -260,22 +250,12 @@ export default function AdminDashboard({
 									});
 								}}
 							/>
-							{projectsFetcher.data && projectsFetcher.state === "idle" && (
-								<>
-									{projectsFetcher.data.message && (
-										<Text
-											className={clsx("mt-2", "text-sm", projectsFetcher.data.success ? "text-green-600" : "text-red-600")}
-										>
-											{projectsFetcher.data.message}
-										</Text>
-									)}
-									{projectsFetcher.data.error && (
-										<Text className="mt-2 text-sm text-red-600">
-											{projectsFetcher.data.error}
-										</Text>
-									)}
-								</>
-							)}
+							{projectsFetcher.data?.success === false &&
+								projectsFetcher.data.error && (
+									<Text className="ml-2 text-sm text-red-600">
+										{projectsFetcher.data.error}
+									</Text>
+								)}
 						</div>
 					</div>
 					<div className="mt-4 text-sm text-gray-600 space-y-1">
@@ -299,7 +279,7 @@ export default function AdminDashboard({
 							</li>
 						</ul>
 					</div>
-					<div className="mt-6">
+					<div className="mt-6 w-fit">
 						<Button
 							as={Link}
 							to="/admin/projects"
@@ -338,37 +318,34 @@ export default function AdminDashboard({
 	];
 	return (
 		<Container className="mt-8">
-			<PageHeader title="Admin Dashboard" className="mb-4" />
+			<PageHeader title="Home Page Editor" className="mb-4" />
 			<div className="flex flex-col space-y-4">
-				<div className="flex justify-between items-center">
-					<Heading level={2}>{"Home Page Editor"}</Heading>
-					<Button
-						type="button"
-						onClick={() => window.open("/?bustCache=true", "_blank")}
-						color="primary"
+				<Button
+					type="button"
+					onClick={() => window.open("/?bustCache=true", "_blank")}
+					color="primary"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						strokeWidth={1.5}
+						stroke="currentColor"
+						aria-hidden="true"
+						focusable="false"
+						className="size-4"
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							strokeWidth={1.5}
-							stroke="currentColor"
-							aria-hidden="true"
-							focusable="false"
-							className="size-4"
-						>
-							<title>Open site in new tab</title>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M17.25 6.75v-2.25a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 003.75 4.5v15a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-2.25m-10.5-6.75h14.25m0 0l-3-3m3 3l-3 3"
-							/>
-						</svg>
-						Open site
-					</Button>
-				</div>
-				<Tabs tabs={tabs} containerClassName="mb-8" />
+						<title>Open site in new tab</title>
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							d="M17.25 6.75v-2.25a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 003.75 4.5v15a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-2.25m-10.5-6.75h14.25m0 0l-3-3m3 3l-3 3"
+						/>
+					</svg>
+					Open site
+				</Button>
 			</div>
+			<Tabs tabs={tabs} containerClassName="mb-8" />
 		</Container>
 	);
 }
