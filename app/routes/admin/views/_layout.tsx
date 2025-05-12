@@ -12,7 +12,7 @@ import {
 	redirect,
 	useLocation,
 	useNavigation,
-} from "react-router-dom";
+} from "react-router";
 import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
