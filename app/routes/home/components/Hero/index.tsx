@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React, { type JSX } from "react";
 import { Button } from "~/routes/common/components/ui/Button";
-import RichTextViewer from "~/routes/common/components/RichTextViewer";
+import RichTextRenderer from "~/routes/common/components/RichTextRenderer";
 
 interface HeroProps {
 	title: string;
@@ -41,8 +41,8 @@ export default function Hero({
 						</h1>
 						{subtitle && (
 							<div className="mx-auto inline-block">
-								<div className="rounded-xl bg-white/90 px-4 py-2 text-center text-gray-700 dark:text-gray-100 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out">
-									<RichTextViewer json={subtitle} />
+								<div className="mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg text-gray-700 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 dark:text-gray-100 sm:text-lg lg:text-2xl">
+									<RichTextRenderer json={subtitle} />
 								</div>
 							</div>
 						)}
