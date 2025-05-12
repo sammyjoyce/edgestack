@@ -78,7 +78,15 @@ export default function ContactUs({
 							"mt-6 text-[15px] leading-normal",
 							"text-gray-300 dark:text-gray-300",
 						)}
-						richTextClassName={clsx(theme === "dark" && "dark:prose-invert")}
+						richTextClassName={clsx(
+							"mt-6 text-[15px] leading-normal",
+							"prose-p:text-gray-300 dark:prose-p:text-gray-300",
+							"prose-headings:text-gray-300 dark:prose-headings:text-gray-300",
+							"prose-strong:text-gray-300 dark:prose-strong:text-gray-300",
+							"prose-em:text-gray-300 dark:prose-em:text-gray-300",
+							"prose-a:text-gray-300 dark:prose-a:text-gray-300 hover:prose-a:underline",
+							theme === "dark" && "dark:prose-invert",
+						)}
 					/>
 					<dl
 						className={clsx(
@@ -94,7 +102,23 @@ export default function ContactUs({
 									aria-hidden="true"
 								/>
 							</dt>
-							<dd className="whitespace-pre-line">{address}</dd>
+							<dd>
+								<ConditionalRichTextRenderer 
+									text={address} 
+									fallbackClassName="text-[15px] text-gray-300 dark:text-gray-300 whitespace-pre-line"
+									richTextClassName={clsx(
+										"text-[15px]", 
+										"prose max-w-none", 
+										"prose-p:text-gray-300 dark:prose-p:text-gray-300 prose-p:whitespace-pre-line",
+										"prose-headings:text-gray-300 dark:prose-headings:text-gray-300",
+										"prose-strong:text-gray-300 dark:prose-strong:text-gray-300",
+										"prose-em:text-gray-300 dark:prose-em:text-gray-300",
+										"prose-a:text-gray-300 dark:prose-a:text-gray-300 hover:prose-a:underline",
+										theme === "dark" && "dark:prose-invert"
+									)}
+									fallbackTag="div"
+								/>
+							</dd>
 						</div>
 						<div className="flex items-center gap-x-4">
 							<dt className="flex-none">

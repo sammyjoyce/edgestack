@@ -73,7 +73,14 @@ export default function RecentProjects({
 											}
 											fallbackClassName="mb-4 text-base text-gray-700 dark:text-gray-300 md:mb-6 md:text-lg"
 											richTextClassName={clsx(
+												"mb-4 text-base md:mb-6 md:text-lg",
+												"prose-p:text-gray-700 dark:prose-p:text-gray-300",
+												"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
+												"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
+												"prose-em:text-gray-700 dark:prose-em:text-gray-300",
+												"prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
 												theme === "dark" && "dark:prose-invert",
+												"prose max-w-none"
 											)}
 											fallbackTag="p"
 										/>

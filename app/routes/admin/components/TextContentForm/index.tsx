@@ -15,6 +15,7 @@ import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { useTextContentForm } from "~/routes/admin/hooks/useTextContentForm";
 import { Pill, PillStatusComponent } from "~/routes/common/components/ui/Pill";
 import { Button } from "../ui/button";
+import { clsx } from "clsx";
 
 type ActionResponseData = {
 	success?: boolean;
@@ -249,7 +250,7 @@ export function TextContentForm({
 								value={fields[key] ?? ""}
 								onBlur={handleBlur}
 								onChange={handleChange}
-								className={errors[key] ? "border-red-500" : undefined}
+								className={clsx(errors[key] && "border-red-500")}
 							/>
 						)}
 						{errors[key] && (

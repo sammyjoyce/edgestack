@@ -12,6 +12,7 @@ const requestHandler = createRequestHandler(
 );
 export default {
 	async fetch(request, env, ctx) {
+    console.log("WORKER INVOKED", new Date().toISOString(), request.url);
 		const url = new URL(request.url);
 		if (url.pathname.startsWith("/assets/")) {
 			const key = url.pathname.slice("/assets/".length);

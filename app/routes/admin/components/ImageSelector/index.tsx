@@ -7,6 +7,7 @@ import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
 import type { StoredImage } from "~/utils/upload.server";
 import { Button } from "../ui/button";
 import { Heading } from "../ui/heading";
+import { clsx } from "clsx";
 
 interface ImageSelectorProps {
 	onDrop: (files: File[]) => void;
@@ -44,7 +45,7 @@ export function ImageSelector({
 		setIsOpen(false);
 	};
 	return (
-		<div className={`${className} w-full flex flex-col items-center`}>
+		<div className={clsx(className, "w-full flex flex-col items-center")}>
 			<ImageUploadZone
 				onDrop={onDrop}
 				disabled={disabled}

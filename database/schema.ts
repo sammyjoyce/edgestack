@@ -1,21 +1,24 @@
 import { relations, sql } from "drizzle-orm"; // Add relations
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+
 export const content = sqliteTable("content", {
 	key: text("key").primaryKey().notNull(),
 	page: text("page").notNull().default("global"),
 	section: text("section").default("default"),
 	type: text("type").notNull().default("text"),
 	theme: text("theme", { enum: ["light", "dark"] }).default("light"),
-	value: text("value", { mode: "json" }).notNull(),
+	value: text("value", { mode: "json" }).notNull(), // Reverted to mode: "json"
 	mediaId: integer("media_id").references(() => media.id),
 	sortOrder: integer("sort_order").default(0).notNull(),
-	metadata: text("metadata", { mode: "json" }),
+	metadata: text("metadata", { mode: "json" }), // Keep metadata as JSON if needed for complex objects
 	updatedAt: integer("updated_at", { mode: "timestamp" })
 		.default(sql`(strftime('%s', 'now'))`)
 		.$onUpdate(() => new Date()),
 });
+
 export type Content = typeof content.$inferSelect;
 export type NewContent = typeof content.$inferInsert;
+
 export const media = sqliteTable("media", {
 	id: integer("id").primaryKey({ autoIncrement: true }),
 	url: text("url").notNull(),
@@ -26,15 +29,17 @@ export const media = sqliteTable("media", {
 		sql`(strftime('%s', 'now'))`,
 	),
 });
+
 export type Media = typeof media.$inferSelect;
 export type NewMedia = typeof media.$inferInsert;
+
 export const projects = sqliteTable("projects", {
 	id: integer("id").primaryKey({ autoIncrement: true }),
 	title: text("title").notNull(),
 	description: text("description", { mode: "json" }).notNull(),
-	details: text("details", { mode: "json" }),
-	imageId: integer("image_id").references(() => media.id), // Changed from imageUrl to imageId FK
-	imageUrl: text("image_url"), // Add this line for direct URL storage
+	details: text("details", { mode: "json" }), 
+	imageId: integer("image_id").references(() => media.id),
+	imageUrl: text("image_url"), 
 	slug: text("slug").unique(),
 	published: integer("published", { mode: "boolean" }).default(true),
 	isFeatured: integer("is_featured", { mode: "boolean" }).default(false),
@@ -46,6 +51,7 @@ export const projects = sqliteTable("projects", {
 		.default(sql`(strftime('%s', 'now'))`)
 		.$onUpdate(() => new Date()),
 });
+
 export type Project = typeof projects.$inferSelect;
 export type NewProject = typeof projects.$inferInsert;
 
@@ -59,8 +65,6 @@ export const contentRelations = relations(content, ({ one }) => ({
 
 export const mediaRelations = relations(media, ({ many }) => ({
 	contents: many(content),
-	// A media item could be the image for multiple projects, or for one if unique constraint added to projects.imageId
-	// For now, assuming a media item could potentially be reused or is at least referenced by projects.
 	projectsAsImage: many(projects, { relationName: "projectImage" }),
 }));
 
@@ -76,7 +80,7 @@ export const schema = {
 	content,
 	projects,
 	media,
-	contentRelations, // Add relations to the exported schema
+	contentRelations, 
 	mediaRelations,
 	projectsRelations,
 };

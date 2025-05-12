@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { clsx } from "clsx";
 import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";
 import { Button } from "~/routes/admin/components/ui/button";
@@ -22,7 +23,7 @@ export function ProjectImageSelector({
 		setIsOpen(false);
 	};
 	return (
-		<div className={`${className} w-full`}>
+		<div className={clsx(className, "w-full")}>
 			{(currentImage || selectedImage) && (
 				<div className="mb-4">
 					<img

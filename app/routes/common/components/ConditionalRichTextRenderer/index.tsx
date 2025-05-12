@@ -20,13 +20,11 @@ export function ConditionalRichTextRenderer({
 	}
 	try {
 		// Attempt to parse the text as JSON
-		const parsedJson = JSON.parse(text);
-		// If successful, pass the parsed object to RichTextRenderer.
-		// Using 'as any' to bypass string type for testing if RichTextRenderer handles objects.
-		// If this works, RichTextRenderer's props might need adjustment.
+		JSON.parse(text); // Verify it's valid JSON, but we don't need the parsed object here.
+		// If successful, pass the ORIGINAL text string to RichTextRenderer.
 		return (
 			<RichTextRenderer
-				json={parsedJson as any}
+				json={text} // Pass the original string 'text'
 				className={richTextClassName}
 			/>
 		);

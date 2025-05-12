@@ -68,7 +68,14 @@ export function ProjectDetailRoute({
 							text={project.description}
 							fallbackClassName="text-gray-700 dark:text-gray-300 text-lg mb-4"
 							richTextClassName={clsx(
+								"text-lg mb-4",
+								"prose-p:text-gray-700 dark:prose-p:text-gray-300",
+								"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
+								"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
+								"prose-em:text-gray-700 dark:prose-em:text-gray-300",
+								"prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
 								projectDetailTheme === "dark" && "dark:prose-invert",
+								"prose max-w-none",
 							)}
 							fallbackTag="p"
 						/>
@@ -86,7 +93,11 @@ export function ProjectDetailRoute({
 									text={project.details}
 									fallbackClassName="text-gray-600 dark:text-gray-400"
 									richTextClassName={clsx(
-										projectDetailTheme === "dark" && "dark:prose-invert",
+										"prose-p:text-gray-600 dark:prose-p:text-gray-400",
+										"prose-headings:text-gray-600 dark:prose-headings:text-gray-400",
+										"prose-strong:text-gray-600 dark:prose-strong:text-gray-400",
+										"prose-em:text-gray-600 dark:prose-em:text-gray-400",
+										"prose-a:text-gray-600 dark:prose-a:text-gray-400 hover:prose-a:underline",
 									)}
 									fallbackTag="div"
 								/>
