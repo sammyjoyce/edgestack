@@ -76,8 +76,7 @@
 			},
 			"routes": [
 				{
-					"pattern": "lushconstructions.com",
-					"custom_domain": true,
+					"pattern": "lushconstructions.com/*",
 					"zone_id": "ebfa9ec51be86d5b5e37f1d4a0e48c71"
 				}
 			]
