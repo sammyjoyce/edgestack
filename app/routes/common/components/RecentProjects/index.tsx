@@ -36,7 +36,7 @@ export default function RecentProjects({
 				{introText && (
 					<ConditionalRichTextRenderer
 						text={introText}
-						fallbackClassName="prose-xl" // Assuming intro text should be larger
+						fallbackClassName="text-xl text-gray-600 dark:text-gray-300" // Standard Tailwind for fallback
 						richTextClassName="prose-xl" // Assuming intro text should be larger
 					/>
 				)}
@@ -77,9 +77,9 @@ export default function RecentProjects({
 											text={
 												project.description ? String(project.description) : null
 											}
-											fallbackClassName="mb-4 prose md:mb-6 md:prose-lg"
+											fallbackClassName="mb-4 text-base text-gray-700 dark:text-gray-300 md:mb-6 md:text-lg" // Standard Tailwind
 											richTextClassName={clsx(
-												"mb-4 prose md:mb-6 md:prose-lg",
+												"mb-4 md:mb-6 prose-base md:prose-lg", // Prose size modifiers
 												"prose-p:text-gray-700 dark:prose-p:text-gray-300",
 												"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
 												"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",

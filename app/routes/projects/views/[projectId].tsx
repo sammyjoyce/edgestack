@@ -66,9 +66,9 @@ export function ProjectDetailRoute({
 						</h2>
 						<ConditionalRichTextRenderer
 							text={project.description}
-							fallbackClassName="prose-lg mb-4" // This instance needs its own prose sizing
+							fallbackClassName="text-lg text-gray-700 dark:text-gray-300 mb-4" // Standard Tailwind
 							richTextClassName={clsx(
-								"prose-lg mb-4", // This instance needs its own prose sizing
+								"prose-lg mb-4", // Prose size modifier
 								"prose-p:text-gray-700 dark:prose-p:text-gray-300",
 								"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
 								"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
@@ -90,8 +90,8 @@ export function ProjectDetailRoute({
 								</h3>
 								<ConditionalRichTextRenderer
 									text={project.details}
-									fallbackClassName="" // Inherits prose-sm and colors from parent div
-									richTextClassName={clsx( // Inherits prose-sm and colors, only element specifics needed
+									fallbackClassName="not-prose text-sm text-gray-600 dark:text-gray-400" // Standard Tailwind, escapes parent prose
+									richTextClassName={clsx( // Element specifics, inherits prose-sm from parent for base sizing
 										"prose-p:text-gray-600 dark:prose-p:text-gray-400",
 										"prose-headings:text-gray-600 dark:prose-headings:text-gray-400",
 										"prose-strong:text-gray-600 dark:prose-strong:text-gray-400",
