@@ -3,7 +3,7 @@ import {
 	useSearchParams,
 	useActionData,
 	useNavigation,
-} from "react-router-dom";
+} from "react-router";
 import { redirect } from "react-router";
 import { assert } from "~/routes/common/utils/assert";
 import { getAllContent, updateContent } from "~/routes/common/db";
