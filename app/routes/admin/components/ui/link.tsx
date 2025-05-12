@@ -19,9 +19,9 @@ export const Link = forwardRef(function Link(
 				ref={ref}
 				className={clsx(
 					props.className,
-					"text-primary dark:text-primary-dark",
-					"hover:underline hover:text-primary/80 dark:hover:text-primary-dark/80",
-					"focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary dark:focus:ring-primary-dark",
+					"text-primary",
+					"hover:underline hover:text-primary/80",
+					"focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary",
 				)}
 			/>
 		</Headless.DataInteractive>

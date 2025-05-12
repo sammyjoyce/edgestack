@@ -10,7 +10,7 @@ export function Divider({
 			{...props}
 			className={clsx(
 				className,
-				"w-full border-t border-zinc-200 dark:border-zinc-700",
+				"w-full border-t border-zinc-200",
 			)}
 		/>
 	);

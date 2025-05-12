@@ -9,7 +9,7 @@ export function Text({
 	return (
 		<p
 			{...props}
-			className={clsx(className, "text-base text-zinc-700 dark:text-zinc-300")}
+			className={clsx(className, "text-base text-zinc-700")}
 		/>
 	);
 }
@@ -23,7 +23,7 @@ export function TextLink({
 			{...props}
 			className={clsx(
 				className,
-				"text-primary underline decoration-primary/50 hover:decoration-primary dark:text-primary-dark dark:decoration-primary-dark/50 dark:hover:decoration-primary-dark",
+				"text-primary underline decoration-primary/50 hover:decoration-primary",
 			)}
 		/>
 	);
@@ -36,7 +36,7 @@ export function Strong({
 	return (
 		<strong
 			{...props}
-			className={clsx(className, "font-semibold text-zinc-900 dark:text-white")}
+			className={clsx(className, "font-semibold text-zinc-900")}
 		/>
 	);
 }
@@ -50,7 +50,7 @@ export function Code({
 			{...props}
 			className={clsx(
 				className,
-				"rounded-sm border border-zinc-200 bg-zinc-100 px-1 py-0.5 text-sm font-medium text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200",
+				"rounded-sm border border-zinc-200 bg-zinc-100 px-1 py-0.5 text-sm font-medium text-zinc-800",
 			)}
 		/>
 	);

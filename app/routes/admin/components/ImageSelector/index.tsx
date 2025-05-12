@@ -89,7 +89,7 @@ export function ImageSelector({
 										</div>
 
 										<div className="my-6">
-											<hr className="border-gray-200 dark:border-gray-700" />
+											<hr className="border-gray-200" />
 										</div>
 
 										<Heading

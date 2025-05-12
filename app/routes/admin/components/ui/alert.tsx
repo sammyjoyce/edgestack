@@ -65,31 +65,31 @@ const alertStyles = {
 	variants: {
 		info: {
 			container:
-				"bg-admin-info border-admin-info dark:bg-admin-info-dark dark:border-admin-info-dark",
-			icon: "text-admin-info dark:text-admin-info-dark",
-			title: "text-admin-info dark:text-admin-info-dark",
-			description: "text-admin-info dark:text-admin-info-dark",
+				"bg-admin-info border-admin-info",
+			icon: "text-admin-info",
+			title: "text-admin-info",
+			description: "text-admin-info",
 		},
 		success: {
 			container:
-				"bg-green-50 border-green-300 dark:bg-green-900/30 dark:border-green-700",
-			icon: "text-green-500 dark:text-green-400",
-			title: "text-green-800 dark:text-green-200",
-			description: "text-green-700 dark:text-green-300",
+				"bg-green-50 border-green-300",
+			icon: "text-green-500",
+			title: "text-green-800",
+			description: "text-green-700",
 		},
 		warning: {
 			container:
-				"bg-yellow-50 border-yellow-300 dark:bg-yellow-900/30 dark:border-yellow-700",
-			icon: "text-yellow-500 dark:text-yellow-400",
-			title: "text-yellow-800 dark:text-yellow-200",
-			description: "text-yellow-700 dark:text-yellow-300",
+				"bg-yellow-50 border-yellow-300",
+			icon: "text-yellow-500",
+			title: "text-yellow-800",
+			description: "text-yellow-700",
 		},
 		error: {
 			container:
-				"bg-red-50 border-red-300 dark:bg-red-900/30 dark:border-red-700",
-			icon: "text-red-500 dark:text-red-400",
-			title: "text-red-800 dark:text-red-200",
-			description: "text-red-700 dark:text-red-300",
+				"bg-red-50 border-red-300",
+			icon: "text-red-500",
+			title: "text-red-800",
+			description: "text-red-700",
 		},
 	},
 };

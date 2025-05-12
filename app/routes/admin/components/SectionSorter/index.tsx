@@ -186,7 +186,7 @@ export default function SectionSorter({
 
 	if (!orderedItems.length) {
 		return (
-			<Text className="text-slate-400 dark:text-slate-500">
+			<Text className="text-slate-400">
 				No sections available to sort.
 			</Text>
 		);
@@ -195,7 +195,7 @@ export default function SectionSorter({
 	return (
 		<section
 			aria-labelledby="section-sorter-heading"
-			className="p-4 md:p-6 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-lg"
+			className="p-4 md:p-6 bg-gray-50 border border-gray-200 rounded-xl shadow-lg"
 		>
 			<Heading id="section-sorter-heading" level={4} className="mb-4">
 				Reorder & Theme Sections
@@ -256,7 +256,7 @@ function SortableItem({
 			ref={setNodeRef}
 			style={style}
 			className={clsx(
-				"p-3 bg-white dark:bg-slate-700 border border-admin-border rounded-lg shadow-sm flex items-center justify-between",
+				"p-3 bg-white border border-admin-border rounded-lg shadow-sm flex items-center justify-between",
 				{ "shadow-xl": isDragging },
 			)}
 		>
@@ -282,7 +282,7 @@ function SortableItem({
 						<line x1="3" y1="18" x2="21" y2="18" />
 					</svg>
 				</Button>
-				<span className="text-sm font-medium truncate text-gray-900 dark:text-slate-100">
+				<span className="text-sm font-medium truncate text-gray-900">
 					{details.label}
 				</span>
 			</div>
@@ -304,7 +304,7 @@ function SortableItem({
 					/>
 					<SwitchLabel
 						htmlFor={switchId}
-						className="text-xs text-gray-500 dark:text-slate-400"
+						className="text-xs text-gray-500"
 					>
 						{isLight ? "Light" : "Dark"}
 					</SwitchLabel>

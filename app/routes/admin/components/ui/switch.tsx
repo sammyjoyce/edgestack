@@ -33,8 +33,8 @@ export function Switch({
 			className={clsx(
 				className,
 				"group relative inline-flex h-6 w-11 cursor-pointer items-center rounded-full transition-colors duration-200 ease-in-out",
-				"bg-zinc-200 data-checked:bg-primary dark:bg-zinc-700 dark:data-checked:bg-primary-dark",
-				"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-primary-dark dark:ring-offset-zinc-900",
+				"bg-zinc-200 data-checked:bg-primary",
+				"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
 				"data-disabled:cursor-not-allowed data-disabled:opacity-50",
 			)}
 		>
@@ -59,7 +59,7 @@ export function Label({
 			data-slot="label"
 			className={clsx(
 				className,
-				"text-sm font-medium text-zinc-900 dark:text-white",
+				"text-sm font-medium text-zinc-900",
 			)}
 		/>
 	);
@@ -73,7 +73,7 @@ export function Description({
 		<Headless.Description
 			{...props}
 			data-slot="description"
-			className={clsx(className, "text-sm text-zinc-600 dark:text-zinc-400")}
+			className={clsx(className, "text-sm text-zinc-600")}
 		/>
 	);
 }
@@ -86,7 +86,7 @@ export function ErrorMessage({
 		<Headless.Description
 			{...props}
 			data-slot="error"
-			className={clsx(className, "text-sm text-red-600 dark:text-red-500")}
+			className={clsx(className, "text-sm text-red-600")}
 		/>
 	);
 }

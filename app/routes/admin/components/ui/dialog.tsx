@@ -39,7 +39,7 @@ export function Dialog({
 					className={clsx(
 						className,
 						sizes[size],
-						"w-full min-w-0 rounded-xl bg-white p-6 shadow-xl dark:bg-zinc-800 dark:ring-1 dark:ring-white/10",
+						"w-full min-w-0 rounded-xl bg-white p-6 shadow-xl",
 						"transition-all duration-300 ease-out data-closed:opacity-0 data-closed:scale-95 data-enter:opacity-100 data-enter:scale-100",
 					)}
 				>
@@ -62,7 +62,7 @@ export function DialogTitle({
 			{...props}
 			className={clsx(
 				className,
-				"text-xl font-semibold text-zinc-900 dark:text-white",
+				"text-xl font-semibold text-zinc-900",
 			)}
 		/>
 	);
@@ -79,7 +79,7 @@ export function DialogDescription({
 		<Headless.Description
 			as={Text}
 			{...props}
-			className={clsx(className, "mt-2 text-zinc-600 dark:text-zinc-400")}
+			className={clsx(className, "mt-2 text-zinc-600")}
 		/>
 	);
 }

@@ -17,7 +17,7 @@ export function FormCard<T extends React.ElementType = "div">({
 	return (
 		<Component
 			className={clsx(
-				"rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 p-8 w-full max-w-md mx-auto",
+				"rounded-lg border border-gray-200 bg-white shadow-md p-8 w-full max-w-md mx-auto",
 				className,
 			)}
 			{...props}

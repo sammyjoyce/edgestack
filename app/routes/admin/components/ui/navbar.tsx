@@ -15,7 +15,7 @@ export function Navbar({
 			{...props}
 			className={clsx(
 				className,
-				"flex h-14 items-center gap-x-4 px-4 shadow-sm dark:shadow-md bg-white dark:bg-zinc-900",
+				"flex h-14 items-center gap-x-4 px-4 shadow-sm bg-white",
 			)}
 		/>
 	);
@@ -29,7 +29,7 @@ export function NavbarDivider({
 		<div
 			aria-hidden="true"
 			{...props}
-			className={clsx(className, "h-5 w-px bg-zinc-300 dark:bg-zinc-700")}
+			className={clsx(className, "h-5 w-px bg-zinc-300")}
 		/>
 	);
 }
@@ -73,8 +73,8 @@ export const NavbarItem = forwardRef(function NavbarItem(
 	const itemClasses = clsx(
 		"relative flex items-center gap-x-2 rounded-md px-3 py-2 text-sm font-medium outline-none transition-colors",
 		current
-			? "text-primary dark:text-primary-dark bg-primary/10 dark:bg-primary-dark/10"
-			: "text-zinc-700 hover:text-primary hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-primary-dark dark:hover:bg-zinc-800",
+			? "text-primary bg-primary/10"
+			: "text-zinc-700 hover:text-primary hover:bg-zinc-100",
 		"*:data-[slot=icon]:size-5 *:data-[slot=icon]:fill-current",
 	);
 	return (
@@ -82,7 +82,7 @@ export const NavbarItem = forwardRef(function NavbarItem(
 			{current && (
 				<motion.span
 					layoutId="current-navbar-indicator"
-					className="absolute inset-x-0 -bottom-px h-0.5 bg-primary dark:bg-primary-dark"
+					className="absolute inset-x-0 -bottom-px h-0.5 bg-primary"
 				/>
 			)}
 			{"href" in props ? (

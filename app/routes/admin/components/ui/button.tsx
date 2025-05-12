@@ -84,10 +84,10 @@ export const Button = forwardRef<HTMLElement, ButtonProps>((props, ref) => {
 	};
 
 	const ghostClasses =
-		"bg-transparent shadow-none text-admin-foreground hover:bg-black/5 dark:hover:bg-white/8";
+		"bg-transparent shadow-none text-admin-foreground hover:bg-black/5";
 
 	const outlineBase =
-		"bg-transparent border border-admin-border text-admin-foreground shadow-none hover:bg-black/3 dark:hover:bg-white/5 hover:border-admin-foreground";
+		"bg-transparent border border-admin-border text-admin-foreground shadow-none hover:bg-black/3 hover:border-admin-foreground";
 
 	const outlineSelected =
 		"bg-admin-primary text-admin-white border-admin-primary";

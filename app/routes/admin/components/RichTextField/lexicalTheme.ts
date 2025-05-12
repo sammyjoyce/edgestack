@@ -2,7 +2,7 @@
 import type { Theme } from "@lexical/react/LexicalComposer";
 
 export const lexicalTheme = {
-	paragraph: "mb-4 leading-relaxed text-slate-800 dark:text-slate-200",
+	paragraph: "mb-4 leading-relaxed text-slate-800",
 	heading: {
 		h1: "text-4xl font-bold md:text-5xl tracking-tight mb-4",
 		h2: "text-3xl font-bold md:text-4xl tracking-tight mb-3",
@@ -21,11 +21,11 @@ export const lexicalTheme = {
 		underline: "underline",
 	},
 	code:
-		"font-mono text-sm rounded px-1.5 py-1 bg-slate-100 dark:bg-slate-800 " +
-		"text-pink-700 dark:text-pink-400",
+		"font-mono text-sm rounded px-1.5 py-1 bg-slate-100 " +
+		"text-pink-700",
 	codeHighlight: {
 		comment: "text-slate-500 italic",
-		keyword: "text-cyan-600 dark:text-cyan-400",
-		string: "text-amber-700 dark:text-amber-300",
+		keyword: "text-cyan-600",
+		string: "text-amber-700",
 	},
 } satisfies Theme;

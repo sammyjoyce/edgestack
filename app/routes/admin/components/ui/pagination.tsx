@@ -123,9 +123,9 @@ export function PaginationPage({
 				className,
 				"min-w-9", // size="sm" handles padding and text-sm. Keep min-w-9 for consistent width.
 				current &&
-					"font-semibold ring-1 ring-primary dark:ring-primary-dark text-primary dark:text-primary-dark",
+					"font-semibold ring-1 ring-primary text-primary",
 				!current &&
-					"text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800",
+					"text-zinc-700 hover:bg-zinc-100",
 			)}
 		>
 			{children}
@@ -144,7 +144,7 @@ export function PaginationGap({
 			{...props}
 			className={clsx(
 				className,
-				"flex h-9 w-9 items-center justify-center text-sm font-medium text-zinc-600 dark:text-zinc-400 select-none",
+				"flex h-9 w-9 items-center justify-center text-sm font-medium text-zinc-600 select-none",
 			)}
 		>
 			{children}

@@ -46,7 +46,7 @@ export function Table({
 							!bleed && "sm:px-6 lg:px-8",
 						)}
 					>
-						<table className="min-w-full text-left text-sm text-zinc-900 dark:text-white">
+						<table className="min-w-full text-left text-sm text-zinc-900">
 							{children}
 						</table>
 					</div>
@@ -65,7 +65,7 @@ export function TableHead({
 			{...props}
 			className={clsx(
 				className,
-				"text-sm font-semibold text-zinc-900 dark:text-white",
+				"text-sm font-semibold text-zinc-900",
 			)}
 		/>
 	);
@@ -75,7 +75,7 @@ export function TableBody(props: React.ComponentPropsWithoutRef<"tbody">) {
 	return (
 		<tbody
 			{...props}
-			className="divide-y divide-zinc-200 dark:divide-zinc-800"
+			className="divide-y divide-zinc-200"
 		/>
 	);
 }
@@ -108,10 +108,10 @@ export function TableRow({
 				{...props}
 				className={clsx(
 					className,
-					href && "hover:bg-zinc-50 dark:hover:bg-zinc-800/50",
-					striped && "even:bg-zinc-100/50 dark:even:bg-zinc-800/50",
+					href && "hover:bg-zinc-50",
+					striped && "even:bg-zinc-100/50",
 					href &&
-						"has-[[data-row-link][data-focus]]:ring-2 has-[[data-row-link][data-focus]]:ring-inset has-[[data-row-link][data-focus]]:ring-primary dark:has-[[data-row-link][data-focus]]:ring-primary-dark",
+						"has-[[data-row-link][data-focus]]:ring-2 has-[[data-row-link][data-focus]]:ring-inset has-[[data-row-link][data-focus]]:ring-primary",
 				)}
 			/>
 		</TableRowContext.Provider>
@@ -128,9 +128,9 @@ export function TableHeader({
 			{...props}
 			className={clsx(
 				className,
-				"border-b border-zinc-200 px-3 py-3.5 text-left text-sm font-semibold text-zinc-900 dark:border-zinc-800 dark:text-white",
+				"border-b border-zinc-200 px-3 py-3.5 text-left text-sm font-semibold text-zinc-900",
 				grid &&
-					"border-l border-zinc-200 first:border-l-0 dark:border-zinc-800",
+					"border-l border-zinc-200 first:border-l-0",
 				bleed ? "pl-4 pr-3 sm:pl-6 lg:pl-8" : "pl-3 pr-3",
 			)}
 		/>
@@ -154,7 +154,7 @@ export function TableCell({
 				"relative px-3",
 				dense ? "py-2" : "py-4",
 				grid &&
-					"border-l border-zinc-200 first:border-l-0 dark:border-zinc-800",
+					"border-l border-zinc-200 first:border-l-0",
 				bleed ? "pl-4 pr-3 sm:pl-6 lg:pl-8" : "pl-3 pr-3",
 			)}
 		>

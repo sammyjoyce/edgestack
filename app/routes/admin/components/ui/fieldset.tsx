@@ -11,7 +11,7 @@ export function Fieldset({
 			{...props}
 			className={clsx(
 				className,
-				"space-y-6 rounded-lg border border-admin-border dark:border-admin-border-dark p-4",
+				"space-y-6 rounded-lg border border-admin-border p-4",
 			)}
 		/>
 	);
@@ -27,7 +27,7 @@ export function Legend({
 			{...props}
 			className={clsx(
 				className,
-				"text-base font-semibold text-zinc-900 dark:text-white data-disabled:opacity-50",
+				"text-base font-semibold text-zinc-900 data-disabled:opacity-50",
 			)}
 		/>
 	);
@@ -68,7 +68,7 @@ export function Label({
 			{...props}
 			className={clsx(
 				className,
-				"text-sm font-medium text-zinc-900 dark:text-white select-none data-disabled:opacity-50",
+				"text-sm font-medium text-zinc-900 select-none data-disabled:opacity-50",
 			)}
 		/>
 	);
@@ -87,7 +87,7 @@ export function Description({
 			{...props}
 			className={clsx(
 				className,
-				"text-sm text-zinc-500 dark:text-zinc-400 data-disabled:opacity-50",
+				"text-sm text-zinc-500 data-disabled:opacity-50",
 			)}
 		/>
 	);
@@ -106,7 +106,7 @@ export function ErrorMessage({
 			{...props}
 			className={clsx(
 				className,
-				"text-sm text-red-600 dark:text-red-500 data-disabled:opacity-50",
+				"text-sm text-red-600 data-disabled:opacity-50",
 			)}
 		/>
 	);

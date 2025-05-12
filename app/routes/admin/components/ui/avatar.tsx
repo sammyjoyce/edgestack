@@ -40,7 +40,7 @@ export function Avatar({
 				"inline-grid shrink-0 align-middle relative group",
 				sizeClasses,
 				square ? "rounded-md" : "rounded-full",
-				"ring-1 ring-inset ring-admin-border dark:ring-admin-border-dark",
+				"ring-1 ring-inset ring-admin-border",
 			)}
 		>
 			{initials && (
@@ -48,7 +48,7 @@ export function Avatar({
 					className={clsx(
 						"absolute inset-0 size-full fill-current select-none",
 						square ? "rounded-md" : "rounded-full",
-						"bg-admin-background dark:bg-admin-background text-admin-foreground dark:text-admin-foreground",
+						"bg-admin-background text-admin-foreground",
 					)}
 					viewBox="0 0 100 100"
 					aria-hidden={alt ? undefined : "true"}
@@ -103,7 +103,7 @@ export const AvatarButton = forwardRef(function AvatarButton(
 		sizeClasses,
 		square ? "rounded-md" : "rounded-full",
 		"relative inline-flex items-center justify-center",
-		"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-primary dark:focus:ring-primary-dark",
+		"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-primary",
 	);
 	const avatarContent = (
 		<Avatar
