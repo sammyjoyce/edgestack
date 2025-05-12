@@ -1,4 +1,5 @@
 import { Bars3Icon } from "@heroicons/react/24/outline";
+import { useSectionScroll } from "~/hooks/useSectionScroll";
 import React, { type JSX, type MouseEvent, useCallback, useState } from "react";
 import { NavLink, type To, useNavigate } from "react-router";
 import { Button } from "../ui/Button";
@@ -41,23 +42,7 @@ export default function Header({
 
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const navigate = useNavigate();
-	const scrollToSection = useCallback(
-		(e: MouseEvent<HTMLAnchorElement>, id: string) => {
-			e.preventDefault();
-			const cleanId = id.replace(/^#/, "");
-			const currentPath = window.location.pathname;
-			if (currentPath === "/") {
-				const element = document.getElementById(cleanId);
-				if (element) {
-					element.scrollIntoView({ behavior: "smooth" });
-				}
-			} else {
-				navigate(`/#${cleanId}`);
-			}
-			setMobileOpen(false);
-		},
-		[navigate],
-	);
+	const scrollToSection = useSectionScroll({ setMobileOpen });
 	return (
 		<header className="sticky top-0 z-50 w-full bg-black/80 text-[13px] font-semibold text-white backdrop-blur-xs">
 			<nav className="mx-auto max-w-7xl px-4 lg:px-6">

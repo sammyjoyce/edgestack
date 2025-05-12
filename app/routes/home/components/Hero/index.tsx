@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import React, { type JSX } from "react";
 import { Button } from "~/routes/common/components/ui/Button";
+import { useSectionScroll } from "~/hooks/useSectionScroll";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 
 interface HeroProps {
@@ -37,6 +38,9 @@ export default function Hero({
 		"prose-p:text-gray-700 dark:prose-p:text-gray-100", // For text-gray-700 and dark:text-gray-100
 	);
 
+	const scrollToContact = useSectionScroll("#contact");
+const scrollToServices = useSectionScroll("#services");
+
 	return (
 		<div
 			className={clsx(
@@ -69,10 +73,10 @@ export default function Hero({
 							</div>
 						)}
 						<div className="mt-6 flex items-center justify-center gap-x-6">
-							<Button invert={theme === "light"} to="#contact">
+							<Button invert={theme === "light"} to="#contact" onClick={scrollToContact}>
 								Enquire Now
 							</Button>
-							<Button invert={theme === "light"} to="#services">
+							<Button invert={theme === "light"} to="#services" onClick={scrollToServices}>
 								Our Services <span aria-hidden="true">→</span>
 							</Button>
 						</div>

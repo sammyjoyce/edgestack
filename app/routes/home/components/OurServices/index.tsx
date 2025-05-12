@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React, { type JSX } from "react";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 import { Button } from "~/routes/common/components/ui/Button";
+import { useSectionScroll } from "~/hooks/useSectionScroll";
 import { Container } from "~/routes/common/components/ui/Container";
 import { FadeIn, FadeInStagger } from "~/routes/common/components/ui/FadeIn";
 import { SectionIntro } from "~/routes/common/components/ui/SectionIntro";
@@ -50,6 +51,8 @@ export default function OurServices({
 	const defaultIntroText =
 		"Qualified & Professional Building Services from Start to Finish";
 	const services = servicesData ?? defaultServices;
+	const scrollToSection = useSectionScroll();
+
 	return (
 		<div
 			className={clsx(
@@ -81,7 +84,7 @@ export default function OurServices({
 							fallbackTag="p"
 						/>
 						<div className="mt-6 flex justify-center">
-							<Button to="#contact" invert={theme === "light"}>
+							<Button to="#contact" invert={theme === "light"} onClick={scrollToSection}>
 								Get Started
 							</Button>
 						</div>
