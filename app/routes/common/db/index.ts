@@ -57,7 +57,7 @@ export async function getAllContent(
 			// (e.g., string, number, boolean, object, array)
 			if (row.value === null || row.value === undefined) {
 				contentMap[row.key] = "";
-			} else if (typeof row.value === 'string') {
+			} else if (typeof row.value === "string") {
 				contentMap[row.key] = row.value;
 			} else {
 				// For non-string JS types (objects, arrays, numbers, booleans),
@@ -67,7 +67,9 @@ export async function getAllContent(
 			contentMap[`${row.key}_theme`] = row.theme ?? "light";
 		}
 		assert(typeof contentMap === "object", "getAllContent: must return object");
-		console.info(`[DB getAllContent] Returning ${Object.keys(contentMap).length} keys. Sample (hero_title): '${contentMap['hero_title']}', (about_text_theme): '${contentMap['about_text_theme']}'`);
+		console.info(
+			`[DB getAllContent] Returning ${Object.keys(contentMap).length} keys. Sample (hero_title): '${contentMap["hero_title"]}', (about_text_theme): '${contentMap["about_text_theme"]}'`,
+		);
 		return contentMap;
 	} catch (error) {
 		console.error("[DB getAllContent] Error fetching content:", error);
@@ -86,8 +88,13 @@ export async function updateContent(
 		| boolean
 		| Record<string, unknown>
 		| Array<unknown>
-		| (Partial<Omit<NewContent, "key">> & { 
-				value: string | number | boolean | Record<string, unknown> | Array<unknown>; 
+		| (Partial<Omit<NewContent, "key">> & {
+				value:
+					| string
+					| number
+					| boolean
+					| Record<string, unknown>
+					| Array<unknown>;
 		  })
 	>,
 ): Promise<D1Result<unknown>[]> {
@@ -118,29 +125,57 @@ export async function updateContent(
 			continue;
 		}
 
-		let valueForDb: string | number | boolean | Record<string, unknown> | Array<unknown>;
+		let valueForDb:
+			| string
+			| number
+			| boolean
+			| Record<string, unknown>
+			| Array<unknown>;
 		let page: string | undefined;
 		let section: string | undefined;
 		let type: string | undefined;
 		let sortOrder: number | undefined;
 		let mediaId: number | null | undefined = undefined;
-		let metadata: string | null | undefined; 
+		let metadata: string | null | undefined;
 		let themeForDb: "light" | "dark" | undefined;
 
-		if (typeof rawValueOrObj === 'object' && rawValueOrObj !== null && 'value' in rawValueOrObj) {
-			const objWithValue = rawValueOrObj as (Partial<Omit<NewContent, "key">> & { value: string | number | boolean | Record<string, unknown> | Array<unknown> });
+		if (
+			typeof rawValueOrObj === "object" &&
+			rawValueOrObj !== null &&
+			"value" in rawValueOrObj
+		) {
+			const objWithValue = rawValueOrObj as Partial<Omit<NewContent, "key">> & {
+				value:
+					| string
+					| number
+					| boolean
+					| Record<string, unknown>
+					| Array<unknown>;
+			};
 			valueForDb = objWithValue.value; // This is the JS value Drizzle will handle
-			page = typeof objWithValue.page === "string" ? objWithValue.page : undefined;
-			section = typeof objWithValue.section === "string" ? objWithValue.section : undefined;
+			page =
+				typeof objWithValue.page === "string" ? objWithValue.page : undefined;
+			section =
+				typeof objWithValue.section === "string"
+					? objWithValue.section
+					: undefined;
 			type = objWithValue.type ?? undefined;
 			sortOrder = objWithValue.sortOrder ?? undefined;
 			mediaId = objWithValue.mediaId ?? null;
 			// For metadata, if it's part of this complex object, it should ideally be a JS object/array too,
 			// or already a JSON string if schema.content.metadata is also {mode: "json"}
-			metadata = typeof objWithValue.metadata === 'string' ? objWithValue.metadata : (objWithValue.metadata as any);
+			metadata =
+				typeof objWithValue.metadata === "string"
+					? objWithValue.metadata
+					: (objWithValue.metadata as any);
 			themeForDb = objWithValue.theme as "light" | "dark" | undefined;
 		} else {
-			valueForDb = rawValueOrObj as string | number | boolean | Record<string, unknown> | Array<unknown>;
+			valueForDb = rawValueOrObj as
+				| string
+				| number
+				| boolean
+				| Record<string, unknown>
+				| Array<unknown>;
 		}
 
 		// With mode: "json", Drizzle handles stringification of objects/arrays for `valueForDb`.
@@ -167,10 +202,11 @@ export async function updateContent(
 		if (sortOrder !== undefined) setDataPayload.sortOrder = sortOrder;
 		if (mediaId !== undefined) setDataPayload.mediaId = mediaId;
 		if (metadata !== undefined) setDataPayload.metadata = metadata as any;
-		if (themeForDb && (themeForDb === "light" || themeForDb === "dark")) setDataPayload.theme = themeForDb;
+		if (themeForDb && (themeForDb === "light" || themeForDb === "dark"))
+			setDataPayload.theme = themeForDb;
 
 		// Re-enable validateContentUpdate if it's compatible with JS values for 'value' and 'metadata'
-		// validateContentUpdate(setDataPayload); 
+		// validateContentUpdate(setDataPayload);
 
 		const upsertStatement = db
 			.insert(schema.content)
@@ -182,12 +218,16 @@ export async function updateContent(
 		statements.push(upsertStatement);
 	}
 
-	console.info(`[DB updateContent] Preparing to execute ${statements.length} statements.`);
+	console.info(
+		`[DB updateContent] Preparing to execute ${statements.length} statements.`,
+	);
 	if (statements.length === 0) {
 		return Promise.resolve([]); // Return empty array if no statements
 	}
 	// Ensure statements is treated as a non-empty array for db.batch
-	return db.batch(statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]]);
+	return db.batch(
+		statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]],
+	);
 }
 
 export async function getAllProjects(

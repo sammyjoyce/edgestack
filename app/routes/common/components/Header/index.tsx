@@ -25,12 +25,16 @@ interface HeaderProps {
 	hasProjects?: boolean;
 }
 
-export default function Header({ hasProjects = true }: HeaderProps): JSX.Element {
+export default function Header({
+	hasProjects = true,
+}: HeaderProps): JSX.Element {
 	const MENU_ITEMS: readonly MenuItem[] = [
 		{ name: "Home", path: "/", isRouteLink: true },
 		{ name: "Our Services", path: "/#services", isRouteLink: true },
 		// Only show Projects if hasProjects is true
-		...(hasProjects ? [{ name: "Projects", path: "/projects", isRouteLink: true }] : []),
+		...(hasProjects
+			? [{ name: "Projects", path: "/projects", isRouteLink: true }]
+			: []),
 		{ name: "About Us", path: "/#about", isRouteLink: true },
 		{ name: "Contact Us", path: "/#contact", isRouteLink: true },
 	] as const;

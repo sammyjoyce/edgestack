@@ -14,7 +14,7 @@ import { FormCard } from "../components/ui/FormCard";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Alert } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
-import { Fieldset, Label } from "../components/ui/fieldset";
+import { Label } from "../components/ui/fieldset";
 import { Input } from "../components/ui/input";
 // Removed unused Route type import.
 const DEBUG = process.env.NODE_ENV !== "production";
@@ -102,37 +102,35 @@ export default function Component({ actionData }: Route.ComponentProps) {
 				/>
 				<Form method="post" className="mt-8 space-y-6">
 					<input type="hidden" name="remember" defaultValue="true" />
-					<div className="space-y-4 rounded-md shadow-sm">
-						<Fieldset className="space-y-4">
-							<Label htmlFor="username">Username</Label>
-							<Input
-								id="username"
-								name="username"
-								type="text"
-								autoComplete="username"
-								required
-								placeholder="Admin username"
-								value={username}
-								onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-									setUsername(e.target.value)
-								}
-								className="w-full"
-							/>
-							<Label htmlFor="password">Password</Label>
-							<Input
-								id="password"
-								name="password"
-								type="password"
-								autoComplete="current-password"
-								required
-								placeholder="Admin password"
-								value={password}
-								onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-									setPassword(e.target.value)
-								}
-								className="w-full"
-							/>
-						</Fieldset>
+					<div className="space-y-4">
+						<Label htmlFor="username">Username</Label>
+						<Input
+							id="username"
+							name="username"
+							type="text"
+							autoComplete="username"
+							required
+							placeholder="Admin username"
+							value={username}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								setUsername(e.target.value)
+							}
+							className="w-full"
+						/>
+						<Label htmlFor="password">Password</Label>
+						<Input
+							id="password"
+							name="password"
+							type="password"
+							autoComplete="current-password"
+							required
+							placeholder="Admin password"
+							value={password}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+								setPassword(e.target.value)
+							}
+							className="w-full"
+						/>
 					</div>
 					{actionData &&
 						typeof actionData === "object" &&
@@ -144,7 +142,7 @@ export default function Component({ actionData }: Route.ComponentProps) {
 							</Alert>
 						)}
 					<div>
-						<Button type="submit" variant="primary" className="w-full">
+						<Button type="submit" color="primary" className="w-full">
 							Sign in
 						</Button>
 					</div>

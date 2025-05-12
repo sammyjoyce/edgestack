@@ -49,7 +49,7 @@ export const Tabs = ({
 		<>
 			<div
 				className={cn(
-					"flex flex-row items-center justify-start relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-full border-b border-neutral-300 pb-px",
+					"flex flex-row items-center justify-start relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-full border-b border-admin-border",
 					containerClassName,
 				)}
 			>
@@ -60,9 +60,10 @@ export const Tabs = ({
 						className={cn(
 							"relative px-3 py-2.5 text-sm font-medium focus:outline-none transition-colors duration-150 ease-in-out border-b-2",
 							activeValue === tab.value
-								? activeTabClassName || "text-primary border-primary"
+								? activeTabClassName ||
+										"text-admin-primary border-admin-primary -mb-px"
 								: tabClassName ||
-										"text-neutral-600 hover:text-foreground border-transparent hover:border-neutral-400",
+										"text-admin-text-muted hover:text-admin-text border-transparent hover:border-admin-border",
 						)}
 						type="button"
 					>

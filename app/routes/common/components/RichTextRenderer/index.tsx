@@ -117,11 +117,7 @@ export default function RichTextRenderer({ json, className }: Props) {
 	}
 	if (error || !parsedState || !parsedState.root) {
 		return (
-			<div
-				className={clsx(
-					className,
-				)}
-			>
+			<div className={clsx(className)}>
 				{" "}
 				{}
 				{error ? <p className="text-red-500">{error}</p> : null}
@@ -129,9 +125,7 @@ export default function RichTextRenderer({ json, className }: Props) {
 		);
 	}
 	return (
-		<div
-			className={clsx(className)}
-		>
+		<div className={clsx(className)}>
 			{" "}
 			{}
 			{renderNode(parsedState.root, 0)}

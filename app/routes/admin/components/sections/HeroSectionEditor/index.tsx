@@ -10,6 +10,7 @@ import {
 import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { Text } from "~/routes/admin/components/ui/text";
 import { Alert } from "~/routes/admin/components/ui/alert";
+import clsx from "clsx";
 
 const DEBUG = process.env.NODE_ENV !== "production";
 
@@ -129,12 +130,14 @@ export function HeroSectionEditor({
 				<div className="flex flex-col items-start justify-start pt-1">
 					<label
 						className="block text-sm font-medium text-foreground mb-1"
-						htmlFor="hero-image-upload"
+						htmlFor="hero-image-upload" // This ID might need to be on the input inside ImageSelector for proper association
 					>
 						Hero Image
 					</label>
 					<Text className="text-xs text-neutral-500 mb-2">
-						Upload or drag and drop an image for the hero section.
+						{heroImageUrl
+							? "Replace the current hero image or upload a new one."
+							: "Upload or drag and drop an image for the hero section."}
 					</Text>
 					<output
 						id="hero-image-upload-status"
@@ -143,15 +146,25 @@ export function HeroSectionEditor({
 					>
 						{uploadStatus}
 					</output>
-					<ImageSelector
-						onDrop={handleDrop}
-						disabled={imageUploading}
-						uploading={imageUploading}
-						imageUrl={heroImageUrl}
-						label="Hero Image"
-						className="mt-1 w-full"
-						fieldKey="hero_image_url"
-					/>
+					<div className="flex items-start gap-4 w-full">
+						{heroImageUrl && (
+							<img
+								src={heroImageUrl}
+								alt="Current Hero Image"
+								className="rounded border border-gray-200 max-w-[150px] h-auto object-cover bg-gray-100"
+							/>
+						)}
+						<ImageSelector
+							onDrop={handleDrop}
+							disabled={imageUploading}
+							uploading={imageUploading}
+							// imageUrl is handled by the img tag above now
+							label="Hero Image"
+							className={clsx("mt-1", heroImageUrl ? "flex-1" : "w-full")} // Adjust width if image exists
+							fieldKey="hero_image_url"
+							hasExistingImage={!!heroImageUrl}
+						/>
+					</div>
 				</div>
 			</div>
 		</SectionCard>

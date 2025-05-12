@@ -103,7 +103,7 @@ export default function LexicalToolbar(): JSX.Element {
 		[editor],
 	);
 	return (
-		<div className="flex gap-1 bg-gray-50 border border-b-0 border-gray-300 rounded-t-md px-2 py-1">
+		<div className="flex gap-1 bg-gray-50 border-b-0 border-admin-border dark:border-admin-border-dark px-2 py-1">
 			<button
 				type="button"
 				disabled={!canUndo}

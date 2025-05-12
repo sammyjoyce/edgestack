@@ -159,8 +159,8 @@ export default function AdminProjectsIndexPage({
 									</td>
 									<td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
 										{project.description ? (
-											<ConditionalRichTextRenderer 
-												text={project.description} 
+											<ConditionalRichTextRenderer
+												text={project.description}
 												fallbackClassName="text-sm text-gray-500 dark:text-gray-400"
 												richTextClassName={clsx(
 													"text-sm", // Match td text size
@@ -170,7 +170,7 @@ export default function AdminProjectsIndexPage({
 													"prose-strong:text-gray-500 dark:prose-strong:text-gray-400",
 													"prose-em:text-gray-500 dark:prose-em:text-gray-400",
 													"prose-a:text-gray-500 dark:prose-a:text-gray-400 hover:prose-a:underline",
-													"dark:prose-invert" // Apply dark mode inversion for other prose elements
+													"dark:prose-invert", // Apply dark mode inversion for other prose elements
 												)}
 											/>
 										) : (

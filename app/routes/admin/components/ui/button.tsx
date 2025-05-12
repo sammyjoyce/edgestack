@@ -2,7 +2,7 @@ import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import type React from "react";
 import { forwardRef } from "react";
-import { Link as RouterLink } from "react-router"; // Changed import name
+import { Link as RouterLink } from "react-router";
 
 // Define the color prop based on openai-fm's approach + admin additions
 type ButtonColor =
@@ -70,17 +70,17 @@ export const Button = forwardRef<HTMLElement, ButtonProps>((props, ref) => {
 
 	const solidColorMap: Record<ButtonColor, string> = {
 		primary:
-			"text-admin-white bg-admin-primary shadow-admin-button-primary active:shadow-admin-button-primary-active ring-admin-primary",
+			"text-admin-white bg-admin-primary shadow-admin-button-primary active:shadow-admin-button-primary-active",
 		secondary:
-			"text-admin-white bg-admin-secondary shadow-admin-button-secondary active:shadow-admin-button-secondary-active ring-admin-secondary",
+			"text-admin-white bg-admin-secondary shadow-admin-button-secondary active:shadow-admin-button-secondary-active",
 		tertiary:
-			"text-admin-white bg-admin-tertiary shadow-admin-button-tertiary active:shadow-admin-button-tertiary-active ring-admin-tertiary",
+			"text-admin-white bg-admin-tertiary shadow-admin-button-tertiary active:shadow-admin-button-tertiary-active",
 		neutral:
-			"text-admin-white bg-admin-neutral shadow-admin-button-neutral active:shadow-admin-button-neutral-active ring-admin-neutral",
+			"text-admin-white bg-admin-neutral shadow-admin-button-neutral active:shadow-admin-button-neutral-active",
 		danger:
-			"text-admin-white bg-admin-error shadow-admin-button-error active:shadow-admin-button-error-active ring-admin-error",
+			"text-admin-white bg-admin-error shadow-admin-button-error active:shadow-admin-button-error-active",
 		default:
-			"text-admin-foreground bg-admin-default-button-bg shadow-admin-button-default active:shadow-admin-button-default-active ring-admin-border",
+			"text-admin-foreground bg-admin-default-button-bg shadow-admin-button-default active:shadow-admin-button-default-active",
 	};
 
 	const ghostClasses =
@@ -158,8 +158,14 @@ export function TouchTarget({ children }: { children: React.ReactNode }) {
 	);
 }
 
-export const ButtonLED = () => {
+interface ButtonLEDProps {
+	isActive?: boolean;
+}
+
+export const ButtonLED = ({ isActive }: ButtonLEDProps) => {
 	return (
-		<span className="block w-[7px] h-[7px] rounded-full bg-black/10 shadow-admin-led transition-colors group-data-[selected=true]:bg-admin-primary" />
+		<span
+			className={`block w-[7px] h-[7px] rounded-full shadow-admin-led transition-colors ${isActive ? "bg-admin-primary" : "bg-black/10"}`}
+		/>
 	);
 };

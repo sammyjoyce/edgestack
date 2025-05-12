@@ -103,18 +103,18 @@ export default function ContactUs({
 								/>
 							</dt>
 							<dd>
-								<ConditionalRichTextRenderer 
-									text={address} 
+								<ConditionalRichTextRenderer
+									text={address}
 									fallbackClassName="text-[15px] text-gray-300 dark:text-gray-300 whitespace-pre-line"
 									richTextClassName={clsx(
-										"text-[15px]", 
-										"prose max-w-none", 
+										"text-[15px]",
+										"prose max-w-none",
 										"prose-p:text-gray-300 dark:prose-p:text-gray-300 prose-p:whitespace-pre-line",
 										"prose-headings:text-gray-300 dark:prose-headings:text-gray-300",
 										"prose-strong:text-gray-300 dark:prose-strong:text-gray-300",
 										"prose-em:text-gray-300 dark:prose-em:text-gray-300",
 										"prose-a:text-gray-300 dark:prose-a:text-gray-300 hover:prose-a:underline",
-										theme === "dark" && "dark:prose-invert"
+										theme === "dark" && "dark:prose-invert",
 									)}
 									fallbackTag="div"
 								/>
@@ -168,7 +168,7 @@ export default function ContactUs({
 					<div
 						className={clsx(
 							"mt-8 space-y-1 text-[11px] leading-normal",
-							"text-gray-400 dark:text-gray-400",
+							"text-gray-600 dark:text-gray-200",
 						)}
 					>
 						<p className="font-medium whitespace-pre-line">ABN: {abn}</p>

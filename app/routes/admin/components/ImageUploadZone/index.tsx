@@ -3,6 +3,7 @@ import { type JSX, useCallback } from "react";
 import { clsx } from "clsx";
 import { Text } from "../ui/text";
 import { useDropzone } from "react-dropzone";
+import { ButtonLED } from "../ui/button"; // Assuming ButtonLED is imported from here
 
 interface ImageUploadZoneProps {
 	onDrop: (files: File[]) => void;
@@ -13,6 +14,8 @@ interface ImageUploadZoneProps {
 	className?: string;
 	fileInputRef?: React.RefObject<HTMLInputElement | null>;
 	inputName?: string;
+	hasExistingImage?: boolean;
+	browseDrawerPortal?: React.ReactNode;
 }
 
 export default function ImageUploadZone({
@@ -24,6 +27,8 @@ export default function ImageUploadZone({
 	className = "",
 	fileInputRef,
 	inputName,
+	hasExistingImage,
+	browseDrawerPortal,
 }: ImageUploadZoneProps): JSX.Element {
 	const handleDrop = useCallback(
 		(accepted: File[]) => {
@@ -43,35 +48,67 @@ export default function ImageUploadZone({
 		});
 
 	return (
-		<section className={clsx(className, "w-full flex flex-col items-center")}>
-			{/* Removed margin */}
+		<section className={clsx(className, "w-full")}>
 			<div
-				{...getRootProps()}
 				className={clsx(
-					"flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition w-full max-w-xs min-h-32 bg-gray-50 hover:bg-gray-100 cursor-pointer",
-					isDragReject && "border-red-400 bg-red-50",
-					isDragActive && "border-primary bg-primary/10",
-					!isDragActive && !isDragReject && "border-gray-300",
-					disabled && "opacity-50 pointer-events-none",
+					hasExistingImage
+						? "flex items-start w-full"
+						: "flex flex-col items-center w-full",
 				)}
-				aria-label="Image upload drop zone"
 			>
-				<input ref={fileInputRef} {...getInputProps()} name={inputName} />
-				<Text className="text-sm text-center text-gray-600">
-					{uploading
-						? "Uploading..."
-						: isDragActive
-							? "Drop image to upload"
-							: "Drag image here, or click to select"}
-				</Text>
+				{hasExistingImage && imageUrl && (
+					<img
+						src={imageUrl}
+						alt={label}
+						className="w-24 h-24 object-cover rounded-md mr-4"
+					/>
+				)}
+				{/* New wrapper for combined look */}
+				<div
+					className={clsx(
+						"ring-1 rounded-md overflow-hidden",
+						"bg-admin-white dark:bg-admin-background",
+						"ring-admin-border dark:ring-admin-border-dark",
+						"focus-within:ring-2 focus-within:ring-admin-primary",
+						"w-full",
+					)}
+				>
+					<div
+						{...getRootProps()}
+						className={clsx(
+							"flex flex-col items-center justify-center border-2 border-dashed border-b-0 p-6 transition",
+							"min-h-32",
+							"bg-admin-white hover:bg-gray-50",
+							"cursor-pointer",
+							"rounded-t-md",
+							isDragReject && "border-red-400 bg-red-50",
+							isDragActive && "border-primary bg-primary/10",
+							!isDragActive && !isDragReject && "border-gray-300",
+							disabled && "opacity-60 pointer-events-none",
+						)}
+						aria-label="Image upload drop zone"
+					>
+						<input ref={fileInputRef} {...getInputProps()} name={inputName} />
+						<Text className="text-sm text-center text-gray-600">
+							{uploading
+								? "Uploading..."
+								: isDragActive
+									? hasExistingImage
+										? "Drop to replace image"
+										: "Drop image to upload"
+									: hasExistingImage
+										? "Drag new image here, or click to replace"
+										: "Drag image here, or click to select"}
+						</Text>
+					</div>
+
+					{/* Image status LED in place of browse button */}
+					<div className="w-full flex items-center justify-center border-t border-admin-border bg-gray-50 rounded-t-none p-2">
+						<ButtonLED isActive={!!imageUrl} />
+					</div>
+				</div>
 			</div>
-			{imageUrl && (
-				<img
-					src={imageUrl}
-					alt={`Preview of ${label}`}
-					className="rounded border border-gray-200 mt-3 max-w-full w-48 h-auto object-cover bg-gray-100"
-				/>
-			)}
+			{browseDrawerPortal}
 		</section>
 	);
 }
