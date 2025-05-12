@@ -1,5 +1,6 @@
 import type React from "react";
 import type { JSX } from "react";
+import clsx from "clsx";
 import RichTextRenderer from "~/routes/common/components/RichTextRenderer";
 
 interface ConditionalRichTextRendererProps {
@@ -29,6 +30,10 @@ export function ConditionalRichTextRenderer({
 			/>
 		);
 	} catch {
-		return <FallbackTag className={fallbackClassName}>{text}</FallbackTag>;
+		return (
+			<FallbackTag className={clsx("prose dark:prose-invert", fallbackClassName)}>
+				{text}
+			</FallbackTag>
+		);
 	}
 }

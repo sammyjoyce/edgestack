@@ -117,13 +117,13 @@ export default function RichTextRenderer({ json, className }: Props) {
   }  
   if (error || !parsedState || !parsedState.root) {  
     return (  
-      <div className={clsx(className)}>  
+      <div className={clsx("prose dark:prose-invert", className)}>
         {error ? <p className="text-red-500">{error}</p> : null}  
       </div>  
     );  
   }  
   return (  
-    <div className={clsx(className)}>  
+    <div className={clsx("prose dark:prose-invert", className)}>
       {renderNode(parsedState.root, 0)}  
     </div>  
   );  
