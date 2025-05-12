@@ -10,11 +10,7 @@ import { validateContentInsert } from "../../../../database/valibot-validation.j
 
 const DEBUG = process.env.NODE_ENV !== "production";
 
-const DEFAULT_CONTENT = {
-	hero_title: "Building Dreams, Creating Spaces",
-	hero_subtitle: "Your trusted partner in construction and renovation.",
-	home_sections_order: "hero,services,projects,about,contact",
-} as const;
+
 
 export const links: Route.LinksFunction = () => [
 	{
@@ -40,6 +36,8 @@ export async function loader({ request, context, params }: Route.LoaderArgs) {
 }
 
 export async function action({ request, context, params }: Route.ActionArgs) {
+	console.info(`[ADMIN ACTION START] Method: ${request.method}, URL: ${request.url}`);
+
 	if (DEBUG)
 		console.log(
 			"Action triggered in admin/views/index.tsx - THIS IS THE CORRECT ROUTE",
@@ -47,13 +45,18 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 	assert(request instanceof Request, "action: request must be a Request");
 	assert(context?.db, "action: missing DB in context");
 	try {
+		console.info('[ADMIN ACTION] Verifying token...');
 		const token = getSessionCookie(request);
 		const secret = context.cloudflare?.env?.JWT_SECRET;
 		assert(secret, "action: JWT_SECRET is required in context");
 		if (!token || !(await verify(token, secret))) {
+			console.warn('[ADMIN ACTION] Unauthorized access attempt.');
 			return data({ success: false, error: "Unauthorized" }, { status: 401 });
 		}
+		console.info('[ADMIN ACTION] Token verified.');
+
 		if (request.method !== "POST") {
+			console.warn(`[ADMIN ACTION] Invalid method: ${request.method}`);
 			return data(
 				{ success: false, error: "Method not allowed" },
 				{ status: 405 },
@@ -61,6 +64,8 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 		}
 		const formData = await request.formData();
 		const intent = formData.get("intent")?.toString();
+		console.info(`[ADMIN ACTION] Intent: ${intent}`);
+
 		if (intent === "updateTextContent") {
 			const updates: Record<string, string> = {};
 			for (const [key, value] of formData.entries()) {
@@ -68,21 +73,24 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 					updates[key] = value;
 				}
 			}
+			console.info('[ADMIN ACTION] Updates for updateTextContent:', updates);
 			assert(
 				Object.keys(updates).length > 0,
 				"action: No updates provided for updateTextContent",
 			);
 			const validationErrors: Record<string, string> = {};
+			console.info('[ADMIN ACTION] Validating updateTextContent data...');
 			for (const [key, valueToValidate] of Object.entries(updates)) {
 				try {
 					validateContentInsert({
 						key,
 						value: valueToValidate,
 						page: "home",
-						section: "unknown",
+						section: "unknown", 
 						type: "text",
 					});
 				} catch (err) {
+					console.warn(`[ADMIN ACTION] Validation error for key '${key}':`, err);
 					if (err instanceof ValiError) {
 						if (!validationErrors[key] && err.issues.length > 0) {
 							validationErrors[key] = err.issues[0].message;
@@ -99,11 +107,14 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 				}
 			}
 			if (Object.keys(validationErrors).length > 0) {
+				console.warn('[ADMIN ACTION] Validation failed:', validationErrors);
 				return { success: false, errors: validationErrors, message: "Validation failed for one or more fields." };
 			}
+			console.info('[ADMIN ACTION] Validation successful. Preparing to update content in DB for updateTextContent.');
 			if (DEBUG)
 				console.log(`[ADMIN DASHBOARD ACTION] ${intent} updates:`, updates);
 			await updateContent(context.db, updates);
+			console.info('[ADMIN ACTION] updateTextContent: DB update successful.');
 			return { success: true, message: "Content updated successfully." };
 		} else if (intent === "reorderSections") {
 			const updates: Record<string, string> = {};
@@ -112,23 +123,28 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 					updates[key] = value;
 				}
 			}
+			console.info('[ADMIN ACTION] Updates for reorderSections:', updates);
 			assert(
 				Object.keys(updates).length > 0,
 				"action: No updates provided for reorderSections",
 			);
+			console.info('[ADMIN ACTION] Preparing to update content in DB for reorderSections.');
 			if (DEBUG)
 				console.log(
 					"[ADMIN DASHBOARD ACTION] reorderSections updates:",
 					updates,
 				);
 			await updateContent(context.db, updates);
+			console.info('[ADMIN ACTION] reorderSections: DB update successful.');
 			return { success: true, message: "Sections reordered successfully." };
 		}
+		console.warn(`[ADMIN ACTION] Unknown intent: ${intent}`);
 		if (DEBUG)
 			console.warn(`[ADMIN DASHBOARD ACTION] Unknown intent: ${intent}`);
 		return { success: false, error: `Unknown intent: ${intent}` };
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
+		console.error("[ADMIN ACTION] Error processing action:", err);
 		if (DEBUG)
 			console.error("[ADMIN DASHBOARD ACTION] Error processing updates:", err);
 		const errors: Record<string, string> = {};

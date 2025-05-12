@@ -1,5 +1,6 @@
 import type React from "react";
 import { type JSX, useCallback } from "react";
+import { clsx } from "clsx";
 import { Text } from "../ui/text";
 import { useDropzone } from "react-dropzone";
 
@@ -42,17 +43,17 @@ export default function ImageUploadZone({
 		});
 
 	return (
-		<section className={`${className} w-full flex flex-col items-center`}>
+		<section className={clsx(className, "w-full flex flex-col items-center")}>
 			{/* Removed margin */}
 			<div
 				{...getRootProps()}
-				className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition w-full max-w-xs min-h-32 bg-gray-50 hover:bg-gray-100 cursor-pointer ${
-					isDragReject
-						? "border-red-400 bg-red-50"
-						: isDragActive
-							? "border-primary bg-primary/10"
-							: "border-gray-300"
-				} ${disabled ? "opacity-50 pointer-events-none" : ""}`}
+				className={clsx(
+					"flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition w-full max-w-xs min-h-32 bg-gray-50 hover:bg-gray-100 cursor-pointer",
+					isDragReject && "border-red-400 bg-red-50",
+					isDragActive && "border-primary bg-primary/10",
+					!isDragActive && !isDragReject && "border-gray-300",
+					disabled && "opacity-50 pointer-events-none",
+				)}
 				aria-label="Image upload drop zone"
 			>
 				<input ref={fileInputRef} {...getInputProps()} name={inputName} />

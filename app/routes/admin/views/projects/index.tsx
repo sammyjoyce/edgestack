@@ -16,6 +16,8 @@ import { Button } from "../../components/ui/button";
 import { Text } from "../../components/ui/text";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer/index";
 import type { Route } from "./+types/index";
+import { Container } from "../../../common/components/ui/Container";
+import clsx from "clsx";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
 	const sessionValue = getSessionCookie(request);
@@ -94,11 +96,12 @@ export default function AdminProjectsIndexPage({
 		"ProjectsIndexRoute: projects must have a length property. Data returned from loader is invalid.",
 	);
 	return (
-		<>
+		<Container className="mt-8">
 			<PageHeader
 				title="Manage Projects"
+				className="mb-4"
 				actions={
-					<Button as={Link} to="/admin/projects/new" variant="primary">
+					<Button as={Link} to="/admin/projects/new" color="primary">
 						Add New Project
 					</Button>
 				}
@@ -156,7 +159,20 @@ export default function AdminProjectsIndexPage({
 									</td>
 									<td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">
 										{project.description ? (
-											<ConditionalRichTextRenderer text={project.description} />
+											<ConditionalRichTextRenderer 
+												text={project.description} 
+												fallbackClassName="text-sm text-gray-500 dark:text-gray-400"
+												richTextClassName={clsx(
+													"text-sm", // Match td text size
+													"prose max-w-none", // Apply prose, remove max-width constraint from prose itself
+													"prose-p:text-gray-500 dark:prose-p:text-gray-400",
+													"prose-headings:text-gray-500 dark:prose-headings:text-gray-400",
+													"prose-strong:text-gray-500 dark:prose-strong:text-gray-400",
+													"prose-em:text-gray-500 dark:prose-em:text-gray-400",
+													"prose-a:text-gray-500 dark:prose-a:text-gray-400 hover:prose-a:underline",
+													"dark:prose-invert" // Apply dark mode inversion for other prose elements
+												)}
+											/>
 										) : (
 											"-"
 										)}
@@ -208,6 +224,6 @@ export default function AdminProjectsIndexPage({
 					</table>
 				</div>
 			)}
-		</>
+		</Container>
 	);
 }

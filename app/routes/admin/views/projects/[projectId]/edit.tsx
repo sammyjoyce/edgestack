@@ -9,6 +9,7 @@ import { ProjectFormFields } from "../../../components/ProjectFormFields";
 import { SectionCard, SectionHeading } from "../../../components/ui/section";
 import { Alert } from "../../../components/ui/alert";
 import { Heading } from "~/routes/admin/components/ui/heading";
+import { Container } from "../../../../common/components/ui/Container";
 
 export async function loader({ params, context, request }: Route.LoaderArgs) {
 	const projectId = Number(params.projectId);
@@ -128,29 +129,31 @@ export default function EditProjectPage({
 	const handleCancel = () => window.location.assign("/admin/projects");
 
 	return (
-		<FadeIn>
-			<Heading level={4}>Edit Project: {project?.title}</Heading>
+		<Container className="mt-8">
+			<FadeIn>
+				<Heading level={4} className="mb-4">Edit Project: {project?.title}</Heading>
 
-			{actionData && !actionData.success && actionData.error && (
-				<Alert variant="error" className="mb-4">
-					{actionData.error}
-				</Alert>
-			)}
-			<SectionCard className="mt-4">
-				<SectionHeading>Project Details</SectionHeading>
-				<Form
-					method="post"
-					encType="multipart/form-data"
-					className="flex flex-col gap-6"
-				>
-					<ProjectFormFields
-						initial={project as any} // Cast as any to match existing, consider refining type
-						errors={errors}
-						isEdit
-						onCancel={handleCancel}
-					/>
-				</Form>
-			</SectionCard>
-		</FadeIn>
+				{actionData && !actionData.success && actionData.error && (
+					<Alert variant="error" className="mb-4">
+						{actionData.error}
+					</Alert>
+				)}
+				<SectionCard className="mt-4">
+					<SectionHeading>Project Details</SectionHeading>
+					<Form
+						method="post"
+						encType="multipart/form-data"
+						className="flex flex-col gap-6"
+					>
+						<ProjectFormFields
+							initial={project as any} // Cast as any to match existing, consider refining type
+							errors={errors}
+							isEdit
+							onCancel={handleCancel}
+						/>
+					</Form>
+				</SectionCard>
+			</FadeIn>
+		</Container>
 	);
 }

@@ -12,6 +12,7 @@ import { Strong, Text } from "../ui/text";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { clsx } from "clsx";
 
 import type {
 	Section as SorterSection,
@@ -224,7 +225,7 @@ export default function AdminDashboard({
 								<>
 									{projectsFetcher.data.message && (
 										<Text
-											className={`mt-2 text-sm ${projectsFetcher.data.success ? "text-green-600" : "text-red-600"}`}
+											className={clsx("mt-2", "text-sm", projectsFetcher.data.success ? "text-green-600" : "text-red-600")}
 										>
 											{projectsFetcher.data.message}
 										</Text>
@@ -263,7 +264,7 @@ export default function AdminDashboard({
 								<>
 									{projectsFetcher.data.message && (
 										<Text
-											className={`mt-2 text-sm ${projectsFetcher.data.success ? "text-green-600" : "text-red-600"}`}
+											className={clsx("mt-2", "text-sm", projectsFetcher.data.success ? "text-green-600" : "text-red-600")}
 										>
 											{projectsFetcher.data.message}
 										</Text>

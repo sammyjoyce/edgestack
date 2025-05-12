@@ -30,6 +30,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
 };
 
 export async function loader({ request, context }: Route.LoaderArgs) {
+	console.info(`[HOME LOADER START] Invoked at: ${new Date().toISOString()}, URL: ${request.url}`);
 	assert(request instanceof Request, "loader: request must be a Request");
 	assert(context?.db, "loader: missing DB in context");
 	const url = new URL(request.url);
@@ -39,6 +40,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	let projects: Project[] = [];
 	try {
 		content = await getAllContent(context.db);
+		console.info(`[HOME LOADER] getAllContent returned at: ${new Date().toISOString()}. Received ${Object.keys(content).length} content keys. Sample (hero_title): '${content['hero_title']}'`);
 		projects = await getFeaturedProjects(context.db);
 		if (DEBUG) {
 			console.log("[HOME LOADER] Content keys loaded:", Object.keys(content));
@@ -81,6 +83,7 @@ export default function HomeRoute({
 					"Your trusted partner in construction and renovation."
 				}
 				imageUrl={typedContent?.hero_image_url ?? "/assets/rozelle.jpg"}
+				theme={(typedContent?.hero_title_theme as 'light' | 'dark') ?? 'light'}
 			/>
 		),
 		services: (
@@ -91,6 +94,7 @@ export default function HomeRoute({
 					typedContent?.services_intro_text ??
 					"We offer a wide range of construction services."
 				}
+				theme={(typedContent?.services_intro_title_theme as 'light' | 'dark') ?? 'light'}
 				servicesData={[
 					{
 						title: typedContent?.service_1_title ?? "Kitchens",
@@ -131,6 +135,7 @@ export default function HomeRoute({
 							"Take a look at some of our recent work."
 						}
 						projects={projects}
+						theme={(typedContent?.projects_intro_title_theme as 'light' | 'dark') ?? 'light'}
 					/>
 				),
 			}
@@ -140,12 +145,19 @@ export default function HomeRoute({
 				key="about"
 				title={typedContent?.about_title ?? "About Us"}
 				text={
-					typedContent?.about_text ?? "Learn more about our company and values."
+					typedContent?.about_text ?? "At Lush Constructions, we're driven by a passion for building more than just structures – we craft homes, communities, and memories that last a lifetime. With a relentless focus on quality, transparency, and trust, we're dedicated to turning your vision into a breathtaking reality. As proud members of Master Builders NSW, we uphold the highest standards in the industry, ensuring every project is delivered with precision, care, and a commitment to excellence. Whether you're dreaming of a grand renovation, a thoughtful extension, or a brand-new build, our team of experts is here to guide you every step of the way."
 				}
-				imageUrl={typedContent?.about_image_url ?? "/assets/rozelle.jpg"}
+				imageUrl={typedContent?.about_image_url ?? "/assets/team.jpg"}
+				theme={(typedContent?.about_title_theme as 'light' | 'dark') ?? 'light'}
 			/>
 		),
-		contact: <ContactUs key="contact" content={typedContent} />,
+		contact: (
+			<ContactUs
+				key="contact"
+				content={typedContent}
+				theme={(typedContent?.contact_title_theme as 'light' | 'dark') ?? 'light'}
+			/>
+		),
 	};
 	assert(
 		typeof sectionBlocks === "object",
