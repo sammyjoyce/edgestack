@@ -318,8 +318,9 @@ export default function AdminDashboard({
 	];
 	return (
 		<Container className="mt-8">
-			<PageHeader title="Home Page Editor" className="mb-4" />
-			<div className="flex flex-col space-y-4">
+			<div className="flex flex-row content-center justify-between space-y-4 ">
+				<PageHeader title="Home Page Editor" className="mb-4" />
+				<div>
 				<Button
 					type="button"
 					onClick={() => window.open("/?bustCache=true", "_blank")}
@@ -343,7 +344,7 @@ export default function AdminDashboard({
 						/>
 					</svg>
 					Open site
-				</Button>
+				</Button></div>
 			</div>
 			<Tabs tabs={tabs} containerClassName="mb-8" />
 		</Container>

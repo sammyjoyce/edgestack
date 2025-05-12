@@ -139,13 +139,6 @@ export function HeroSectionEditor({
 							? "Replace the current hero image or upload a new one."
 							: "Upload or drag and drop an image for the hero section."}
 					</Text>
-					<output
-						id="hero-image-upload-status"
-						aria-live="polite"
-						className="text-sm text-neutral-600 mb-2 h-5 min-h-5"
-					>
-						{uploadStatus}
-					</output>
 					<div className="flex items-start gap-4 w-full">
 						{heroImageUrl && (
 							<img

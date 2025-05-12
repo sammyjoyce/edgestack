@@ -4,6 +4,7 @@ import { clsx } from "clsx";
 import { Text } from "../ui/text";
 import { useDropzone } from "react-dropzone";
 import { ButtonLED } from "../ui/button"; // Assuming ButtonLED is imported from here
+import { useSearchParams } from "react-router";
 
 interface ImageUploadZoneProps {
 	onDrop: (files: File[]) => void;
@@ -15,6 +16,7 @@ interface ImageUploadZoneProps {
 	fileInputRef?: React.RefObject<HTMLInputElement | null>;
 	inputName?: string;
 	hasExistingImage?: boolean;
+	browseButtonTrigger?: React.ReactNode;
 	browseDrawerPortal?: React.ReactNode;
 }
 
@@ -28,8 +30,12 @@ export default function ImageUploadZone({
 	fileInputRef,
 	inputName,
 	hasExistingImage,
+	browseButtonTrigger,
 	browseDrawerPortal,
 }: ImageUploadZoneProps): JSX.Element {
+	const [searchParams] = useSearchParams();
+	const contentUpdated = searchParams.get("contentUpdated") === "true";
+
 	const handleDrop = useCallback(
 		(accepted: File[]) => {
 			if (!disabled && accepted.length > 0) {
@@ -102,10 +108,24 @@ export default function ImageUploadZone({
 						</Text>
 					</div>
 
-					{/* Image status LED in place of browse button */}
-					<div className="w-full flex items-center justify-center border-t border-admin-border bg-gray-50 rounded-t-none p-2">
-						<ButtonLED isActive={!!imageUrl} />
-					</div>
+					{/* Browse button or LED depending on props and contentUpdated */}
+					{browseButtonTrigger ? (
+						<div
+							className={clsx(
+								"w-full flex items-center justify-center",
+								"border-t border-admin-border",
+								"bg-gray-50",
+								"rounded-t-none",
+								"p-0",
+							)}
+						>
+							{browseButtonTrigger}
+						</div>
+					) : contentUpdated ? (
+						<div className="w-full flex items-center justify-center border-t border-admin-border bg-gray-50 rounded-t-none p-2">
+							<ButtonLED isActive={!!imageUrl} />
+						</div>
+					) : null}
 				</div>
 			</div>
 			{browseDrawerPortal}
