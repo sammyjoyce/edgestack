@@ -19,7 +19,7 @@ import { FormCard } from "../components/ui/FormCard";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Heading } from "../components/ui/heading";
 import { Text } from "../components/ui/text";
-import type { Route } from "./+types";
+import type { Route } from "./+types/upload";
 
 export async function loader({ context, request }: Route.LoaderArgs) {
 	const sessionValue = getSessionCookie(request);
@@ -54,29 +54,25 @@ async function handleDeleteImage(
 	const publicUrlBase = context.cloudflare?.env?.PUBLIC_R2_URL || "/assets";
 	const fullUrl = `${publicUrlBase.replace(/\/?$/, "/")}${filename}`;
 
-	await context.db.transaction(async (tx) => {
-		const media = await tx
-			.select({ id: FullSchema.schema.media.id })
-			.from(schema.media)
-			.where(eq(schema.media.url, fullUrl))
-			.get();
+	// Get media id for fullUrl using Drizzle
+	const media = await context.db
+		.select({ id: FullSchema.schema.media.id })
+		.from(schema.media)
+		.where(eq(schema.media.url, fullUrl))
+		.get();
+	const mediaId = media?.id ?? null;
 
-		await tx.delete(schema.media).where(eq(schema.media.url, fullUrl)).run();
-
-		if (media?.id) {
-			await tx
-				.update(schema.content)
-				.set({ mediaId: null, value: "" })
-				.where(eq(schema.content.mediaId, media.id))
-				.run();
-		}
-
-		await tx
+	await context.db.delete(schema.media).where(eq(schema.media.url, fullUrl));
+	if (mediaId) {
+		await context.db
 			.update(schema.content)
-			.set({ value: "", mediaId: null })
-			.where(eq(schema.content.value, fullUrl))
-			.run();
-	});
+			.set({ mediaId: null, value: "" })
+			.where(eq(schema.content.mediaId, mediaId));
+	}
+	await context.db
+		.update(schema.content)
+		.set({ value: "", mediaId: null })
+		.where(eq(schema.content.value, fullUrl));
 
 	return { success: true, action: "delete", filename };
 }
@@ -101,25 +97,25 @@ async function handleSelectImage(
 			type: "image",
 		});
 
-		await context.db.transaction(async (tx) => {
-			const media = await tx
-				.select({ id: FullSchema.schema.media.id })
-				.from(FullSchema.schema.media)
-				.where(eq(FullSchema.schema.media.url, imageUrl))
-				.get();
+		// Get media id for imageUrl using Drizzle
+		const media = await context.db
+			.select({ id: FullSchema.schema.media.id })
+			.from(FullSchema.schema.media)
+			.where(eq(FullSchema.schema.media.url, imageUrl))
+			.get();
+		const mediaId = media?.id ?? null;
 
-			await tx
-				.insert(schema.content)
-				.values({ key, value: imageUrl, mediaId: media?.id ?? null })
-				.onConflictDoUpdate({
-					target: schema.content.key,
-					set: {
-						value: imageUrl,
-						mediaId: media?.id ?? null,
-						updatedAt: new Date(),
-					},
-				});
-		});
+		await context.db
+			.insert(schema.content)
+			.values({ key, value: imageUrl, mediaId: mediaId, updatedAt: new Date() })
+			.onConflictDoUpdate({
+				target: schema.content.key,
+				set: {
+					value: imageUrl,
+					mediaId: mediaId,
+					updatedAt: new Date(),
+				},
+			});
 
 		return { success: true, url: imageUrl, key, action: "select" };
 	} catch (e) {
@@ -147,25 +143,25 @@ async function handleUploadImage(
 		return { success: false, error: "Image upload failed" };
 	}
 
-	await context.db.transaction(async (tx) => {
-		const mediaInsert = await tx
-			.insert(FullSchema.schema.media)
-			.values({ url: publicUrl, alt: file.name })
-			.returning({ id: FullSchema.schema.media.id })
-			.get();
+	// Insert into media and get id using Drizzle
+	const mediaInsert = await context.db
+		.insert(FullSchema.schema.media)
+		.values({ url: publicUrl, alt: file.name })
+		.returning({ id: FullSchema.schema.media.id })
+		.get();
+	const mediaId = mediaInsert?.id ?? null;
 
-		await tx
-			.insert(schema.content)
-			.values({ key, value: publicUrl, mediaId: mediaInsert?.id ?? null })
-			.onConflictDoUpdate({
-				target: schema.content.key,
-				set: {
-					value: publicUrl,
-					mediaId: mediaInsert?.id ?? null,
-					updatedAt: new Date(),
-				},
-			});
-	});
+	await context.db
+		.insert(schema.content)
+		.values({ key, value: publicUrl, mediaId: mediaId, updatedAt: new Date() })
+		.onConflictDoUpdate({
+			target: schema.content.key,
+			set: {
+				value: publicUrl,
+				mediaId: mediaId,
+				updatedAt: new Date(),
+			},
+		});
 
 	return { success: true, url: publicUrl, key, action: "upload" };
 }
