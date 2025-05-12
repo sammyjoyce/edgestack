@@ -148,7 +148,7 @@ export default function Component({ actionData }: Route.ComponentProps) {
 							</Alert>
 						)}
 					<div>
-						<Button type="submit" color="primary" className="w-full">
+						<Button type="submit" variant="solid" color="primary" className="w-full">
 							Sign in
 						</Button>
 					</div>
