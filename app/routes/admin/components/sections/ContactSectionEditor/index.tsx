@@ -1,5 +1,5 @@
 import type React from "react";
-import { useFetcher } from "react-router";
+import type { useFetcher } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import { Input } from "~/routes/admin/components/ui/input";
 import {

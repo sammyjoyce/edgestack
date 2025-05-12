@@ -82,8 +82,8 @@ export default function SectionSorter({
 				}))
 				.sort(
 					(a, b) =>
-						(dbOrderMap.get(a.id) ?? Infinity) -
-						(dbOrderMap.get(b.id) ?? Infinity),
+						(dbOrderMap.get(a.id) ?? Number.POSITIVE_INFINITY) -
+						(dbOrderMap.get(b.id) ?? Number.POSITIVE_INFINITY),
 				);
 		},
 	);
@@ -101,8 +101,8 @@ export default function SectionSorter({
 			}))
 			.sort(
 				(a, b) =>
-					(dbOrderMap.get(a.id) ?? Infinity) -
-					(dbOrderMap.get(b.id) ?? Infinity),
+					(dbOrderMap.get(a.id) ?? Number.POSITIVE_INFINITY) -
+					(dbOrderMap.get(b.id) ?? Number.POSITIVE_INFINITY),
 			);
 		setOrderedItems(currentSortedDetails);
 	}, [initialSectionsFromDb, sectionDetailsOrdered]);

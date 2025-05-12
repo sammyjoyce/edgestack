@@ -80,11 +80,7 @@ export default function AdminDashboard({
 				encType: "multipart/form-data",
 			});
 			const actionData = fetcherInstance.data;
-			if (
-				actionData?.success &&
-				"url" in actionData &&
-				typeof actionData.url === "string"
-			) {
+			if (actionData?.success && "url" in actionData) {
 				setUrl(actionData.url);
 			} else if (actionData?.success) {
 				console.log("Update successful for key (via IndexAction):", key);

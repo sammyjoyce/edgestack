@@ -40,7 +40,7 @@ export function Avatar({
 				"inline-grid shrink-0 align-middle relative group",
 				sizeClasses,
 				square ? "rounded-md" : "rounded-full",
-				"ring-1 ring-inset ring-black/10 dark:ring-white/10",
+				"ring-1 ring-inset ring-admin-border dark:ring-admin-border-dark",
 			)}
 		>
 			{initials && (
@@ -48,7 +48,7 @@ export function Avatar({
 					className={clsx(
 						"absolute inset-0 size-full fill-current select-none",
 						square ? "rounded-md" : "rounded-full",
-						"bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200",
+						"bg-admin-background dark:bg-admin-background text-admin-foreground dark:text-admin-foreground",
 					)}
 					viewBox="0 0 100 100"
 					aria-hidden={alt ? undefined : "true"}

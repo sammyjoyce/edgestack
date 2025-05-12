@@ -7,15 +7,15 @@ import { Link } from "./link";
 
 const simplifiedColors = {
 	neutral:
-		"bg-zinc-100 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200 group-data-hover:bg-zinc-200 dark:group-data-hover:bg-zinc-600",
+		"bg-admin-background text-admin-foreground dark:bg-admin-background dark:text-admin-foreground group-data-hover:bg-admin-border dark:group-data-hover:bg-admin-border-dark",
 	primary:
-		"bg-primary-100 text-primary-700 dark:bg-primary-700 dark:text-primary-200 group-data-hover:bg-primary-200 dark:group-data-hover:bg-primary-600",
+		"bg-admin-primary text-admin-white dark:bg-admin-primary dark:text-admin-white group-data-hover:bg-admin-primary/80 dark:group-data-hover:bg-admin-primary-dark",
 	success:
-		"bg-green-100 text-green-700 dark:bg-green-700 dark:text-green-200 group-data-hover:bg-green-200 dark:group-data-hover:bg-green-600",
+		"bg-admin-success text-admin-white dark:bg-admin-success dark:text-admin-white group-data-hover:bg-admin-success/80 dark:group-data-hover:bg-admin-success-dark",
 	warning:
-		"bg-yellow-100 text-yellow-700 dark:bg-yellow-700 dark:text-yellow-200 group-data-hover:bg-yellow-200 dark:group-data-hover:bg-yellow-600",
+		"bg-admin-warning text-admin-black dark:bg-admin-warning dark:text-admin-black group-data-hover:bg-admin-warning/80 dark:group-data-hover:bg-admin-warning-dark",
 	error:
-		"bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-200 group-data-hover:bg-red-200 dark:group-data-hover:bg-red-600",
+		"bg-admin-error text-admin-white dark:bg-admin-error dark:text-admin-white group-data-hover:bg-admin-error/80 dark:group-data-hover:bg-admin-error-dark",
 };
 type BadgeProps = {
 	color?: keyof typeof simplifiedColors;
@@ -63,7 +63,7 @@ export const BadgeButton = forwardRef(function BadgeButton(
 ) {
 	const baseClasses = clsx(
 		"group relative inline-flex items-center justify-center rounded-md",
-		"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-primary dark:focus:ring-primary-dark",
+		"focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-admin-primary dark:focus:ring-admin-primary-dark",
 	);
 	const badgeElement = (
 		<Badge color={color} size={size}>

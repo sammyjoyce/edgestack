@@ -70,17 +70,17 @@ export const Button = forwardRef<HTMLElement, ButtonProps>((props, ref) => {
 
 	const solidColorMap: Record<ButtonColor, string> = {
 		primary:
-			"text-admin-white bg-admin-primary shadow-admin-button-primary active:shadow-admin-button-primary-active",
+			"text-admin-white bg-admin-primary shadow-admin-button-primary active:shadow-admin-button-primary-active ring-admin-primary",
 		secondary:
-			"text-admin-white bg-admin-secondary shadow-admin-button-secondary active:shadow-admin-button-secondary-active",
+			"text-admin-white bg-admin-secondary shadow-admin-button-secondary active:shadow-admin-button-secondary-active ring-admin-secondary",
 		tertiary:
-			"text-admin-white bg-admin-tertiary shadow-admin-button-tertiary active:shadow-admin-button-tertiary-active",
+			"text-admin-white bg-admin-tertiary shadow-admin-button-tertiary active:shadow-admin-button-tertiary-active ring-admin-tertiary",
 		neutral:
-			"text-admin-white bg-admin-neutral shadow-admin-button-neutral active:shadow-admin-button-neutral-active",
+			"text-admin-white bg-admin-neutral shadow-admin-button-neutral active:shadow-admin-button-neutral-active ring-admin-neutral",
 		danger:
-			"text-admin-white bg-admin-error shadow-admin-button-primary hover:brightness-90 active:shadow-admin-button-primary-active active:brightness-80",
+			"text-admin-white bg-admin-error shadow-admin-button-error active:shadow-admin-button-error-active ring-admin-error",
 		default:
-			"text-admin-foreground bg-admin-default-button-bg shadow-admin-button-default active:shadow-admin-button-default-active",
+			"text-admin-foreground bg-admin-default-button-bg shadow-admin-button-default active:shadow-admin-button-default-active ring-admin-border",
 	};
 
 	const ghostClasses =

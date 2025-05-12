@@ -10,6 +10,7 @@ import { Drawer } from "vaul";
 import { Heading } from "./ui/heading";
 import { ImageGallery } from "./ImageGallery";
 import type { StoredImage } from "~/utils/upload.server";
+import { Checkbox } from "./ui/checkbox";
 
 export interface ProjectFormFieldsProps {
 	initial?: {
@@ -81,24 +82,29 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 				<RichTextField
 					name="description"
 					initialJSON={initial.description || ""}
+					
 				/>
 			</FieldRow>
 			<FieldRow>
 				<FieldLabel htmlFor="details">
 					Details (e.g., Location, Duration, Budget)
 				</FieldLabel>
-				<RichTextField name="details" initialJSON={initial.details || ""} />
+				<RichTextField
+					name="details"
+					initialJSON={initial.details || ""}
+					
+				/>
 			</FieldRow>
 			<FieldRow>
 				<span className="max-w-min">
 					<div className="flex items-center gap-x-2">
-						<Input
-							type="checkbox"
+						<Checkbox
 							name="isFeatured"
 							id="isFeatured"
 							value="true"
 							defaultChecked={!!initial.isFeatured}
-							className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+							className="h-4 w-4"
+							aria-label="Feature on Home Page"
 						/>
 						<label
 							htmlFor="isFeatured"
@@ -136,7 +142,7 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 				<div>
 					<Drawer.Root open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
 						<Drawer.Trigger asChild>
-							<Button variant="secondary" type="button">
+							<Button variant="secondary" color="secondary" type="button">
 								Choose from Existing Images
 							</Button>
 						</Drawer.Trigger>
@@ -176,11 +182,11 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 			</FieldRow>
 			<div className="flex justify-end gap-3 pt-6 border-t border-gray-200 mt-6">
 				{onCancel && (
-					<Button type="button" variant="secondary" onClick={onCancel}>
+					<Button type="button" color="neutral" onClick={onCancel}>
 						Cancel
 					</Button>
 				)}
-				<Button type="submit" variant="primary">
+				<Button type="submit" color="primary">
 					{isEdit ? "Save Changes" : "Create Project"}
 				</Button>
 			</div>

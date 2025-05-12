@@ -70,8 +70,10 @@ export default function RichTextField({
 			<LexicalComposer initialConfig={initialConfig}>
 				<div
 					className={clsx(
-						"ring-1 ring-gray-300 dark:ring-zinc-700 rounded-md overflow-hidden",
-						"focus-within:ring-2 focus-within:ring-blue-500",
+						"ring-1 rounded-md overflow-hidden",
+						"bg-admin-white dark:bg-admin-background",
+						"ring-admin-border dark:ring-admin-border-dark",
+						"focus-within:ring-2 focus-within:ring-admin-primary",
 						className,
 					)}
 				>
@@ -79,7 +81,8 @@ export default function RichTextField({
 					<span
 						data-slot="control"
 						className={clsx([
-							"relative block w-full ring-1 ring-gray-300 rounded-md bg-white dark:ring-zinc-700 focus-within:ring-2 focus-within:ring-blue-500 disabled:opacity-50",
+							"relative block w-full ring-0 rounded-md",
+							"bg-admin-white dark:bg-admin-background",
 							disabled ? "opacity-50" : undefined,
 						])}
 					>

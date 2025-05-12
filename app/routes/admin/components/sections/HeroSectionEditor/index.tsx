@@ -1,5 +1,5 @@
 import React from "react";
-import { useFetcher } from "react-router";
+import type { useFetcher } from "react-router";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
 import {
