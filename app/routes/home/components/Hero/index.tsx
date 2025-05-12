@@ -43,7 +43,7 @@ export default function Hero({
 							<div className="mx-auto inline-block">
 								<RichTextRenderer
 									json={subtitle}
-									className="mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg text-gray-700 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 dark:text-gray-100 sm:text-lg lg:text-2xl"
+									className="mx-auto rounded-xl bg-white/90 px-4 py-2 text-center drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 prose-lg sm:prose-lg lg:prose-2xl"
 								/>
 							</div>
 						)}
