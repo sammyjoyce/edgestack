@@ -33,7 +33,6 @@ interface SerializedListNode extends SerializedLexicalNode {
 interface Props {  
   json: string;  
   className?: string;  
-  disableProseDefaults?: boolean;
 }  
   
 function applyTextFormat(  
@@ -110,7 +109,6 @@ function renderNode(node: SerializedLexicalNode, key: number): React.ReactNode {
 export default function RichTextRenderer({
   json,
   className,
-  disableProseDefaults,
 }: Props) {  
   let parsedState: SerializedEditorState | null = null;  
   let error = null;  
@@ -124,7 +122,7 @@ export default function RichTextRenderer({
     return (  
       <div
         className={clsx(
-          disableProseDefaults ? undefined : "prose dark:prose-invert",
+          "prose dark:prose-invert",
           className,
         )}
       >
@@ -135,7 +133,7 @@ export default function RichTextRenderer({
   return (  
     <div
       className={clsx(
-        disableProseDefaults ? undefined : "prose dark:prose-invert",
+        "prose dark:prose-invert",
         className,
       )}
     >
