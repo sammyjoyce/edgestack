@@ -22,6 +22,21 @@ export default function Hero({
 	const subtitleClasses =
 		"mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg text-gray-700 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 dark:text-gray-100 sm:text-lg lg:text-2xl";
 
+	// New class string for rich text rendering with prose
+	const heroSubtitleRichTextProseStyling = clsx(
+		// Container styling from original subtitleClasses (excluding text properties handled by prose modifiers)
+		"mx-auto rounded-xl bg-white/90 px-4 py-2 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80",
+		// Prose scale modifiers based on original text sizes (text-lg, sm:text-lg, lg:text-2xl)
+		// prose-lg covers base (text-lg) and sm (sm:text-lg)
+		// lg:prose-2xl covers lg (lg:text-2xl)
+		"prose-lg lg:prose-2xl",
+		// General font style for the container, inherited by prose unless prose specifies otherwise
+		"font-sans",
+		// Prose element modifiers to match original subtitleClasses text styling
+		"prose-p:text-center", // For text-center
+		"prose-p:text-gray-700 dark:prose-p:text-gray-100", // For text-gray-700 and dark:text-gray-100
+	);
+
 	return (
 		<div
 			className={clsx(
@@ -46,9 +61,9 @@ export default function Hero({
 							<div className="mx-auto inline-block">
 								<ConditionalRichTextRenderer
 									text={subtitle}
-									richTextClassName={subtitleClasses}
-									fallbackClassName={subtitleClasses}
-									disableProseDefaults={true}
+									richTextClassName={heroSubtitleRichTextProseStyling} // Use the new prose-specific classes
+									fallbackClassName={subtitleClasses} // Original classes for plain text fallback
+									// disableProseDefaults is now omitted, so prose defaults will apply
 									fallbackTag="div"
 								/>
 							</div>
