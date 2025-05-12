@@ -2,9 +2,6 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"knip": "bunx knip",
-		"format": "biome check --write ./app/**/*.{ts,tsx,js,jsx,json,jsonc}",
-		"dev": "react-router dev",
 		"build": "react-router build",
 		"build:production": "vite build --mode production",
 		"build:staging": "vite build --mode staging",
@@ -15,10 +12,12 @@
 		"db:generate": "dotenv -- drizzle-kit generate",
 		"db:reset-local": "rm -rf .wrangler/state/v3/d1/89bb8c60-84fb-4f13-9320-e5cf623f4963 && mkdir -p .wrangler/state/v3/d1/89bb8c60-84fb-4f13-9320-e5cf623f4963",
 		"db:migrate": "bun run db:reset-local && wrangler d1 migrations apply lush-content-db --local",
-		"db:migrate-production": "dotenv -- drizzle-kit migrate",
-		"db:seed-remote": "bun run ./scripts/run-seed.ts",
-		"cf-typegen": "wrangler types",
-		"typecheck": "bun run cf-typegen && react-router typegen && tsc --noEmit -p tsconfig.cloudflare.json"
+		"db:migrate-production": "wrangler d1 migrations apply lush-content-db --remote",
+		"dev": "react-router dev",
+		"format": "biome check --write ./app/**/*.{ts,tsx,js,jsx,json,jsonc}",
+		"knip": "bunx knip",
+		"typecheck": "bun run cf-typegen && react-router typegen && tsc --noEmit -p tsconfig.cloudflare.json",
+		"cf-typegen": "wrangler types"
 	},
 	"dependencies": {
 		"@dnd-kit/core": "^6.3.1",

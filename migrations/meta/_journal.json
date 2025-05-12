@@ -15,6 +15,13 @@
 			"when": 1746924098531,
 			"tag": "0001_faithful_gwen_stacy",
 			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "6",
+			"when": 1747061806858,
+			"tag": "0002_quick_chronomancer",
+			"breakpoints": true
 		}
 	]
 }
