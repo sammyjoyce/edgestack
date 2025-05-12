@@ -13,9 +13,10 @@ export default [
 		route(":projectId", "./routes/projects/views/[projectId].tsx"),
 	]),
 	...prefix("admin", [
-		route("login", "./routes/admin/views/login.tsx"),
+		route("login", "./routes/admin/views/login.tsx"), // Login route moved here
 		layout("routes/admin/views/_layout.tsx", [
 			index("./routes/admin/views/index.tsx"),
+			// login route removed from here
 			route("logout", "./routes/admin/views/logout.tsx"),
 			route("upload", "./routes/admin/views/upload.tsx"),
 			route("projects", "routes/admin/views/projects/index.tsx", [

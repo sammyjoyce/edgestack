@@ -1,6 +1,7 @@
 import type { Route } from "./+types/login";
 import type React from "react";
 import { useState } from "react";
+import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { Form, redirect } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import {
@@ -17,6 +18,11 @@ import { Button } from "../components/ui/button";
 import { Field, Label } from "../components/ui/fieldset";
 import { Input } from "../components/ui/input";
 // Removed unused Route type import.
+
+export const links: Route.LinksFunction = () => [
+	{ rel: "stylesheet", href: adminThemeStylesheet },
+];
+
 const DEBUG = process.env.NODE_ENV !== "production";
 type LoginActionData = { success: false; error: string } | { success: true };
 export const action = async ({
