@@ -82,18 +82,13 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 				<RichTextField
 					name="description"
 					initialJSON={initial.description || ""}
-					
 				/>
 			</FieldRow>
 			<FieldRow>
 				<FieldLabel htmlFor="details">
 					Details (e.g., Location, Duration, Budget)
 				</FieldLabel>
-				<RichTextField
-					name="details"
-					initialJSON={initial.details || ""}
-					
-				/>
+				<RichTextField name="details" initialJSON={initial.details || ""} />
 			</FieldRow>
 			<FieldRow>
 				<span className="max-w-min">

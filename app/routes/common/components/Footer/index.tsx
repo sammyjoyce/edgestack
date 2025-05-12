@@ -77,7 +77,7 @@ export default function Footer(): JSX.Element {
 					>
 						<img
 							className="h-14 w-auto sm:h-16"
-							src="/assets/logo_284x137-KoakP1Oi.png"
+							src="/assets/lush_constructions_no_black_v2.png"
 							alt="LUSH CONSTRUCTIONS"
 						/>
 						<p className="max-w-sm text-[15px] text-gray-300 leading-normal sm:text-[14px]">
