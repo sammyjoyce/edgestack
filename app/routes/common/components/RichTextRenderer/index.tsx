@@ -119,7 +119,6 @@ export default function RichTextRenderer({ json, className }: Props) {
 		return (
 			<div
 				className={clsx(
-					"prose prose-sm max-w-none dark:prose-invert",
 					className,
 				)}
 			>
@@ -131,7 +130,7 @@ export default function RichTextRenderer({ json, className }: Props) {
 	}
 	return (
 		<div
-			className={clsx("prose prose-sm max-w-none dark:prose-invert", className)}
+			className={clsx(className)}
 		>
 			{" "}
 			{}

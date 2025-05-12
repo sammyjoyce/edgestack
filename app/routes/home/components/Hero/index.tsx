@@ -43,8 +43,8 @@ export default function Hero({
 							<div className="mx-auto inline-block">
 								<ConditionalRichTextRenderer 
 									text={subtitle} 
-									fallbackClassName="mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg text-gray-700 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 dark:text-gray-100 sm:text-lg lg:text-2xl"
-									richTextClassName="mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 sm:text-lg lg:text-2xl prose-headings:font-display prose-headings:font-medium prose-headings:text-gray-700 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-100 prose-strong:text-gray-700 dark:prose-strong:text-gray-100 prose-em:text-gray-700 dark:prose-em:text-gray-100"
+									fallbackClassName="mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg text-gray-700 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 dark:text-gray-100"
+									richTextClassName="prose dark:prose-invert max-w-none mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 prose-p:text-lg prose-p:text-gray-700 dark:prose-p:text-gray-100 prose-headings:font-display prose-headings:font-medium prose-headings:text-gray-700 dark:prose-headings:text-gray-100 prose-strong:text-gray-700 dark:prose-strong:text-gray-100 prose-em:text-gray-700 dark:prose-em:text-gray-100"
 								/>
 							</div>
 						)}
