@@ -123,17 +123,9 @@ export async function handleImageUpload(
 			},
 		);
 		console.log(`Successfully uploaded to R2 bucket key: '${uniqueFilename}'`);
-		const publicUrlBase = context.cloudflare.env.PUBLIC_R2_URL;
-		if (!publicUrlBase) {
-			console.warn(
-				"PUBLIC_R2_URL environment variable not set. Using relative path as fallback.",
-			);
-			console.log(`Returning fallback URL for '${uniqueFilename}'`);
-			return `/assets/${uniqueFilename}`;
-		}
-		const publicUrl = `${publicUrlBase.replace(/\/?$/, "/")}${uniqueFilename}`;
-		console.log(`Returning public URL: ${publicUrl}`);
-		return publicUrl;
+		const assetUrl = `/assets/${uniqueFilename}`;
+		console.log(`Returning asset URL for worker proxy: ${assetUrl}`);
+		return assetUrl;
 	} catch (error: unknown) {
 		console.error(`R2 upload failed for key '${uniqueFilename}':`, error);
 		let message = "Unknown error";
