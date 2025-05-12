@@ -66,15 +66,14 @@ export function ProjectDetailRoute({
 						</h2>
 						<ConditionalRichTextRenderer
 							text={project.description}
-							fallbackClassName="text-gray-700 dark:text-gray-300 text-lg mb-4"
+							fallbackClassName="prose-lg mb-4" // This instance needs its own prose sizing
 							richTextClassName={clsx(
-								"text-lg mb-4",
+								"prose-lg mb-4", // This instance needs its own prose sizing
 								"prose-p:text-gray-700 dark:prose-p:text-gray-300",
 								"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
 								"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
 								"prose-em:text-gray-700 dark:prose-em:text-gray-300",
 								"prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
-								projectDetailTheme === "dark" && "dark:prose-invert",
 								"prose max-w-none",
 							)}
 							fallbackTag="p"
@@ -91,8 +90,8 @@ export function ProjectDetailRoute({
 								</h3>
 								<ConditionalRichTextRenderer
 									text={project.details}
-									fallbackClassName="text-gray-600 dark:text-gray-400"
-									richTextClassName={clsx(
+									fallbackClassName="" // Inherits prose-sm and colors from parent div
+									richTextClassName={clsx( // Inherits prose-sm and colors, only element specifics needed
 										"prose-p:text-gray-600 dark:prose-p:text-gray-400",
 										"prose-headings:text-gray-600 dark:prose-headings:text-gray-400",
 										"prose-strong:text-gray-600 dark:prose-strong:text-gray-400",

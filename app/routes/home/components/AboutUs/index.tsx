@@ -51,15 +51,14 @@ export default function AboutUs({
 						<div className="space-y-4 text-gray-700 dark:text-gray-300">
 							<ConditionalRichTextRenderer
 								text={text ?? defaultAboutText}
-								fallbackClassName="text-base sm:text-lg text-gray-700 dark:text-gray-300"
+								fallbackClassName="prose sm:prose-lg"
 								richTextClassName={clsx(
-									"text-base sm:text-lg",
+									"prose sm:prose-lg",
 									"prose-p:text-gray-700 dark:prose-p:text-gray-300",
 									"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
 									"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
 									"prose-em:text-gray-700 dark:prose-em:text-gray-300",
 									"prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
-									theme === "dark" && "dark:prose-invert",
 									"prose max-w-none",
 								)}
 								fallbackTag="p"

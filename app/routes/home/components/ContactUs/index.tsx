@@ -75,23 +75,20 @@ export default function ContactUs({
 					<ConditionalRichTextRenderer
 						text={intro}
 						fallbackClassName={clsx(
-							"mt-6 text-[15px] leading-normal",
-							"text-gray-300 dark:text-gray-300",
+							"mt-6 prose-sm", // text-[15px] is close to prose-sm (14px)
 						)}
 						richTextClassName={clsx(
-							"mt-6 text-[15px] leading-normal",
+							"mt-6 prose-sm",
 							"prose-p:text-gray-300 dark:prose-p:text-gray-300",
 							"prose-headings:text-gray-300 dark:prose-headings:text-gray-300",
 							"prose-strong:text-gray-300 dark:prose-strong:text-gray-300",
 							"prose-em:text-gray-300 dark:prose-em:text-gray-300",
 							"prose-a:text-gray-300 dark:prose-a:text-gray-300 hover:prose-a:underline",
-							theme === "dark" && "dark:prose-invert",
 						)}
 					/>
 					<dl
 						className={clsx(
-							"mt-10 space-y-4 text-[15px] leading-normal",
-							"text-gray-300 dark:text-gray-300",
+							"mt-10 space-y-4 prose prose-sm", // Apply prose-sm to the dl context
 						)}
 					>
 						<div className="flex items-center gap-x-4">
@@ -105,16 +102,15 @@ export default function ContactUs({
 							<dd>
 								<ConditionalRichTextRenderer
 									text={address}
-									fallbackClassName="text-[15px] text-gray-300 dark:text-gray-300 whitespace-pre-line"
+									fallbackClassName="prose-sm prose-p:whitespace-pre-line" // Inherits text-gray-300 from parent dl if prose is set up correctly
 									richTextClassName={clsx(
-										"text-[15px]",
+										"prose-sm", // Size for the rich text content itself
 										"prose max-w-none",
 										"prose-p:text-gray-300 dark:prose-p:text-gray-300 prose-p:whitespace-pre-line",
 										"prose-headings:text-gray-300 dark:prose-headings:text-gray-300",
 										"prose-strong:text-gray-300 dark:prose-strong:text-gray-300",
 										"prose-em:text-gray-300 dark:prose-em:text-gray-300",
 										"prose-a:text-gray-300 dark:prose-a:text-gray-300 hover:prose-a:underline",
-										theme === "dark" && "dark:prose-invert",
 									)}
 									fallbackTag="div"
 								/>
