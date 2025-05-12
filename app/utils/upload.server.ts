@@ -42,6 +42,7 @@ export async function listStoredImages(
 				contentType: obj.httpMetadata?.contentType,
 			};
 		});
+		console.log(`Loaded ${images.length} images from R2`);
 		return images.sort(
 			(a, b) =>
 				new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime(),
@@ -68,6 +69,7 @@ export async function deleteStoredImage(
 	}
 	try {
 		await context.cloudflare.env.ASSETS_BUCKET.delete(filename);
+		console.log(`Deleted image '${filename}' from R2`);
 		return true;
 	} catch (error: unknown) {
 		console.error(`Failed to delete image '${filename}' from R2:`, error);
@@ -93,26 +95,47 @@ export async function handleImageUpload(
 	if (!file || !(file instanceof File) || file.size === 0) {
 		throw new Error("Invalid or empty file provided for upload.");
 	}
-	const uniqueFilename = `${Date.now()}-${file.name.replace(
-		/[^a-zA-Z0-9._-]/g,
-		"_",
-	)}`;
+	// Validate type and size
+	const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB limit
+	if (!file.type.startsWith("image/")) {
+		throw new Error(`Unsupported file type: ${file.type}`);
+	}
+	if (file.size > MAX_FILE_SIZE) {
+		throw new Error(
+			`File too large: ${file.size} bytes. Max is ${MAX_FILE_SIZE} bytes.`,
+		);
+	}
+	// Generate unique key
+	const ext = file.name.split(".")?.pop() ?? "";
+	const prefix = key ? `${key.replace(/[^a-zA-Z0-9_-]/g, "")}/` : "";
+	const uniqueFilename = `${prefix}${Date.now()}-${crypto.randomUUID()}.${ext}`;
+	// Log upload attempt
+	console.log(
+		`Uploading '${file.name}' as '${uniqueFilename}', size ${file.size} bytes`,
+	);
 	try {
-		const fileData = await file.arrayBuffer();
-		await context.cloudflare.env.ASSETS_BUCKET.put(uniqueFilename, fileData, {
-			httpMetadata: { contentType: file.type },
-		});
+		// Stream file directly to R2 instead of buffering
+		await context.cloudflare.env.ASSETS_BUCKET.put(
+			uniqueFilename,
+			file.stream(),
+			{
+				httpMetadata: { contentType: file.type },
+			},
+		);
+		console.log(`Successfully uploaded to R2 bucket key: '${uniqueFilename}'`);
 		const publicUrlBase = context.cloudflare.env.PUBLIC_R2_URL;
 		if (!publicUrlBase) {
 			console.warn(
 				"PUBLIC_R2_URL environment variable not set. Using relative path as fallback.",
 			);
+			console.log(`Returning fallback URL for '${uniqueFilename}'`);
 			return `/assets/${uniqueFilename}`;
 		}
 		const publicUrl = `${publicUrlBase.replace(/\/?$/, "/")}${uniqueFilename}`;
+		console.log(`Returning public URL: ${publicUrl}`);
 		return publicUrl;
 	} catch (error: unknown) {
-		console.error(`R2 upload failed for key '${key}':`, error);
+		console.error(`R2 upload failed for key '${uniqueFilename}':`, error);
 		let message = "Unknown error";
 		if (error instanceof Error) {
 			message = error.message;

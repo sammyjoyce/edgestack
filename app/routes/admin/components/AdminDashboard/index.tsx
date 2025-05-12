@@ -336,7 +336,6 @@ export default function AdminDashboard({
 						Open site
 					</Button>
 				</div>
-			
 			</div>
 			<Tabs tabs={tabs} containerClassName="mb-8" />
 		</Container>

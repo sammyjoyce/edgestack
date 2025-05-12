@@ -7,32 +7,31 @@ import {
 import type { Route } from "./+types/_layout";
 import type React from "react";
 import {
-	Link as RouterLink,
+	NavLink,
 	Outlet,
 	redirect,
-	type To,
 	useLocation,
 	useNavigation,
-} from "react-router";
-import { getSessionCookie, verify } from "~/routes/common/utils/auth"; // Keep
-import adminThemeStylesheet from "../../../admin-theme.css?url"; // Keep
-import { AdminErrorBoundary } from "../components/AdminErrorBoundary"; // Keep
-import { SidebarLayout } from "../components/ui/sidebar-layout"; // Keep only SidebarLayout
+} from "react-router-dom";
+import { getSessionCookie, verify } from "~/routes/common/utils/auth";
+import adminThemeStylesheet from "../../../admin-theme.css?url";
+import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
+import { SidebarLayout } from "../components/ui/sidebar-layout";
 import clsx from "clsx";
 
+// Links for stylesheet
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
 ];
-export const loader = async ({
-	request,
-	context,
-	params,
-}: Route.LoaderArgs) => {
+
+// Loader for authentication and redirection
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const url = new URL(request.url);
 	const isLoginRoute = url.pathname === "/admin/login";
 	const isLogoutRoute = url.pathname === "/admin/logout";
 	const sessionValue = getSessionCookie(request);
 	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
+
 	const isAuthenticated = async () => {
 		if (!sessionValue || !jwtSecret) return false;
 		try {
@@ -42,38 +41,38 @@ export const loader = async ({
 			return false;
 		}
 	};
+
 	const loggedIn = await isAuthenticated();
-	if (!loggedIn && !isLoginRoute) {
-		if (!isLogoutRoute) {
-			return redirect("/admin/login");
-		}
+	if (!loggedIn && !isLoginRoute && !isLogoutRoute) {
+		return redirect("/admin/login");
 	}
 	if (loggedIn && isLoginRoute) {
 		return redirect("/admin");
 	}
 	return { isAuthenticated: loggedIn };
 };
-export const action = async ({
-	request, // eslint-disable-line @typescript-eslint/no-unused-vars
-	context, // eslint-disable-line @typescript-eslint/no-unused-vars
-	params, // eslint-disable-line @typescript-eslint/no-unused-vars
-}: Route.ActionArgs) => {
-	// ActionData will be null
-	return null;
-};
 
+// Action placeholder
+export const action = async () => null;
+
+// Navigation item interface
 interface NavItem {
 	name: string;
-	href: To | string;
+	href: string;
 	icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
-const navigation: NavItem[] = [
+// Navigation configuration
+const adminNav: NavItem[] = [
 	{ name: "Dashboard", href: "/admin", icon: HomeIcon },
 	{ name: "Projects", href: "/admin/projects", icon: FolderIcon },
-	{ name: "Live Site", href: "/", icon: DocumentDuplicateIcon },
 	{ name: "Logout", href: "/admin/logout", icon: ArrowLeftCircleIcon },
 ];
+const siteNav: NavItem[] = [
+	{ name: "Live Site", href: "/", icon: DocumentDuplicateIcon },
+];
+
+// Admin layout component
 export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 	const navigationHook = useNavigation();
 	const location = useLocation();
@@ -92,61 +91,65 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 			</div>
 			<hr className="border-admin-border mb-2" />
 			<ul className="flex flex-col">
-				{navigation.map((item) => (
+				{adminNav.map((item) => {
+					const isDashboard = item.name === "Dashboard";
+					const isLogout = item.name === "Logout";
+					return (
+						<li
+							key={item.name}
+							className="group rounded-md text-sm font-medium"
+						>
+							<NavLink
+								to={item.href}
+								end={isDashboard || isLogout}
+								className={({ isActive }) =>
+									clsx(
+										"flex items-center gap-x-3 p-2 w-full",
+										"text-admin-text-muted hover:bg-admin-border-light hover:text-admin-text",
+										isActive &&
+											!isLogout &&
+											"bg-admin-secondary text-admin-white",
+									)
+								}
+							>
+								<item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
+								{item.name}
+							</NavLink>
+						</li>
+					);
+				})}
+			</ul>
+			<hr className="border-admin-border mb-2" />
+			<ul className="flex flex-col">
+				{siteNav.map((item) => (
 					<li
 						key={item.name}
-						className={clsx(
-							"group rounded-md text-sm font-medium",
-							// Base text color for all items
-							"text-admin-text-muted",
-							// Hover styles for all items
-							"hover:bg-admin-border-light hover:text-(--color-admin-text)",
-							// Active styles for regular navigation items (not "Live Site" or "Logout")
-							(location.pathname === item.href ||
-								(item.href !== "/admin" &&
-									location.pathname.startsWith(item.href as string))) &&
-								!(item.name === "Live Site" || item.name === "Logout") &&
-								"bg-(--color-admin-secondary) text-admin-white",
-						)}
+						className="group rounded-md text-sm font-medium text-admin-text-muted hover:bg-admin-border-light hover:text-admin-text"
 					>
-						{item.name === "Live Site" ? (
-							<a
-								href={item.href as string}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="flex items-center gap-x-3 p-2 w-full"
-							>
-								<item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
-								{item.name}
-							</a>
-						) : (
-							<RouterLink
-								to={item.href as string}
-								className="flex items-center gap-x-3 p-2 w-full"
-							>
-								<item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
-								{item.name}
-							</RouterLink>
-						)}
+						<a
+							href={item.href}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="flex items-center gap-x-3 p-2 w-full"
+						>
+							<item.icon aria-hidden="true" className="h-5 w-5 shrink-0" />
+							{item.name}
+						</a>
 					</li>
 				))}
 			</ul>
 		</div>
 	);
 
-	// If loaderData indicates not authenticated and not on login/logout, render nothing or a redirect signal
-	// This check might be redundant if the loader already handles redirection, but good for clarity.
+	// Fallback for unauthenticated users not on login/logout routes
 	if (
 		!loaderData?.isAuthenticated &&
 		!["/admin/login", "/admin/logout"].includes(location.pathname)
 	) {
-		// The loader should have redirected, but as a fallback, don't render the layout.
-		// Or, you could render a minimal loading/redirecting state here.
-		return null;
+		return null; // Loader should redirect, but this is a fallback
 	}
 
-	// If on login/logout page and authenticated, loader should redirect.
-	// If on login/logout page and not authenticated, render Outlet without SidebarLayout.
+	// Render Outlet only for login/logout when not authenticated
 	if (
 		["/admin/login", "/admin/logout"].includes(location.pathname) &&
 		!loaderData?.isAuthenticated
@@ -173,7 +176,7 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 		);
 	}
 
-	// Default case: authenticated user on an admin page (not login/logout)
+	// Full layout for authenticated admin pages
 	return (
 		<SidebarLayout
 			navbar={
@@ -200,11 +203,12 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 					className="global-loading-indicator"
 				/>
 			)}
-			<Outlet context={loaderData} /> {}
+			<Outlet context={loaderData} />
 		</SidebarLayout>
 	);
 }
 
+// Error boundary component
 export function ErrorBoundary() {
 	return <AdminErrorBoundary />;
 }
