@@ -37,7 +37,16 @@ export default function RecentProjects({
 					<ConditionalRichTextRenderer
 						text={introText}
 						fallbackClassName="text-xl text-gray-600 dark:text-gray-300" // Standard Tailwind for fallback
-						richTextClassName="prose-xl" // Assuming intro text should be larger
+						richTextClassName={clsx(
+							"prose-xl", // Base size for intro text
+							"prose max-w-none", // Allow content to fill container
+							// Match text colors from fallbackClassName for consistency
+							"prose-p:text-gray-600 dark:prose-p:text-gray-300",
+							"prose-headings:text-gray-600 dark:prose-headings:text-gray-300", // Assuming headings should also match
+							"prose-strong:text-gray-600 dark:prose-strong:text-gray-300",
+							"prose-em:text-gray-600 dark:prose-em:text-gray-300",
+							"prose-a:text-gray-600 dark:prose-a:text-gray-300 hover:prose-a:underline",
+						)}
 					/>
 				)}
 			</SectionIntro>
