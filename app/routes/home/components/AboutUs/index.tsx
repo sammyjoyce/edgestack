@@ -51,9 +51,9 @@ export default function AboutUs({
 						<div className="space-y-4 text-gray-700 dark:text-gray-300">
 							<ConditionalRichTextRenderer
 								text={text ?? defaultAboutText}
-								fallbackClassName="prose sm:prose-lg"
+								fallbackClassName="text-base sm:text-lg text-gray-700 dark:text-gray-300" // Standard Tailwind
 								richTextClassName={clsx(
-									"prose sm:prose-lg",
+									"prose-base sm:prose-lg", // Prose size modifiers
 									"prose-p:text-gray-700 dark:prose-p:text-gray-300",
 									"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
 									"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",

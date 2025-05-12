@@ -68,9 +68,9 @@ export default function OurServices({
 					<SectionIntro centered title={introTitle}>
 						<ConditionalRichTextRenderer
 							text={introText || defaultIntroText}
-							fallbackClassName="prose-xl text-center" // SectionIntro children are often text-xl
+							fallbackClassName="text-xl text-center text-gray-500 dark:text-gray-400" // Standard Tailwind
 							richTextClassName={clsx(
-								"prose-xl",
+								"prose-xl text-center", // Added text-center here for rich text too
 								"prose-p:text-gray-700 dark:prose-p:text-gray-300",
 								"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
 								"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",

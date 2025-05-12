@@ -74,9 +74,8 @@ export default function ContactUs({
 					</p>
 					<ConditionalRichTextRenderer
 						text={intro}
-						fallbackClassName={clsx(
-							"mt-6 prose-sm", // text-[15px] is close to prose-sm (14px)
-						)}
+						// Standard Tailwind, text-gray-300 because parent is bg-black text-white
+						fallbackClassName="mt-6 text-[15px] leading-normal text-gray-300"
 						richTextClassName={clsx(
 							"mt-6 prose-sm",
 							"prose-p:text-gray-300 dark:prose-p:text-gray-300",
@@ -87,9 +86,8 @@ export default function ContactUs({
 						)}
 					/>
 					<dl
-						className={clsx(
-							"mt-10 space-y-4 prose prose-sm", // Apply prose-sm to the dl context
-						)}
+						// Standard Tailwind for dl, direct children like dd for phone/email are styled directly
+						className="mt-10 space-y-4 text-[15px] leading-normal text-gray-300"
 					>
 						<div className="flex items-center gap-x-4">
 							<dt className="flex-none">
@@ -102,7 +100,8 @@ export default function ContactUs({
 							<dd>
 								<ConditionalRichTextRenderer
 									text={address}
-									fallbackClassName="prose-sm prose-p:whitespace-pre-line" // Inherits text-gray-300 from parent dl if prose is set up correctly
+									// Standard Tailwind, inherits text-gray-300 from parent dl
+									fallbackClassName="text-[15px] whitespace-pre-line"
 									richTextClassName={clsx(
 										"prose-sm", // Size for the rich text content itself
 										"prose max-w-none",

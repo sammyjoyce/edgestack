@@ -161,7 +161,7 @@ export default function AdminProjectsIndexPage({
 										{project.description ? (
 											<ConditionalRichTextRenderer
 												text={project.description}
-												fallbackClassName="prose-sm"
+												fallbackClassName="text-sm text-gray-500 dark:text-gray-400" // Standard Tailwind
 												richTextClassName={clsx(
 													"prose-sm", // Match td text size
 													"prose max-w-none", // Apply prose, remove max-width constraint from prose itself
