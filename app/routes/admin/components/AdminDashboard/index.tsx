@@ -1,4 +1,5 @@
 import React from "react";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import { Link, useFetcher } from "react-router";
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { AboutSectionEditor } from "~/routes/admin/components/sections/AboutSectionEditor";
@@ -321,30 +322,21 @@ export default function AdminDashboard({
 			<div className="flex flex-row content-center justify-between space-y-4 ">
 				<PageHeader title="Home Page Editor" className="mb-4" />
 				<div>
-				<Button
-					type="button"
-					onClick={() => window.open("/?bustCache=true", "_blank")}
-					color="primary"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						strokeWidth={1.5}
-						stroke="currentColor"
-						aria-hidden="true"
-						focusable="false"
-						className="size-4"
+					<Button
+						type="button"
+						onClick={() => window.open("/?bustCache=true", "_blank")}
+						color="primary"
 					>
-						<title>Open site in new tab</title>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							d="M17.25 6.75v-2.25a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 003.75 4.5v15a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-2.25m-10.5-6.75h14.25m0 0l-3-3m3 3l-3 3"
+						<ArrowTopRightOnSquareIcon
+							className="size-4"
+							aria-hidden="true"
+							focusable="false"
+							title="Open site in new tab"
 						/>
-					</svg>
-					Open site
-				</Button></div>
+						Open site
+					</Button>
+				</div>
+			
 			</div>
 			<Tabs tabs={tabs} containerClassName="mb-8" />
 		</Container>

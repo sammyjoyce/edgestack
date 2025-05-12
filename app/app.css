@@ -58,6 +58,36 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+	/* Hide scrollbar utility */
+	.scrollbar-hide {
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* IE 10+ */
+	}
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none; /* Chrome/Safari/Webkit */
+	}
+
+	/* Fade overlays for scrollable tab bar */
+	.tabs-fade {
+		@apply pointer-events-none absolute top-0 bottom-0 w-10 z-10 transition-opacity duration-200;
+	}
+	.tabs-fade-right {
+		@apply right-0;
+		background: linear-gradient(
+			to left,
+			rgba(255, 255, 255, 0.8),
+			rgba(255, 255, 255, 0)
+		);
+	}
+	.tabs-fade-left {
+		@apply left-0;
+		background: linear-gradient(
+			to right,
+			rgba(255, 255, 255, 0.8),
+			rgba(255, 255, 255, 0)
+		);
+	}
+
 	html,
 	body {
 		@apply bg-white text-gray-900 antialiased;

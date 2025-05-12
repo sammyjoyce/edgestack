@@ -99,7 +99,7 @@ export default function Component({ actionData }: Route.ComponentProps) {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	return (
-		<FadeIn className="flex min-h-screen flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+		<FadeIn className="flex min-h-screen flex-col items-center justify-center bg-gray-50 sm:px-6 lg:px-8">
 			<FormCard>
 				<PageHeader
 					title="Admin Login"
@@ -154,7 +154,12 @@ export default function Component({ actionData }: Route.ComponentProps) {
 							</Alert>
 						)}
 					<div>
-						<Button type="submit" variant="solid" color="primary" className="w-full">
+						<Button
+							type="submit"
+							variant="solid"
+							color="primary"
+							className="w-full"
+						>
 							Sign in
 						</Button>
 					</div>

@@ -140,7 +140,7 @@ export default function EditProjectPage({
 						{actionData.error}
 					</Alert>
 				)}
-				<SectionCard className="mt-4">
+				<SectionCard>
 					<SectionHeading>Project Details</SectionHeading>
 					<Form
 						method="post"

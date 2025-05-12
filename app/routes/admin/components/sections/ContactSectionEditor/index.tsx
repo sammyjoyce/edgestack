@@ -104,10 +104,10 @@ export function ContactSectionEditor({
 					{actionData.error}
 				</Alert>
 			)}
-			<SectionHeading>Contact Section (Home Page)</SectionHeading>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+			<SectionHeading>Contact Section</SectionHeading>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 sm:gap-x-6 gap-y-6">
 				{contactFields.map(({ key, label, rows, placeholder, isRichText }) => (
-					<div key={key} className="flex flex-col gap-1">
+					<div key={key} className="flex flex-col gap-1 min-w-0">
 						<FieldLabel htmlFor={key}>{label}</FieldLabel>
 						{isRichText ? (
 							<RichTextField
@@ -135,6 +135,7 @@ export function ContactSectionEditor({
 								defaultValue={initialContent[key] || ""}
 								placeholder={placeholder}
 								disabled={fetcher.state === "submitting"}
+								className="w-full min-w-0"
 							/>
 						) : (
 							<Input
@@ -144,6 +145,7 @@ export function ContactSectionEditor({
 								defaultValue={initialContent[key] || ""}
 								placeholder={placeholder}
 								disabled={fetcher.state === "submitting"}
+								className="w-full min-w-0"
 							/>
 						)}
 						{actionData?.errors?.[key] && (

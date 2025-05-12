@@ -91,7 +91,8 @@ export function ProjectDetailRoute({
 								<ConditionalRichTextRenderer
 									text={project.details}
 									fallbackClassName="not-prose text-sm text-gray-600 dark:text-gray-400" // Standard Tailwind, escapes parent prose
-									richTextClassName={clsx( // Element specifics, inherits prose-sm from parent for base sizing
+									richTextClassName={clsx(
+										// Element specifics, inherits prose-sm from parent for base sizing
 										"prose-p:text-gray-600 dark:prose-p:text-gray-400",
 										"prose-headings:text-gray-600 dark:prose-headings:text-gray-400",
 										"prose-strong:text-gray-600 dark:prose-strong:text-gray-400",

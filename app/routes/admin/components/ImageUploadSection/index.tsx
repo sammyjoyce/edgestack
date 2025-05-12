@@ -116,13 +116,6 @@ function SingleImageUpload({
 				fieldKey={keyName}
 			/>
 			<input type="hidden" name="key" value={keyName} />
-			<div
-				className="text-sm text-gray-600 h-5 mt-2"
-				role="status"
-				aria-live="polite"
-			>
-				{statusText}
-			</div>
 			<GrayscaleTransitionImage
 				id={`${keyName}_preview`}
 				src={

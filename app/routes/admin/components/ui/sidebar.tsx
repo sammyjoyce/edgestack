@@ -87,10 +87,7 @@ export function SidebarDivider({
 	return (
 		<hr
 			{...props}
-			className={clsx(
-				className,
-				"my-4 border-t border-zinc-950/5 lg:-mx-4",
-			)}
+			className={clsx(className, "my-4 border-t border-zinc-950/5 lg:-mx-4")}
 		/>
 	);
 }

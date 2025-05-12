@@ -186,9 +186,7 @@ export default function SectionSorter({
 
 	if (!orderedItems.length) {
 		return (
-			<Text className="text-slate-400">
-				No sections available to sort.
-			</Text>
+			<Text className="text-slate-400">No sections available to sort.</Text>
 		);
 	}
 
@@ -302,10 +300,7 @@ function SortableItem({
 						aria-describedby={themeError ? `${switchId}-error` : undefined}
 						aria-label={`Toggle theme for ${details.label}`}
 					/>
-					<SwitchLabel
-						htmlFor={switchId}
-						className="text-xs text-gray-500"
-					>
+					<SwitchLabel htmlFor={switchId} className="text-xs text-gray-500">
 						{isLight ? "Light" : "Dark"}
 					</SwitchLabel>
 				</SwitchField>

@@ -54,7 +54,8 @@
 				"CLOUDFLARE_DATABASE_ID": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
 				"ADMIN_USERNAME": "admin",
 				"ADMIN_PASSWORD": "admin",
-				"JWT_SECRET": "super_secret_squidward_tentacles"
+				"JWT_SECRET": "super_secret_squidward_tentacles",
+				"PUBLIC_R2_URL": "https://427aa00a5888cad78805c7128db1f817.r2.cloudflarestorage.com/lush-assets/"
 			},
 			"r2_buckets": [
 				{
@@ -73,13 +74,7 @@
 			],
 			"observability": {
 				"enabled": true
-			},
-			"routes": [
-				{
-					"pattern": "lushconstructions.com/*",
-					"zone_id": "ebfa9ec51be86d5b5e37f1d4a0e48c71"
-				}
-			]
+			}
 		},
 		"staging": {
 			"name": "lush-staging",

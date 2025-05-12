@@ -60,8 +60,8 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 
 	return (
 		<>
-			<FieldRow>
-				<FieldLabel htmlFor="title">
+			<FieldRow className="min-w-0 flex flex-col gap-3 md:gap-6">
+				<FieldLabel htmlFor="title" className="md:w-1/3">
 					Project Title <span className="text-red-600">*</span>
 				</FieldLabel>
 				<Input
@@ -72,26 +72,36 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 					defaultValue={initial.title || ""}
 					aria-invalid={!!errors.title}
 					aria-describedby={errors.title ? "title-error" : undefined}
+					className="w-full min-w-0"
 				/>
 				{errors.title && (
-					<ErrorMessage id="title-error">{errors.title}</ErrorMessage>
+					<ErrorMessage id="title-error" className="mt-2 md:mt-4">
+						{errors.title}
+					</ErrorMessage>
 				)}
 			</FieldRow>
-			<FieldRow>
-				<FieldLabel htmlFor="description">Description</FieldLabel>
+			<FieldRow className="min-w-0 flex flex-col gap-3 md:gap-6">
+				<FieldLabel htmlFor="description" className="md:w-1/3">
+					Description
+				</FieldLabel>
 				<RichTextField
 					name="description"
 					initialJSON={initial.description || ""}
+					className="w-full min-w-0"
 				/>
 			</FieldRow>
-			<FieldRow>
-				<FieldLabel htmlFor="details">
+			<FieldRow className="min-w-0 flex flex-col gap-3 md:gap-6">
+				<FieldLabel htmlFor="details" className="md:w-1/3">
 					Details (e.g., Location, Duration, Budget)
 				</FieldLabel>
-				<RichTextField name="details" initialJSON={initial.details || ""} />
+				<RichTextField
+					name="details"
+					initialJSON={initial.details || ""}
+					className="w-full min-w-0"
+				/>
 			</FieldRow>
-			<FieldRow>
-				<span className="max-w-min">
+			<FieldRow className="min-w-0 flex flex-col gap-3 md:gap-6">
+				<span className="max-w-min md:w-1/3">
 					<div className="flex items-center gap-x-2">
 						<Checkbox
 							name="isFeatured"
@@ -110,14 +120,15 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 					</div>
 				</span>
 			</FieldRow>
-			<FieldRow>
-				<FieldLabel>Project Image</FieldLabel>
+			<FieldRow className="min-w-0 flex flex-col gap-3 md:gap-6">
+				<FieldLabel className="md:w-1/3">Project Image</FieldLabel>
 				<ImageUploadZone
 					onDrop={handleFileDrop}
 					imageUrl={currentPreviewUrl || undefined}
 					label="Project Image Upload"
 					fileInputRef={fileInputRef}
 					inputName="image"
+					className="w-full min-w-0"
 				/>
 				{/* Hidden input for the image URL, only if not uploading a new file */}
 				{!selectedFile && (
@@ -163,8 +174,8 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 					</Drawer.Root>
 				</div>
 			</FieldRow>
-			<FieldRow>
-				<FieldLabel htmlFor="sortOrder">
+			<FieldRow className="min-w-0 flex flex-col gap-3 md:gap-6">
+				<FieldLabel htmlFor="sortOrder" className="md:w-1/3">
 					Sort Order (lower numbers appear first)
 				</FieldLabel>
 				<Input
@@ -173,6 +184,7 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 					id="sortOrder"
 					min="0"
 					defaultValue={initial.sortOrder ?? 0}
+					className="w-full min-w-0"
 				/>
 			</FieldRow>
 			<div className="flex justify-end gap-3 pt-6 border-t border-gray-200 mt-6">

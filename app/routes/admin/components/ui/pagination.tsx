@@ -122,10 +122,8 @@ export function PaginationPage({
 			className={clsx(
 				className,
 				"min-w-9", // size="sm" handles padding and text-sm. Keep min-w-9 for consistent width.
-				current &&
-					"font-semibold ring-1 ring-primary text-primary",
-				!current &&
-					"text-zinc-700 hover:bg-zinc-100",
+				current && "font-semibold ring-1 ring-primary text-primary",
+				!current && "text-zinc-700 hover:bg-zinc-100",
 			)}
 		>
 			{children}

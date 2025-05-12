@@ -64,29 +64,25 @@ const alertStyles = {
 	base: "flex items-start p-4 rounded-md border",
 	variants: {
 		info: {
-			container:
-				"bg-admin-info border-admin-info",
+			container: "bg-admin-info border-admin-info",
 			icon: "text-admin-info",
 			title: "text-admin-info",
 			description: "text-admin-info",
 		},
 		success: {
-			container:
-				"bg-green-50 border-green-300",
+			container: "bg-green-50 border-green-300",
 			icon: "text-green-500",
 			title: "text-green-800",
 			description: "text-green-700",
 		},
 		warning: {
-			container:
-				"bg-yellow-50 border-yellow-300",
+			container: "bg-yellow-50 border-yellow-300",
 			icon: "text-yellow-500",
 			title: "text-yellow-800",
 			description: "text-yellow-700",
 		},
 		error: {
-			container:
-				"bg-red-50 border-red-300",
+			container: "bg-red-50 border-red-300",
 			icon: "text-red-500",
 			title: "text-red-800",
 			description: "text-red-700",

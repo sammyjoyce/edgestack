@@ -104,7 +104,11 @@ export default function MobileMenu({
 							</a>
 						);
 					})}
-					<Button to="tel:0404289437" invert className="w-full">
+					<Button
+						to="tel:0404289437"
+						invert
+						className="w-full place-content-center grid"
+					>
 						Call Us · 0404 289 437
 					</Button>
 				</nav>

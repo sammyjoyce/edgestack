@@ -8,10 +8,7 @@ export function Divider({
 	return (
 		<hr
 			{...props}
-			className={clsx(
-				className,
-				"w-full border-t border-zinc-200",
-			)}
+			className={clsx(className, "w-full border-t border-zinc-200")}
 		/>
 	);
 }
