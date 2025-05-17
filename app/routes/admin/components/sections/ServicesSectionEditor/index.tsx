@@ -206,15 +206,16 @@ export function ServicesSectionEditor({
 										Upload or drag and drop an image for the{" "}
 										{field.label.toLowerCase()}.
 									</TextComponent>
-									<ImageSelector
-										onDrop={handleDrop(idx)}
-										disabled={imageUploading[idx]}
-										uploading={imageUploading[idx]}
-										imageUrl={serviceImageUrls[idx]}
-										label={`${field.label} Image`}
-										className="w-full min-w-0 mt-1"
-										fieldKey={field.imageKey}
-									/>
+                                <ImageSelector
+                                        onDrop={handleDrop(idx)}
+                                        disabled={imageUploading[idx]}
+                                        uploading={imageUploading[idx]}
+                                        imageUrl={serviceImageUrls[idx]}
+                                        hasExistingImage={!!serviceImageUrls[idx]}
+                                        label={`${field.label} Image`}
+                                        className="w-full min-w-0 mt-1"
+                                        fieldKey={field.imageKey}
+                                />
 								</div>
 							</div>
 						</div>

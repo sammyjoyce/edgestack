@@ -55,72 +55,95 @@ export default function AdminDashboard({
 	const [serviceUploading, setServiceUploading] = React.useState<boolean[]>(
 		Array(4).fill(false),
 	);
-	const [serviceImageUrls, setServiceImageUrls] = React.useState([
-		safeContent.service_1_image || "",
-		safeContent.service_2_image || "",
-		safeContent.service_3_image || "",
-		safeContent.service_4_image || "",
-	]);
-	const uploadImage = React.useCallback(
-		async (
-			fetcherInstance: ReturnType<
-				typeof useFetcher<typeof adminUploadAction | typeof adminIndexAction>
-			>,
-			key: string,
-			file: File,
-			setUploading: (v: boolean) => void, // eslint-disable-line @typescript-eslint/no-unused-vars
-			setUrl: (url: string) => void, // eslint-disable-line @typescript-eslint/no-unused-vars
-		) => {
-			// eslint-disable-line @typescript-eslint/no-unused-vars
-			setUploading(true);
-			const fd = new FormData();
-			fd.append("image", file);
-			fd.append("key", key);
-			await fetcherInstance.submit(fd, {
-				method: "post",
-				action: "/admin/upload",
-				encType: "multipart/form-data",
-			});
-			const actionData = fetcherInstance.data;
-			if (actionData?.success && "url" in actionData) {
-				setUrl(actionData.url);
-			} else if (actionData?.success) {
-				console.log("Update successful for key (via IndexAction):", key);
-			}
-			setUploading(false);
-		},
-		[],
-	);
-	const handleHeroImageUpload = (file: File) =>
-		uploadImage(
-			uploadFetcher,
-			"hero_image_url",
-			file,
-			setHeroUploading,
-			setHeroImageUrl,
-		);
-	const handleAboutImageUpload = (file: File) =>
-		uploadImage(
-			uploadFetcher,
-			"about_image_url",
-			file,
-			setAboutUploading,
-			setAboutImageUrl,
-		);
-	const handleServiceImageUpload = (idx: number, file: File) =>
-		uploadImage(
-			uploadFetcher,
-			`service_${idx + 1}_image`,
-			file,
-			(v) =>
-				setServiceUploading((prev) =>
-					prev.map((val, i) => (i === idx ? v : val)),
-				),
-			(url) =>
-				setServiceImageUrls((prev) =>
-					prev.map((val, i) => (i === idx ? url : val)),
-				),
-		);
+        const [serviceImageUrls, setServiceImageUrls] = React.useState([
+                safeContent.service_1_image || "",
+                safeContent.service_2_image || "",
+                safeContent.service_3_image || "",
+                safeContent.service_4_image || "",
+        ]);
+
+        React.useEffect(() => {
+                if (
+                        uploadFetcher.state === "idle" &&
+                        uploadFetcher.data &&
+                        typeof uploadFetcher.data === "object" &&
+                        "key" in uploadFetcher.data
+                ) {
+                        const data = uploadFetcher.data as {
+                                success?: boolean;
+                                url?: string;
+                                key?: string;
+                        };
+                        const key = data.key || "";
+                        const url = data.url || "";
+                        const match = key.match(/^service_(\d+)_image$/);
+
+                        if (key === "hero_image_url") {
+                                if (data.success && url) setHeroImageUrl(url);
+                                setHeroUploading(false);
+                        } else if (key === "about_image_url") {
+                                if (data.success && url) setAboutImageUrl(url);
+                                setAboutUploading(false);
+                        } else if (match) {
+                                const idx = Number(match[1]) - 1;
+                                if (idx >= 0) {
+                                        if (data.success && url) {
+                                                setServiceImageUrls((prev) =>
+                                                        prev.map((val, i) => (i === idx ? url : val)),
+                                                );
+                                        }
+                                        setServiceUploading((prev) =>
+                                                prev.map((val, i) => (i === idx ? false : val)),
+                                        );
+                                }
+                        }
+                }
+        }, [uploadFetcher.state, uploadFetcher.data]);
+        const uploadImage = React.useCallback(
+                (
+                        fetcherInstance: ReturnType<
+                                typeof useFetcher<typeof adminUploadAction | typeof adminIndexAction>
+                        >,
+                        key: string,
+                        file: File,
+                        setUploading: (v: boolean) => void,
+                ) => {
+                        setUploading(true);
+                        const fd = new FormData();
+                        fd.append("image", file);
+                        fd.append("key", key);
+                        fetcherInstance.submit(fd, {
+                                method: "post",
+                                action: "/admin/upload",
+                                encType: "multipart/form-data",
+                        });
+                },
+                [],
+        );
+        const handleHeroImageUpload = (file: File) =>
+                uploadImage(
+                        uploadFetcher,
+                        "hero_image_url",
+                        file,
+                        setHeroUploading,
+                );
+        const handleAboutImageUpload = (file: File) =>
+                uploadImage(
+                        uploadFetcher,
+                        "about_image_url",
+                        file,
+                        setAboutUploading,
+                );
+        const handleServiceImageUpload = (idx: number, file: File) =>
+                uploadImage(
+                        uploadFetcher,
+                        `service_${idx + 1}_image`,
+                        file,
+                        (v) =>
+                                setServiceUploading((prev) =>
+                                        prev.map((val, i) => (i === idx ? v : val)),
+                                ),
+                );
 	const sectionsOrder = safeContent.home_sections_order as string | undefined;
 	const sectionDetailsMap: Record<string, { label: string; themeKey: string }> =
 		{
