@@ -5,7 +5,7 @@ A modern, production-ready template for building full-stack React applications u
 ## Features
 
 - 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
+- ⚡ Fast development with Bun and Vite️ Hot Module Replacement (HMR)
 - 📦 Asset bundling and optimization
 - 🔄 Data loading and mutations
 - 🔒 TypeScript by default
@@ -65,6 +65,21 @@ bun wrangler versions deploy
 ## Styling
 
 This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+
+## Project Structure
+
+- `app/` - Route modules and components for the React Router app.
+- `workers/` - Cloudflare Worker entry point that serves the app and static assets.
+- `database/` - Drizzle ORM schema and database helpers.
+- `migrations/` - SQL migrations generated with drizzle-kit.
+- `seeds/` - Initial data for the D1 database.
+- `public/` - Static files served without processing.
+- `scripts/` - Utility scripts like database seeds.
+- `docs/` - Additional project documentation.
+
+## Next Steps
+
+Check the docs for React Router, Cloudflare Workers, and Drizzle ORM. Reviewing `database/schema.ts` and `wrangler.jsonc` will help you understand how the app ties together.
 
 ---
 
