@@ -27,7 +27,7 @@ export function Legend({
 			{...props}
 			className={clsx(
 				className,
-				"text-base font-semibold text-zinc-900 data-disabled:opacity-50",
+				"text-base font-semibold text-admin-foreground data-disabled:opacity-50",
 			)}
 		/>
 	);
@@ -68,7 +68,7 @@ export function Label({
 			{...props}
 			className={clsx(
 				className,
-				"text-sm font-medium text-zinc-900 select-none data-disabled:opacity-50",
+				"text-sm font-medium text-admin-foreground select-none data-disabled:opacity-50",
 			)}
 		/>
 	);
@@ -87,7 +87,7 @@ export function Description({
 			{...props}
 			className={clsx(
 				className,
-				"text-sm text-zinc-500 data-disabled:opacity-50",
+				"text-sm text-admin-text-muted data-disabled:opacity-50",
 			)}
 		/>
 	);

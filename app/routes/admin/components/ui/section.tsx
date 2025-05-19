@@ -8,11 +8,11 @@ export function SectionCard({
 	return (
 		<div
 			className={clsx(
-				"overflow-hidden bg-gray-50 rounded-lg shadow-input-default border border-gray-200",
+				"overflow-hidden bg-admin-white rounded-lg shadow-input-default border border-admin-border",
 				className,
 			)}
 		>
-			<div className="p-4 sm:p-5 md:p-6">{children}</div>
+			<div className="p-6">{children}</div>
 		</div>
 	);
 }
@@ -24,7 +24,7 @@ export function SectionHeading({
 	return (
 		<h2
 			className={clsx(
-				"text-xl font-semibold text-gray-900 mb-4 md:mb-6",
+				"text-xl font-semibold text-admin-foreground mb-4 md:mb-6",
 				className,
 			)}
 		>
@@ -51,7 +51,7 @@ export function FieldLabel({
 		<label
 			htmlFor={htmlFor}
 			className={clsx(
-				"block text-sm font-medium text-gray-700 mb-1",
+				"block text-sm font-medium text-admin-text mb-1",
 				className,
 			)}
 		>

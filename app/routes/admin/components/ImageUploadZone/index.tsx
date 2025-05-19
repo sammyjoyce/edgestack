@@ -85,18 +85,18 @@ export default function ImageUploadZone({
 						className={clsx(
 							"flex flex-col items-center justify-center border-2 border-dashed border-b-0 p-6 transition",
 							"min-h-32",
-							"bg-admin-white hover:bg-gray-50",
+							"bg-admin-white hover:bg-admin-screen",
 							"cursor-pointer",
 							"rounded-t-md",
 							isDragReject && "border-red-400 bg-red-50",
 							isDragActive && "border-primary bg-primary/10",
-							!isDragActive && !isDragReject && "border-gray-300",
+							!isDragActive && !isDragReject && "border-admin-border",
 							disabled && "opacity-60 pointer-events-none",
 						)}
 						aria-label="Image upload drop zone"
 					>
 						<input ref={fileInputRef} {...getInputProps()} name={inputName} />
-						<Text className="text-sm text-center text-gray-600">
+						<Text className="text-sm text-center text-admin-text-muted">
 							{uploading
 								? "Uploading..."
 								: isDragActive
@@ -115,7 +115,7 @@ export default function ImageUploadZone({
 							className={clsx(
 								"w-full flex items-center justify-center",
 								"border-t border-admin-border",
-								"bg-gray-50",
+								"bg-admin-screen",
 								"rounded-t-none",
 								"p-0",
 							)}
@@ -123,7 +123,7 @@ export default function ImageUploadZone({
 							{browseButtonTrigger}
 						</div>
 					) : contentUpdated ? (
-						<div className="w-full flex items-center justify-center border-t border-admin-border bg-gray-50 rounded-t-none p-2">
+						<div className="w-full flex items-center justify-center border-t border-admin-border bg-admin-screen rounded-t-none p-2">
 							<ButtonLED isActive={!!imageUrl} />
 						</div>
 					) : null}

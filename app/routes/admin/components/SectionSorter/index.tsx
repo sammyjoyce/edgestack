@@ -249,7 +249,7 @@ function SortableItem({
 			ref={setNodeRef}
 			style={style}
 			className={clsx(
-				"p-4 bg-white border border-gray-200 rounded-lg shadow-sm flex items-center justify-between transition-all duration-200",
+				"p-4 bg-admin-white border border-admin-border rounded-lg shadow-sm flex items-center justify-between transition-all duration-200",
 				{ "shadow-xl bg-blue-50": isDragging },
 			)}
 		>
@@ -263,7 +263,7 @@ function SortableItem({
 					className="mr-4 cursor-grab touch-none"
 				>
 					<svg
-						className="h-5 w-5 text-gray-500"
+						className="h-5 w-5 text-admin-text-muted"
 						fill="none"
 						stroke="currentColor"
 						strokeWidth={2}
@@ -275,7 +275,7 @@ function SortableItem({
 						<line x1="3" y1="18" x2="21" y2="18" />
 					</svg>
 				</Button>
-				<span className="text-sm font-semibold text-gray-900 truncate">
+				<span className="text-sm font-semibold text-admin-foreground truncate">
 					{details.label}
 				</span>
 			</div>
@@ -295,7 +295,10 @@ function SortableItem({
 						aria-describedby={themeError ? `${switchId}-error` : undefined}
 						aria-label={`Toggle theme for ${details.label}`}
 					/>
-					<SwitchLabel htmlFor={switchId} className="text-xs text-gray-500">
+					<SwitchLabel
+						htmlFor={switchId}
+						className="text-xs text-admin-text-muted"
+					>
 						{isLight ? "Light" : "Dark"}
 					</SwitchLabel>
 				</SwitchField>

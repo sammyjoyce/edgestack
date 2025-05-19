@@ -88,12 +88,12 @@ function SingleImageUpload({
 		>
 			<label
 				htmlFor={`${keyName}_input`}
-				className="block text-sm font-medium text-gray-700 mb-1 self-start"
+				className="block text-sm font-medium text-admin-text mb-1 self-start"
 			>
 				{label}
 				<span
 					id={`help-${keyName}`}
-					className="ml-1 text-xs text-gray-500"
+					className="ml-1 text-xs text-admin-text-muted"
 					role="tooltip"
 				>
 					Upload or drag and drop an image for the {label.toLowerCase()}.
@@ -126,7 +126,7 @@ function SingleImageUpload({
 					""
 				}
 				alt={`${label} Preview`}
-				className="rounded border border-gray-200 mt-2 max-w-full w-48 h-auto object-cover bg-gray-100"
+				className="rounded border border-admin-border mt-2 max-w-full w-48 h-auto object-cover bg-admin-screen"
 			/>
 			{isUploadResponse(fetcher.data) && fetcher.data.error && (
 				<div className="text-red-600 mt-2 text-xs" role="alert">
@@ -152,7 +152,7 @@ export function ImageUploadSection({
 		<section
 			id="image-uploads"
 			ref={ref}
-			className="bg-gray-50 border border-gray-200 rounded-lg shadow-(--shadow-input-default) p-6 mt-8"
+			className="bg-admin-white border border-admin-border rounded-lg shadow-(--shadow-input-default) p-6 mt-8"
 			aria-labelledby="image-uploads-heading"
 		>
 			<SectionIntro title="Image Uploads" className="mb-4" />
