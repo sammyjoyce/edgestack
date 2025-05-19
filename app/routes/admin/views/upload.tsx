@@ -214,7 +214,7 @@ export default function ImageManagement({ loaderData }: Route.ComponentProps) {
 		<FadeIn>
 			<FormCard>
 				<PageHeader title="Image Management" className="mb-2" actions={null} />
-				<Text className="block mb-6 text-sm text-gray-500 dark:text-gray-400">
+				<Text className="block mb-6 text-sm text-admin-text dark:text-admin-text-muted">
 					Upload new images or select from existing ones. Images will be
 					optimized and stored for use in your content.
 				</Text>
