@@ -99,14 +99,14 @@ export default function Component({ actionData }: Route.ComponentProps) {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	return (
-		<FadeIn className="flex min-h-screen flex-col items-center justify-center bg-gray-50 sm:px-6 lg:px-8">
+		<FadeIn className="flex min-h-screen flex-col items-center justify-center bg-admin-screen sm:px-6 lg:px-8">
 			<FormCard>
 				<PageHeader
 					title="Admin Login"
 					className="mb-2 text-center"
 					actions={null}
 				/>
-				<Form method="post" className="mt-8 space-y-6">
+				<Form method="post" className="mt-8 space-y-4">
 					<input type="hidden" name="remember" defaultValue="true" />
 					<Field>
 						<Label htmlFor="username">Username</Label>

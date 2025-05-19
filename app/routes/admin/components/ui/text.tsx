@@ -7,7 +7,7 @@ export function Text({
 	...props
 }: React.ComponentPropsWithoutRef<"p">) {
 	return (
-		<p {...props} className={clsx(className, "text-base text-zinc-700")} />
+		<p {...props} className={clsx(className, "text-base text-admin-text")} />
 	);
 }
 
@@ -33,7 +33,7 @@ export function Strong({
 	return (
 		<strong
 			{...props}
-			className={clsx(className, "font-semibold text-zinc-900")}
+			className={clsx(className, "font-semibold text-admin-foreground")}
 		/>
 	);
 }
@@ -47,7 +47,7 @@ export function Code({
 			{...props}
 			className={clsx(
 				className,
-				"rounded-sm border border-zinc-200 bg-zinc-100 px-1 py-0.5 text-sm font-medium text-zinc-800",
+				"rounded-sm border border-admin-border bg-admin-screen px-1 py-0.5 text-sm font-medium text-admin-foreground",
 			)}
 		/>
 	);
