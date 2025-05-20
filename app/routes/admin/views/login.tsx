@@ -5,11 +5,10 @@ import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { Form, redirect } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import {
-	COOKIE_MAX_AGE,
-	COOKIE_NAME,
-	getSessionCookie,
-	sign,
-	verify,
+        COOKIE_MAX_AGE,
+        COOKIE_NAME,
+        checkSession,
+        sign,
 } from "~/routes/common/utils/auth";
 import { FormCard } from "../components/ui/FormCard";
 import { PageHeader } from "../components/ui/PageHeader";
@@ -53,13 +52,19 @@ export const action = async ({
 			console.error("Admin credentials not configured.");
 			return { success: false, error: "Server configuration error." };
 		}
-		if (username === adminUsername && password === adminPassword) {
-			const token = await sign(username, jwtSecret);
-			const response = redirect("/admin");
-			response.headers.set(
-				"Set-Cookie",
-				`${COOKIE_NAME}=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${COOKIE_MAX_AGE}`,
-			);
+                if (username === adminUsername && password === adminPassword) {
+                        const sessionId = crypto.randomUUID();
+                        const token = await sign(sessionId, jwtSecret);
+                        const stub = env.SESSION_DO.get(env.SESSION_DO.idFromName(sessionId));
+                        await stub.fetch(`https://session/${sessionId}`, {
+                                method: "PUT",
+                                body: JSON.stringify({ username, createdAt: Date.now() }),
+                        });
+                        const response = redirect("/admin");
+                        response.headers.set(
+                                "Set-Cookie",
+                                `${COOKIE_NAME}=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${COOKIE_MAX_AGE}`,
+                        );
 			return response;
 		}
 		return { success: false, error: "Invalid username or password" };
@@ -74,19 +79,11 @@ export const loader = async ({
 	params,
 }: Route.LoaderArgs) => {
 	try {
-		const sessionValue = getSessionCookie(request);
-		const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
-		if (sessionValue && jwtSecret) {
-			try {
-				const isAuthenticated = await verify(sessionValue, jwtSecret);
-				if (isAuthenticated) {
-					return redirect("/admin");
-				}
-			} catch (e) {
-				if (DEBUG) console.error("Login loader verification error:", e);
-			}
-		}
-		return null;
+                const env = context.cloudflare?.env;
+                if (env && (await checkSession(request, env))) {
+                        return redirect("/admin");
+                }
+                return null;
 	} catch (error) {
 		if (DEBUG) console.error("[ADMIN LOGIN] Loader Error:", error);
 		throw new Response(

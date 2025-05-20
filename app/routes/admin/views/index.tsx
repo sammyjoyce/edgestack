@@ -3,7 +3,7 @@ import { useSearchParams, useActionData, useNavigation } from "react-router";
 import { redirect } from "react-router";
 import { assert } from "~/routes/common/utils/assert";
 import { getAllContent, updateContent } from "~/routes/common/db";
-import { getSessionCookie, verify } from "~/routes/common/utils/auth";
+import { checkSession } from "~/routes/common/utils/auth";
 import AdminDashboard from "../components/AdminDashboard";
 import { ButtonLED } from "../components/ui/button";
 import { ValiError } from "valibot";
@@ -14,12 +14,10 @@ import type { Route } from "./+types";
 const DEBUG = process.env.NODE_ENV !== "production";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-	const token = getSessionCookie(request);
-	const secret = context.cloudflare?.env?.JWT_SECRET;
-
-	if (!token || !secret || !(await verify(token, secret))) {
-		throw redirect("/admin/login");
-	}
+        const env = context.cloudflare?.env;
+        if (!env || !(await checkSession(request, env))) {
+                throw redirect("/admin/login");
+        }
 
 	try {
 		const content = await getAllContent(context.db);
@@ -86,12 +84,10 @@ async function handleReorderSections(
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
-	const token = getSessionCookie(request);
-	const secret = context.cloudflare?.env?.JWT_SECRET;
-
-	if (!token || !secret || !(await verify(token, secret))) {
-		return redirect("/admin/login");
-	}
+        const env = context.cloudflare?.env;
+        if (!env || !(await checkSession(request, env))) {
+                return redirect("/admin/login");
+        }
 
 	if (request.method !== "POST") {
 		return { success: false, error: "Method not allowed" };

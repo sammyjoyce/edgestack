@@ -10,6 +10,7 @@ declare global {
                 ASSETS_BUCKET: R2Bucket;
                 PUBLIC_R2_URL: string;
                 DRIZZLE_DO: DurableObjectNamespace;
+                SESSION_DO: DurableObjectNamespace;
         }
 }
 declare module "react-router" {

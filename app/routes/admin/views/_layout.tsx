@@ -13,7 +13,7 @@ import {
 	useLocation,
 	useNavigation,
 } from "react-router";
-import { getSessionCookie, verify } from "~/routes/common/utils/auth";
+import { checkSession } from "~/routes/common/utils/auth";
 import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 import { SidebarLayout } from "../components/ui/sidebar-layout";
@@ -29,20 +29,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const url = new URL(request.url);
 	const isLoginRoute = url.pathname === "/admin/login";
 	const isLogoutRoute = url.pathname === "/admin/logout";
-	const sessionValue = getSessionCookie(request);
-	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
-
-	const isAuthenticated = async () => {
-		if (!sessionValue || !jwtSecret) return false;
-		try {
-			return await verify(sessionValue, jwtSecret);
-		} catch (e) {
-			console.error("Token verification failed:", e);
-			return false;
-		}
-	};
-
-	const loggedIn = await isAuthenticated();
+        const env = context.cloudflare?.env;
+        const loggedIn = env ? await checkSession(request, env) : false;
 	if (!loggedIn && !isLoginRoute && !isLogoutRoute) {
 		return redirect("/admin/login");
 	}

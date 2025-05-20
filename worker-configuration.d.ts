@@ -13,6 +13,7 @@ declare namespace Cloudflare {
                 ASSETS_BUCKET: R2Bucket;
                 DB: D1Database;
                 DRIZZLE_DO: DurableObjectNamespace;
+                SESSION_DO: DurableObjectNamespace;
         }
 }
 interface Env extends Cloudflare.Env {}
