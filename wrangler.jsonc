@@ -8,9 +8,14 @@
 	"assets": {
 		"directory": "./build/client/"
 	},
-	"workers_dev": true,
-	"vars": {
-		"CLOUDFLARE_ACCOUNT_ID": "427aa00a5888cad78805c7128db1f817",
+        "workers_dev": true,
+        "durable_objects": {
+                "bindings": [
+                        { "name": "DRIZZLE_DO", "class_name": "DrizzleDurable" }
+                ]
+        },
+        "vars": {
+                "CLOUDFLARE_ACCOUNT_ID": "427aa00a5888cad78805c7128db1f817",
 		"CLOUDFLARE_DATABASE_ID": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
 		"ADMIN_USERNAME": "admin",
 		"ADMIN_PASSWORD": "Stanley212$",
@@ -51,17 +56,22 @@
 				"JWT_SECRET": "super_secret_squidward_tentacles",
 				"PUBLIC_R2_URL": "https://427aa00a5888cad78805c7128db1f817.r2.cloudflarestorage.com/starter-assets/"
 			},
-			"r2_buckets": [
-				{
-					"binding": "ASSETS_BUCKET",
-					"bucket_name": "starter-assets",
-					"preview_bucket_name": "starter-assets-dev"
-				}
-			],
-			"d1_databases": [
-				{
-					"binding": "DB",
-					"database_name": "starter-content-db",
+                       "r2_buckets": [
+                               {
+                                       "binding": "ASSETS_BUCKET",
+                                       "bucket_name": "starter-assets",
+                                       "preview_bucket_name": "starter-assets-dev"
+                               }
+                       ],
+                        "durable_objects": {
+                                "bindings": [
+                                        { "name": "DRIZZLE_DO", "class_name": "DrizzleDurable" }
+                                ]
+                        },
+                       "d1_databases": [
+                               {
+                                       "binding": "DB",
+                                       "database_name": "starter-content-db",
 					"database_id": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
 					"migrations_dir": "./migrations"
 				}
