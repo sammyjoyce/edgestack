@@ -76,6 +76,7 @@ This template comes with [Tailwind CSS](https://tailwindcss.com/) already config
 - `public/` - Static files served without processing.
 - `scripts/` - Utility scripts like database seeds.
 - `docs/` - Additional project documentation.
+- See [`docs/cloudflare.md`](docs/cloudflare.md) for details on Workers, Durable Objects, D1, and R2.
 
 ## Next Steps
 
