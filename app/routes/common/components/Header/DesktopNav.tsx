@@ -58,9 +58,9 @@ export default function DesktopNav({
 			</nav>
 			<nav className="hidden lg:flex items-center gap-x-4">
 				{right.map((i) => LinkButton(i, scrollToSection))}
-				<Button to="tel:0404289437" size="xs" invert>
-					0404 289 437
-				</Button>
+                               <Button to="tel:0000000000" size="xs" invert>
+                                       000-000-0000
+                               </Button>
 			</nav>
 		</>
 	);

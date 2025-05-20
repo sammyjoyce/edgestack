@@ -1,6 +1,6 @@
 import { assert } from "./assert";
 
-export const COOKIE_NAME = "lush_admin_session";
+export const COOKIE_NAME = "admin_session";
 export const COOKIE_MAX_AGE = 60 * 60 * 2;
 const enc = new TextEncoder();
 const keyCache = new Map<string, Promise<CryptoKey>>();

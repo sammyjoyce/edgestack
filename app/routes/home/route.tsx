@@ -16,7 +16,7 @@ const DEBUG = process.env.NODE_ENV !== "production";
 
 export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
 	const content = data?.content ?? {};
-	const pageTitle = content.meta_title ?? "Lush Constructions";
+       const pageTitle = content.meta_title ?? "Your Company";
 	const pageDescription =
 		content.meta_description ??
 		"High-Quality Solutions for Home & Office Improvement";
@@ -158,8 +158,8 @@ export default function HomeRoute({
 				key="about"
 				title={typedContent?.about_title ?? "About Us"}
 				text={
-					typedContent?.about_text ??
-					"At Lush Constructions, we're driven by a passion for building more than just structures – we craft homes, communities, and memories that last a lifetime. With a relentless focus on quality, transparency, and trust, we're dedicated to turning your vision into a breathtaking reality. As proud members of Master Builders NSW, we uphold the highest standards in the industry, ensuring every project is delivered with precision, care, and a commitment to excellence. Whether you're dreaming of a grand renovation, a thoughtful extension, or a brand-new build, our team of experts is here to guide you every step of the way."
+                                       typedContent?.about_text ??
+                                       "We are passionate about crafting spaces that stand the test of time. Our focus on quality and transparent communication ensures your vision becomes reality."
 				}
 				imageUrl={typedContent?.about_image_url ?? "/assets/team.jpg"}
 				theme={(typedContent?.about_title_theme as "light" | "dark") ?? "light"}

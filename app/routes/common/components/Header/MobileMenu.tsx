@@ -40,14 +40,14 @@ export default function MobileMenu({
 			</AnimatePresence>
 			<DialogPanel className="fixed inset-y-0 right-0 z-50 w-full max-w-sm overflow-y-auto bg-black/95 px-6 py-6 shadow-2xl ring-1 ring-gray-800 backdrop-blur-lg">
 				<div className="flex items-center justify-between">
-					<NavLink to="/" className="-m-1.5 p-1.5" onClick={onClose}>
-						<span className="sr-only">Lush Constructions Home</span>
-						<img
-							src="/assets/lush_constructions_no_black_v2.png"
-							alt="LUSH CONSTRUCTIONS"
-							className="h-8 w-auto sm:h-10"
-						/>
-					</NavLink>
+                                       <NavLink to="/" className="-m-1.5 p-1.5" onClick={onClose}>
+                                               <span className="sr-only">Home</span>
+                                               <img
+                                                       src="/assets/logo_284x137-KoakP1Oi.png"
+                                                       alt="Company Logo"
+                                                       className="h-8 w-auto sm:h-10"
+                                               />
+                                       </NavLink>
 					<button
 						type="button"
 						className="-m-2.5 p-2.5 rounded-md text-gray-300 transition hover:text-gray-100"
@@ -104,13 +104,13 @@ export default function MobileMenu({
 							</a>
 						);
 					})}
-					<Button
-						to="tel:0404289437"
-						invert
-						className="w-full place-content-center grid"
-					>
-						Call Us · 0404 289 437
-					</Button>
+                                       <Button
+                                               to="tel:0000000000"
+                                               invert
+                                               className="w-full place-content-center grid"
+                                       >
+                                               Call Us · 000-000-0000
+                                       </Button>
 				</nav>
 			</DialogPanel>
 		</Dialog>

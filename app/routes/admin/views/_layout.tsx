@@ -80,11 +80,11 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 	const sidebarNav = (
 		<div className="flex h-full flex-col bg-admin-screen px-6 py-4">
 			<div className="flex h-16 items-center border-b border-admin-border mb-2 pb-2">
-				<img
-					src="/assets/lush_constructions_no_black_v2.png"
-					alt="LUSH CONSTRUCTIONS"
-					className="h-8 mx-auto filter invert"
-				/>
+                               <img
+                                       src="/assets/logo_284x137-KoakP1Oi.png"
+                                       alt="Company Logo"
+                                       className="h-8 mx-auto filter invert"
+                               />
 			</div>
 			<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-admin-text-muted">
 				Admin Menu
@@ -180,11 +180,11 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 	return (
 		<SidebarLayout
 			navbar={
-				<img
-					src="/assets/lush_constructions_no_black_v2.png"
-					alt="Logo"
-					className="h-8"
-				/>
+                               <img
+                                       src="/assets/logo_284x137-KoakP1Oi.png"
+                                       alt="Company Logo"
+                                       className="h-8"
+                               />
 			}
 			sidebar={sidebarNav}
 		>
