@@ -45,7 +45,7 @@ const d1Stub = {
 
 // Log seed data instructions
 console.log('⭐ To seed the remote database, copy and run the SQL statements from seeds/initial-data.sql manually using:');
-console.log('bunx wrangler d1 execute lush-content-db --remote --file=./seeds/initial-data.sql');
+console.log('bunx wrangler d1 execute <your-d1-name> --remote --file=./seeds/initial-data.sql');
 console.log('\\n');
 
 // Call the seedDatabase to display the content that would be inserted
@@ -60,9 +60,9 @@ seedDatabase(d1Stub).catch(console.error);
 	console.log("✅ Seed simulation completed.");
 	console.log("");
 	console.log("To run the actual seed on the remote database, use:");
-	console.log(
-		"bunx wrangler d1 execute lush-content-db --remote --file=./seeds/initial-data.sql",
-	);
+        console.log(
+                "bunx wrangler d1 execute <your-d1-name> --remote --file=./seeds/initial-data.sql",
+        );
 } catch (error) {
 	console.error("Error:", error);
 	process.exit(1);
