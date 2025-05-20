@@ -32,7 +32,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 	const contentItems: NewContent[] = [
 		{
 			key: "hero_title",
-			value: "Building Excellence in Every Project",
+                       value: "Big Impact for Modern Brands",
 			page: "home",
 			section: "hero",
 			type: "text",
@@ -40,8 +40,8 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "hero_subtitle",
-			value:
-				"Sydney's premier construction and renovation specialists, creating exceptional spaces since 2010.",
+                       value:
+                               "Delivering high-quality solutions since 2010.",
 			page: "home",
 			section: "hero",
 			type: "text",
@@ -65,8 +65,8 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "services_intro_text",
-			value:
-				"We offer a comprehensive range of construction and renovation services tailored to your specific needs.",
+                       value:
+                               "We offer a variety of services to help your business grow.",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -74,7 +74,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_1_title",
-			value: "Renovations",
+                       value: "Design",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -82,8 +82,8 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_1_text",
-			value:
-				"Transform your existing space with our expert renovation services, focusing on quality craftsmanship and attention to detail.",
+                       value:
+                               "Creative designs tailored to your brand.",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -91,7 +91,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_1_image",
-			value: "/assets/renovations.jpg",
+                       value: "/assets/service-design.jpg",
 			page: "home",
 			section: "services",
 			type: "image",
@@ -99,7 +99,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_2_title",
-			value: "Extensions",
+                       value: "Development",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -107,8 +107,8 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_2_text",
-			value:
-				"Expand your living space with our seamless home extensions, perfectly integrated with your existing structure.",
+                       value:
+                               "Robust solutions built with the latest technologies.",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -116,7 +116,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_2_image",
-			value: "/assets/extensions.jpg",
+                       value: "/assets/service-development.jpg",
 			page: "home",
 			section: "services",
 			type: "image",
@@ -124,7 +124,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_3_title",
-			value: "New Builds",
+                       value: "Marketing",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -132,8 +132,8 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_3_text",
-			value:
-				"Create your dream home from the ground up with our comprehensive new build services.",
+                       value:
+                               "Strategies that connect you with your audience.",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -141,7 +141,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_3_image",
-			value: "/assets/new-builds.jpg",
+                       value: "/assets/service-marketing.jpg",
 			page: "home",
 			section: "services",
 			type: "image",
@@ -149,7 +149,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_4_title",
-			value: "Commercial",
+                       value: "Support",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -157,8 +157,8 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_4_text",
-			value:
-				"Professional commercial construction and fit-out services for businesses of all sizes.",
+                       value:
+                               "Reliable support to keep things running smoothly.",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -166,7 +166,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_4_image",
-			value: "/assets/commercial.jpg",
+                       value: "/assets/service-support.jpg",
 			page: "home",
 			section: "services",
 			type: "image",
@@ -182,8 +182,8 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
                {
                         key: "about_text",
-                        value:
-                                "We have been creating exceptional spaces for our clients with a commitment to quality workmanship and clear communication.",
+                       value:
+                               "Our team delivers results with a focus on quality and clear communication.",
 			page: "home",
 			section: "about",
 			type: "text",
@@ -240,7 +240,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
                {
                         key: "meta_title",
-                        value: "Your Company",
+                       value: "Your Company | Digital Solutions",
 			page: "global",
 			section: "meta",
 			type: "text",
@@ -248,8 +248,8 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
                {
                         key: "meta_description",
-                        value:
-                                "Professional construction and renovation services delivered with quality craftsmanship.",
+                       value:
+                               "Delivering high-quality solutions since 2010.",
 			page: "global",
 			section: "meta",
 			type: "text",
@@ -274,68 +274,58 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 	}
 }
 async function seedProjects(db: DrizzleD1Database<typeof schema>) {
-	const projects: NewProject[] = [
-		{
-			title: "Modern Waterfront Home",
-			description:
-				"A stunning waterfront property featuring open plan living, floor-to-ceiling windows, and premium finishes throughout.",
-			details:
-				"Location: Northern Beaches\nCompletion: 2023\nScope: New Build\nFeatures: 4 bedrooms, 3 bathrooms, infinity pool, smart home technology",
-			imageUrl: "/assets/project-waterfront.jpg",
-			slug: "modern-waterfront-home",
-			published: true,
-			isFeatured: true,
-			sortOrder: 1,
-		},
-		{
-			title: "Heritage Cottage Renovation",
-			description:
-				"Careful restoration of a 1920s cottage, preserving character features while adding modern amenities.",
-			details:
-				"Location: Inner West\nCompletion: 2024\nScope: Heritage Renovation\nFeatures: Original fireplaces restored, modern kitchen extension, landscaped gardens",
-			imageUrl: "/assets/project-heritage.jpg",
-			slug: "heritage-cottage-renovation",
-			published: true,
-			isFeatured: true,
-			sortOrder: 2,
-		},
-		{
-			title: "Boutique Apartment Complex",
-			description:
-				"Design and construction of a boutique apartment building with six luxury apartments.",
-			details:
-				"Location: Eastern Suburbs\nCompletion: 2023\nScope: Commercial New Build\nFeatures: 6 apartments, underground parking, rooftop terrace, sustainable design elements",
-			imageUrl: "/assets/project-apartments.jpg",
-			slug: "boutique-apartment-complex",
-			published: true,
-			isFeatured: true,
-			sortOrder: 3,
-		},
-		{
-			title: "Contemporary Kitchen Renovation",
-			description:
-				"Complete transformation of an outdated kitchen into a modern cooking and entertaining space.",
-			details:
-				"Location: North Shore\nCompletion: 2024\nScope: Interior Renovation\nFeatures: Custom cabinetry, island bench, premium appliances, butler's pantry",
-			imageUrl: "/assets/project-kitchen.jpg",
-			slug: "contemporary-kitchen-renovation",
-			published: true,
-			isFeatured: false,
-			sortOrder: 4,
-		},
-		{
-			title: "Sustainable Family Home",
-			description:
-				"An eco-friendly new build utilizing sustainable materials and energy-efficient design principles.",
-			details:
-				"Location: Hills District\nCompletion: 2023\nScope: New Build\nFeatures: Solar power, rainwater harvesting, passive design, recycled materials",
-			imageUrl: "/assets/project-sustainable.jpg",
-			slug: "sustainable-family-home",
-			published: true,
-			isFeatured: false,
-			sortOrder: 5,
-		},
-	];
+       const projects: NewProject[] = [
+               {
+                       title: "Responsive Website",
+                       description: "A modern responsive website for a local business.",
+                       details: "Features: accessible design, CMS integration",
+                       imageUrl: "/assets/project-waterfront.jpg",
+                       slug: "responsive-website",
+                       published: true,
+                       isFeatured: true,
+                       sortOrder: 1,
+               },
+               {
+                       title: "Productivity App",
+                       description: "A mobile app that helps users stay organized.",
+                       details: "Features: cross-platform support, offline mode, push notifications",
+                       imageUrl: "/assets/project-heritage.jpg",
+                       slug: "productivity-app",
+                       published: true,
+                       isFeatured: true,
+                       sortOrder: 2,
+               },
+               {
+                       title: "E-commerce Platform",
+                       description: "A scalable online store with secure payments.",
+                       details: "Features: custom integrations, flexible catalog, analytics",
+                       imageUrl: "/assets/project-apartments.jpg",
+                       slug: "ecommerce-platform",
+                       published: true,
+                       isFeatured: true,
+                       sortOrder: 3,
+               },
+               {
+                       title: "Analytics Dashboard",
+                       description: "A dashboard providing real-time insights for your team.",
+                       details: "Features: dynamic charts, exportable reports",
+                       imageUrl: "/assets/project-kitchen.jpg",
+                       slug: "analytics-dashboard",
+                       published: true,
+                       isFeatured: false,
+                       sortOrder: 4,
+               },
+               {
+                       title: "Portfolio Showcase",
+                       description: "A clean and simple portfolio site.",
+                       details: "Features: image galleries, contact form",
+                       imageUrl: "/assets/project-sustainable.jpg",
+                       slug: "portfolio-showcase",
+                       published: true,
+                       isFeatured: false,
+                       sortOrder: 5,
+               },
+       ];
 	for (const project of projects) {
 		try {
 			await db.insert(schema.projects).values(project).run();

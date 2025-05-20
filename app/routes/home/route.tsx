@@ -81,10 +81,10 @@ export default function HomeRoute({
 		hero: (
 			<Hero
 				key="hero"
-				title={typedContent?.hero_title ?? "Building Dreams, Creating Spaces"}
+                               title={typedContent?.hero_title ?? "Big Impact for Modern Brands"}
 				subtitle={
-					typedContent?.hero_subtitle ??
-					"Your trusted partner in construction and renovation."
+                                       typedContent?.hero_subtitle ??
+                                       "Delivering high-quality solutions since 2010."
 				}
 				imageUrl={typedContent?.hero_image_url ?? "/assets/rozelle.jpg"}
 				theme={(typedContent?.hero_title_theme as "light" | "dark") ?? "light"}
@@ -95,8 +95,8 @@ export default function HomeRoute({
 				key="services"
 				introTitle={typedContent?.services_intro_title ?? "Our Services"}
 				introText={
-					typedContent?.services_intro_text ??
-					"We offer a wide range of construction services."
+                                       typedContent?.services_intro_text ??
+                                       "We offer a variety of services to help your business grow."
 				}
 				theme={
 					(typedContent?.services_intro_title_theme as "light" | "dark") ??
