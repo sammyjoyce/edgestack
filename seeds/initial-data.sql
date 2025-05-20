@@ -40,7 +40,8 @@ INSERT OR REPLACE INTO content (key, page, section, type, value, sort_order) VAL
 ('meta_description', 'global', 'meta', 'text', 'Providing quality construction and renovation services since 2010.', 2),
 
 -- Section Ordering
-('home_sections_order', 'global', 'settings', 'text', 'hero,services,projects,about,contact', 1);
+('home_sections_order', 'global', 'settings', 'text', 'hero,services,projects,about,contact', 1)
+;
 
 -- Seed projects
 INSERT OR REPLACE INTO projects (title, description, details, image_url, slug, published, is_featured, sort_order) VALUES
