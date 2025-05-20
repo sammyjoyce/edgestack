@@ -15,12 +15,13 @@ interface RecentProjectsProps {
 }
 
 export default function RecentProjects({
-	introTitle,
-	introText,
-	projects = [],
-	theme = "light",
+        introTitle,
+        introText,
+        projects = [],
+        theme = "light",
 }: RecentProjectsProps) {
-	return (
+        if (!introTitle && !introText && projects.length === 0) return null;
+        return (
 		<section
 			id="projects"
 			className={clsx(
@@ -28,8 +29,8 @@ export default function RecentProjects({
 				theme === "dark" && "dark",
 			)}
 		>
-			<SectionIntro
-				title={introTitle ?? "Recent Projects"}
+                        <SectionIntro
+                                title={introTitle}
 				className="mb-16 max-w-6xl px-4 lg:px-8"
 				invert={theme === "dark"}
 			>

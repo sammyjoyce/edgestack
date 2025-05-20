@@ -33,8 +33,8 @@ export const loader = async ({
 };
 
 export function ProjectsLayout({ loaderData }: Route.ComponentProps) {
-	const projectsPageIntroTheme =
-		loaderData.content.projects_page_intro_theme === "dark" ? "dark" : "light";
+        const projectsPageIntroTheme =
+                loaderData.content.projects_page_intro_theme === "dark" ? "dark" : "light";
 	return (
 		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
 			<Header
@@ -46,15 +46,18 @@ export function ProjectsLayout({ loaderData }: Route.ComponentProps) {
 					projectsPageIntroTheme === "dark" && "dark",
 				)}
 			>
-				<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-					<h1 className="mb-4 text-center font-bold font-serif text-4xl text-black dark:text-white">
-						Our Projects
-					</h1>
-					<p className="mx-auto max-w-3xl text-center text-xl text-gray-700 dark:text-gray-300">
-						{loaderData.content.projects_page_intro ??
-							"Explore our portfolio of completed projects, showcasing our commitment to quality craftsmanship and attention to detail."}
-					</p>
-				</div>
+                                <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                                        {loaderData.content.projects_page_title && (
+                                                <h1 className="mb-4 text-center font-bold font-serif text-4xl text-black dark:text-white">
+                                                        {loaderData.content.projects_page_title}
+                                                </h1>
+                                        )}
+                                        {loaderData.content.projects_page_intro && (
+                                                <p className="mx-auto max-w-3xl text-center text-xl text-gray-700 dark:text-gray-300">
+                                                        {loaderData.content.projects_page_intro}
+                                                </p>
+                                        )}
+                                </div>
 			</div>
 			<Outlet context={loaderData} />
 			<Footer />
