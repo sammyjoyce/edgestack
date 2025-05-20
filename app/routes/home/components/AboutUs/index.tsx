@@ -4,23 +4,22 @@ import { ConditionalRichTextRenderer } from "~/routes/common/components/Conditio
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 
 interface AboutProps {
-	title?: string;
-	text?: string;
-	imageUrl?: string;
-	altText?: string;
-	theme?: "light" | "dark";
+        title?: string;
+        text?: string;
+        imageUrl?: string;
+        altText?: string;
+        theme?: "light" | "dark";
 }
 
 export default function AboutUs({
-	title = "About Us",
-	text,
-	imageUrl,
-	altText,
-	theme = "light",
-}: AboutProps): JSX.Element {
-       const defaultAboutText =
-               "We are passionate about crafting spaces that stand the test of time. With a relentless focus on quality and clear communication, our team is dedicated to turning your ideas into reality.";
-	return (
+        title,
+        text,
+        imageUrl,
+        altText,
+        theme = "light",
+}: AboutProps): JSX.Element | null {
+        if (!title && !text && !imageUrl) return null;
+        return (
 		<section
 			className={clsx(
 				"py-12 sm:py-20 md:py-28 bg-white text-gray-900 dark:bg-gray-900 dark:text-white",
@@ -31,50 +30,49 @@ export default function AboutUs({
 			<div className="mx-auto max-w-7xl px-4 lg:px-6">
 				<div className="flex flex-col md:flex-row md:gap-12">
 					<div className="mb-8 w-full md:mb-0 md:max-w-xl">
-						<div className="mb-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
-							<FadeIn>
-								<img
-									src="/assets/master-builders-logo.png"
-									alt="Master Builders Logo"
-									className="h-16 sm:h-18"
-								/>
-							</FadeIn>
-							<FadeIn>
-								<h2
-									className={clsx(
-										"font-medium font-serif text-3xl tracking-tight text-gray-900 dark:text-white sm:text-4xl md:text-5xl",
-									)}
-								>
-									{title ?? "About Us"}
-								</h2>
-							</FadeIn>
-						</div>
-						<div className="space-y-4 text-gray-700 dark:text-gray-300">
-							<ConditionalRichTextRenderer
-								text={text ?? defaultAboutText}
-								fallbackClassName="text-base sm:text-lg text-gray-700 dark:text-gray-300" // Standard Tailwind
-								richTextClassName={clsx(
-									"prose-base sm:prose-lg", // Prose size modifiers
-									"prose-p:text-gray-700 dark:prose-p:text-gray-300",
-									"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
-									"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
-									"prose-em:text-gray-700 dark:prose-em:text-gray-300",
-									"prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
-									"prose max-w-none",
-								)}
-								fallbackTag="p"
-							/>
-						</div>
-					</div>
-					<div className="w-full md:w-1/2">
-						<img
-							src={imageUrl ?? "/assets/team.jpg"}
-							alt={altText ?? title}
-							className="aspect-3/2 w-full rounded-md object-cover"
-						/>
-					</div>
-				</div>
-			</div>
-		</section>
+                                        <div className="mb-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
+                                                {title && (
+                                                        <FadeIn>
+                                                                <h2
+                                                                        className={clsx(
+                                                                                "font-medium font-serif text-3xl tracking-tight text-gray-900 dark:text-white sm:text-4xl md:text-5xl",
+                                                                        )}
+                                                                >
+                                                                        {title}
+                                                                </h2>
+                                                        </FadeIn>
+                                                )}
+                                        </div>
+                                                {text && (
+                                                        <div className="space-y-4 text-gray-700 dark:text-gray-300">
+                                                                <ConditionalRichTextRenderer
+                                                                        text={text}
+                                                                        fallbackClassName="text-base sm:text-lg text-gray-700 dark:text-gray-300" // Standard Tailwind
+                                                                        richTextClassName={clsx(
+                                                                                "prose-base sm:prose-lg", // Prose size modifiers
+                                                                                "prose-p:text-gray-700 dark:prose-p:text-gray-300",
+                                                                                "prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
+                                                                                "prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
+                                                                                "prose-em:text-gray-700 dark:prose-em:text-gray-300",
+                                                                                "prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
+                                                                                "prose max-w-none",
+                                                                        )}
+                                                                        fallbackTag="p"
+                                                                />
+                                                        </div>
+                                                )}
+                                        </div>
+                                        {imageUrl && (
+                                                <div className="w-full md:w-1/2">
+                                                        <img
+                                                                src={imageUrl}
+                                                                alt={altText ?? title ?? ""}
+                                                                className="aspect-3/2 w-full rounded-md object-cover"
+                                                        />
+                                                </div>
+                                        )}
+                                </div>
+                        </div>
+                </section>
 	);
 }

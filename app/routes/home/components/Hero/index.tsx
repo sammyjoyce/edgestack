@@ -5,21 +5,22 @@ import { useSectionScroll } from "~/hooks/useSectionScroll";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 
 interface HeroProps {
-	title: string;
-	subtitle?: string;
-	imageUrl?: string;
-	altText?: string;
-	theme?: "light" | "dark";
+        title?: string;
+        subtitle?: string;
+        imageUrl?: string;
+        altText?: string;
+        theme?: "light" | "dark";
 }
 
 export default function Hero({
-	title,
-	subtitle,
-	imageUrl,
-	altText = "Modern home extension background",
-	theme = "light",
-}: HeroProps): JSX.Element {
-	const backgroundUrl = imageUrl ?? "/assets/rozelle.jpg";
+        title,
+        subtitle,
+        imageUrl,
+        altText,
+        theme = "light",
+}: HeroProps): JSX.Element | null {
+        if (!title) return null;
+        const backgroundUrl = imageUrl;
 	const subtitleClasses =
 		"mx-auto rounded-xl bg-white/90 px-4 py-2 text-center font-sans text-lg text-gray-700 drop-shadow-md backdrop-blur-md transition-all duration-300 ease-in-out dark:bg-black/80 dark:text-gray-100 sm:text-lg lg:text-2xl";
 
@@ -48,13 +49,15 @@ const scrollToServices = useSectionScroll("#services");
 				theme === "dark" && "dark",
 			)}
 		>
-			<div className="-z-10 absolute inset-0">
-				<img
-					src={backgroundUrl}
-					alt={altText}
-					className="h-full w-full scale-105 object-cover object-center blur-[1px] brightness-90 transition-all duration-700"
-				/>
-			</div>
+                        {backgroundUrl && (
+                                <div className="-z-10 absolute inset-0">
+                                        <img
+                                                src={backgroundUrl}
+                                                alt={altText ?? ""}
+                                                className="h-full w-full scale-105 object-cover object-center blur-[1px] brightness-90 transition-all duration-700"
+                                        />
+                                </div>
+                        )}
 			<div className="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 lg:px-8">
 				<div className="mx-auto flex min-h-[calc(100vh-3.5rem)] flex-col justify-center py-32 sm:py-48 lg:py-56">
 					<div className="relative animate-fade-in-up text-center">
