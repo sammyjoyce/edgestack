@@ -4,7 +4,7 @@ import { data, redirect } from "react-router";
 import { eq } from "drizzle-orm";
 import { file, ValiError } from "valibot";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { getSessionCookie, verify } from "~/routes/common/utils/auth";
+import { checkSession } from "~/routes/common/utils/auth";
 import {
 	deleteStoredImage,
 	handleImageUpload,
@@ -22,12 +22,10 @@ import { Text } from "../components/ui/text";
 import type { Route } from "./+types/upload";
 
 export async function loader({ context, request }: Route.LoaderArgs) {
-	const sessionValue = getSessionCookie(request);
-	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
-
-	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		throw redirect("/admin/login");
-	}
+        const env = context.cloudflare?.env;
+        if (!env || !(await checkSession(request, env))) {
+                throw redirect("/admin/login");
+        }
 
 	try {
 		const images = await listStoredImages(context);
@@ -168,13 +166,10 @@ async function handleUploadImage(
 
 // Main action function
 export async function action({ request, context }: Route.ActionArgs) {
-	const typedContext = context;
-	const sessionValue = getSessionCookie(request);
-	const jwtSecret = typedContext.cloudflare?.env?.JWT_SECRET;
-
-	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		return redirect("/admin/login");
-	}
+        const env = context.cloudflare?.env;
+        if (!env || !(await checkSession(request, env))) {
+                return redirect("/admin/login");
+        }
 
 	if (request.method !== "POST") {
 		return data(
