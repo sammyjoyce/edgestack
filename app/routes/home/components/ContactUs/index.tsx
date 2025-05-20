@@ -22,16 +22,16 @@ export default function ContactUs({
 		contact_headline: headline = "Ready to Start Your Project?",
 		contact_intro:
 			intro = "From concept to completion, we're here to help bring your vision to life. Our expert team specializes in turning your ideas into stunning reality.",
-		contact_address: address = "PO BOX 821\nMarrickville, NSW 2204",
-		contact_phone: phone = "0404 289 437",
-		contact_email: email = "contact@lushconstructions.com",
+               contact_address: address = "123 Example St\nCity, ST 0000",
+               contact_phone: phone = "000-000-0000",
+               contact_email: email = "info@example.com",
 		contact_hours:
 			hours = "Monday - Friday: 7am - 5pm\nSaturday: By appointment",
-		contact_abn: abn = "99 652 947 528",
-		contact_acn: acn = "141 565 746",
-		contact_license: license = "4632530",
-		contact_instagram:
-			instagram = "https://www.instagram.com/lushconstructions",
+               contact_abn: abn = "00 000 000 000",
+               contact_acn: acn = "000 000 000",
+               contact_license: license = "000000",
+               contact_instagram:
+                       instagram = "https://www.instagram.com/example",
 	} = content;
 	return (
 		<motion.div

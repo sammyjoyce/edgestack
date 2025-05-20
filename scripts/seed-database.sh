@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to seed the Lush Constructions database with content and projects
+# Script to seed the starter database with content and projects
 # Usage: ./scripts/seed-database.sh [--remote]
 #
 # Based on Cloudflare D1 + Wrangler best practices (May 2025)
@@ -44,7 +44,7 @@ else
 fi
 
 # Database name from wrangler.jsonc
-DB_NAME="lush-content-db"
+DB_NAME="starter-content-db"
 
 echo "🌱 Seeding database with initial content and projects..."
 echo "Using mode: ${REMOTE_FLAG}"

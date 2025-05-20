@@ -27,10 +27,10 @@ const navigation = [
 			{ name: "About", href: "#about" },
 			{ name: "Contact Us", href: "#contact" },
 		],
-		social: [
-			{
-				name: "Instagram",
-				href: "https://www.instagram.com/lushconstructions/",
+               social: [
+                       {
+                               name: "Instagram",
+                               href: "https://www.instagram.com/example/",
 				icon: (props: React.SVGProps<SVGSVGElement>) => (
 					<svg
 						fill="currentColor"
@@ -75,11 +75,11 @@ export default function Footer(): JSX.Element {
 						transition={{ duration: 0.6 }}
 						className="mb-10 space-y-6 sm:space-y-8 xl:mb-0"
 					>
-						<img
-							className="h-14 w-auto sm:h-16"
-							src="/assets/lush_constructions_no_black_v2.png"
-							alt="LUSH CONSTRUCTIONS"
-						/>
+                                               <img
+                                                       className="h-14 w-auto sm:h-16"
+                                                       src="/assets/logo_284x137-KoakP1Oi.png"
+                                                       alt="Company Logo"
+                                               />
 						<p className="max-w-sm text-[15px] text-gray-300 leading-normal sm:text-[14px]">
 							Building dreams into reality with expert craftsmanship and
 							dedication to quality.
@@ -149,24 +149,24 @@ export default function Footer(): JSX.Element {
 								</h3>
 								<ul className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
 									<li>
-										<a
-											href="tel:0404289437"
+                                                                       <a
+                                                                               href="tel:0000000000"
 											className="-mx-2 rounded px-2 py-1 text-[13px] text-gray-300 leading-tight transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
 										>
-											0404 289 437
+                                                                               000-000-0000
 										</a>
 									</li>
 									<li className="max-w-[200px] sm:max-w-full">
-										<a
-											href="mailto:info@lushconstructions.com.au"
+                                                                       <a
+                                                                               href="mailto:info@example.com"
 											className="-mx-2 block overflow-hidden truncate rounded px-2 py-1 text-[13px] text-gray-300 leading-tight transition-all duration-300 ease-in-out hover:inset-shadow-sm hover:inset-shadow-white/5 hover:bg-gray-900/50 hover:text-gray-100"
 										>
-											info@lushconstructions.com.au
+                                                                               info@example.com
 										</a>
 									</li>
 									<li>
-										<p className="text-[13px] text-gray-300 leading-tight">
-											Sydney, NSW
+                                                                       <p className="text-[13px] text-gray-300 leading-tight">
+                                                                               City, ST
 										</p>
 									</li>
 								</ul>
@@ -176,9 +176,9 @@ export default function Footer(): JSX.Element {
 				</div>
 				<div className="mt-8 border-gray-800 border-t pt-8 md:flex md:items-center md:justify-between">
 					<p className="text-[11px] text-gray-400 leading-relaxed">
-						&copy; {currentYear} Lush Constructions. All rights reserved.
-						<br />
-						NSW Builder License: 4632530
+                                               &copy; {currentYear} Your Company. All rights reserved.
+                                               <br />
+                                               License: 000000
 					</p>
 				</div>
 			</div>

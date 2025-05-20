@@ -6,8 +6,8 @@ import Header from "~/routes/common/components/Header";
 import { getAllContent, getAllProjects } from "~/routes/common/db";
 
 export const meta: MetaFunction = () => {
-	return [
-		{ title: "Projects | Lush Constructions" },
+       return [
+               { title: "Projects" },
 		{
 			name: "description",
 			content: "Explore our recent construction and renovation projects",

@@ -61,12 +61,12 @@ export default function Header({
 					>
 						<Bars3Icon className="h-6 w-6" aria-hidden="true" />
 					</Button>
-					<NavLink to="/" className="absolute left-1/2 -translate-x-1/2 flex">
-						<img
-							src="/assets/lush_constructions_no_black_v2.png"
-							alt="LUSH CONSTRUCTIONS"
-							className="h-8 w-auto sm:h-10"
-						/>
+                                       <NavLink to="/" className="absolute left-1/2 -translate-x-1/2 flex">
+                                               <img
+                                                       src="/assets/logo_284x137-KoakP1Oi.png"
+                                                       alt="Company Logo"
+                                                       className="h-8 w-auto sm:h-10"
+                                               />
 					</NavLink>
 				</div>
 			</nav>
