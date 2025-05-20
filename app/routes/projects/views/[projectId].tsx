@@ -56,11 +56,13 @@ export function ProjectDetailRoute({
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 				<FadeIn>
 					<article className="bg-gray-50 p-6 rounded-lg shadow-md dark:bg-gray-800">
-						<img
-							src={project.imageUrl ?? "/assets/placeholder.png"}
-							alt={project.title}
-							className="w-full h-64 md:h-96 object-cover rounded-md mb-6 bg-gray-200 dark:bg-gray-700"
-						/>
+                                                {project.imageUrl && (
+                                                        <img
+                                                                src={project.imageUrl}
+                                                                alt={project.title}
+                                                                className="w-full h-64 md:h-96 object-cover rounded-md mb-6 bg-gray-200 dark:bg-gray-700"
+                                                        />
+                                                )}
 						<h2 className="text-3xl font-serif font-bold text-black dark:text-white mb-4">
 							{project.title}
 						</h2>
@@ -103,9 +105,6 @@ export function ProjectDetailRoute({
 								/>
 							</div>
 						)}
-						<p className="text-gray-500 dark:text-gray-400 italic mb-6">
-							Contact us for more information about similar projects.
-						</p>
 						<Link
 							to="/projects"
 							className="inline-block text-blue-600 hover:underline dark:text-blue-400 dark:hover:text-blue-300"

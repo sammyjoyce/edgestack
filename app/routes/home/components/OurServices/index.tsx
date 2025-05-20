@@ -20,37 +20,14 @@ interface OurServicesProps {
 	theme?: "light" | "dark";
 }
 
-const defaultServices: ServiceItem[] = [
-	{
-		title: "Kitchens",
-		image: "/assets/pic09-By9toE8x.png",
-		link: "#contact",
-	},
-	{
-		title: "Bathrooms",
-		image: "/assets/pic06-BnCQnmx7.png",
-		link: "#contact",
-	},
-	{
-		title: "Roofing",
-		image: "/assets/pic13-C3BImLY9.png",
-		link: "#contact",
-	},
-	{
-		title: "Renovations",
-		image: "/assets/pic04-CxD2NUJX.png",
-		link: "#contact",
-	},
-];
 export default function OurServices({
-	introTitle = "Renovation and Extension Specialists",
-	introText,
-	servicesData,
-	theme = "light",
-}: OurServicesProps): JSX.Element {
-	const defaultIntroText =
-		"Qualified & Professional Building Services from Start to Finish";
-	const services = servicesData ?? defaultServices;
+        introTitle,
+        introText,
+        servicesData,
+        theme = "light",
+}: OurServicesProps): JSX.Element | null {
+        if (!introTitle && !introText && !(servicesData && servicesData.length)) return null;
+        const services = servicesData ?? [];
 	const scrollToSection = useSectionScroll();
 
 	return (
@@ -68,21 +45,23 @@ export default function OurServices({
 			/>
 			<Container>
 				<section className="mt-12 mb-6 sm:mt-16 sm:mb-8 lg:mt-20 lg:mb-10">
-					<SectionIntro centered title={introTitle}>
-						<ConditionalRichTextRenderer
-							text={introText || defaultIntroText}
-							fallbackClassName="text-xl text-center text-gray-500 dark:text-gray-400" // Standard Tailwind
-							richTextClassName={clsx(
-								"prose-xl text-center", // Added text-center here for rich text too
-								"prose-p:text-gray-700 dark:prose-p:text-gray-300",
-								"prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
-								"prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
-								"prose-em:text-gray-700 dark:prose-em:text-gray-300",
-								"prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
-								"prose max-w-none text-center",
-							)}
-							fallbackTag="p"
-						/>
+                                        <SectionIntro centered title={introTitle}>
+                                                {introText && (
+                                                        <ConditionalRichTextRenderer
+                                                                text={introText}
+                                                                fallbackClassName="text-xl text-center text-gray-500 dark:text-gray-400" // Standard Tailwind
+                                                                richTextClassName={clsx(
+                                                                        "prose-xl text-center", // Added text-center here for rich text too
+                                                                        "prose-p:text-gray-700 dark:prose-p:text-gray-300",
+                                                                        "prose-headings:text-gray-700 dark:prose-headings:text-gray-300",
+                                                                        "prose-strong:text-gray-700 dark:prose-strong:text-gray-300",
+                                                                        "prose-em:text-gray-700 dark:prose-em:text-gray-300",
+                                                                        "prose-a:text-gray-700 dark:prose-a:text-gray-300 hover:prose-a:underline",
+                                                                        "prose max-w-none text-center",
+                                                                )}
+                                                                fallbackTag="p"
+                                                        />
+                                                )}
 						<div className="mt-6 flex justify-center">
 							<Button to="#contact" invert={theme === "light"} onClick={scrollToSection}>
 								Get Started
@@ -90,7 +69,8 @@ export default function OurServices({
 						</div>
 					</SectionIntro>
 				</section>
-				<FadeInStagger faster>
+                                {services.length > 0 && (
+                                        <FadeInStagger faster>
 					<div className="grid grid-cols-1 gap-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
 						{services.map((service) => (
 							<FadeIn key={service.title}>
@@ -120,7 +100,8 @@ export default function OurServices({
 							</FadeIn>
 						))}
 					</div>
-				</FadeInStagger>
+                                </FadeInStagger>
+                                )}
 			</Container>
 		</div>
 	);
