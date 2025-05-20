@@ -70,6 +70,19 @@ export function getSessionCookie(req: Request): string | null {
 	return null;
 }
 
+export async function checkSession(
+        request: Request,
+        env: CloudflareEnvironment,
+): Promise<boolean> {
+        const sessionValue = getSessionCookie(request);
+        if (!sessionValue) return false;
+        const sessionId = await verify(sessionValue, env.JWT_SECRET);
+        if (!sessionId) return false;
+        const stub = env.SESSION_DO.get(env.SESSION_DO.idFromName(sessionId));
+        const res = await stub.fetch(`https://session/${sessionId}`);
+        return res.ok;
+}
+
 export async function requireAdmin(
 	request: Request,
 	context: any,
@@ -79,9 +92,8 @@ export async function requireAdmin(
 		context && typeof context === "object",
 		"requireAdmin: context must be an object",
 	);
-	const sessionValue = getSessionCookie(request);
-	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
-	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		throw new Response("Unauthorized", { status: 401 });
-	}
+        const env = context.cloudflare?.env;
+        if (!env || !(await checkSession(request, env))) {
+                throw new Response("Unauthorized", { status: 401 });
+        }
 }

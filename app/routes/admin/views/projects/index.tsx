@@ -10,7 +10,7 @@ import {
 } from "react-router";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
-import { getSessionCookie, verify } from "~/routes/common/utils/auth";
+import { checkSession } from "~/routes/common/utils/auth";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Button } from "../../components/ui/button";
 import { Text } from "../../components/ui/text";
@@ -20,11 +20,10 @@ import { Container } from "../../../common/components/ui/Container";
 import clsx from "clsx";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-	const sessionValue = getSessionCookie(request);
-	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
-	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		throw redirect("/admin/login");
-	}
+        const env = context.cloudflare?.env;
+        if (!env || !(await checkSession(request, env))) {
+                throw redirect("/admin/login");
+        }
 	try {
 		const projects = await getAllProjects(context.db);
 		return { projects };
@@ -38,13 +37,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
-	const formData = await request.formData();
-	const intent = formData.get("intent")?.toString();
-	const sessionValue = getSessionCookie(request);
-	const jwtSecret = context.cloudflare?.env?.JWT_SECRET;
-	if (!sessionValue || !jwtSecret || !(await verify(sessionValue, jwtSecret))) {
-		return redirect("/admin/login");
-	}
+        const formData = await request.formData();
+        const intent = formData.get("intent")?.toString();
+        const env = context.cloudflare?.env;
+        if (!env || !(await checkSession(request, env))) {
+                return redirect("/admin/login");
+        }
 	if (intent === "deleteProject") {
 		const projectIdStr = formData.get("projectId")?.toString();
 		if (!projectIdStr) {

@@ -1,7 +1,7 @@
 import type { Route } from "./+types/seed-content";
 import { data } from "react-router";
 import { getAllContent, updateContent } from "~/routes/common/db";
-import { getSessionCookie, verify } from "~/routes/common/utils/auth";
+import { checkSession } from "~/routes/common/utils/auth";
 
 const DEBUG = process.env.NODE_ENV !== "production";
 const DEFAULT_CONTENT = {
@@ -11,11 +11,10 @@ const DEFAULT_CONTENT = {
 } as const;
 
 export async function action({ request, context, params }: Route.ActionArgs) {
-	const token = getSessionCookie(request);
-	const secret = context.cloudflare?.env?.JWT_SECRET;
-	if (!token || !secret || !(await verify(token, secret))) {
-		return data({ success: false, error: "Unauthorized" }, { status: 401 });
-	}
+        const env = context.cloudflare?.env;
+        if (!env || !(await checkSession(request, env))) {
+                return data({ success: false, error: "Unauthorized" }, { status: 401 });
+        }
 	if (request.method !== "POST") {
 		return data({ error: "Invalid method. Please use POST." }, { status: 405 });
 	}

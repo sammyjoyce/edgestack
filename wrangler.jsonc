@@ -11,7 +11,8 @@
         "workers_dev": true,
         "durable_objects": {
                 "bindings": [
-                        { "name": "DRIZZLE_DO", "class_name": "DrizzleDurable" }
+                        { "name": "DRIZZLE_DO", "class_name": "DrizzleDurable" },
+                        { "name": "SESSION_DO", "class_name": "SessionDurable" }
                 ]
         },
         "vars": {
@@ -65,7 +66,8 @@
                        ],
                         "durable_objects": {
                                 "bindings": [
-                                        { "name": "DRIZZLE_DO", "class_name": "DrizzleDurable" }
+                                        { "name": "DRIZZLE_DO", "class_name": "DrizzleDurable" },
+                                        { "name": "SESSION_DO", "class_name": "SessionDurable" }
                                 ]
                         },
                        "d1_databases": [
