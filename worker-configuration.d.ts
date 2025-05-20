@@ -10,9 +10,10 @@ declare namespace Cloudflare {
 		JWT_SECRET: string;
 		PUBLIC_R2_URL: string;
 		CLOUDFLARE_D1_TOKEN: string;
-		ASSETS_BUCKET: R2Bucket;
-		DB: D1Database;
-	}
+                ASSETS_BUCKET: R2Bucket;
+                DB: D1Database;
+                DRIZZLE_DO: DurableObjectNamespace;
+        }
 }
 interface Env extends Cloudflare.Env {}
 
