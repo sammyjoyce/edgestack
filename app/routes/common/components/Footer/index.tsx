@@ -5,22 +5,22 @@ import { type JSX, useMemo } from "react";
 const navigation = [
 	{
 		services: [
-			{
-				name: "Renovations",
-				href: "#service-renovations",
-			},
-			{
-				name: "Extensions",
-				href: "#service-extensions",
-			},
-			{
-				name: "New Builds",
-				href: "#service-new-builds",
-			},
-			{
-				name: "Commercial",
-				href: "#service-commercial",
-			},
+                       {
+                               name: "Design",
+                               href: "#service-design",
+                       },
+                       {
+                               name: "Development",
+                               href: "#service-development",
+                       },
+                       {
+                               name: "Marketing",
+                               href: "#service-marketing",
+                       },
+                       {
+                               name: "Support",
+                               href: "#service-support",
+                       },
 		],
 		company: [
 			{ name: "Home", href: "#hero" },

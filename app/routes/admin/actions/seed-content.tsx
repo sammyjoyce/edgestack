@@ -5,9 +5,9 @@ import { getSessionCookie, verify } from "~/routes/common/utils/auth";
 
 const DEBUG = process.env.NODE_ENV !== "production";
 const DEFAULT_CONTENT = {
-	hero_title: "Building Dreams, Creating Spaces",
-	hero_subtitle: "Your trusted partner in construction and renovation.",
-	home_sections_order: "hero,services,projects,about,contact",
+       hero_title: "Big Impact for Modern Brands",
+       hero_subtitle: "Delivering high-quality solutions since 2010.",
+       home_sections_order: "hero,services,projects,about,contact",
 } as const;
 
 export async function action({ request, context, params }: Route.ActionArgs) {

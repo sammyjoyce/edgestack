@@ -8,10 +8,10 @@ import { getAllContent, getAllProjects } from "~/routes/common/db";
 export const meta: MetaFunction = () => {
        return [
                { title: "Projects" },
-		{
-			name: "description",
-			content: "Explore our recent construction and renovation projects",
-		},
+               {
+                        name: "description",
+                        content: "Explore our recent projects",
+                },
 	];
 };
 import { redirect } from "react-router";
