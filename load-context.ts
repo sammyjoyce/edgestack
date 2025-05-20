@@ -7,9 +7,10 @@ declare global {
 	interface CloudflareEnvironment extends Env {
 		ADMIN_USERNAME: string;
 		ADMIN_PASSWORD: string;
-		ASSETS_BUCKET: R2Bucket;
-		PUBLIC_R2_URL: string;
-	}
+                ASSETS_BUCKET: R2Bucket;
+                PUBLIC_R2_URL: string;
+                DRIZZLE_DO: DurableObjectNamespace;
+        }
 }
 declare module "react-router" {
 	export interface AppLoadContext {

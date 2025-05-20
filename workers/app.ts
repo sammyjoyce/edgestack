@@ -1,18 +1,14 @@
-import type { ExecutionContext } from "@cloudflare/workers-types";
-import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1";
-import { DefaultLogger } from "drizzle-orm/logger";
 import { createRequestHandler } from "react-router";
-import * as schema from "../database/schema";
 const serverBuildModuleResolver = () => {
-	return import("virtual:react-router/server-build");
+        return import("virtual:react-router/server-build");
 };
 const requestHandler = createRequestHandler(
-	serverBuildModuleResolver,
-	import.meta.env.MODE,
+        serverBuildModuleResolver,
+        import.meta.env.MODE,
 );
 export default {
-	async fetch(request, env, ctx) {
-		console.log("WORKER INVOKED", new Date().toISOString(), request.url);
+        async fetch(request, env, ctx) {
+                console.log("WORKER INVOKED", new Date().toISOString(), request.url);
 		const url = new URL(request.url);
 		if (url.pathname.startsWith("/assets/")) {
 			const key = url.pathname.slice("/assets/".length);
@@ -51,16 +47,8 @@ export default {
 				return new Response("Error fetching asset", { status: 500 });
 			}
 		}
-		const db = drizzle(env.DB, {
-			schema,
-			// Enable logger only in development mode
-			logger:
-				import.meta.env.MODE === "development" ? new DefaultLogger() : false,
-		});
-		const loadContext = {
-			cloudflare: { env, ctx: ctx as Omit<ExecutionContext, "props"> },
-			db,
-		};
-		return requestHandler(request, loadContext);
-	},
+                const id = env.DRIZZLE_DO.idFromName("db-instance");
+                const stub = env.DRIZZLE_DO.get(id);
+                return stub.fetch(request);
+        },
 } satisfies ExportedHandler<Env>;
