@@ -2,7 +2,7 @@
 INSERT OR REPLACE INTO content (key, page, section, type, value, sort_order) VALUES
 -- Hero Section
 ('hero_title', 'home', 'hero', 'text', 'Building Excellence in Every Project', 1),
-('hero_subtitle', 'home', 'hero', 'text', 'Sydney''s premier construction and renovation specialists, creating exceptional spaces since 2010.', 2),
+('hero_subtitle', 'home', 'hero', 'text', 'Providing quality construction and renovation services since 2010.', 2),
 ('hero_image', 'home', 'hero', 'image', '/assets/hero-image.jpg', 3),
 
 -- Services Section
@@ -22,22 +22,22 @@ INSERT OR REPLACE INTO content (key, page, section, type, value, sort_order) VAL
 ('service_4_image', 'home', 'services', 'image', '/assets/commercial.jpg', 14),
 
 -- About Section
-('about_title', 'home', 'about', 'text', 'About Lush Constructions', 1),
-('about_text', 'home', 'about', 'text', 'Lush Constructions has been creating exceptional spaces across Sydney since 2010. With a team of experienced builders and craftsmen, we bring your vision to life with the highest standards of quality and service. We believe in transparent communication, sustainable practices, and delivering projects on time and within budget.', 2),
+('about_title', 'home', 'about', 'text', 'About Us', 1),
+('about_text', 'home', 'about', 'text', 'Our company has been creating quality spaces since 2010. We believe in transparent communication, sustainable practices, and delivering projects on time and within budget.', 2),
 ('about_image', 'home', 'about', 'image', '/assets/about-image.jpg', 3),
 
 -- Contact Section
-('contact_phone', 'home', 'contact', 'text', '0404 289 437', 1),
-('contact_email', 'home', 'contact', 'text', 'info@lushconstructions.com.au', 2),
-('contact_address', 'home', 'contact', 'text', 'Sydney, NSW', 3),
+('contact_phone', 'home', 'contact', 'text', '000-000-0000', 1),
+('contact_email', 'home', 'contact', 'text', 'info@example.com', 2),
+('contact_address', 'home', 'contact', 'text', 'Example City, XX', 3),
 
 -- Projects Section
 ('projects_intro_title', 'projects', 'intro', 'text', 'Featured Projects', 1),
 ('projects_intro_text', 'projects', 'intro', 'text', 'Take a look at some of our recent work that demonstrates our expertise and dedication to excellence.', 2),
 
 -- Meta Information
-('meta_title', 'global', 'meta', 'text', 'Lush Constructions | Sydney Building & Renovation Specialists', 1),
-('meta_description', 'global', 'meta', 'text', 'Sydney''s premier construction and renovation specialists. From home renovations to new builds, we deliver quality craftsmanship and exceptional results.', 2),
+('meta_title', 'global', 'meta', 'text', 'Your Company | Construction & Renovation Specialists', 1),
+('meta_description', 'global', 'meta', 'text', 'Providing quality construction and renovation services since 2010.', 2),
 
 -- Section Ordering
 ('home_sections_order', 'global', 'settings', 'text', 'hero,services,projects,about,contact', 1);
