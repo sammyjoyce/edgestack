@@ -9,7 +9,7 @@ import type { NewContent, NewProject } from "./schema";
  *
  * Run with:
  * ```bash
- * npx wrangler d1 execute lush --local --file=./database/seed.ts
+ * npx wrangler d1 execute starter-content-db --local --file=./database/seed.ts
  * ```
  */
 
@@ -172,18 +172,18 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "image",
 			sortOrder: 14,
 		},
-		{
-			key: "about_title",
-			value: "About Lush Constructions",
+               {
+                        key: "about_title",
+                        value: "About Us",
 			page: "home",
 			section: "about",
 			type: "text",
 			sortOrder: 1,
 		},
-		{
-			key: "about_text",
-			value:
-				"Lush Constructions has been creating exceptional spaces across Sydney since 2010. With a team of experienced builders and craftsmen, we bring your vision to life with the highest standards of quality and service. We believe in transparent communication, sustainable practices, and delivering projects on time and within budget.",
+               {
+                        key: "about_text",
+                        value:
+                                "We have been creating exceptional spaces for our clients with a commitment to quality workmanship and clear communication.",
 			page: "home",
 			section: "about",
 			type: "text",
@@ -197,25 +197,25 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "image",
 			sortOrder: 3,
 		},
-		{
-			key: "contact_phone",
-			value: "0404 289 437",
+               {
+                        key: "contact_phone",
+                        value: "000-000-0000",
 			page: "home",
 			section: "contact",
 			type: "text",
 			sortOrder: 1,
 		},
-		{
-			key: "contact_email",
-			value: "info@lushconstructions.com.au",
+               {
+                        key: "contact_email",
+                        value: "info@example.com",
 			page: "home",
 			section: "contact",
 			type: "text",
 			sortOrder: 2,
 		},
-		{
-			key: "contact_address",
-			value: "Sydney, NSW",
+               {
+                        key: "contact_address",
+                        value: "City, ST",
 			page: "home",
 			section: "contact",
 			type: "text",
@@ -238,18 +238,18 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "text",
 			sortOrder: 2,
 		},
-		{
-			key: "meta_title",
-			value: "Lush Constructions | Sydney Building & Renovation Specialists",
+               {
+                        key: "meta_title",
+                        value: "Your Company",
 			page: "global",
 			section: "meta",
 			type: "text",
 			sortOrder: 1,
 		},
-		{
-			key: "meta_description",
-			value:
-				"Sydney's premier construction and renovation specialists. From home renovations to new builds, we deliver quality craftsmanship and exceptional results.",
+               {
+                        key: "meta_description",
+                        value:
+                                "Professional construction and renovation services delivered with quality craftsmanship.",
 			page: "global",
 			section: "meta",
 			type: "text",
