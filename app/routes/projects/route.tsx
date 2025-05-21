@@ -1,16 +1,16 @@
-import type { Route } from "./+types/route";
 import React from "react";
-import { data, type MetaFunction, Outlet } from "react-router";
+import { type MetaFunction, Outlet, data } from "react-router";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
-import { getAllContent, getAllProjects } from "~/routes/common/db";
+import type { Route } from "./+types/route";
+import { fetchProjectsList } from "./services";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-        const content = data?.content ?? {};
-        return [
-                { title: content.projects_meta_title ?? "Projects" },
-                { name: "description", content: content.projects_meta_description ?? "" },
-        ];
+	const content = data?.content ?? {};
+	return [
+		{ title: content.projects_meta_title ?? "Projects" },
+		{ name: "description", content: content.projects_meta_description ?? "" },
+	];
 };
 import { redirect } from "react-router";
 export const loader = async ({
@@ -19,8 +19,7 @@ export const loader = async ({
 	params,
 }: Route.LoaderArgs) => {
 	try {
-		const content = await getAllContent(context.db);
-		const projects = await getAllProjects(context.db);
+		const { content, projects } = await fetchProjectsList(context.db);
 		if (!projects || projects.length === 0) {
 			return redirect("/");
 		}
@@ -36,18 +35,18 @@ export default function Projects({ loaderData }: Route.ComponentProps) {
 		<div className="bg-linear-180/oklch from-0% from-gray-600/0 via-20% via-80% via-gray-600/10 to-100% to-gray-600/0">
 			<Header hasProjects={projects && projects.length > 0} />
 			<div className="bg-white pt-20 pb-10">
-                        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-                                {content?.projects_page_title && (
-                                        <h1 className="mb-4 text-center font-bold font-serif text-4xl text-black">
-                                                {content.projects_page_title}
-                                        </h1>
-                                )}
-                                {content?.projects_page_intro && (
-                                        <p className="mx-auto max-w-3xl text-center text-gray-700 text-xl">
-                                                {content.projects_page_intro}
-                                        </p>
-                                )}
-                        </div>
+				<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+					{content?.projects_page_title && (
+						<h1 className="mb-4 text-center font-bold font-serif text-4xl text-black">
+							{content.projects_page_title}
+						</h1>
+					)}
+					{content?.projects_page_intro && (
+						<p className="mx-auto max-w-3xl text-center text-gray-700 text-xl">
+							{content.projects_page_intro}
+						</p>
+					)}
+				</div>
 			</div>
 			<Outlet context={{ content, projects }} />
 			<Footer />
