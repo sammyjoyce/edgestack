@@ -3,7 +3,7 @@ import { useActionData, useNavigation, useSearchParams } from "react-router";
 import { redirect } from "react-router";
 import { Toaster, toast } from "sonner";
 import { ValiError } from "valibot";
-import { updateContent } from "~/services/db.server";
+import { updateContent } from "~/database/contentRepo";
 import { assert } from "~/utils/assert";
 import { checkSession } from "~/utils/auth";
 import { validateContentInsert } from "../../../../database/valibot-validation.js";

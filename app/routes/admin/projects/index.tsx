@@ -9,8 +9,8 @@ import {
 	useActionData,
 	useLocation,
 } from "react-router";
+import { deleteProject } from "~/database/projectRepo";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer/index";
-import { deleteProject } from "~/services/db.server";
 import { assert } from "~/utils/assert";
 import { checkSession } from "~/utils/auth";
 import { Container } from "../../../common/components/ui/Container";

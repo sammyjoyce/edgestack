@@ -1,8 +1,8 @@
 import React from "react";
 import { redirect } from "react-router";
+import { updateProject } from "~/database/projectRepo";
 import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { updateProject } from "~/services/db.server";
 import { deleteStoredImage, handleImageUpload } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
 import { Container } from "../../../../common/components/ui/Container";
