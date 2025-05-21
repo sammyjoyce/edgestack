@@ -3,9 +3,9 @@ import type React from "react";
 import { useFetcher } from "react-router";
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { GenericSectionEditor } from "~/routes/admin/components/sections/GenericSectionEditor";
-import { type SectionId, sectionsSchema } from "~/routes/admin/sections-schema";
 import type { action as adminIndexAction } from "~/routes/admin/views/index";
 import { Container } from "~/routes/common/components/ui/Container";
+import { type SectionId, sectionsSchema } from "~/sections";
 import { Button } from "../ui/button";
 
 import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
@@ -24,13 +24,7 @@ export default function AdminDashboard({
 }: AdminDashboardProps): React.JSX.Element {
 	const content = initialContent;
 	const sorterFetcher = useFetcher<typeof adminIndexAction>();
-	const sectionFetchers: Record<SectionId, ReturnType<typeof useFetcher>> = {
-		hero: useFetcher<typeof adminIndexAction>(),
-		services: useFetcher<typeof adminIndexAction>(),
-		projects: useFetcher<typeof adminIndexAction>(),
-		about: useFetcher<typeof adminIndexAction>(),
-		contact: useFetcher<typeof adminIndexAction>(),
-	};
+	const contentFetcher = useFetcher<typeof adminIndexAction>();
 	const safeContent =
 		content && typeof content === "object" && !("error" in content)
 			? (content as Record<string, string>)
@@ -63,7 +57,7 @@ export default function AdminDashboard({
 					initialSectionsFromDb={sorterSections}
 					sectionDetailsOrdered={sorterSections}
 					orderFetcher={sorterFetcher}
-					themeUpdateFetcher={sectionFetchers.hero}
+					themeUpdateFetcher={contentFetcher}
 				/>
 			),
 		},
@@ -72,7 +66,7 @@ export default function AdminDashboard({
 	for (const id of orderedSectionIds) {
 		const details = sectionsSchema[id];
 		if (!details) continue;
-		const fetcher = sectionFetchers[id];
+		const fetcher = contentFetcher;
 		tabs.push({
 			title: details.label,
 			value: id,
