@@ -11,7 +11,7 @@ Here's an actionable, enumerated task list derived from the analysis of the repo
 - [x] **6.** Split `app/routes/common/db/index.ts` into separate modules per domain (e.g., `database/contentRepo.ts`, `database/projectRepo.ts`).
 
 ## ✅ **CMS Integration & Flexibility**
-- [ ] **7.** Abstract the CMS/data layer by creating a `CmsProvider` or `cms.client.ts` with methods for all data interactions..
+- [x] **7.** Abstract the CMS/data layer by creating a `CmsProvider` or `cms.client.ts` with methods for all data interactions..
 - [ ] **9.** Decouple content schema definitions from rendering logic, moving schemas/configurations into centralized modules.
 - [ ] **10.** Provide clear, documented guidance on integrating external CMS providers (e.g., Contentful or Sanity).
 
