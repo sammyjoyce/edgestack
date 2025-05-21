@@ -104,7 +104,7 @@ function SingleImageUpload({
 				onDrop={makeDropHandler}
 				disabled={fetcher.state === "submitting"}
 				uploading={fetcher.state === "submitting"}
-				imageUrl={
+				image_url={
 					(isUploadResponse(fetcher.data) &&
 						fetcher.data.success &&
 						fetcher.data.url) ||

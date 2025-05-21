@@ -77,42 +77,47 @@ async function handleSelectImage(
 	context: Route.ActionArgs["context"],
 ) {
 	const key = formData.get("key")?.toString();
-	const imageUrl = formData.get("imageUrl")?.toString();
+	const image_url = formData.get("image_url")?.toString();
 
-	if (!key || !imageUrl) {
+	if (!key || !image_url) {
 		return { success: false, error: "Key and image URL are required" };
 	}
 
 	try {
 		validateContentInsert({
 			key,
-			value: imageUrl,
+			value: image_url,
 			page: "unknown",
 			section: "image",
 			type: "image",
 		});
 
-		// Get media id for imageUrl using Drizzle
+		// Get media id for image_url using Drizzle
 		const media = await context.db
 			.select({ id: FullSchema.schema.media.id })
 			.from(FullSchema.schema.media)
-			.where(eq(FullSchema.schema.media.url, imageUrl))
+			.where(eq(FullSchema.schema.media.url, image_url))
 			.get();
 		const mediaId = media?.id ?? null;
 
 		await context.db
 			.insert(schema.content)
-			.values({ key, value: imageUrl, mediaId: mediaId, updatedAt: new Date() })
+			.values({
+				key,
+				value: image_url,
+				mediaId: mediaId,
+				updatedAt: new Date(),
+			})
 			.onConflictDoUpdate({
 				target: schema.content.key,
 				set: {
-					value: imageUrl,
+					value: image_url,
 					mediaId: mediaId,
 					updatedAt: new Date(),
 				},
 			});
 
-		return { success: true, url: imageUrl, key, action: "select" };
+		return { success: true, url: image_url, key, action: "select" };
 	} catch (e) {
 		return {
 			success: false,

@@ -81,7 +81,7 @@ export default function HomeRoute({
 							key="hero"
 							title={typedContent.hero_title}
 							subtitle={typedContent.hero_subtitle}
-							imageUrl={typedContent.hero_image_url}
+							image_url={typedContent.hero_image_url}
 							theme={
 								(typedContent.hero_title_theme as "light" | "dark") ?? "light"
 							}
@@ -131,7 +131,7 @@ export default function HomeRoute({
 							key="about"
 							title={typedContent.about_title}
 							text={typedContent.about_text}
-							imageUrl={typedContent.about_image_url}
+							image_url={typedContent.about_image_url}
 							theme={
 								(typedContent.about_title_theme as "light" | "dark") ?? "light"
 							}
