@@ -1,13 +1,13 @@
 import { eq } from "drizzle-orm";
 import type { BatchItem } from "drizzle-orm/batch";
-import type { DrizzleD1Database } from "drizzle-orm/d1";
+import type { AppDatabase } from "./index";
 import { assert } from "~/utils/assert";
 import * as schema from "./schema";
 import type { NewContent } from "./schema";
 import { validateContentUpdate } from "./valibot-validation";
 
 export async function getAllContent(
-	db: DrizzleD1Database<typeof schema>,
+        db: AppDatabase,
 ): Promise<Record<string, string>> {
 	console.info(`[DB getAllContent] Invoked at: ${new Date().toISOString()}`);
 	assert(db, "getAllContent: db is required");
@@ -48,9 +48,9 @@ export async function getAllContent(
 }
 
 export async function updateContent(
-	db: DrizzleD1Database<typeof schema>,
-	updates: Record<
-		string,
+        db: AppDatabase,
+        updates: Record<
+                string,
 		| string
 		| number
 		| boolean

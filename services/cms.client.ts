@@ -1,6 +1,6 @@
-import type { DrizzleD1Database } from "drizzle-orm/d1";
+import type { AppDatabase } from "~/database";
 import * as schema from "~/database/schema";
-import type { NewContent, NewProject, Project } from "~/database/schema";
+import type { NewContent, NewProject, Project } from "~/database";
 import {
     getAllContent,
     updateContent,
@@ -15,7 +15,7 @@ import {
 } from "~/database/projectRepo";
 
 export class CmsClient {
-    constructor(private readonly db: DrizzleD1Database<typeof schema>) {}
+    constructor(private readonly db: AppDatabase) {}
 
     async getAllContent() {
         return getAllContent(this.db);
