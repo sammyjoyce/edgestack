@@ -131,26 +131,13 @@ export default function AdminDashboard({
 			),
 		);
 	const sectionsOrder = safeContent.home_sections_order as string | undefined;
-	const sectionDetailsMap: Record<string, { label: string; themeKey: string }> =
-		{
-			hero: { label: "Hero", themeKey: "hero_title_theme" },
-			services: {
-				label: "Services",
-				themeKey: "services_intro_title_theme",
-			},
-			projects: {
-				label: "Projects",
-				themeKey: "projects_intro_title_theme",
-			},
-			about: { label: "About", themeKey: "about_title_theme" },
-			contact: { label: "Contact", themeKey: "contact_title_theme" },
-		};
-	const orderedSectionIds = sectionsOrder
-		? sectionsOrder.split(",")
-		: Object.keys(sectionDetailsMap);
+	const orderedSectionIds: SectionId[] = sectionsOrder
+		? (sectionsOrder.split(",") as SectionId[])
+		: (Object.keys(sectionsSchema) as SectionId[]);
+
 	const sorterSections: SorterSection[] = orderedSectionIds
 		.map((id) => {
-			const details = sectionDetailsMap[id];
+			const details = sectionsSchema[id];
 			if (!details) return null;
 			return {
 				id,
@@ -160,6 +147,7 @@ export default function AdminDashboard({
 			};
 		})
 		.filter(Boolean) as SorterSection[];
+
 	const tabs: Tab[] = [
 		{
 			title: "Order & Themes",
@@ -173,159 +161,83 @@ export default function AdminDashboard({
 				/>
 			),
 		},
-		{
-			title: "Hero",
-			value: "hero",
-			content: (
-				<HeroSectionEditor
-					fetcher={heroFetcher}
-					initialContent={safeContent}
-					onImageUpload={handleHeroImageUpload}
-					imageUploading={heroUploading}
-					heroImageUrl={heroImageUrl}
-				/>
-			),
-		},
-		{
-			title: "Services",
-			value: "services",
-			content: (
-				<ServicesSectionEditor
-					fetcher={servicesFetcher}
-					initialContent={safeContent}
-					onImageUpload={handleServiceImageUpload}
-					imageUploading={serviceUploading}
-					serviceImageUrls={serviceImageUrls}
-				/>
-			),
-		},
-		{
-			title: "Projects Intro",
-			value: "projects",
-			content: (
-				<SectionCard>
-					<SectionHeading>Projects Section Intro</SectionHeading>
-					<div className="grid grid-cols-1 gap-6 mt-4">
-						<div>
-							<label
-								htmlFor="projects_intro_title"
-								className="block text-sm font-medium text-gray-700 mb-1"
-							>
-								Projects Intro Title
-							</label>
-							<Input
-								type="text"
-								name="projects_intro_title"
-								id="projects_intro_title"
-								className="block w-full"
-								defaultValue={
-									safeContent.projects_intro_title || "Recent Projects"
-								}
-								onBlur={(e) => {
-									const formData = new FormData();
-									formData.append("intent", "updateTextContent");
-									formData.append("projects_intro_title", e.target.value);
-									projectsFetcher.submit(formData, {
-										method: "post",
-										action: "/admin",
-									});
-								}}
-							/>
-							{projectsFetcher.data?.success === false &&
-								projectsFetcher.data.error && (
-									<Text className="ml-2 text-sm text-red-600">
-										{projectsFetcher.data.error}
-									</Text>
-								)}
-						</div>
-						<div>
-							<label
-								htmlFor="projects_intro_text"
-								className="block text-sm font-medium text-gray-700"
-							>
-								Text
-							</label>
-							<Textarea
-								name="projects_intro_text"
-								id="projects_intro_text"
-								rows={3}
-								defaultValue={safeContent.projects_intro_text || ""}
-								onBlur={(e) => {
-									const formData = new FormData();
-									formData.append("intent", "updateTextContent");
-									formData.append("projects_intro_text", e.target.value);
-									projectsFetcher.submit(formData, {
-										method: "post",
-										action: "/admin",
-									});
-								}}
-							/>
-							{projectsFetcher.data?.success === false &&
-								projectsFetcher.data.error && (
-									<Text className="ml-2 text-sm text-red-600">
-										{projectsFetcher.data.error}
-									</Text>
-								)}
-						</div>
-					</div>
-					<div className="mt-4 text-sm text-gray-600 space-y-1">
-						<Text>
-							<Strong>Note:</Strong>
-						</Text>
-						<ul className="list-disc list-inside space-y-1">
-							<li>
-								To add, edit, or reorder projects, visit the Projects admin
-								page.
-							</li>
-							<li>
-								To feature a project on the home page, edit the project and
-								enable the
-								<span className="font-semibold text-gray-700">"Featured"</span>
-								option.
-							</li>
-							<li>
-								Project display order and details are managed in the Projects
-								admin page.
-							</li>
-						</ul>
-					</div>
-					<div className="mt-6 w-fit">
-						<Button
-							as={Link}
-							to="/admin/projects"
-							color="primary"
-							aria-label="Go to Projects Admin"
-						>
-							Go to Projects Admin
-						</Button>
-					</div>
-				</SectionCard>
-			),
-		},
-		{
-			title: "About",
-			value: "about",
-			content: (
-				<AboutSectionEditor
-					fetcher={aboutFetcher}
-					initialContent={safeContent}
-					onImageUpload={handleAboutImageUpload}
-					imageUploading={aboutUploading}
-					aboutImageUrl={aboutImageUrl}
-				/>
-			),
-		},
-		{
-			title: "Contact",
-			value: "contact",
-			content: (
-				<ContactSectionEditor
-					fetcher={contactFetcher}
-					initialContent={safeContent}
-				/>
-			),
-		},
 	];
+
+	for (const id of orderedSectionIds) {
+		switch (id) {
+			case "hero":
+				tabs.push({
+					title: sectionsSchema.hero.label,
+					value: "hero",
+					content: (
+						<HeroSectionEditor
+							fetcher={heroFetcher}
+							initialContent={safeContent}
+							onImageUpload={handleHeroImageUpload}
+							imageUploading={heroUploading}
+							heroImageUrl={heroImageUrl}
+						/>
+					),
+				});
+				break;
+			case "services":
+				tabs.push({
+					title: sectionsSchema.services.label,
+					value: "services",
+					content: (
+						<ServicesSectionEditor
+							fetcher={servicesFetcher}
+							initialContent={safeContent}
+							onImageUpload={handleServiceImageUpload}
+							imageUploading={serviceUploading}
+							serviceImageUrls={serviceImageUrls}
+						/>
+					),
+				});
+				break;
+			case "projects":
+				tabs.push({
+					title: sectionsSchema.projects.label,
+					value: "projects",
+					content: (
+						<ProjectsSectionEditor
+							fetcher={projectsFetcher}
+							initialContent={safeContent}
+						/>
+					),
+				});
+				break;
+			case "about":
+				tabs.push({
+					title: sectionsSchema.about.label,
+					value: "about",
+					content: (
+						<AboutSectionEditor
+							fetcher={aboutFetcher}
+							initialContent={safeContent}
+							onImageUpload={handleAboutImageUpload}
+							imageUploading={aboutUploading}
+							aboutImageUrl={aboutImageUrl}
+						/>
+					),
+				});
+				break;
+			case "contact":
+				tabs.push({
+					title: sectionsSchema.contact.label,
+					value: "contact",
+					content: (
+						<ContactSectionEditor
+							fetcher={contactFetcher}
+							initialContent={safeContent}
+						/>
+					),
+				});
+				break;
+			default:
+				break;
+		}
+	}
 	return (
 		<Container className="mt-8">
 			<div className="flex flex-row content-center justify-between space-y-4 ">
