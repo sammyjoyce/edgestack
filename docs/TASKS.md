@@ -13,11 +13,9 @@ Here's an actionable, enumerated task list derived from the analysis of the repo
 ## ✅ **CMS Integration & Flexibility**
 - [x] **7.** Abstract the CMS/data layer by creating a `CmsProvider` or `cms.client.ts` with methods for all data interactions..
 - [x] **9.** Decouple content schema definitions from rendering logic, moving schemas/configurations into centralized modules.
-- [ ] **10.** Provide clear, documented guidance on integrating external CMS providers (e.g., Contentful or Sanity).
 
 ## ✅ **Developer Experience & Onboarding**
 - [ ] **11.** Enhance README documentation with explicit setup instructions (e.g., installing Bun, Wrangler, Cloudflare credentials setup).
-- [ ] **12.** Automate initial setup tasks (database migration, seed data loading) in `scripts/setup.sh` or dedicated onboarding scripts.
 - [ ] **13.** Integrate formatting and linting tools (Biome) with pre-commit hooks using Husky or similar tools.
 - [ ] **14.** Clearly document testing instructions and include additional example unit tests for loaders and utilities.
 - [ ] **15.** Add inline code documentation (JSDoc-style) to clarify roles of complex components (e.g., Durable Objects, loaders).
