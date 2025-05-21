@@ -1,12 +1,12 @@
 import React from "react";
-import { Form, redirect } from "react-router";
+import { redirect } from "react-router";
 import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { updateProject } from "~/services/db.server";
 import { deleteStoredImage, handleImageUpload } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
 import { Container } from "../../../../common/components/ui/Container";
-import { ProjectFormFields } from "../../components/ProjectFormFields";
+import { ProjectForm } from "../../components/ProjectForm";
 import { Alert } from "../../components/ui/alert";
 import { SectionCard, SectionHeading } from "../../components/ui/section";
 import { fetchAdminProject } from "../services";
@@ -161,18 +161,12 @@ export default function EditProjectPage({
 				)}
 				<SectionCard>
 					<SectionHeading>Project Details</SectionHeading>
-					<Form
-						method="post"
-						encType="multipart/form-data"
-						className="flex flex-col gap-6"
-					>
-						<ProjectFormFields
-							initial={initialProject}
-							errors={errors}
-							isEdit
-							onCancel={handleCancel}
-						/>
-					</Form>
+					<ProjectForm
+						initial={initialProject}
+						errors={errors}
+						isEdit
+						onCancel={handleCancel}
+					/>
 				</SectionCard>
 			</FadeIn>
 		</Container>
