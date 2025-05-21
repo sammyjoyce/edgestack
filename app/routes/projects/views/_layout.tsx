@@ -4,6 +4,7 @@ import type { Project } from "~/database/schema";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import { ProjectsErrorBoundary } from "../components/ProjectsErrorBoundary";
+import { fetchProjectsList } from "../services";
 import type { Route } from "./+types/_layout";
 
 type ProjectsLayoutLoaderData = {
@@ -17,11 +18,7 @@ export const loader = async ({
 	params,
 }: Route.LoaderArgs) => {
 	try {
-		const { getAllContent, getAllProjects } = await import(
-			"~/routes/common/db"
-		);
-		const content = await getAllContent(context.db);
-		const projects = await getAllProjects(context.db);
+		const { content, projects } = await fetchProjectsList(context.db);
 		return { content, projects };
 	} catch (error: unknown) {
 		console.error("Failed to fetch content or projects:", error);

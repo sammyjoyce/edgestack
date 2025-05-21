@@ -76,6 +76,12 @@ bun run format
 
 For broader styling guidance, see [docs/tigerstyle.md](docs/tigerstyle.md) and [.junie/guidelines.md](.junie/guidelines.md).
 
+## Services and Business Logic
+
+- **Separation of Concerns**: Place business logic, API calls, or complex data transformations in dedicated service files (for example `app/routes/home/services.ts`).
+- **Pure Functions**: Whenever possible, implement service functions as pure functions to make them easier to test and reason about.
+- **Error Handling**: Services should clearly communicate failures, either by throwing specific error types or by returning error objects.
+
 ## Project Structure
 
 - `app/` - Route modules and components for the React Router app.
