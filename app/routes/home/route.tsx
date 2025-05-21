@@ -3,7 +3,6 @@ import type { MetaFunction } from "react-router";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import RecentProjects from "~/routes/common/components/RecentProjects";
-import { getAllContent, getFeaturedProjects } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
 import type { Project } from "../../../database/schema";
 import type { Route } from "./+types/route";
@@ -11,7 +10,7 @@ import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import Hero from "./components/Hero";
 import OurServices from "./components/OurServices";
-import { extractServicesData } from "./services";
+import { extractServicesData, loadHomeData } from "./services";
 
 const DEBUG = process.env.NODE_ENV !== "production";
 
@@ -42,11 +41,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	let content: Record<string, string> = {};
 	let projects: Project[] = [];
 	try {
-		content = await getAllContent(context.db);
-		console.info(
-			`[HOME LOADER] getAllContent returned at: ${new Date().toISOString()}. Received ${Object.keys(content).length} content keys. Sample (hero_title): '${content["hero_title"]}'`,
-		);
-		projects = await getFeaturedProjects(context.db);
+		({ content, projects } = await loadHomeData(context.db));
 		if (DEBUG) {
 			console.log("[HOME LOADER] Content keys loaded:", Object.keys(content));
 			console.log("[HOME LOADER] Project count:", projects.length);

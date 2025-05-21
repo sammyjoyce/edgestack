@@ -3,9 +3,9 @@ import React from "react";
 import { Link, data, useOutletContext } from "react-router";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { getProjectById } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
 import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout";
+import { fetchProjectDetails } from "../services";
 import type { Route } from "./+types/[projectId]";
 
 export const loader = async ({
@@ -20,7 +20,7 @@ export const loader = async ({
 	const projectId = Number(params.projectId);
 	assert(!Number.isNaN(projectId), "projectId must be a valid number");
 	try {
-		const project = await getProjectById(context.db, projectId);
+		const project = await fetchProjectDetails(context.db, projectId);
 		assert(
 			project && typeof project === "object" && project.id != null,
 			"loader must return a project",
