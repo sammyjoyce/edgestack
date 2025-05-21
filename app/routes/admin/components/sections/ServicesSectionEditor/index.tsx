@@ -25,7 +25,7 @@ interface ServicesSectionEditorProps {
 	initialContent: Record<string, string>;
 	onImageUpload: (idx: number, file: File) => void;
 	imageUploading: boolean[];
-	serviceImageUrls: (string | undefined)[];
+	service_image_urls: (string | undefined)[];
 }
 
 const serviceFields: ServiceField[] = [
@@ -60,7 +60,7 @@ export function ServicesSectionEditor({
 	initialContent,
 	onImageUpload,
 	imageUploading,
-	serviceImageUrls,
+	service_image_urls,
 }: ServicesSectionEditorProps): JSX.Element {
 	const [statusTexts, setStatusTexts] = useState<string[]>(
 		Array(serviceFields.length).fill(""),
@@ -210,8 +210,8 @@ export function ServicesSectionEditor({
 										onDrop={handleDrop(idx)}
 										disabled={imageUploading[idx]}
 										uploading={imageUploading[idx]}
-										imageUrl={serviceImageUrls[idx]}
-										hasExistingImage={!!serviceImageUrls[idx]}
+										image_url={service_image_urls[idx]}
+										hasExistingImage={!!service_image_urls[idx]}
 										label={`${field.label} Image`}
 										className="w-full min-w-0 mt-1"
 										fieldKey={field.imageKey}

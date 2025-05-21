@@ -69,7 +69,7 @@ export default function RecentProjects({
 										)}
 									>
 										<img
-											src={project.imageUrl ?? undefined}
+											src={project.image_url ?? undefined}
 											alt={project.title}
 											className="aspect-3/2 w-full rounded-md object-cover"
 										/>

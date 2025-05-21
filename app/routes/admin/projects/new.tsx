@@ -16,7 +16,7 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 	const title = formData.get("title")?.toString() ?? "";
 	const description = formData.get("description")?.toString() ?? "";
 	const details = formData.get("details")?.toString() ?? "";
-	const imageUrl = formData.get("imageUrl")?.toString() || null;
+	const image_url = formData.get("image_url")?.toString() || null;
 	const isFeatured = formData.has("isFeatured");
 	const sortOrderString = formData.get("sortOrder")?.toString();
 	const sortOrder =
@@ -27,7 +27,7 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 		title,
 		description,
 		details,
-		imageUrl,
+		image_url,
 		isFeatured,
 		sortOrder,
 	};

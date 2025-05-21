@@ -10,7 +10,7 @@ interface ImageUploadZoneProps {
 	onDrop: (files: File[]) => void;
 	disabled?: boolean;
 	uploading?: boolean;
-	imageUrl?: string;
+	image_url?: string;
 	label?: string;
 	className?: string;
 	fileInputRef?: React.RefObject<HTMLInputElement | null>;
@@ -24,7 +24,7 @@ export default function ImageUploadZone({
 	onDrop,
 	disabled = false,
 	uploading = false,
-	imageUrl,
+	image_url,
 	label = "Upload Image",
 	className = "",
 	fileInputRef,
@@ -63,9 +63,9 @@ export default function ImageUploadZone({
 				)}
 			>
 				{/* Only show the preview image to the left when NOT in the browse drawer portal (i.e., normal usage) */}
-				{!browseDrawerPortal && hasExistingImage && imageUrl && (
+				{!browseDrawerPortal && hasExistingImage && image_url && (
 					<img
-						src={imageUrl}
+						src={image_url}
 						alt={label}
 						className="w-24 h-24 object-cover rounded-md mr-4"
 					/>
@@ -124,7 +124,7 @@ export default function ImageUploadZone({
 						</div>
 					) : contentUpdated ? (
 						<div className="w-full flex items-center justify-center border-t border-admin-border bg-admin-screen rounded-t-none p-2">
-							<ButtonLED isActive={!!imageUrl} />
+							<ButtonLED isActive={!!image_url} />
 						</div>
 					) : null}
 				</div>

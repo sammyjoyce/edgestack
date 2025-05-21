@@ -54,9 +54,9 @@ export function ProjectDetailRoute({
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 				<FadeIn>
 					<article className="bg-gray-50 p-6 rounded-lg shadow-md dark:bg-gray-800">
-						{project.imageUrl && (
+						{project.image_url && (
 							<img
-								src={project.imageUrl}
+								src={project.image_url}
 								alt={project.title}
 								className="w-full h-64 md:h-96 object-cover rounded-md mb-6 bg-gray-200 dark:bg-gray-700"
 							/>

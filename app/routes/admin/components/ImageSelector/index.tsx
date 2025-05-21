@@ -13,7 +13,7 @@ interface ImageSelectorProps {
 	onDrop: (files: File[]) => void;
 	disabled?: boolean;
 	uploading?: boolean;
-	imageUrl?: string;
+	image_url?: string;
 	label?: string;
 	className?: string;
 	fileInputRef?: React.RefObject<HTMLInputElement>;
@@ -25,7 +25,7 @@ export function ImageSelector({
 	onDrop,
 	disabled = false,
 	uploading = false,
-	imageUrl,
+	image_url,
 	label = "Upload Image",
 	className = "",
 	fileInputRef,
@@ -38,7 +38,7 @@ export function ImageSelector({
 		const formData = new FormData();
 		formData.append("intent", "selectImage");
 		formData.append("key", fieldKey);
-		formData.append("imageUrl", image.url);
+		formData.append("image_url", image.url);
 		fetcher.submit(formData, {
 			method: "post",
 			action: "/admin/upload",
