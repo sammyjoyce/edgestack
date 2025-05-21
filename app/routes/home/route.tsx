@@ -3,7 +3,7 @@ import type { MetaFunction } from "react-router";
 import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import RecentProjects from "~/routes/common/components/RecentProjects";
-import { assert } from "~/routes/common/utils/assert";
+import { assert } from "~/utils/assert";
 import type { Project } from "../../../database/schema";
 import type { Route } from "./+types/route";
 import AboutUs from "./components/AboutUs";

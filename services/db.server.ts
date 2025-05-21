@@ -4,7 +4,7 @@ import type { DrizzleD1Database } from "drizzle-orm/d1";
 import type { NewContent, NewProject, Project } from "~/database/schema";
 import * as schema from "~/database/schema";
 import { validateContentUpdate } from "~/database/valibot-validation";
-import { assert } from "~/routes/common/utils/assert";
+import { assert } from "~/utils/assert";
 
 // Example: Prepare statement for getProjectById
 // This assumes 'db' will be passed in, and the prepared statement will be bound to that instance.

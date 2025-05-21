@@ -4,7 +4,7 @@ Here's an actionable, enumerated task list derived from the analysis of the repo
 
 ## ✅ **Code Organization & Modularity**
 - [x] **1.** Move all business logic and database interactions to dedicated service modules in a top-level `services/` or `lib/` directory.
-- [ ] **2.** Consolidate common utility functions from `app/routes/common/utils/` to a top-level `utils/` directory.
+- [x] **2.** Consolidate common utility functions from `app/routes/common/utils/` to a top-level `utils/` directory.
 - [ ] **3.** Ensure consistent route and component file structure, aligning all routes with React Router v7 conventions.
 - [ ] **4.** Abstract repetitive form logic (e.g., `ProjectForm`) to reusable components within the admin section.
 - [ ] **5.** Standardize naming conventions for keys and variables (e.g., consistently use `_url` suffix for image URLs).
