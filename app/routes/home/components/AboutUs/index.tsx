@@ -6,7 +6,7 @@ import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 interface AboutProps {
 	title?: string;
 	text?: string;
-	imageUrl?: string;
+	image_url?: string;
 	altText?: string;
 	theme?: "light" | "dark";
 }
@@ -14,11 +14,11 @@ interface AboutProps {
 export default function AboutUs({
 	title,
 	text,
-	imageUrl,
+	image_url,
 	altText,
 	theme = "light",
 }: AboutProps): JSX.Element | null {
-	if (!title && !text && !imageUrl) return null;
+	if (!title && !text && !image_url) return null;
 	return (
 		<section
 			className={clsx(
@@ -62,10 +62,10 @@ export default function AboutUs({
 							</div>
 						)}
 					</div>
-					{imageUrl && (
+					{image_url && (
 						<div className="w-full md:w-1/2">
 							<img
-								src={imageUrl}
+								src={image_url}
 								alt={altText ?? title ?? ""}
 								className="aspect-3/2 w-full rounded-md object-cover"
 							/>

@@ -33,7 +33,7 @@ export function ProjectImageSelector({
 					/>
 					<input
 						type="hidden"
-						name="currentImageUrl"
+						name="current_image_url"
 						value={selectedImage || currentImage || ""}
 					/>
 				</div>

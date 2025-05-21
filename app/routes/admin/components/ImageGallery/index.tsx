@@ -140,7 +140,7 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 																			/>
 																			<input
 																				type="hidden"
-																				name="imageUrl"
+																				name="image_url"
 																				value={selectedImage?.url}
 																			/>
 																			<Button

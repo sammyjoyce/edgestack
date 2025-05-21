@@ -17,7 +17,7 @@ export interface ProjectFormFieldsProps {
 		title?: string;
 		description?: string;
 		details?: string;
-		imageUrl?: string;
+		image_url?: string;
 		isFeatured?: boolean;
 		sortOrder?: number;
 	};
@@ -34,7 +34,7 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 }) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(
-		initial.imageUrl || null,
+		initial.image_url || null,
 	);
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -54,8 +54,8 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 
 	const currentPreviewUrl = selectedFile
 		? selectedImageUrl // This would be the object URL for the new file
-		: initial.imageUrl && !selectedImageUrl // If initial image exists and no new one is selected from gallery
-			? initial.imageUrl
+		: initial.image_url && !selectedImageUrl // If initial image exists and no new one is selected from gallery
+			? initial.image_url
 			: selectedImageUrl; // This would be from gallery or initial if no new file
 
 	return (
@@ -124,7 +124,7 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 				<FieldLabel className="md:w-1/3">Project Image</FieldLabel>
 				<ImageUploadZone
 					onDrop={handleFileDrop}
-					imageUrl={currentPreviewUrl || undefined}
+					image_url={currentPreviewUrl || undefined}
 					label="Project Image Upload"
 					fileInputRef={fileInputRef}
 					inputName="image"
@@ -134,8 +134,8 @@ export const ProjectFormFields: React.FC<ProjectFormFieldsProps> = ({
 				{!selectedFile && (
 					<input
 						type="hidden"
-						name="currentImageUrl"
-						value={selectedImageUrl || initial.imageUrl || ""}
+						name="current_image_url"
+						value={selectedImageUrl || initial.image_url || ""}
 					/>
 				)}
 

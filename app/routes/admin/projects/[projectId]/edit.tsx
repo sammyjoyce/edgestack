@@ -41,7 +41,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 	const sortOrder =
 		Number.parseInt(formData.get("sortOrder") as string, 10) || 0;
 	const imageFile = formData.get("image") as File;
-	let imageUrl = formData.get("currentImageUrl") as string;
+	let image_url = formData.get("current_image_url") as string;
 	let uploadedKey: string | undefined;
 	try {
 		if (imageFile && imageFile.size > 0) {
@@ -57,9 +57,9 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 					context,
 				);
 				if (uploadResult && typeof uploadResult === "string") {
-					imageUrl = uploadResult;
+					image_url = uploadResult;
 					// extract R2 key from returned URL
-					uploadedKey = imageUrl.split("/").pop();
+					uploadedKey = image_url.split("/").pop();
 				} else {
 					const errorMsg =
 						typeof uploadResult === "object" &&
@@ -85,7 +85,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 			title,
 			description: description || "",
 			details: details || "",
-			imageUrl: imageUrl || null,
+			image_url: image_url || null,
 			isFeatured,
 			sortOrder,
 		};
@@ -140,7 +140,7 @@ export default function EditProjectPage({
 				title: project.title,
 				description: project.description ?? "",
 				details: project.details ?? "",
-				imageUrl: project.imageUrl ?? undefined,
+				image_url: project.image_url ?? undefined,
 				isFeatured: project.isFeatured ?? false,
 				sortOrder: project.sortOrder ?? 0,
 			}

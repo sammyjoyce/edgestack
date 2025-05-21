@@ -19,7 +19,7 @@ interface HeroSectionEditorProps {
 	initialContent: Record<string, string>;
 	onImageUpload: (file: File) => void;
 	imageUploading: boolean;
-	heroImageUrl?: string;
+	hero_image_url?: string;
 }
 
 export function HeroSectionEditor({
@@ -27,7 +27,7 @@ export function HeroSectionEditor({
 	initialContent,
 	onImageUpload,
 	imageUploading,
-	heroImageUrl,
+	hero_image_url,
 }: HeroSectionEditorProps): React.ReactElement {
 	const [uploadStatus, setUploadStatus] = React.useState<string | null>(null);
 	const actionData = fetcher.data as
@@ -136,14 +136,14 @@ export function HeroSectionEditor({
 						Hero Image
 					</label>
 					<Text className="text-xs text-neutral-500">
-						{heroImageUrl
+						{hero_image_url
 							? "Replace the current hero image or upload a new one."
 							: "Upload or drag and drop an image for the hero section."}
 					</Text>
 					<div className="flex flex-col md:flex-row items-start gap-4 w-full">
-						{heroImageUrl && (
+						{hero_image_url && (
 							<img
-								src={heroImageUrl}
+								src={hero_image_url}
 								alt="Hero section preview"
 								className="rounded border border-gray-200 max-w-[150px] h-auto object-cover bg-gray-100"
 							/>
@@ -152,15 +152,15 @@ export function HeroSectionEditor({
 							onDrop={handleDrop}
 							disabled={imageUploading}
 							uploading={imageUploading}
-							// imageUrl is handled by the img tag above now
+							// image_url is handled by the img tag above now
 							label="Hero Image"
 							className={clsx(
 								"mt-1",
-								heroImageUrl ? "flex-1" : "w-full",
+								hero_image_url ? "flex-1" : "w-full",
 								"min-w-0",
 							)}
 							fieldKey="hero_image_url"
-							hasExistingImage={!!heroImageUrl}
+							hasExistingImage={!!hero_image_url}
 						/>
 					</div>
 				</div>

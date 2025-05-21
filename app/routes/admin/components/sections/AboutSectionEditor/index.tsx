@@ -12,7 +12,7 @@ interface AboutSectionEditorProps {
 	initialContent: Record<string, string>;
 	onImageUpload: (file: File) => void;
 	imageUploading: boolean;
-	aboutImageUrl?: string;
+	about_image_url?: string;
 }
 
 export function AboutSectionEditor({
@@ -20,7 +20,7 @@ export function AboutSectionEditor({
 	initialContent,
 	onImageUpload,
 	imageUploading: isUploading,
-	aboutImageUrl,
+	about_image_url,
 }: AboutSectionEditorProps): React.JSX.Element {
 	const [uploadStatus, setUploadStatus] = useState<string | null>(null);
 	const actionData = fetcher.data as
@@ -115,7 +115,7 @@ export function AboutSectionEditor({
 						onDrop={handleDrop}
 						disabled={isUploading}
 						uploading={isUploading}
-						imageUrl={aboutImageUrl}
+						image_url={about_image_url}
 						label="About Image"
 						className="mt-1 w-full min-w-0"
 						fieldKey="about_image_url"
