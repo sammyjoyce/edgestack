@@ -36,9 +36,9 @@ function AdminErrorBoundary() {
 		!isRouteErrorResponse(error) &&
 		!(error instanceof Error)
 	) {
-		Object.entries(error).forEach(([key, value]) => {
+		for (const [key, value] of Object.entries(error)) {
 			console.error(`[ADMIN ERROR BOUNDARY] Error ${key}:`, value);
-		});
+		}
 	}
 	return (
 		<SharedErrorBoundary

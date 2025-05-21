@@ -1,16 +1,16 @@
+import clsx from "clsx";
 import React from "react";
 import type { useFetcher } from "react-router";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
+import { Alert } from "~/routes/admin/components/ui/alert";
 import {
 	FieldLabel,
 	SectionCard,
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
-import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { Text } from "~/routes/admin/components/ui/text";
-import { Alert } from "~/routes/admin/components/ui/alert";
-import clsx from "clsx";
+import { Textarea } from "~/routes/admin/components/ui/textarea";
 
 const DEBUG = process.env.NODE_ENV !== "production";
 
@@ -144,7 +144,7 @@ export function HeroSectionEditor({
 						{heroImageUrl && (
 							<img
 								src={heroImageUrl}
-								alt="Current Hero Image"
+								alt="Hero section preview"
 								className="rounded border border-gray-200 max-w-[150px] h-auto object-cover bg-gray-100"
 							/>
 						)}

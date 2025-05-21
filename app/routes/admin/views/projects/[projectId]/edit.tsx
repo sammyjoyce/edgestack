@@ -1,15 +1,15 @@
-import type { Route } from "./+types/edit";
 import React from "react";
 import { Form, redirect } from "react-router";
+import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById, updateProject } from "~/routes/common/db";
-import { handleImageUpload, deleteStoredImage } from "~/utils/upload.server";
+import { deleteStoredImage, handleImageUpload } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
-import { ProjectFormFields } from "../../../components/ProjectFormFields";
-import { SectionCard, SectionHeading } from "../../../components/ui/section";
-import { Alert } from "../../../components/ui/alert";
-import { Heading } from "~/routes/admin/components/ui/heading";
 import { Container } from "../../../../common/components/ui/Container";
+import { ProjectFormFields } from "../../../components/ProjectFormFields";
+import { Alert } from "../../../components/ui/alert";
+import { SectionCard, SectionHeading } from "../../../components/ui/section";
+import type { Route } from "./+types/edit";
 
 export async function loader({ params, context, request }: Route.LoaderArgs) {
 	const projectId = Number(params.projectId);
@@ -22,11 +22,11 @@ export async function loader({ params, context, request }: Route.LoaderArgs) {
 			throw new Response("Project not found", { status: 404 });
 		}
 		return { project };
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("Error fetching project:", error);
-		throw new Response(error.message || "Failed to load project", {
-			status: 500,
-		});
+		const message =
+			error instanceof Error ? error.message : "Failed to load project";
+		throw new Response(message, { status: 500 });
 	}
 }
 
@@ -109,7 +109,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 			};
 		}
 		return redirect("/admin/projects");
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("Error updating project:", error);
 		const errors: Record<string, string> = {};
 		if (error.issues && Array.isArray(error.issues)) {
@@ -137,6 +137,16 @@ export default function EditProjectPage({
 }: Route.ComponentProps) {
 	const project = loaderData?.project;
 	const errors = actionData?.errors;
+	const initialProject = project
+		? {
+				title: project.title,
+				description: project.description ?? "",
+				details: project.details ?? "",
+				imageUrl: project.imageUrl ?? undefined,
+				isFeatured: project.isFeatured ?? false,
+				sortOrder: project.sortOrder ?? 0,
+			}
+		: undefined;
 	const handleCancel = () => window.location.assign("/admin/projects");
 
 	return (
@@ -159,7 +169,7 @@ export default function EditProjectPage({
 						className="flex flex-col gap-6"
 					>
 						<ProjectFormFields
-							initial={project as any}
+							initial={initialProject}
 							errors={errors}
 							isEdit
 							onCancel={handleCancel}

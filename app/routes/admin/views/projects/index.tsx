@@ -1,23 +1,23 @@
+import clsx from "clsx";
 import React from "react";
 import {
-	data,
 	Form,
 	Link,
 	Outlet,
+	data,
 	redirect,
 	useActionData,
 	useLocation,
 } from "react-router";
+import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer/index";
 import { deleteProject, getAllProjects } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
 import { checkSession } from "~/routes/common/utils/auth";
+import { Container } from "../../../common/components/ui/Container";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Button } from "../../components/ui/button";
 import { Text } from "../../components/ui/text";
-import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer/index";
 import type { Route } from "./+types/index";
-import { Container } from "../../../common/components/ui/Container";
-import clsx from "clsx";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
 	const env = context.cloudflare?.env;
@@ -27,12 +27,11 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	try {
 		const projects = await getAllProjects(context.db);
 		return { projects };
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("Failed to load projects:", error);
-		throw data(
-			{ error: error.message || "Failed to load projects" },
-			{ status: 500 },
-		);
+		const message =
+			error instanceof Error ? error.message : "Failed to load projects";
+		throw data({ error: message }, { status: 500 });
 	}
 }
 
