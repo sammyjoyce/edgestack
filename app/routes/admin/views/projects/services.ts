@@ -10,8 +10,9 @@ export async function fetchAdminProjectsList(
 		return await getAllProjects(db);
 	} catch (error) {
 		throw new Error(
-			"fetchAdminProjectsList failed: " +
-				(error instanceof Error ? error.message : String(error)),
+			`fetchAdminProjectsList failed: ${
+				error instanceof Error ? error.message : String(error)
+			}`,
 		);
 	}
 }
@@ -26,8 +27,9 @@ export async function fetchAdminProject(
 		return project;
 	} catch (error) {
 		throw new Error(
-			"fetchAdminProject failed: " +
-				(error instanceof Error ? error.message : String(error)),
+			`fetchAdminProject failed: ${
+				error instanceof Error ? error.message : String(error)
+			}`,
 		);
 	}
 }

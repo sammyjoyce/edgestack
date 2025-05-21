@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import type React from "react";
 import { type JSX, useState } from "react";
 import { useFetcher } from "react-router";
@@ -7,7 +8,6 @@ import ImageUploadZone from "~/routes/admin/components/ImageUploadZone";
 import type { StoredImage } from "~/utils/upload.server";
 import { Button } from "../ui/button";
 import { Heading } from "../ui/heading";
-import { clsx } from "clsx";
 
 interface ImageSelectorProps {
 	onDrop: (files: File[]) => void;

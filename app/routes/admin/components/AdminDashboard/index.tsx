@@ -1,5 +1,6 @@
-import React from "react";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import { clsx } from "clsx";
+import React from "react";
 import { Link, useFetcher } from "react-router";
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { AboutSectionEditor } from "~/routes/admin/components/sections/AboutSectionEditor";
@@ -9,19 +10,18 @@ import { ServicesSectionEditor } from "~/routes/admin/components/sections/Servic
 import type { action as adminIndexAction } from "~/routes/admin/views/index";
 import type { action as adminUploadAction } from "~/routes/admin/views/upload";
 import { Container } from "~/routes/common/components/ui/Container";
-import { Strong, Text } from "../ui/text";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Strong, Text } from "../ui/text";
 import { Textarea } from "../ui/textarea";
-import { clsx } from "clsx";
 
+import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
 import type {
 	Section as SorterSection,
 	SectionTheme as SorterSectionTheme,
 } from "../SectionSorter";
-import { type Tab, Tabs } from "~/routes/common/components/ui/Tabs";
-import { Heading } from "../ui/heading";
 import { PageHeader } from "../ui/PageHeader";
+import { Heading } from "../ui/heading";
 import { SectionCard, SectionHeading } from "../ui/section";
 
 interface AdminDashboardProps {
@@ -55,95 +55,81 @@ export default function AdminDashboard({
 	const [serviceUploading, setServiceUploading] = React.useState<boolean[]>(
 		Array(4).fill(false),
 	);
-        const [serviceImageUrls, setServiceImageUrls] = React.useState([
-                safeContent.service_1_image || "",
-                safeContent.service_2_image || "",
-                safeContent.service_3_image || "",
-                safeContent.service_4_image || "",
-        ]);
+	const [serviceImageUrls, setServiceImageUrls] = React.useState([
+		safeContent.service_1_image || "",
+		safeContent.service_2_image || "",
+		safeContent.service_3_image || "",
+		safeContent.service_4_image || "",
+	]);
 
-        React.useEffect(() => {
-                if (
-                        uploadFetcher.state === "idle" &&
-                        uploadFetcher.data &&
-                        typeof uploadFetcher.data === "object" &&
-                        "key" in uploadFetcher.data
-                ) {
-                        const data = uploadFetcher.data as {
-                                success?: boolean;
-                                url?: string;
-                                key?: string;
-                        };
-                        const key = data.key || "";
-                        const url = data.url || "";
-                        const match = key.match(/^service_(\d+)_image$/);
+	React.useEffect(() => {
+		if (
+			uploadFetcher.state === "idle" &&
+			uploadFetcher.data &&
+			typeof uploadFetcher.data === "object" &&
+			"key" in uploadFetcher.data
+		) {
+			const data = uploadFetcher.data as {
+				success?: boolean;
+				url?: string;
+				key?: string;
+			};
+			const key = data.key || "";
+			const url = data.url || "";
+			const match = key.match(/^service_(\d+)_image$/);
 
-                        if (key === "hero_image_url") {
-                                if (data.success && url) setHeroImageUrl(url);
-                                setHeroUploading(false);
-                        } else if (key === "about_image_url") {
-                                if (data.success && url) setAboutImageUrl(url);
-                                setAboutUploading(false);
-                        } else if (match) {
-                                const idx = Number(match[1]) - 1;
-                                if (idx >= 0) {
-                                        if (data.success && url) {
-                                                setServiceImageUrls((prev) =>
-                                                        prev.map((val, i) => (i === idx ? url : val)),
-                                                );
-                                        }
-                                        setServiceUploading((prev) =>
-                                                prev.map((val, i) => (i === idx ? false : val)),
-                                        );
-                                }
-                        }
-                }
-        }, [uploadFetcher.state, uploadFetcher.data]);
-        const uploadImage = React.useCallback(
-                (
-                        fetcherInstance: ReturnType<
-                                typeof useFetcher<typeof adminUploadAction | typeof adminIndexAction>
-                        >,
-                        key: string,
-                        file: File,
-                        setUploading: (v: boolean) => void,
-                ) => {
-                        setUploading(true);
-                        const fd = new FormData();
-                        fd.append("image", file);
-                        fd.append("key", key);
-                        fetcherInstance.submit(fd, {
-                                method: "post",
-                                action: "/admin/upload",
-                                encType: "multipart/form-data",
-                        });
-                },
-                [],
-        );
-        const handleHeroImageUpload = (file: File) =>
-                uploadImage(
-                        uploadFetcher,
-                        "hero_image_url",
-                        file,
-                        setHeroUploading,
-                );
-        const handleAboutImageUpload = (file: File) =>
-                uploadImage(
-                        uploadFetcher,
-                        "about_image_url",
-                        file,
-                        setAboutUploading,
-                );
-        const handleServiceImageUpload = (idx: number, file: File) =>
-                uploadImage(
-                        uploadFetcher,
-                        `service_${idx + 1}_image`,
-                        file,
-                        (v) =>
-                                setServiceUploading((prev) =>
-                                        prev.map((val, i) => (i === idx ? v : val)),
-                                ),
-                );
+			if (key === "hero_image_url") {
+				if (data.success && url) setHeroImageUrl(url);
+				setHeroUploading(false);
+			} else if (key === "about_image_url") {
+				if (data.success && url) setAboutImageUrl(url);
+				setAboutUploading(false);
+			} else if (match) {
+				const idx = Number(match[1]) - 1;
+				if (idx >= 0) {
+					if (data.success && url) {
+						setServiceImageUrls((prev) =>
+							prev.map((val, i) => (i === idx ? url : val)),
+						);
+					}
+					setServiceUploading((prev) =>
+						prev.map((val, i) => (i === idx ? false : val)),
+					);
+				}
+			}
+		}
+	}, [uploadFetcher.state, uploadFetcher.data]);
+	const uploadImage = React.useCallback(
+		(
+			fetcherInstance: ReturnType<
+				typeof useFetcher<typeof adminUploadAction | typeof adminIndexAction>
+			>,
+			key: string,
+			file: File,
+			setUploading: (v: boolean) => void,
+		) => {
+			setUploading(true);
+			const fd = new FormData();
+			fd.append("image", file);
+			fd.append("key", key);
+			fetcherInstance.submit(fd, {
+				method: "post",
+				action: "/admin/upload",
+				encType: "multipart/form-data",
+			});
+		},
+		[],
+	);
+	const handleHeroImageUpload = (file: File) =>
+		uploadImage(uploadFetcher, "hero_image_url", file, setHeroUploading);
+	const handleAboutImageUpload = (file: File) =>
+		uploadImage(uploadFetcher, "about_image_url", file, setAboutUploading);
+	const handleServiceImageUpload = (idx: number, file: File) =>
+		uploadImage(uploadFetcher, `service_${idx + 1}_image`, file, (v) =>
+			setServiceUploading((prev) =>
+				prev.map((val, i) => (i === idx ? v : val)),
+			),
+		);
 	const sectionsOrder = safeContent.home_sections_order as string | undefined;
 	const sectionDetailsMap: Record<string, { label: string; themeKey: string }> =
 		{
