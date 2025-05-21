@@ -5,11 +5,22 @@ interface SessionRecord {
   createdAt: number;
 }
 
-const SESSION_TTL = 60 * 60 * 2; // 2 hours
+/**
+ * TTL for stored session records in seconds.
+ * Sessions expire automatically after two hours.
+ */
+const SESSION_TTL = 60 * 60 * 2;
 
+/**
+ * Durable Object that manages basic session data using the built-in
+ * key/value storage.
+ */
 export class SessionDurable implements DurableObject {
   constructor(private state: DurableObjectState, private env: Env) {}
 
+  /**
+   * Dispatches CRUD-style operations based on the request method.
+   */
   async fetch(request: Request): Promise<Response> {
     const id = new URL(request.url).pathname.slice(1);
     if (!id) return new Response("Bad Request", { status: 400 });
