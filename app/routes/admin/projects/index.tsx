@@ -19,6 +19,10 @@ import { Text } from "../components/ui/text";
 import type { Route } from "./+types/index";
 import { fetchAdminProjectsList } from "./services";
 
+/**
+ * Loader that retrieves the list of projects for the admin UI.
+ * Redirects to the login page when the session is missing or invalid.
+ */
 export async function loader({ request, context }: Route.LoaderArgs) {
 	const env = context.cloudflare?.env;
 	if (!env || !(await checkSession(request, env))) {
@@ -35,6 +39,10 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	}
 }
 
+/**
+ * Action handler for project list management.
+ * Currently supports deleting a project via form submission.
+ */
 export async function action({ request, context }: Route.ActionArgs) {
 	const formData = await request.formData();
 	const intent = formData.get("intent")?.toString();
