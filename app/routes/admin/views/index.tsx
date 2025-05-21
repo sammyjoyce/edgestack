@@ -1,26 +1,27 @@
 import React, { useEffect } from "react";
-import { useSearchParams, useActionData, useNavigation } from "react-router";
+import { useActionData, useNavigation, useSearchParams } from "react-router";
 import { redirect } from "react-router";
+import { Toaster, toast } from "sonner";
+import { ValiError } from "valibot";
+import { updateContent } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
-import { getAllContent, updateContent } from "~/routes/common/db";
 import { checkSession } from "~/routes/common/utils/auth";
+import { validateContentInsert } from "../../../../database/valibot-validation.js";
 import AdminDashboard from "../components/AdminDashboard";
 import { ButtonLED } from "../components/ui/button";
-import { ValiError } from "valibot";
-import { validateContentInsert } from "../../../../database/valibot-validation.js";
-import { toast, Toaster } from "sonner";
+import { fetchAdminContent } from "../services";
 import type { Route } from "./+types";
 
 const DEBUG = process.env.NODE_ENV !== "production";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-        const env = context.cloudflare?.env;
-        if (!env || !(await checkSession(request, env))) {
-                throw redirect("/admin/login");
-        }
+	const env = context.cloudflare?.env;
+	if (!env || !(await checkSession(request, env))) {
+		throw redirect("/admin/login");
+	}
 
 	try {
-		const content = await getAllContent(context.db);
+		const content = await fetchAdminContent(context.db);
 		if (DEBUG)
 			console.log("[ADMIN LOADER] Loaded content keys:", Object.keys(content));
 		return { content };
@@ -84,10 +85,10 @@ async function handleReorderSections(
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
-        const env = context.cloudflare?.env;
-        if (!env || !(await checkSession(request, env))) {
-                return redirect("/admin/login");
-        }
+	const env = context.cloudflare?.env;
+	if (!env || !(await checkSession(request, env))) {
+		return redirect("/admin/login");
+	}
 
 	if (request.method !== "POST") {
 		return { success: false, error: "Method not allowed" };

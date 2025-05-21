@@ -10,7 +10,7 @@ import {
 	useLocation,
 } from "react-router";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer/index";
-import { deleteProject, getAllProjects } from "~/routes/common/db";
+import { deleteProject } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
 import { checkSession } from "~/routes/common/utils/auth";
 import { Container } from "../../../common/components/ui/Container";
@@ -18,6 +18,7 @@ import { PageHeader } from "../../components/ui/PageHeader";
 import { Button } from "../../components/ui/button";
 import { Text } from "../../components/ui/text";
 import type { Route } from "./+types/index";
+import { fetchAdminProjectsList } from "./services";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
 	const env = context.cloudflare?.env;
@@ -25,7 +26,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		throw redirect("/admin/login");
 	}
 	try {
-		const projects = await getAllProjects(context.db);
+		const projects = await fetchAdminProjectsList(context.db);
 		return { projects };
 	} catch (error: unknown) {
 		console.error("Failed to load projects:", error);
