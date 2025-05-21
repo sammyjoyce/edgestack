@@ -1,16 +1,16 @@
 import type React from "react";
 import { useRef, useState } from "react";
-import { Button } from "./ui/button";
-import { ErrorMessage } from "./ui/fieldset";
-import { Input } from "./ui/input";
+import { Drawer } from "vaul";
+import type { StoredImage } from "~/utils/upload.server";
+import { ImageGallery } from "./ImageGallery";
 import ImageUploadZone from "./ImageUploadZone";
 import RichTextField from "./RichTextField";
-import { FieldLabel, FieldRow } from "./ui/section";
-import { Drawer } from "vaul";
-import { Heading } from "./ui/heading";
-import { ImageGallery } from "./ImageGallery";
-import type { StoredImage } from "~/utils/upload.server";
+import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
+import { ErrorMessage } from "./ui/fieldset";
+import { Heading } from "./ui/heading";
+import { Input } from "./ui/input";
+import { FieldLabel, FieldRow } from "./ui/section";
 
 export interface ProjectFormFieldsProps {
 	initial?: {

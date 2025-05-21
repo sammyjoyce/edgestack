@@ -26,8 +26,7 @@ export default function OurServices({
 	servicesData,
 	theme = "light",
 }: OurServicesProps): JSX.Element | null {
-	if (!introTitle && !introText && !(servicesData && servicesData.length))
-		return null;
+	if (!introTitle && !introText && !servicesData?.length) return null;
 	const services = servicesData ?? [];
 	const scrollToSection = useSectionScroll();
 

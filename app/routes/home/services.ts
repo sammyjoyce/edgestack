@@ -13,8 +13,9 @@ export async function loadHomeData(
 		return { content, projects };
 	} catch (error) {
 		throw new Error(
-			"loadHomeData failed: " +
-				(error instanceof Error ? error.message : String(error)),
+			`loadHomeData failed: ${
+				error instanceof Error ? error.message : String(error)
+			}`,
 		);
 	}
 }

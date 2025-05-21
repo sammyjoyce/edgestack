@@ -1,10 +1,10 @@
+import { clsx } from "clsx";
 import type React from "react";
 import { type JSX, useCallback } from "react";
-import { clsx } from "clsx";
-import { Text } from "../ui/text";
 import { useDropzone } from "react-dropzone";
-import { ButtonLED } from "../ui/button"; // Assuming ButtonLED is imported from here
 import { useSearchParams } from "react-router";
+import { ButtonLED } from "../ui/button"; // Assuming ButtonLED is imported from here
+import { Text } from "../ui/text";
 
 interface ImageUploadZoneProps {
 	onDrop: (files: File[]) => void;

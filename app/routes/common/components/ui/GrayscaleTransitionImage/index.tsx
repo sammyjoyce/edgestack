@@ -22,7 +22,7 @@ interface GrayscaleTransitionImageProps {
 	sizes?: string;
 	srcSet?: string;
 
-	[key: string]: any;
+	[key: string]: unknown;
 }
 
 export function GrayscaleTransitionImage({
@@ -71,7 +71,7 @@ export function GrayscaleTransitionImage({
 				className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
 				aria-hidden="true"
 			>
-				<img {...imgProps} />
+				<img {...imgProps} alt="" />
 			</div>
 		</div>
 	);
