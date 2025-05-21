@@ -116,6 +116,18 @@ to set up the pre-commit hooks.
 
 For broader styling guidance, see [docs/tigerstyle.md](docs/tigerstyle.md) and [.junie/guidelines.md](.junie/guidelines.md).
 
+## Testing
+
+Run the test suite with Bun's built-in runner:
+
+```bash
+bun test
+```
+
+Tests live alongside the code they cover and use `bun:test`. Example tests are
+provided for route configuration, utilities, and services. Use them as a
+starting point when writing your own tests.
+
 ## Services and Business Logic
 
 - **Separation of Concerns**: Place business logic, API calls, or complex data transformations in dedicated service files (for example `app/routes/home/services.ts`).
