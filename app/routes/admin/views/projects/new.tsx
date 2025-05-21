@@ -1,8 +1,8 @@
 import React from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { assert } from "~/routes/common/utils/assert";
 import { createProject } from "~/services/db.server";
+import { assert } from "~/utils/assert";
 import type { NewProject } from "../../../../../database/schema";
 import { validateProjectInsert } from "../../../../../database/valibot-validation.js";
 import { ProjectFormFields } from "../../components/ProjectFormFields";

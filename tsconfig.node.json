@@ -17,8 +17,9 @@
                "moduleResolution": "bundler",
                "baseUrl": ".",
                "paths": {
-                       "~/services/*": ["./services/*"],
-                       "~/database/*": ["./database/*"]
-               }
-       }
+                "~/services/*": ["./services/*"],
+                "~/database/*": ["./database/*"],
+                "~/utils/*": ["./utils/*"]
+                }
+        }
 }

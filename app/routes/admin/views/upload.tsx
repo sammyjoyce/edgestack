@@ -4,7 +4,7 @@ import { useActionData, useNavigation } from "react-router";
 import { data, redirect } from "react-router";
 import { ValiError, file } from "valibot";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { checkSession } from "~/routes/common/utils/auth";
+import { checkSession } from "~/utils/auth";
 import { deleteStoredImage, handleImageUpload } from "~/utils/upload.server";
 import * as FullSchema from "../../../../database/schema";
 import { schema } from "../../../../database/schema";
