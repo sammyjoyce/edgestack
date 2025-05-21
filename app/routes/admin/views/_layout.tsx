@@ -13,7 +13,7 @@ import {
 	useLocation,
 	useNavigation,
 } from "react-router";
-import { checkSession } from "~/routes/common/utils/auth";
+import { checkSession } from "~/utils/auth";
 import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 import { SidebarLayout } from "../components/ui/sidebar-layout";

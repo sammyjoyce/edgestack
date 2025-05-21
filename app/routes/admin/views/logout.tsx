@@ -1,9 +1,5 @@
 import { redirect } from "react-router";
-import {
-	COOKIE_NAME,
-	getSessionCookie,
-	verify,
-} from "~/routes/common/utils/auth";
+import { COOKIE_NAME, getSessionCookie, verify } from "~/utils/auth";
 import type { Route } from "./+types/logout";
 
 async function handleLogout(
