@@ -159,7 +159,7 @@ export default function EditProjectPage({
 						className="flex flex-col gap-6"
 					>
 						<ProjectFormFields
-							initial={project as any} // Cast as any to match existing, consider refining type
+							initial={project as any}
 							errors={errors}
 							isEdit
 							onCancel={handleCancel}

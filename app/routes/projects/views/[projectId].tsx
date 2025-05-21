@@ -5,7 +5,6 @@ import { ConditionalRichTextRenderer } from "~/routes/common/components/Conditio
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
-// Removed type { Route } from "./+types/projectId"; as it's moved and renamed by another change
 import type { Route } from "./+types/[projectId]";
 import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout";
 
@@ -56,19 +55,19 @@ export function ProjectDetailRoute({
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 				<FadeIn>
 					<article className="bg-gray-50 p-6 rounded-lg shadow-md dark:bg-gray-800">
-                                                {project.imageUrl && (
-                                                        <img
-                                                                src={project.imageUrl}
-                                                                alt={project.title}
-                                                                className="w-full h-64 md:h-96 object-cover rounded-md mb-6 bg-gray-200 dark:bg-gray-700"
-                                                        />
-                                                )}
+						{project.imageUrl && (
+							<img
+								src={project.imageUrl}
+								alt={project.title}
+								className="w-full h-64 md:h-96 object-cover rounded-md mb-6 bg-gray-200 dark:bg-gray-700"
+							/>
+						)}
 						<h2 className="text-3xl font-serif font-bold text-black dark:text-white mb-4">
 							{project.title}
 						</h2>
 						<ConditionalRichTextRenderer
 							text={project.description}
-							fallbackClassName="text-lg text-gray-700 dark:text-gray-300 mb-4" // Standard Tailwind
+							fallbackClassName="text-lg text-gray-700 dark:text-gray-300 mb-4"
 							richTextClassName={clsx(
 								"prose-lg mb-4", // Prose size modifier
 								"prose-p:text-gray-700 dark:prose-p:text-gray-300",
@@ -92,9 +91,8 @@ export function ProjectDetailRoute({
 								</h3>
 								<ConditionalRichTextRenderer
 									text={project.details}
-									fallbackClassName="not-prose text-sm text-gray-600 dark:text-gray-400" // Standard Tailwind, escapes parent prose
+									fallbackClassName="not-prose text-sm text-gray-600 dark:text-gray-400"
 									richTextClassName={clsx(
-										// Element specifics, inherits prose-sm from parent for base sizing
 										"prose-p:text-gray-600 dark:prose-p:text-gray-400",
 										"prose-headings:text-gray-600 dark:prose-headings:text-gray-400",
 										"prose-strong:text-gray-600 dark:prose-strong:text-gray-400",

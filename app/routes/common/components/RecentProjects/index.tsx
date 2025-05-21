@@ -15,13 +15,13 @@ interface RecentProjectsProps {
 }
 
 export default function RecentProjects({
-        introTitle,
-        introText,
-        projects = [],
-        theme = "light",
+	introTitle,
+	introText,
+	projects = [],
+	theme = "light",
 }: RecentProjectsProps) {
-        if (!introTitle && !introText && projects.length === 0) return null;
-        return (
+	if (!introTitle && !introText && projects.length === 0) return null;
+	return (
 		<section
 			id="projects"
 			className={clsx(
@@ -29,15 +29,15 @@ export default function RecentProjects({
 				theme === "dark" && "dark",
 			)}
 		>
-                        <SectionIntro
-                                title={introTitle}
+			<SectionIntro
+				title={introTitle}
 				className="mb-16 max-w-6xl px-4 lg:px-8"
 				invert={theme === "dark"}
 			>
 				{introText && (
 					<ConditionalRichTextRenderer
 						text={introText}
-						fallbackClassName="text-xl text-gray-600 dark:text-gray-300" // Standard Tailwind for fallback
+						fallbackClassName="text-xl text-gray-600 dark:text-gray-300"
 						richTextClassName={clsx(
 							"prose-xl", // Base size for intro text
 							"prose max-w-none", // Allow content to fill container
@@ -87,7 +87,7 @@ export default function RecentProjects({
 											text={
 												project.description ? String(project.description) : null
 											}
-											fallbackClassName="mb-4 text-base text-gray-700 dark:text-gray-300 md:mb-6 md:text-lg" // Standard Tailwind
+											fallbackClassName="mb-4 text-base text-gray-700 dark:text-gray-300 md:mb-6 md:text-lg"
 											richTextClassName={clsx(
 												"mb-4 md:mb-6 prose-base md:prose-lg", // Prose size modifiers
 												"prose-p:text-gray-700 dark:prose-p:text-gray-300",

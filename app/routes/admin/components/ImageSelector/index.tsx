@@ -16,7 +16,7 @@ interface ImageSelectorProps {
 	imageUrl?: string;
 	label?: string;
 	className?: string;
-	fileInputRef?: React.RefObject<HTMLInputElement>; // Make stricter to match ImageUploadZone if it's strict
+	fileInputRef?: React.RefObject<HTMLInputElement>;
 	fieldKey: string;
 	hasExistingImage?: boolean;
 }
@@ -100,14 +100,11 @@ export function ImageSelector({
 										</Heading>
 										<ImageUploadZone
 											onDrop={(files) => {
-												onDrop(files); // Use the main onDrop handler
-												// Drawer remains open to show upload progress via the 'uploading' prop
+												onDrop(files);
 											}}
 											disabled={disabled || uploading}
 											uploading={uploading}
-											// Label can be more specific for this context
-											// hasExistingImage is not relevant here as this is always for a new upload within the drawer
-											className="mb-4 w-full" // Make it full width of its container
+											className="mb-4 w-full"
 										/>
 									</div>
 								</div>
