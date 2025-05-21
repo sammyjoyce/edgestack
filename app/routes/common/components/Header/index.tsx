@@ -1,7 +1,7 @@
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import { useSectionScroll } from "~/hooks/useSectionScroll";
 import React, { type JSX, type MouseEvent, useCallback, useState } from "react";
 import { NavLink, type To, useNavigate } from "react-router";
+import { useSectionScroll } from "~/hooks/useSectionScroll";
 import { Button } from "../ui/Button";
 import DesktopNav from "./DesktopNav";
 import MobileMenu from "./MobileMenu";
@@ -61,12 +61,12 @@ export default function Header({
 					>
 						<Bars3Icon className="h-6 w-6" aria-hidden="true" />
 					</Button>
-                                       <NavLink to="/" className="absolute left-1/2 -translate-x-1/2 flex">
-                                               <img
-                                                       src="/assets/logo_284x137-KoakP1Oi.png"
-                                                       alt="Company Logo"
-                                                       className="h-8 w-auto sm:h-10"
-                                               />
+					<NavLink to="/" className="absolute left-1/2 -translate-x-1/2 flex">
+						<img
+							src="/assets/logo_284x137-KoakP1Oi.png"
+							alt="Company Logo"
+							className="h-8 w-auto sm:h-10"
+						/>
 					</NavLink>
 				</div>
 			</nav>

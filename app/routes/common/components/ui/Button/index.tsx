@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import type { ForwardedRef, ReactNode } from "react";
-import React, { forwardRef } from "react";
+import type React from "react";
+import { forwardRef } from "react";
 import { Link, type To } from "react-router";
 
 type ButtonProps = {
@@ -9,8 +10,8 @@ type ButtonProps = {
 	children?: ReactNode;
 	to?: To;
 	href?: string;
-	as?: any;
-	[key: string]: any;
+	as?: React.ElementType;
+	[key: string]: unknown;
 };
 export const Button = forwardRef(function Button(
 	{ invert = false, className, children, as, to, href, ...props }: ButtonProps,

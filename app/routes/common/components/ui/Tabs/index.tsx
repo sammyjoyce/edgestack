@@ -1,13 +1,13 @@
 import clsx from "clsx";
 import {
+	AnimatePresence,
+	LayoutGroup,
 	motion,
 	useScroll,
 	useTransform,
-	AnimatePresence,
-	LayoutGroup,
 } from "framer-motion";
 import type React from "react";
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function cn(...inputs: (string | undefined | null | boolean)[]) {
 	return clsx(inputs);
@@ -48,7 +48,7 @@ const ChevronRightIcon = () => (
 export type Tab = {
 	title: string;
 	value: string;
-	content?: string | React.ReactNode | any;
+	content?: React.ReactNode;
 };
 export const Tabs = ({
 	tabs: propTabs,
@@ -94,7 +94,7 @@ export const Tabs = ({
 		checkOverflow();
 		window.addEventListener("resize", checkOverflow);
 		return () => window.removeEventListener("resize", checkOverflow);
-	}, [propTabs.length]);
+	}, []);
 
 	const handleTabClick = (value: string) => {
 		if (onTabChange) {

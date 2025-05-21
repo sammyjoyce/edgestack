@@ -1,17 +1,17 @@
 import type React from "react";
 import type { JSX } from "react";
 import { useCallback, useEffect, useState } from "react";
-import { Textarea } from "../../ui/textarea"; // Add missing Textarea import
 import type { useFetcher } from "react-router";
-import { Alert } from "~/routes/admin/components/ui/alert";
-import { Text as TextComponent } from "~/routes/admin/components/ui/text";
 import { ImageSelector } from "~/routes/admin/components/ImageSelector";
 import RichTextField from "~/routes/admin/components/RichTextField";
+import { Alert } from "~/routes/admin/components/ui/alert";
 import {
 	FieldLabel,
 	SectionCard,
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
+import { Text as TextComponent } from "~/routes/admin/components/ui/text";
+import { Textarea } from "../../ui/textarea"; // Add missing Textarea import
 
 interface ServiceField {
 	titleKey: string;
@@ -206,16 +206,16 @@ export function ServicesSectionEditor({
 										Upload or drag and drop an image for the{" "}
 										{field.label.toLowerCase()}.
 									</TextComponent>
-                                <ImageSelector
-                                        onDrop={handleDrop(idx)}
-                                        disabled={imageUploading[idx]}
-                                        uploading={imageUploading[idx]}
-                                        imageUrl={serviceImageUrls[idx]}
-                                        hasExistingImage={!!serviceImageUrls[idx]}
-                                        label={`${field.label} Image`}
-                                        className="w-full min-w-0 mt-1"
-                                        fieldKey={field.imageKey}
-                                />
+									<ImageSelector
+										onDrop={handleDrop(idx)}
+										disabled={imageUploading[idx]}
+										uploading={imageUploading[idx]}
+										imageUrl={serviceImageUrls[idx]}
+										hasExistingImage={!!serviceImageUrls[idx]}
+										label={`${field.label} Image`}
+										className="w-full min-w-0 mt-1"
+										fieldKey={field.imageKey}
+									/>
 								</div>
 							</div>
 						</div>

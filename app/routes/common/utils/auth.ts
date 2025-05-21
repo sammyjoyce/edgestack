@@ -18,7 +18,11 @@ async function getKey(secret: string): Promise<CryptoKey> {
 			),
 		);
 	}
-	return keyCache.get(secret)!;
+	const cachedKey = keyCache.get(secret);
+	if (!cachedKey) {
+		throw new Error("Key generation failed");
+	}
+	return cachedKey;
 }
 
 function bytesToHex(buf: ArrayBuffer): string {
@@ -71,29 +75,29 @@ export function getSessionCookie(req: Request): string | null {
 }
 
 export async function checkSession(
-        request: Request,
-        env: CloudflareEnvironment,
+	request: Request,
+	env: CloudflareEnvironment,
 ): Promise<boolean> {
-        const sessionValue = getSessionCookie(request);
-        if (!sessionValue) return false;
-        const sessionId = await verify(sessionValue, env.JWT_SECRET);
-        if (!sessionId) return false;
-        const stub = env.SESSION_DO.get(env.SESSION_DO.idFromName(sessionId));
-        const res = await stub.fetch(`https://session/${sessionId}`);
-        return res.ok;
+	const sessionValue = getSessionCookie(request);
+	if (!sessionValue) return false;
+	const sessionId = await verify(sessionValue, env.JWT_SECRET);
+	if (!sessionId) return false;
+	const stub = env.SESSION_DO.get(env.SESSION_DO.idFromName(sessionId));
+	const res = await stub.fetch(`https://session/${sessionId}`);
+	return res.ok;
 }
 
 export async function requireAdmin(
 	request: Request,
-	context: any,
+	context: unknown,
 ): Promise<void> {
 	assert(request instanceof Request, "requireAdmin: request must be a Request");
 	assert(
 		context && typeof context === "object",
 		"requireAdmin: context must be an object",
 	);
-        const env = context.cloudflare?.env;
-        if (!env || !(await checkSession(request, env))) {
-                throw new Response("Unauthorized", { status: 401 });
-        }
+	const env = (context as Record<string, unknown>).cloudflare?.env;
+	if (!env || !(await checkSession(request, env))) {
+		throw new Response("Unauthorized", { status: 401 });
+	}
 }

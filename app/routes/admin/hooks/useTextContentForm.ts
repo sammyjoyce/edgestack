@@ -206,7 +206,7 @@ export function useTextContentForm({
 				}
 			}
 		}
-	}, [fetcher.state, fetcher.data, autoSave, fields, labelForKey, feedback]);
+	}, [fetcher.state, fetcher.data, autoSave, fields, feedback]);
 	return {
 		autoSave,
 		setAutoSave,
