@@ -1,15 +1,11 @@
+import { eq } from "drizzle-orm";
 import React from "react";
 import { useActionData, useNavigation } from "react-router";
 import { data, redirect } from "react-router";
-import { eq } from "drizzle-orm";
-import { file, ValiError } from "valibot";
+import { ValiError, file } from "valibot";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { checkSession } from "~/routes/common/utils/auth";
-import {
-	deleteStoredImage,
-	handleImageUpload,
-	listStoredImages,
-} from "~/utils/upload.server";
+import { deleteStoredImage, handleImageUpload } from "~/utils/upload.server";
 import * as FullSchema from "../../../../database/schema";
 import { schema } from "../../../../database/schema";
 import { validateContentInsert } from "../../../../database/valibot-validation.js";
@@ -19,16 +15,17 @@ import { FormCard } from "../components/ui/FormCard";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Heading } from "../components/ui/heading";
 import { Text } from "../components/ui/text";
+import { fetchStoredImages } from "../services";
 import type { Route } from "./+types/upload";
 
 export async function loader({ context, request }: Route.LoaderArgs) {
-        const env = context.cloudflare?.env;
-        if (!env || !(await checkSession(request, env))) {
-                throw redirect("/admin/login");
-        }
+	const env = context.cloudflare?.env;
+	if (!env || !(await checkSession(request, env))) {
+		throw redirect("/admin/login");
+	}
 
 	try {
-		const images = await listStoredImages(context);
+		const images = await fetchStoredImages(context);
 		return { images };
 	} catch (error) {
 		console.error("Failed to load images:", error);
@@ -166,10 +163,10 @@ async function handleUploadImage(
 
 // Main action function
 export async function action({ request, context }: Route.ActionArgs) {
-        const env = context.cloudflare?.env;
-        if (!env || !(await checkSession(request, env))) {
-                return redirect("/admin/login");
-        }
+	const env = context.cloudflare?.env;
+	if (!env || !(await checkSession(request, env))) {
+		return redirect("/admin/login");
+	}
 
 	if (request.method !== "POST") {
 		return data(
@@ -182,14 +179,14 @@ export async function action({ request, context }: Route.ActionArgs) {
 		const formData = await request.formData();
 		const intent = formData.get("intent");
 
-                switch (intent) {
-                        case "deleteImage":
-                                return await handleDeleteImage(formData, context);
-                        case "selectImage":
-                                return await handleSelectImage(formData, context);
-                        default:
-                                return await handleUploadImage(formData, context);
-                }
+		switch (intent) {
+			case "deleteImage":
+				return await handleDeleteImage(formData, context);
+			case "selectImage":
+				return await handleSelectImage(formData, context);
+			default:
+				return await handleUploadImage(formData, context);
+		}
 	} catch (error) {
 		console.error("Action error:", error);
 		return data(
