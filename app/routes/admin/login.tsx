@@ -77,7 +77,15 @@ export const loader = async ({
 		if (env && (await checkSession(request, env))) {
 			return redirect("/admin");
 		}
-		return null;
+		const insecurePassword =
+			env &&
+			["admin", "dev", "CHANGE_ME", "password"].includes(env.ADMIN_PASSWORD);
+		if (insecurePassword) {
+			console.warn(
+				"[SECURITY] Admin password uses an insecure default. Update ADMIN_PASSWORD.",
+			);
+		}
+		return { insecurePassword };
 	} catch (error) {
 		if (DEBUG) console.error("[ADMIN LOGIN] Loader Error:", error);
 		throw new Response(
@@ -86,7 +94,10 @@ export const loader = async ({
 		);
 	}
 };
-export default function Component({ actionData }: Route.ComponentProps) {
+export default function Component({
+	actionData,
+	loaderData,
+}: Route.ComponentProps) {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	return (
@@ -135,6 +146,11 @@ export default function Component({ actionData }: Route.ComponentProps) {
 							/>
 						</div>
 					</Field>
+					{loaderData?.insecurePassword && (
+						<Alert variant="warning" className="mb-4">
+							Default admin password is insecure. Update ADMIN_PASSWORD.
+						</Alert>
+					)}
 					{actionData &&
 						typeof actionData === "object" &&
 						actionData !== null &&

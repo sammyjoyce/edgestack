@@ -29,7 +29,13 @@ type GetLoadContextArgs = {
 	context: Pick<AppLoadContext, "cloudflare">;
 };
 export function getLoadContext({ context }: GetLoadContextArgs) {
-        const db = drizzle(context.cloudflare.env.DB, {
+        const env = context.cloudflare.env;
+        if (["CHANGE_ME", "admin", "dev", "password"].includes(env.ADMIN_PASSWORD)) {
+                console.warn(
+                        "[SECURITY] ADMIN_PASSWORD is set to an insecure default value. Please update this secret.",
+                );
+        }
+        const db = drizzle(env.DB, {
                 schema,
                 // Enable logger only in development mode
                 logger:
