@@ -22,7 +22,7 @@ Here's an actionable, enumerated task list derived from the analysis of the repo
 - [x] **16.** Enforce a secure default admin password setup with prompts or warnings in the admin interface or console logs.
 
 ## ✅ **Scalability & Maintainability**
-- [ ] **17.** Mitigate Durable Object bottlenecks by partitioning workload (e.g., separate Durable Objects for read/write workloads).
+- [x] **17.** Mitigate Durable Object bottlenecks by partitioning workload (e.g., separate Durable Objects for read/write workloads).
 - [ ] **18.** Clearly document potential scalability concerns with the current architecture (Durable Objects and D1 limitations).
 - [ ] **19.** Keep database interaction code database-agnostic for ease of future migration from Cloudflare D1 to alternative DBs (e.g., PostgreSQL).
 - [ ] **20.** Add pagination and filtering examples for fetching large datasets, demonstrating Drizzle's capabilities.

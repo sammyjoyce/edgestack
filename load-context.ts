@@ -10,7 +10,8 @@ declare global {
 		ADMIN_PASSWORD: string;
                 ASSETS_BUCKET: R2Bucket;
                 PUBLIC_R2_URL: string;
-                DRIZZLE_DO: DurableObjectNamespace;
+                DRIZZLE_WRITE_DO: DurableObjectNamespace;
+                DRIZZLE_READ_DO: DurableObjectNamespace;
                 SESSION_DO: DurableObjectNamespace;
         }
 }

@@ -11,7 +11,8 @@
         "workers_dev": true,
         "durable_objects": {
                 "bindings": [
-                        { "name": "DRIZZLE_DO", "class_name": "DrizzleDurable" },
+                        { "name": "DRIZZLE_WRITE_DO", "class_name": "DrizzleWriteDurable" },
+                        { "name": "DRIZZLE_READ_DO", "class_name": "DrizzleReadDurable" },
                         { "name": "SESSION_DO", "class_name": "SessionDurable" }
                 ]
         },
@@ -66,7 +67,8 @@
                        ],
                         "durable_objects": {
                                 "bindings": [
-                                        { "name": "DRIZZLE_DO", "class_name": "DrizzleDurable" },
+                                        { "name": "DRIZZLE_WRITE_DO", "class_name": "DrizzleWriteDurable" },
+                                        { "name": "DRIZZLE_READ_DO", "class_name": "DrizzleReadDurable" },
                                         { "name": "SESSION_DO", "class_name": "SessionDurable" }
                                 ]
                         },
