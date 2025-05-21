@@ -20,10 +20,10 @@ import { Container } from "../../../common/components/ui/Container";
 import clsx from "clsx";
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-        const env = context.cloudflare?.env;
-        if (!env || !(await checkSession(request, env))) {
-                throw redirect("/admin/login");
-        }
+	const env = context.cloudflare?.env;
+	if (!env || !(await checkSession(request, env))) {
+		throw redirect("/admin/login");
+	}
 	try {
 		const projects = await getAllProjects(context.db);
 		return { projects };
@@ -37,12 +37,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 }
 
 export async function action({ request, context }: Route.ActionArgs) {
-        const formData = await request.formData();
-        const intent = formData.get("intent")?.toString();
-        const env = context.cloudflare?.env;
-        if (!env || !(await checkSession(request, env))) {
-                return redirect("/admin/login");
-        }
+	const formData = await request.formData();
+	const intent = formData.get("intent")?.toString();
+	const env = context.cloudflare?.env;
+	if (!env || !(await checkSession(request, env))) {
+		return redirect("/admin/login");
+	}
 	if (intent === "deleteProject") {
 		const projectIdStr = formData.get("projectId")?.toString();
 		if (!projectIdStr) {
@@ -156,7 +156,7 @@ export default function AdminProjectsIndexPage({
 										{project.description ? (
 											<ConditionalRichTextRenderer
 												text={project.description}
-												fallbackClassName="text-sm text-gray-500" // Standard Tailwind
+												fallbackClassName="text-sm text-gray-500"
 												richTextClassName={clsx(
 													"prose-sm", // Match td text size
 													"prose max-w-none", // Apply prose, remove max-width constraint from prose itself
