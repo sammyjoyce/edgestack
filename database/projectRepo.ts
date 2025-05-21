@@ -1,17 +1,8 @@
 import { asc, desc, eq, sql } from "drizzle-orm";
-import type { BatchItem } from "drizzle-orm/batch";
 import type { DrizzleD1Database } from "drizzle-orm/d1";
-import type { NewContent, NewProject, Project } from "~/database/schema";
-import * as schema from "~/database/schema";
-import { validateContentUpdate } from "~/database/valibot-validation";
 import { assert } from "~/utils/assert";
-
-// Example: Prepare statement for getProjectById
-// This assumes 'db' will be passed in, and the prepared statement will be bound to that instance.
-// For true persistence of prepared statements across requests in a serverless worker,
-// the Drizzle instance itself would need to be persistent (e.g., global or in a Durable Object).
-// However, preparing it here still offers benefits if getProjectById is called multiple times
-// within the same request lifecycle with the same db instance.
+import * as schema from "./schema";
+import type { NewProject, Project } from "./schema";
 
 let getProjectByIdPrepared: ReturnType<
 	DrizzleD1Database<typeof schema>["select"]["prepare"]
@@ -22,7 +13,6 @@ function ensureGetProjectByIdPrepared(db: DrizzleD1Database<typeof schema>) {
 		!getProjectByIdPrepared ||
 		getProjectByIdPrepared.session?.client !== db
 	) {
-		// Re-prepare if db instance changed
 		getProjectByIdPrepared = db
 			.select()
 			.from(schema.projects)
@@ -30,121 +20,6 @@ function ensureGetProjectByIdPrepared(db: DrizzleD1Database<typeof schema>) {
 			.prepare();
 	}
 	return getProjectByIdPrepared;
-}
-
-export async function getAllContent(
-	db: DrizzleD1Database<typeof schema>,
-): Promise<Record<string, string>> {
-	console.info(`[DB getAllContent] Invoked at: ${new Date().toISOString()}`);
-	assert(db, "getAllContent: db is required");
-	try {
-		const rows = await db
-			.select({
-				key: schema.content.key,
-				value: schema.content.value,
-				theme: schema.content.theme,
-			})
-			.from(schema.content)
-			.all();
-
-		const contentMap: Record<string, string> = {};
-		for (const row of rows) {
-			if (row.value == null) {
-				contentMap[row.key] = "";
-			} else if (typeof row.value === "string") {
-				contentMap[row.key] = row.value;
-			} else {
-				contentMap[row.key] = JSON.stringify(row.value);
-			}
-			contentMap[`${row.key}_theme`] = row.theme ?? "light";
-		}
-
-		console.info(
-			`[DB getAllContent] Retrieved ${Object.keys(contentMap).length} entries`,
-		);
-		return contentMap;
-	} catch (error) {
-		console.error("[DB getAllContent] Error fetching content:", error);
-		throw new Error(
-			`Failed to fetch content: ${
-				error instanceof Error ? error.message : "Unknown error"
-			}`,
-		);
-	}
-}
-
-export async function updateContent(
-	db: DrizzleD1Database<typeof schema>,
-	updates: Record<
-		string,
-		| string
-		| number
-		| boolean
-		| Record<string, unknown>
-		| Array<unknown>
-		| (Partial<Omit<NewContent, "key">> & { value: unknown })
-	>,
-): Promise<D1Result<unknown>[]> {
-	console.info(
-		`[DB updateContent] Invoked with ${Object.keys(updates).length} updates at ${new Date().toISOString()}`,
-	);
-	assert(db, "updateContent: db is required");
-
-	const statements: BatchItem<"sqlite">[] = [];
-	for (const [key, raw] of Object.entries(updates)) {
-		if (key.endsWith("_theme")) {
-			const base = key.replace(/_theme$/, "");
-			const theme =
-				typeof raw === "string" && (raw === "light" || raw === "dark")
-					? raw
-					: "light";
-			statements.push(
-				db
-					.update(schema.content)
-					.set({ theme })
-					.where(eq(schema.content.key, base)),
-			);
-			continue;
-		}
-
-		const payload: Omit<schema.NewContent, "key"> & { key: string } = {
-			key,
-		} as unknown as Omit<schema.NewContent, "key"> & { key: string };
-		if (typeof raw === "object" && raw !== null && "value" in raw) {
-			Object.assign(payload, raw as object);
-		} else {
-			payload.value = raw as unknown as string;
-		}
-		validateContentUpdate(payload);
-		statements.push(
-			db
-				.insert(schema.content)
-				.values(payload)
-				.onConflictDoUpdate({ target: schema.content.key, set: payload }),
-		);
-	}
-
-	if (statements.length === 0) {
-		console.info("[DB updateContent] No updates to apply");
-		return [];
-	}
-
-	try {
-		console.info(
-			`[DB updateContent] Executing ${statements.length} statements`,
-		);
-		const results = await db.batch(
-			statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]],
-		);
-		return results;
-	} catch (error) {
-		console.error("[DB updateContent] Batch failed:", error);
-		throw new Error(
-			`Failed to update content: ${
-				error instanceof Error ? error.message : "Unknown error"
-			}`,
-		);
-	}
 }
 
 export async function getAllProjects(

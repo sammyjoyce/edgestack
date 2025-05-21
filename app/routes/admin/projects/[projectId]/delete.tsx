@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, redirect, useNavigate } from "react-router";
+import { deleteProject } from "~/database/projectRepo";
 import {
 	Alert,
 	AlertDescription,
@@ -7,7 +8,6 @@ import {
 } from "~/routes/admin/components/ui/alert";
 import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { deleteProject } from "~/services/db.server";
 import { FormCard } from "../../components/ui/FormCard";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Button } from "../../components/ui/button";
