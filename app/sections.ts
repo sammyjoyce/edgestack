@@ -1,9 +1,9 @@
-import { projectsSectionSchema } from "~/routes/common/components/RecentProjects/schema";
-import { aboutSectionSchema } from "~/routes/home/components/AboutUs/schema";
-import { contactSectionSchema } from "~/routes/home/components/ContactUs/schema";
-import { heroSectionSchema } from "~/routes/home/components/Hero/schema";
-import { servicesSectionSchema } from "~/routes/home/components/OurServices/schema";
 import type { SectionSchema } from "~/section-schema";
+import { aboutSectionSchema } from "~/section-schemas/about";
+import { contactSectionSchema } from "~/section-schemas/contact";
+import { heroSectionSchema } from "~/section-schemas/hero";
+import { projectsSectionSchema } from "~/section-schemas/projects";
+import { servicesSectionSchema } from "~/section-schemas/services";
 
 export const sectionsSchema: Record<string, SectionSchema> = {
 	hero: heroSectionSchema,
