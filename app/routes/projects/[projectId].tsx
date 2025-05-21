@@ -20,7 +20,7 @@ export const loader = async ({
 	const projectId = Number(params.projectId);
 	assert(!Number.isNaN(projectId), "projectId must be a valid number");
 	try {
-		const project = await fetchProjectDetails(context.db, projectId);
+		const project = await fetchProjectDetails(context.cms, projectId);
 		assert(
 			project && typeof project === "object" && project.id != null,
 			"loader must return a project",

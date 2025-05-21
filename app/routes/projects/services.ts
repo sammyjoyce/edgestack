@@ -1,15 +1,12 @@
-import type { DrizzleD1Database } from "drizzle-orm/d1";
-import { getAllContent } from "~/database/contentRepo";
-import { getAllProjects, getProjectById } from "~/database/projectRepo";
 import type { Project } from "~/database/schema";
-import type * as schema from "~/database/schema";
+import type { CmsClient } from "~/services/cms.client";
 
 export async function fetchProjectsList(
-	db: DrizzleD1Database<typeof schema>,
+	cms: CmsClient,
 ): Promise<{ content: Record<string, string>; projects: Project[] }> {
 	try {
-		const content = await getAllContent(db);
-		const projects = await getAllProjects(db);
+		const content = await cms.getAllContent();
+		const projects = await cms.getAllProjects();
 		return { content, projects };
 	} catch (error) {
 		throw new Error(
@@ -21,11 +18,11 @@ export async function fetchProjectsList(
 }
 
 export async function fetchProjectDetails(
-	db: DrizzleD1Database<typeof schema>,
+	cms: CmsClient,
 	id: number,
 ): Promise<Project> {
 	try {
-		const project = await getProjectById(db, id);
+		const project = await cms.getProjectById(id);
 		if (!project) throw new Error("Project not found");
 		return project;
 	} catch (error) {

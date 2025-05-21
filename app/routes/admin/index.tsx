@@ -3,7 +3,6 @@ import { useActionData, useNavigation, useSearchParams } from "react-router";
 import { redirect } from "react-router";
 import { Toaster, toast } from "sonner";
 import { ValiError } from "valibot";
-import { updateContent } from "~/database/contentRepo";
 import { assert } from "~/utils/assert";
 import { checkSession } from "~/utils/auth";
 import { validateContentInsert } from "../../../../database/valibot-validation.js";
@@ -21,7 +20,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 	}
 
 	try {
-		const content = await fetchAdminContent(context.db);
+		const content = await fetchAdminContent(context.cms);
 		if (DEBUG)
 			console.log("[ADMIN LOADER] Loaded content keys:", Object.keys(content));
 		return { content };
@@ -69,7 +68,7 @@ async function handleUpdateTextContent(
 		return { success: false, errors: validationErrors };
 	}
 
-	await updateContent(context.db, updates);
+	await context.cms.updateContent(updates);
 	return { success: true, action: "updateTextContent" };
 }
 
@@ -80,7 +79,7 @@ async function handleReorderSections(
 	const order = formData.get("home_sections_order")?.toString();
 	if (!order) return { success: false, error: "Missing sections order" };
 
-	await updateContent(context.db, { home_sections_order: order });
+	await context.cms.updateContent({ home_sections_order: order });
 	return { success: true, action: "reorderSections" };
 }
 

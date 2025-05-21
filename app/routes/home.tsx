@@ -34,14 +34,14 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		`[HOME LOADER START] Invoked at: ${new Date().toISOString()}, URL: ${request.url}`,
 	);
 	assert(request instanceof Request, "loader: request must be a Request");
-	assert(context?.db, "loader: missing DB in context");
+	assert(context?.cms, "loader: missing CMS client in context");
 	const url = new URL(request.url);
 	const revalidate = url.searchParams.get("revalidate") === "true";
 	if (DEBUG) console.log("[HOME LOADER] Revalidation requested:", revalidate);
 	let content: Record<string, string> = {};
 	let projects: Project[] = [];
 	try {
-		({ content, projects } = await loadHomeData(context.db));
+		({ content, projects } = await loadHomeData(context.cms));
 		if (DEBUG) {
 			console.log("[HOME LOADER] Content keys loaded:", Object.keys(content));
 			console.log("[HOME LOADER] Project count:", projects.length);

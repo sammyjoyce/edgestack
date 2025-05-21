@@ -1,5 +1,4 @@
 import { data } from "react-router";
-import { getAllContent, updateContent } from "~/database/contentRepo";
 import { checkSession } from "~/utils/auth";
 import type { Route } from "./+types/seed-content";
 
@@ -19,7 +18,7 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 		return data({ error: "Invalid method. Please use POST." }, { status: 405 });
 	}
 	try {
-		const existingContent = await getAllContent(context.db);
+		const existingContent = await context.cms.getAllContent();
 		const missingKeys = Object.keys(DEFAULT_CONTENT).filter(
 			(key) => !existingContent[key],
 		);
@@ -36,7 +35,7 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 			},
 			{} as Record<string, string>,
 		);
-		await updateContent(context.db, updatesToSeed);
+		await context.cms.updateContent(updatesToSeed);
 		return data({
 			success: true,
 			message: `Successfully seeded ${missingKeys.length} missing content items.`,
