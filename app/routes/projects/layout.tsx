@@ -18,7 +18,7 @@ export const loader = async ({
 	params,
 }: Route.LoaderArgs) => {
 	try {
-		const { content, projects } = await fetchProjectsList(context.db);
+		const { content, projects } = await fetchProjectsList(context.cms);
 		return { content, projects };
 	} catch (error: unknown) {
 		console.error("Failed to fetch content or projects:", error);

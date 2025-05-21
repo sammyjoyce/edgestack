@@ -19,7 +19,7 @@ export const loader = async ({
 	params,
 }: Route.LoaderArgs) => {
 	try {
-		const { content, projects } = await fetchProjectsList(context.db);
+		const { content, projects } = await fetchProjectsList(context.cms);
 		if (!projects || projects.length === 0) {
 			return redirect("/");
 		}

@@ -1,6 +1,5 @@
 import React from "react";
 import { redirect, useNavigate } from "react-router";
-import { createProject } from "~/database/projectRepo";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { assert } from "~/utils/assert";
 import type { NewProject } from "../../../../../database/schema";
@@ -33,8 +32,7 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 	};
 	try {
 		validateProjectInsert(projectData);
-		await createProject(
-			context.db,
+		await context.cms.createProject(
 			projectData as Omit<NewProject, "id" | "createdAt" | "updatedAt">,
 		);
 		return redirect("/admin/projects");

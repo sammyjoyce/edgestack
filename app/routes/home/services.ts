@@ -1,16 +1,13 @@
-import type { DrizzleD1Database } from "drizzle-orm/d1";
-import { getAllContent } from "~/database/contentRepo";
-import { getFeaturedProjects } from "~/database/projectRepo";
 import type { Project } from "~/database/schema";
-import type * as schema from "~/database/schema";
+import type { CmsClient } from "~/services/cms.client";
 import type { ServiceItem } from "./components/OurServices";
 
 export async function loadHomeData(
-	db: DrizzleD1Database<typeof schema>,
+	cms: CmsClient,
 ): Promise<{ content: Record<string, string>; projects: Project[] }> {
 	try {
-		const content = await getAllContent(db);
-		const projects = await getFeaturedProjects(db);
+		const content = await cms.getAllContent();
+		const projects = await cms.getFeaturedProjects();
 		return { content, projects };
 	} catch (error) {
 		throw new Error(

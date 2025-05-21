@@ -1,6 +1,5 @@
 import React from "react";
 import { redirect } from "react-router";
-import { updateProject } from "~/database/projectRepo";
 import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { deleteStoredImage, handleImageUpload } from "~/utils/upload.server";
@@ -18,7 +17,7 @@ export async function loader({ params, context, request }: Route.LoaderArgs) {
 		throw new Response("Invalid Project ID", { status: 400 });
 	}
 	try {
-		const project = await fetchAdminProject(context.db, projectId);
+		const project = await fetchAdminProject(context.cms, projectId);
 		return { project };
 	} catch (error: unknown) {
 		console.error("Error fetching project:", error);
@@ -90,7 +89,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 			sortOrder,
 		};
 		validateProjectUpdate(projectData);
-		const updated = await updateProject(context.db, projectId, projectData);
+		const updated = await context.cms.updateProject(projectId, projectData);
 		if (!updated) {
 			// rollback uploaded file if DB update failed
 			if (uploadedKey) {
