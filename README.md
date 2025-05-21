@@ -12,6 +12,37 @@ A modern, production-ready template for building full-stack React applications u
 - 🎉 TailwindCSS for styling
 - 📖 [React Router docs](https://reactrouter.com/)
 
+## Prerequisites
+
+Before running the project you need the following tools:
+
+- [**Bun**](https://bun.sh/) runtime for running scripts and the development server.
+- [**Wrangler**](https://developers.cloudflare.com/workers/wrangler/) for deploying and testing Cloudflare Workers.
+
+Install Bun and Wrangler globally if you don't already have them:
+
+```bash
+# Install Bun
+curl -fsSL https://bun.sh/install | bash
+
+# Install Wrangler
+bun add -g wrangler
+```
+
+Next, authenticate Wrangler with your Cloudflare account:
+
+```bash
+wrangler login
+```
+
+Copy `.dev.vars` and adjust the values for local development:
+
+```bash
+cp .dev.vars .dev.vars.local
+```
+
+Update `wrangler.jsonc` with your account and database IDs before deploying.
+
 ## Getting Started
 
 ### Installation
