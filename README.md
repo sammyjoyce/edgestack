@@ -66,6 +66,16 @@ bun wrangler versions deploy
 
 This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
 
+## Code Style
+
+Consistent formatting keeps the project easy to read and maintain. Format and lint your changes with [Biome](https://biomejs.dev/):
+
+```bash
+bun run format
+```
+
+For broader styling guidance, see [docs/tigerstyle.md](docs/tigerstyle.md) and [.junie/guidelines.md](.junie/guidelines.md).
+
 ## Project Structure
 
 - `app/` - Route modules and components for the React Router app.

@@ -1,4 +1,3 @@
-import type { Route } from "./+types/delete";
 import React from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import {
@@ -15,6 +14,7 @@ import { Button } from "../../../components/ui/button";
 import { Label } from "../../../components/ui/fieldset";
 import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
+import type { Route } from "./+types/delete";
 
 export async function loader({ params, context, request }: Route.LoaderArgs) {
 	const projectId = Number(params.projectId);
@@ -27,11 +27,11 @@ export async function loader({ params, context, request }: Route.LoaderArgs) {
 			throw new Response("Project not found", { status: 404 });
 		}
 		return { project };
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("Error fetching project:", error);
-		throw new Response(error.message || "Failed to load project", {
-			status: 500,
-		});
+		const message =
+			error instanceof Error ? error.message : "Failed to load project";
+		throw new Response(message, { status: 500 });
 	}
 }
 
@@ -48,12 +48,11 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 	try {
 		await deleteProject(context.db, projectId);
 		return redirect("/admin/projects");
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("Error deleting project:", error);
-		return {
-			success: false,
-			error: error.message || "Failed to delete project",
-		};
+		const message =
+			error instanceof Error ? error.message : "Failed to delete project";
+		return { success: false, error: message };
 	}
 }
 

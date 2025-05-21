@@ -69,6 +69,7 @@ export function Checkbox({
 					viewBox="0 0 14 14"
 					fill="none"
 				>
+					<title>Checkmark</title>
 					<path
 						className="opacity-100 group-data-indeterminate:opacity-0"
 						d="M3 8L6 11L11 3.5"

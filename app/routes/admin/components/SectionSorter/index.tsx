@@ -1,9 +1,9 @@
 import type { DragEndEvent } from "@dnd-kit/core";
 import {
-	closestCenter,
 	DndContext,
 	KeyboardSensor,
 	PointerSensor,
+	closestCenter,
 	useSensor,
 	useSensors,
 } from "@dnd-kit/core";
@@ -12,8 +12,8 @@ import {
 	restrictToWindowEdges,
 } from "@dnd-kit/modifiers";
 import {
-	arrayMove,
 	SortableContext,
+	arrayMove,
 	sortableKeyboardCoordinates,
 	useSortable,
 	verticalListSortingStrategy,
@@ -23,10 +23,10 @@ import clsx from "clsx";
 import * as React from "react";
 import type { FetcherWithComponents } from "react-router";
 import { Button } from "~/routes/admin/components/ui/button";
-import { Label as SwitchLabel, Switch, SwitchField } from "../ui/switch";
-import { Text } from "../ui/text";
 import { Alert } from "../ui/alert";
 import { SectionCard, SectionHeading } from "../ui/section";
+import { Switch, SwitchField, Label as SwitchLabel } from "../ui/switch";
+import { Text } from "../ui/text";
 
 // Type definitions
 export type SectionTheme = "light" | "dark";
@@ -48,8 +48,8 @@ interface SectionDetail {
 interface SectionSorterProps {
 	initialSectionsFromDb: Section[];
 	sectionDetailsOrdered: SectionDetail[];
-	orderFetcher: FetcherWithComponents<any>;
-	themeUpdateFetcher: FetcherWithComponents<any>;
+	orderFetcher: FetcherWithComponents<unknown>;
+	themeUpdateFetcher: FetcherWithComponents<unknown>;
 }
 
 interface SortableItemProps {

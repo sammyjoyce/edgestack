@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react";
 import { clsx } from "clsx";
+import React, { useRef, useState } from "react";
 import { Drawer } from "vaul";
 import { ImageGallery } from "~/routes/admin/components/ImageGallery";
 import { Button } from "~/routes/admin/components/ui/button";
-import { Heading } from "../ui/heading";
 import type { StoredImage } from "~/utils/upload.server";
+import { Heading } from "../ui/heading";
 
 interface ProjectImageSelectorProps {
 	currentImage?: string;
@@ -28,7 +28,7 @@ export function ProjectImageSelector({
 				<div className="mb-4">
 					<img
 						src={selectedImage || currentImage}
-						alt="Selected project image"
+						alt="Selected project preview"
 						className="max-w-xs h-auto rounded border border-gray-200"
 					/>
 					<input
