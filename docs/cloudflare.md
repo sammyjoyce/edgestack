@@ -48,6 +48,22 @@ bun run db:migrate-production # Apply migrations to production
 
 Static assets are stored in an R2 bucket. The Worker fetches files from the bucket when requests begin with `/assets/`. Set the `PUBLIC_R2_URL` secret for your account so that public asset links resolve correctly once deployed.
 
+## Scalability Considerations
+
+While Workers themselves scale automatically, Durable Objects and D1 come with a few limits to be aware of.
+
+### Durable Object Bottlenecks
+
+- Each Durable Object instance runs single-threaded. Heavy or long-running work can block other requests to the same object.
+- Partition workloads across multiple object IDs or split read/write responsibilities into separate objects to reduce contention.
+- Cache frequently read data outside the objects whenever possible for higher throughput.
+
+### D1 Limitations
+
+- D1 is built on SQLite and optimized for small to medium datasets.
+- Write concurrency is limited and large databases may eventually require sharding or migration to another database engine.
+- Monitor query timings and storage size as your data grows.
+
 ---
 
 Check `wrangler.jsonc` for all bindings and environment variables. Feel free to customise these settings for your own project.
