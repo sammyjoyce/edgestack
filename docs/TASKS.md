@@ -8,7 +8,7 @@ Here's an actionable, enumerated task list derived from the analysis of the repo
 - [x] **3.** Ensure consistent route and component file structure, aligning all routes with React Router v7 conventions.
 - [x] **4.** Abstract repetitive form logic (e.g., `ProjectForm`) to reusable components within the admin section.
 - [x] **5.** Standardize naming conventions for keys and variables (e.g., consistently use `_url` suffix for image URLs).
-- [ ] **6.** Split `app/routes/common/db/index.ts` into separate modules per domain (e.g., `database/contentRepo.ts`, `database/projectRepo.ts`).
+- [x] **6.** Split `app/routes/common/db/index.ts` into separate modules per domain (e.g., `database/contentRepo.ts`, `database/projectRepo.ts`).
 
 ## ✅ **CMS Integration & Flexibility**
 - [ ] **7.** Abstract the CMS/data layer by creating a `CmsProvider` or `cms.client.ts` with methods for all data interactions..

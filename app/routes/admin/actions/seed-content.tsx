@@ -1,5 +1,5 @@
 import { data } from "react-router";
-import { getAllContent, updateContent } from "~/services/db.server";
+import { getAllContent, updateContent } from "~/database/contentRepo";
 import { checkSession } from "~/utils/auth";
 import type { Route } from "./+types/seed-content";
 

@@ -1,7 +1,8 @@
 import type { DrizzleD1Database } from "drizzle-orm/d1";
+import { getAllContent } from "~/database/contentRepo";
+import { getFeaturedProjects } from "~/database/projectRepo";
 import type { Project } from "~/database/schema";
 import type * as schema from "~/database/schema";
-import { getAllContent, getFeaturedProjects } from "~/services/db.server";
 import type { ServiceItem } from "./components/OurServices";
 
 export async function loadHomeData(

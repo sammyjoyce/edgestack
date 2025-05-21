@@ -1,11 +1,8 @@
 import type { DrizzleD1Database } from "drizzle-orm/d1";
+import { getAllContent } from "~/database/contentRepo";
+import { getAllProjects, getProjectById } from "~/database/projectRepo";
 import type { Project } from "~/database/schema";
 import type * as schema from "~/database/schema";
-import {
-	getAllContent,
-	getAllProjects,
-	getProjectById,
-} from "~/services/db.server";
 
 export async function fetchProjectsList(
 	db: DrizzleD1Database<typeof schema>,

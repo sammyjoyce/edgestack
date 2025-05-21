@@ -1,7 +1,7 @@
 import React from "react";
 import { redirect, useNavigate } from "react-router";
+import { createProject } from "~/database/projectRepo";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { createProject } from "~/services/db.server";
 import { assert } from "~/utils/assert";
 import type { NewProject } from "../../../../../database/schema";
 import { validateProjectInsert } from "../../../../../database/valibot-validation.js";
