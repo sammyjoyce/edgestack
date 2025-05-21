@@ -1,6 +1,6 @@
 import type { DrizzleD1Database } from "drizzle-orm/d1";
 import type { Project } from "~/database/schema";
-import { getAllProjects, getProjectById } from "~/routes/common/db";
+import { getAllProjects, getProjectById } from "~/services/db.server";
 import type * as schema from "../../../../database/schema";
 
 export async function fetchAdminProjectsList(

@@ -7,7 +7,7 @@ import {
 } from "~/routes/admin/components/ui/alert";
 import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { deleteProject } from "~/routes/common/db";
+import { deleteProject } from "~/services/db.server";
 import { FormCard } from "../../../components/ui/FormCard";
 import { PageHeader } from "../../../components/ui/PageHeader";
 import { Button } from "../../../components/ui/button";
