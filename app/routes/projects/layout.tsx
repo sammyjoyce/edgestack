@@ -12,6 +12,10 @@ type ProjectsLayoutLoaderData = {
 	projects: Project[];
 	error?: string;
 };
+/**
+ * Loader for the Projects layout. Retrieves page content and a list of
+ * projects from the CMS. Any errors are surfaced as 500 responses.
+ */
 export const loader = async ({
 	context,
 	request,
