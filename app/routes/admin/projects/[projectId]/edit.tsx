@@ -6,9 +6,9 @@ import { updateProject } from "~/services/db.server";
 import { deleteStoredImage, handleImageUpload } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
 import { Container } from "../../../../common/components/ui/Container";
-import { ProjectFormFields } from "../../../components/ProjectFormFields";
-import { Alert } from "../../../components/ui/alert";
-import { SectionCard, SectionHeading } from "../../../components/ui/section";
+import { ProjectFormFields } from "../../components/ProjectFormFields";
+import { Alert } from "../../components/ui/alert";
+import { SectionCard, SectionHeading } from "../../components/ui/section";
 import { fetchAdminProject } from "../services";
 import type { Route } from "./+types/edit";
 
