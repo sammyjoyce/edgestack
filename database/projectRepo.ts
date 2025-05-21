@@ -1,14 +1,14 @@
 import { asc, desc, eq, sql } from "drizzle-orm";
-import type { DrizzleD1Database } from "drizzle-orm/d1";
+import type { AppDatabase } from "./index";
 import { assert } from "~/utils/assert";
 import * as schema from "./schema";
 import type { NewProject, Project } from "./schema";
 
 let getProjectByIdPrepared: ReturnType<
-	DrizzleD1Database<typeof schema>["select"]["prepare"]
+        AppDatabase["select"]["prepare"]
 > | null = null;
 
-function ensureGetProjectByIdPrepared(db: DrizzleD1Database<typeof schema>) {
+function ensureGetProjectByIdPrepared(db: AppDatabase) {
 	if (
 		!getProjectByIdPrepared ||
 		getProjectByIdPrepared.session?.client !== db
@@ -23,7 +23,7 @@ function ensureGetProjectByIdPrepared(db: DrizzleD1Database<typeof schema>) {
 }
 
 export async function getAllProjects(
-	db: DrizzleD1Database<typeof schema>,
+        db: AppDatabase,
 ): Promise<Project[]> {
 	assert(db, "getAllProjects: db is required");
 	const t0 = performance.now();
@@ -39,7 +39,7 @@ export async function getAllProjects(
 }
 
 export async function getFeaturedProjects(
-	db: DrizzleD1Database<typeof schema>,
+        db: AppDatabase,
 ): Promise<Project[]> {
 	assert(db, "getFeaturedProjects: db is required");
 	const t0 = performance.now();
@@ -56,8 +56,8 @@ export async function getFeaturedProjects(
 }
 
 export async function getProjectById(
-	db: DrizzleD1Database<typeof schema>,
-	id: number,
+        db: AppDatabase,
+        id: number,
 ): Promise<Project | undefined> {
 	assert(db, "getProjectById: db is required");
 	assert(
@@ -80,8 +80,8 @@ export async function getProjectById(
 }
 
 export async function createProject(
-	db: DrizzleD1Database<typeof schema>,
-	projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">,
+        db: AppDatabase,
+        projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">,
 ): Promise<Project> {
 	assert(db, "createProject: db is required");
 	assert(
@@ -106,9 +106,9 @@ export async function createProject(
 }
 
 export async function updateProject(
-	db: DrizzleD1Database<typeof schema>,
-	id: number,
-	projectData: Partial<Omit<NewProject, "id" | "createdAt">>,
+        db: AppDatabase,
+        id: number,
+        projectData: Partial<Omit<NewProject, "id" | "createdAt">>,
 ): Promise<Project | undefined> {
 	assert(db, "updateProject: db is required");
 	assert(
@@ -136,8 +136,8 @@ export async function updateProject(
 }
 
 export async function deleteProject(
-	db: DrizzleD1Database<typeof schema>,
-	id: number,
+        db: AppDatabase,
+        id: number,
 ): Promise<{ success: boolean; meta?: unknown }> {
 	assert(db, "deleteProject: db is required");
 	assert(
