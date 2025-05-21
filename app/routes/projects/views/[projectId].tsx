@@ -3,8 +3,8 @@ import React from "react";
 import { Link, data, useOutletContext } from "react-router";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { assert } from "~/routes/common/utils/assert";
 import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout";
+import { assert } from "~/utils/assert";
 import { fetchProjectDetails } from "../services";
 import type { Route } from "./+types/[projectId]";
 

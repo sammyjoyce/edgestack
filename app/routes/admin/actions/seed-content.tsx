@@ -1,6 +1,6 @@
 import { data } from "react-router";
-import { checkSession } from "~/routes/common/utils/auth";
 import { getAllContent, updateContent } from "~/services/db.server";
+import { checkSession } from "~/utils/auth";
 import type { Route } from "./+types/seed-content";
 
 const DEBUG = process.env.NODE_ENV !== "production";

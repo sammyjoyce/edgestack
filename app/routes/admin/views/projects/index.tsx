@@ -10,9 +10,9 @@ import {
 	useLocation,
 } from "react-router";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer/index";
-import { assert } from "~/routes/common/utils/assert";
-import { checkSession } from "~/routes/common/utils/auth";
 import { deleteProject } from "~/services/db.server";
+import { assert } from "~/utils/assert";
+import { checkSession } from "~/utils/auth";
 import { Container } from "../../../common/components/ui/Container";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Button } from "../../components/ui/button";
