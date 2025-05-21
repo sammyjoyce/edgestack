@@ -10,11 +10,11 @@
 		"deploy:production": "bun run build:production && wrangler deploy --config build/server/wrangler.json",
 		"deploy:staging": "bun run build:staging && wrangler deploy",
 		"db:generate": "dotenv -- drizzle-kit generate",
-		"db:reset-local": "rm -rf .wrangler/state/v3/d1/89bb8c60-84fb-4f13-9320-e5cf623f4963 && mkdir -p .wrangler/state/v3/d1/89bb8c60-84fb-4f13-9320-e5cf623f4963",
+               "db:reset-local": "rm -rf .wrangler/state/v3/d1/YOUR_DATABASE_ID && mkdir -p .wrangler/state/v3/d1/YOUR_DATABASE_ID",
                "db:migrate": "bun run db:reset-local && wrangler d1 migrations apply starter-content-db --local",
                "db:migrate-production": "wrangler d1 migrations apply starter-content-db --remote",
 		"dev": "react-router dev",
-		"format": "biome check --write ./app/**/*.{ts,tsx,js,jsx,json,jsonc}",
+               "format": "biome check --write app",
 		"knip": "bunx knip",
 		"typecheck": "bun run cf-typegen && react-router typegen && tsc --noEmit -p tsconfig.cloudflare.json",
 		"cf-typegen": "wrangler types"

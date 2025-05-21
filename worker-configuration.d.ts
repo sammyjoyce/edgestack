@@ -3,8 +3,8 @@
 // Runtime types generated with workerd@1.20250507.0 2025-05-07
 declare namespace Cloudflare {
 	interface Env {
-		CLOUDFLARE_ACCOUNT_ID: "427aa00a5888cad78805c7128db1f817";
-		CLOUDFLARE_DATABASE_ID: "89bb8c60-84fb-4f13-9320-e5cf623f4963";
+               CLOUDFLARE_ACCOUNT_ID: "YOUR_ACCOUNT_ID";
+               CLOUDFLARE_DATABASE_ID: "YOUR_DATABASE_ID";
 		ADMIN_USERNAME: string;
 		ADMIN_PASSWORD: string;
 		JWT_SECRET: string;

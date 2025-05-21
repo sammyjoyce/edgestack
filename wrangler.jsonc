@@ -3,8 +3,8 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "starter",
 	"main": "./workers/app.ts",
-	"account_id": "427aa00a5888cad78805c7128db1f817",
-	"compatibility_date": "2025-05-07",
+       "account_id": "YOUR_ACCOUNT_ID",
+       "compatibility_date": "2025-05-07",
 	"assets": {
 		"directory": "./build/client/"
 	},
@@ -16,17 +16,17 @@
                 ]
         },
         "vars": {
-                "CLOUDFLARE_ACCOUNT_ID": "427aa00a5888cad78805c7128db1f817",
-		"CLOUDFLARE_DATABASE_ID": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
-		"ADMIN_USERNAME": "admin",
-		"ADMIN_PASSWORD": "Stanley212$",
-		"JWT_SECRET": "super_secret_squidward_tentacles"
+               "CLOUDFLARE_ACCOUNT_ID": "YOUR_ACCOUNT_ID",
+               "CLOUDFLARE_DATABASE_ID": "YOUR_DATABASE_ID",
+               "ADMIN_USERNAME": "admin",
+               "ADMIN_PASSWORD": "CHANGE_ME",
+               "JWT_SECRET": "CHANGE_ME"
 	},
 	"d1_databases": [
 		{
 			"binding": "DB",
 			"database_name": "starter-content-db",
-			"database_id": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
+                       "database_id": "YOUR_DATABASE_ID",
 			"migrations_dir": "./migrations"
 		}
 	],
@@ -47,15 +47,15 @@
 	"env": {
 		"production": {
 			"name": "starter-production",
-			"account_id": "427aa00a5888cad78805c7128db1f817",
+                       "account_id": "YOUR_ACCOUNT_ID",
 			"compatibility_date": "2025-05-07",
 			"vars": {
-				"CLOUDFLARE_ACCOUNT_ID": "427aa00a5888cad78805c7128db1f817",
-				"CLOUDFLARE_DATABASE_ID": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
-				"ADMIN_USERNAME": "admin",
-				"ADMIN_PASSWORD": "admin",
-				"JWT_SECRET": "super_secret_squidward_tentacles",
-				"PUBLIC_R2_URL": "https://427aa00a5888cad78805c7128db1f817.r2.cloudflarestorage.com/starter-assets/"
+                               "CLOUDFLARE_ACCOUNT_ID": "YOUR_ACCOUNT_ID",
+                               "CLOUDFLARE_DATABASE_ID": "YOUR_DATABASE_ID",
+                               "ADMIN_USERNAME": "admin",
+                               "ADMIN_PASSWORD": "admin",
+                               "JWT_SECRET": "CHANGE_ME",
+                               "PUBLIC_R2_URL": "https://YOUR_ACCOUNT_ID.r2.cloudflarestorage.com/starter-assets/"
 			},
                        "r2_buckets": [
                                {
@@ -74,7 +74,7 @@
                                {
                                        "binding": "DB",
                                        "database_name": "starter-content-db",
-					"database_id": "89bb8c60-84fb-4f13-9320-e5cf623f4963",
+                                       "database_id": "YOUR_DATABASE_ID",
 					"migrations_dir": "./migrations"
 				}
 			],

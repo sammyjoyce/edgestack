@@ -9,7 +9,7 @@ set -e
 
 # Default to local mode
 REMOTE_FLAG="--local"
-DB_ID="89bb8c60-84fb-4f13-9320-e5cf623f4963" # Extracted from wrangler.jsonc
+DB_ID="YOUR_DATABASE_ID" # Extracted from wrangler.jsonc
 LOCAL_DB_DIR=".wrangler/state/v3/d1/${DB_ID}"
 LOCAL_DB_FILE_PATH="${LOCAL_DB_DIR}/db.sqlite"
 
