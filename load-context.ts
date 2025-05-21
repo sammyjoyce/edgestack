@@ -1,8 +1,9 @@
 import type { ExecutionContext } from "@cloudflare/workers-types";
-import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1";
+import { drizzle } from "drizzle-orm/d1";
 import { DefaultLogger } from "drizzle-orm/logger";
 import type { AppLoadContext } from "react-router";
 import * as schema from "./database/schema";
+import type { AppDatabase } from "~/database";
 import { CmsClient } from "~/services/cms.client";
 declare global {
 	interface CloudflareEnvironment extends Env {
@@ -21,7 +22,7 @@ declare module "react-router" {
                         env: CloudflareEnvironment;
                         ctx: Omit<ExecutionContext, "props">;
                 };
-                db: DrizzleD1Database<typeof schema>;
+                db: AppDatabase;
                 cms: CmsClient;
         }
 }
