@@ -1,11 +1,11 @@
 import React from "react";
-import { Form, redirect, useNavigate } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { createProject } from "~/services/db.server";
 import { assert } from "~/utils/assert";
 import type { NewProject } from "../../../../../database/schema";
 import { validateProjectInsert } from "../../../../../database/valibot-validation.js";
-import { ProjectFormFields } from "../components/ProjectFormFields";
+import { ProjectForm } from "../components/ProjectForm";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Alert } from "../components/ui/alert";
 import { SectionCard, SectionHeading } from "../components/ui/section";
@@ -85,13 +85,12 @@ export default function NewProjectPage({ actionData }: Route.ComponentProps) {
 			)}
 			<SectionCard>
 				<SectionHeading>New Project Details</SectionHeading>
-				<Form method="post" encType="multipart/form-data" className="space-y-6">
-					<ProjectFormFields
-						initial={initial}
-						errors={errors}
-						onCancel={handleCancel}
-					/>
-				</Form>
+				<ProjectForm
+					initial={initial}
+					errors={errors}
+					onCancel={handleCancel}
+					formClassName="space-y-6"
+				/>
 			</SectionCard>
 		</FadeIn>
 	);
