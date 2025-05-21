@@ -8,12 +8,12 @@ import {
 import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { deleteProject } from "~/services/db.server";
-import { FormCard } from "../../../components/ui/FormCard";
-import { PageHeader } from "../../../components/ui/PageHeader";
-import { Button } from "../../../components/ui/button";
-import { Label } from "../../../components/ui/fieldset";
-import { Input } from "../../../components/ui/input";
-import { Text } from "../../../components/ui/text";
+import { FormCard } from "../../components/ui/FormCard";
+import { PageHeader } from "../../components/ui/PageHeader";
+import { Button } from "../../components/ui/button";
+import { Label } from "../../components/ui/fieldset";
+import { Input } from "../../components/ui/input";
+import { Text } from "../../components/ui/text";
 import { fetchAdminProject } from "../services";
 import type { Route } from "./+types/delete";
 
