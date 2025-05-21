@@ -49,8 +49,13 @@ export default {
 				return new Response("Error fetching asset", { status: 500 });
 			}
 		}
-                const id = env.DRIZZLE_DO.idFromName("db-instance");
-                const stub = env.DRIZZLE_DO.get(id);
+                const isRead = request.method === "GET";
+                const id = isRead
+                        ? env.DRIZZLE_READ_DO.idFromName("db-read-instance")
+                        : env.DRIZZLE_WRITE_DO.idFromName("db-write-instance");
+                const stub = isRead
+                        ? env.DRIZZLE_READ_DO.get(id)
+                        : env.DRIZZLE_WRITE_DO.get(id);
                 return stub.fetch(request);
         },
 } satisfies ExportedHandler<Env>;

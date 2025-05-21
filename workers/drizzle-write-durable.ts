@@ -20,7 +20,7 @@ const requestHandler = createRequestHandler(
  * connection so loaders and actions can access the database.
  */
 
-export class DrizzleDurable implements DurableObject {
+export class DrizzleWriteDurable implements DurableObject {
   private db: DrizzleD1Database<typeof schema>;
   constructor(private state: DurableObjectState, private env: Env) {
     this.db = drizzle(env.DB, {
