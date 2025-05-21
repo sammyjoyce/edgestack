@@ -5,10 +5,10 @@ import { createProject } from "~/services/db.server";
 import { assert } from "~/utils/assert";
 import type { NewProject } from "../../../../../database/schema";
 import { validateProjectInsert } from "../../../../../database/valibot-validation.js";
-import { ProjectFormFields } from "../../components/ProjectFormFields";
-import { PageHeader } from "../../components/ui/PageHeader";
-import { Alert } from "../../components/ui/alert";
-import { SectionCard, SectionHeading } from "../../components/ui/section";
+import { ProjectFormFields } from "../components/ProjectFormFields";
+import { PageHeader } from "../components/ui/PageHeader";
+import { Alert } from "../components/ui/alert";
+import { SectionCard, SectionHeading } from "../components/ui/section";
 import type { Route } from "./+types/new";
 
 export async function action({ request, context, params }: Route.ActionArgs) {

@@ -14,9 +14,9 @@ import { deleteProject } from "~/services/db.server";
 import { assert } from "~/utils/assert";
 import { checkSession } from "~/utils/auth";
 import { Container } from "../../../common/components/ui/Container";
-import { PageHeader } from "../../components/ui/PageHeader";
-import { Button } from "../../components/ui/button";
-import { Text } from "../../components/ui/text";
+import { PageHeader } from "../components/ui/PageHeader";
+import { Button } from "../components/ui/button";
+import { Text } from "../components/ui/text";
 import type { Route } from "./+types/index";
 import { fetchAdminProjectsList } from "./services";
 

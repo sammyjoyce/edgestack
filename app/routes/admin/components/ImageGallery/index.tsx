@@ -4,7 +4,7 @@ import { Drawer } from "vaul";
 import type {
 	action as uploadAction,
 	loader as uploadLoader,
-} from "~/routes/admin/views/upload";
+} from "~/routes/admin/upload";
 import type { StoredImage } from "~/utils/upload.server";
 import { Button } from "../ui/button";
 import { Heading } from "../ui/heading";
