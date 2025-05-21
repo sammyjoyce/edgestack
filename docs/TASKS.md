@@ -17,7 +17,7 @@ Here's an actionable, enumerated task list derived from the analysis of the repo
 ## ✅ **Developer Experience & Onboarding**
 - [x] **11.** Enhance README documentation with explicit setup instructions (e.g., installing Bun, Wrangler, Cloudflare credentials setup).
  - [x] **13.** Integrate formatting and linting tools (Biome) with pre-commit hooks using Husky.
-- [ ] **14.** Clearly document testing instructions and include additional example unit tests for loaders and utilities.
+- [x] **14.** Clearly document testing instructions and include additional example unit tests for loaders and utilities.
 - [ ] **15.** Add inline code documentation (JSDoc-style) to clarify roles of complex components (e.g., Durable Objects, loaders).
 - [ ] **16.** Enforce a secure default admin password setup with prompts or warnings in the admin interface or console logs.
 
