@@ -182,14 +182,14 @@ export async function action({ request, context }: Route.ActionArgs) {
 		const formData = await request.formData();
 		const intent = formData.get("intent");
 
-		switch (intent) {
-			case "deleteImage":
-				return await handleDeleteImage(formData, typedContext);
-			case "selectImage":
-				return await handleSelectImage(formData, typedContext);
-			default:
-				return await handleUploadImage(formData, typedContext);
-		}
+                switch (intent) {
+                        case "deleteImage":
+                                return await handleDeleteImage(formData, context);
+                        case "selectImage":
+                                return await handleSelectImage(formData, context);
+                        default:
+                                return await handleUploadImage(formData, context);
+                }
 	} catch (error) {
 		console.error("Action error:", error);
 		return data(
