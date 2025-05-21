@@ -1,4 +1,3 @@
-import type { Route } from "./+types/new";
 import React from "react";
 import { Form, redirect, useNavigate } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
@@ -7,9 +6,10 @@ import { assert } from "~/routes/common/utils/assert";
 import type { NewProject } from "../../../../../database/schema";
 import { validateProjectInsert } from "../../../../../database/valibot-validation.js";
 import { ProjectFormFields } from "../../components/ProjectFormFields";
-import { SectionCard, SectionHeading } from "../../components/ui/section";
 import { PageHeader } from "../../components/ui/PageHeader";
 import { Alert } from "../../components/ui/alert";
+import { SectionCard, SectionHeading } from "../../components/ui/section";
+import type { Route } from "./+types/new";
 
 export async function action({ request, context, params }: Route.ActionArgs) {
 	const formData = await request.formData();
@@ -38,7 +38,7 @@ export async function action({ request, context, params }: Route.ActionArgs) {
 			projectData as Omit<NewProject, "id" | "createdAt" | "updatedAt">,
 		);
 		return redirect("/admin/projects");
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("Error creating project:", error);
 		const errors: Record<string, string> = {};
 		if (error.issues && Array.isArray(error.issues)) {

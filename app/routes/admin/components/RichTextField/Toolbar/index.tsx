@@ -1,10 +1,16 @@
-import React, {
-	type JSX,
-	type ReactNode,
-	useCallback,
-	useEffect,
-	useState,
-} from "react";
+import {
+	autoUpdate,
+	flip,
+	offset,
+	shift,
+	useDismiss,
+	useFloating,
+	useFocus,
+	useHover,
+	useInteractions,
+	useRole,
+} from "@floating-ui/react";
+import type { Placement } from "@floating-ui/react";
 import {
 	ArrowUturnLeftIcon,
 	ArrowUturnRightIcon,
@@ -26,19 +32,13 @@ import {
 	type TextFormatType,
 	UNDO_COMMAND,
 } from "lexical";
-import {
-	useFloating,
-	autoUpdate,
-	offset,
-	flip,
-	shift,
-	useHover,
-	useFocus,
-	useDismiss,
-	useRole,
-	useInteractions,
-} from "@floating-ui/react";
-import type { Placement } from "@floating-ui/react";
+import React, {
+	type JSX,
+	type ReactNode,
+	useCallback,
+	useEffect,
+	useState,
+} from "react";
 
 function Divider() {
 	return <div className="w-px h-5 bg-gray-300 mx-1" />;
@@ -70,13 +70,10 @@ function Tooltip({
 
 	return (
 		<>
-			{React.cloneElement(
-				children as any,
-				{
-					...getReferenceProps(),
-					ref: refs.setReference,
-				} as any,
-			)}
+			{React.cloneElement(children, {
+				...getReferenceProps(),
+				ref: refs.setReference,
+			} as React.HTMLAttributes<Element>)}
 			{isOpen && (
 				<div
 					ref={refs.setFloating}

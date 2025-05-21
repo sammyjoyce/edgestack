@@ -5,10 +5,10 @@ import type {
 	action as uploadAction,
 	loader as uploadLoader,
 } from "~/routes/admin/views/upload";
-import { Heading } from "../ui/heading";
-import { Text } from "../ui/text";
 import type { StoredImage } from "~/utils/upload.server";
 import { Button } from "../ui/button";
+import { Heading } from "../ui/heading";
+import { Text } from "../ui/text";
 
 interface ImageGalleryProps {
 	onSelectImage?: (image: StoredImage) => void;
@@ -77,7 +77,10 @@ export function ImageGallery({ onSelectImage, forField }: ImageGalleryProps) {
 					</div>
 					<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
 						{images.map((image: StoredImage) => (
-							<div className="relative group overflow-hidden border border-admin-border rounded-lg">
+							<div
+								key={image.url}
+								className="relative group overflow-hidden border border-admin-border rounded-lg"
+							>
 								<img
 									src={image.url}
 									alt={image.name}

@@ -25,7 +25,7 @@ export function Avatar({
 	src = null,
 	square = false,
 	initials,
-	alt = "",
+	alt,
 	className,
 	size = "md",
 	...props
@@ -53,7 +53,7 @@ export function Avatar({
 					viewBox="0 0 100 100"
 					aria-hidden={alt ? undefined : "true"}
 				>
-					{alt && <title>{alt}</title>}
+					<title>{alt && alt.length > 0 ? alt : "Avatar Icon"}</title>
 					<text
 						x="50%"
 						y="50%"

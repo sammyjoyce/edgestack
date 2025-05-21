@@ -4,7 +4,16 @@ import { renderToReadableStream } from "react-dom/server";
 import type { AppLoadContext, EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 
-export function handleError(error: unknown, { request, params, context }: any) {
+interface HandleErrorArgs {
+	request?: Request;
+	params?: Record<string, unknown>;
+	context?: AppLoadContext;
+}
+
+export function handleError(
+	error: unknown,
+	{ request, params, context }: HandleErrorArgs,
+) {
 	if (process.env.NODE_ENV !== "production") {
 		console.error("[React Router handleError]", {
 			errorType: typeof error,
