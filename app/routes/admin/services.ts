@@ -1,6 +1,6 @@
 import type { DrizzleD1Database } from "drizzle-orm/d1";
 import type { AppLoadContext } from "react-router";
-import { getAllContent } from "~/routes/common/db";
+import { getAllContent } from "~/services/db.server";
 import { listStoredImages } from "~/utils/upload.server";
 import type * as schema from "../../database/schema";
 

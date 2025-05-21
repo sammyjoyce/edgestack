@@ -5,7 +5,7 @@ import {
 	getAllContent,
 	getAllProjects,
 	getProjectById,
-} from "~/routes/common/db";
+} from "~/services/db.server";
 
 export async function fetchProjectsList(
 	db: DrizzleD1Database<typeof schema>,
