@@ -1,8 +1,9 @@
 import type { D1Database } from "@cloudflare/workers-types";
 import { eq } from "drizzle-orm";
-import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1";
+import { drizzle } from "drizzle-orm/d1";
 import * as schema from "./schema";
 import type { NewContent, NewProject } from "./schema";
+import type { AppDatabase } from "./index";
 
 /**
  * Seed the database with initial content and sample projects
@@ -28,7 +29,7 @@ export async function seedDatabase(d1: D1Database) {
 	await seedProjects(drizzleDb);
 	console.log("✅ Database seed completed successfully!");
 }
-async function seedContent(db: DrizzleD1Database<typeof schema>) {
+async function seedContent(db: AppDatabase) {
 	const contentItems: NewContent[] = [
 		{
 			key: "hero_title",
@@ -266,7 +267,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		}
 	}
 }
-async function seedProjects(db: DrizzleD1Database<typeof schema>) {
+async function seedProjects(db: AppDatabase) {
 	const projects: NewProject[] = [
 		{
 			title: "Responsive Website",
