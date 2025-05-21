@@ -3,7 +3,7 @@ import type React from "react";
 import { useFetcher } from "react-router";
 import SectionSorter from "~/routes/admin/components/SectionSorter";
 import { GenericSectionEditor } from "~/routes/admin/components/sections/GenericSectionEditor";
-import type { action as adminIndexAction } from "~/routes/admin/views/index";
+import type { action as adminIndexAction } from "~/routes/admin/index";
 import { Container } from "~/routes/common/components/ui/Container";
 import { type SectionId, sectionsSchema } from "~/sections";
 import { Button } from "../ui/button";

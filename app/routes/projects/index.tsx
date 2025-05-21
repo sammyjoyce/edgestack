@@ -1,7 +1,7 @@
 import React from "react";
 import { useOutletContext } from "react-router";
 import RecentProjects from "~/routes/common/components/RecentProjects";
-import type { loader as parentLoader } from "~/routes/projects/views/_layout";
+import type { loader as parentLoader } from "~/routes/projects/layout";
 
 export default function ProjectsIndexRoute() {
 	const { content, projects = [] } =
