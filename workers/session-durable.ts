@@ -7,9 +7,18 @@ interface SessionRecord {
 
 const SESSION_TTL = 60 * 60 * 2; // 2 hours
 
+/**
+ * Durable Object providing a simple key/value session store.
+ * Each session record is persisted with a TTL to automatically
+ * clean up expired sessions.
+ */
 export class SessionDurable implements DurableObject {
   constructor(private state: DurableObjectState, private env: Env) {}
 
+  /**
+   * CRUD-style handler for session data keyed by the request path.
+   * Supports PUT to create, GET to read, and DELETE to remove a session.
+   */
   async fetch(request: Request): Promise<Response> {
     const id = new URL(request.url).pathname.slice(1);
     if (!id) return new Response("Bad Request", { status: 400 });
