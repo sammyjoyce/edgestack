@@ -1,11 +1,11 @@
 import type React from "react";
 import {
-	isRouteErrorResponse,
 	Links,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	isRouteErrorResponse,
 } from "react-router";
 import { HashScrollHandler } from "~/routes/common/components/HashScrollHandler";
 import type { Route } from "./+types/root";

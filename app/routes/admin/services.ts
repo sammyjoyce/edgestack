@@ -11,8 +11,9 @@ export async function fetchAdminContent(
 		return await getAllContent(db);
 	} catch (error) {
 		throw new Error(
-			"fetchAdminContent failed: " +
-				(error instanceof Error ? error.message : String(error)),
+			`fetchAdminContent failed: ${
+				error instanceof Error ? error.message : String(error)
+			}`,
 		);
 	}
 }
@@ -22,8 +23,9 @@ export async function fetchStoredImages(context: AppLoadContext) {
 		return await listStoredImages(context);
 	} catch (error) {
 		throw new Error(
-			"fetchStoredImages failed: " +
-				(error instanceof Error ? error.message : String(error)),
+			`fetchStoredImages failed: ${
+				error instanceof Error ? error.message : String(error)
+			}`,
 		);
 	}
 }

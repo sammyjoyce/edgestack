@@ -1,15 +1,15 @@
 import type React from "react";
 import type { useFetcher } from "react-router";
 import RichTextField from "~/routes/admin/components/RichTextField";
+import { Alert } from "~/routes/admin/components/ui/alert";
 import { Input } from "~/routes/admin/components/ui/input";
 import {
 	FieldLabel,
 	SectionCard,
 	SectionHeading,
 } from "~/routes/admin/components/ui/section";
-import { Textarea } from "~/routes/admin/components/ui/textarea";
 import { Text } from "~/routes/admin/components/ui/text";
-import { Alert } from "~/routes/admin/components/ui/alert";
+import { Textarea } from "~/routes/admin/components/ui/textarea";
 
 interface ContactSectionEditorProps {
 	fetcher: ReturnType<typeof useFetcher>;
@@ -43,14 +43,14 @@ const contactFields = [
 		label: "Phone",
 		isRichText: true,
 		rows: 1,
-               placeholder: "000-000-0000",
+		placeholder: "000-000-0000",
 	},
 	{
 		key: "contact_email",
 		label: "Email",
 		isRichText: true,
 		rows: 1,
-               placeholder: "info@example.com",
+		placeholder: "info@example.com",
 	},
 	{
 		key: "contact_hours",
@@ -64,28 +64,28 @@ const contactFields = [
 		label: "ABN",
 		isRichText: true,
 		rows: 1,
-               placeholder: "00 000 000 000",
+		placeholder: "00 000 000 000",
 	},
 	{
 		key: "contact_acn",
 		label: "ACN",
 		isRichText: true,
 		rows: 1,
-               placeholder: "000 000 000",
+		placeholder: "000 000 000",
 	},
 	{
 		key: "contact_license",
 		label: "License Number",
 		isRichText: true,
 		rows: 1,
-               placeholder: "000000",
+		placeholder: "000000",
 	},
 	{
 		key: "contact_instagram",
 		label: "Instagram URL",
 		isRichText: true,
 		rows: 1,
-               placeholder: "https://www.instagram.com/example",
+		placeholder: "https://www.instagram.com/example",
 	},
 ];
 

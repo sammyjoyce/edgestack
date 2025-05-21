@@ -28,6 +28,7 @@ export function SharedErrorBoundary({
 						{homeLabel}
 					</Link>
 					<button
+						type="button"
 						onClick={() => window.location.reload()}
 						className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md text-center hover:bg-gray-300 transition-colors"
 					>

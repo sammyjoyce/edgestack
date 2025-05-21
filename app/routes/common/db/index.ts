@@ -70,8 +70,9 @@ export async function getAllContent(
 	} catch (error) {
 		console.error("[DB getAllContent] Error fetching content:", error);
 		throw new Error(
-			"Failed to fetch content: " +
-				(error instanceof Error ? error.message : "Unknown error"),
+			`Failed to fetch content: ${
+				error instanceof Error ? error.message : "Unknown error"
+			}`,
 		);
 	}
 }
@@ -112,11 +113,11 @@ export async function updateContent(
 
 		const payload: Omit<schema.NewContent, "key"> & { key: string } = {
 			key,
-		} as any;
+		} as unknown as Omit<schema.NewContent, "key"> & { key: string };
 		if (typeof raw === "object" && raw !== null && "value" in raw) {
 			Object.assign(payload, raw as object);
 		} else {
-			payload.value = raw as any;
+			payload.value = raw as unknown as string;
 		}
 		validateContentUpdate(payload);
 		statements.push(
@@ -143,8 +144,9 @@ export async function updateContent(
 	} catch (error) {
 		console.error("[DB updateContent] Batch failed:", error);
 		throw new Error(
-			"Failed to update content: " +
-				(error instanceof Error ? error.message : "Unknown error"),
+			`Failed to update content: ${
+				error instanceof Error ? error.message : "Unknown error"
+			}`,
 		);
 	}
 }

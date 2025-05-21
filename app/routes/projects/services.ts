@@ -16,8 +16,9 @@ export async function fetchProjectsList(
 		return { content, projects };
 	} catch (error) {
 		throw new Error(
-			"fetchProjectsList failed: " +
-				(error instanceof Error ? error.message : String(error)),
+			`fetchProjectsList failed: ${
+				error instanceof Error ? error.message : String(error)
+			}`,
 		);
 	}
 }
@@ -32,8 +33,9 @@ export async function fetchProjectDetails(
 		return project;
 	} catch (error) {
 		throw new Error(
-			"fetchProjectDetails failed: " +
-				(error instanceof Error ? error.message : String(error)),
+			`fetchProjectDetails failed: ${
+				error instanceof Error ? error.message : String(error)
+			}`,
 		);
 	}
 }
