@@ -1,8 +1,9 @@
-import { beforeAll, describe, expect, test } from 'bun:test';
-import { render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
-import { type RouterProvider, createMemoryRouter } from 'react-router';
-import routeConfig from './app/routes';
+import { beforeAll, describe, expect, test } from "bun:test";
+import { render, screen, waitFor } from "@testing-library/react";
+import React from "react";
+import { type RouterProvider, createMemoryRouter } from "react-router";
+import routeConfig from "./app/routes";
+import { SharedErrorBoundary } from "./app/routes/common/components/ErrorBoundary";
 const createRouter = (initialEntry: string) => {
   return createMemoryRouter(routeConfig, {
     initialEntries: [initialEntry],
@@ -73,10 +74,20 @@ describe('Route Architecture Tests', () => {
   describe('Error Boundaries', () => {
     test('Error thrown in a route component is caught by the nearest error boundary', async () => {
       const ErrorComponent = () => {
-        throw new Error('Test error');
+        throw new Error("Test error");
       };
-      const router = createRouter('/');
-      await renderRouter(router);
+      const testRouter = createMemoryRouter(
+        [
+          {
+            path: "/",
+            element: <ErrorComponent />,
+            errorElement: <SharedErrorBoundary />,
+          },
+        ],
+        { initialEntries: ["/"] },
+      );
+      render(<RouterProvider router={testRouter} />);
+      await screen.findByText("Return to Home Page");
     });
   });
 });
