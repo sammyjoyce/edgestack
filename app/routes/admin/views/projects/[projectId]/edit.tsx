@@ -2,13 +2,14 @@ import React from "react";
 import { Form, redirect } from "react-router";
 import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { getProjectById, updateProject } from "~/routes/common/db";
+import { updateProject } from "~/routes/common/db";
 import { deleteStoredImage, handleImageUpload } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
 import { Container } from "../../../../common/components/ui/Container";
 import { ProjectFormFields } from "../../../components/ProjectFormFields";
 import { Alert } from "../../../components/ui/alert";
 import { SectionCard, SectionHeading } from "../../../components/ui/section";
+import { fetchAdminProject } from "../services";
 import type { Route } from "./+types/edit";
 
 export async function loader({ params, context, request }: Route.LoaderArgs) {
@@ -17,10 +18,7 @@ export async function loader({ params, context, request }: Route.LoaderArgs) {
 		throw new Response("Invalid Project ID", { status: 400 });
 	}
 	try {
-		const project = await getProjectById(context.db, projectId);
-		if (!project) {
-			throw new Response("Project not found", { status: 404 });
-		}
+		const project = await fetchAdminProject(context.db, projectId);
 		return { project };
 	} catch (error: unknown) {
 		console.error("Error fetching project:", error);

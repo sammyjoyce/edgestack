@@ -7,13 +7,14 @@ import {
 } from "~/routes/admin/components/ui/alert";
 import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { deleteProject, getProjectById } from "~/routes/common/db";
+import { deleteProject } from "~/routes/common/db";
 import { FormCard } from "../../../components/ui/FormCard";
 import { PageHeader } from "../../../components/ui/PageHeader";
 import { Button } from "../../../components/ui/button";
 import { Label } from "../../../components/ui/fieldset";
 import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
+import { fetchAdminProject } from "../services";
 import type { Route } from "./+types/delete";
 
 export async function loader({ params, context, request }: Route.LoaderArgs) {
@@ -22,10 +23,7 @@ export async function loader({ params, context, request }: Route.LoaderArgs) {
 		throw new Response("Invalid Project ID", { status: 400 });
 	}
 	try {
-		const project = await getProjectById(context.db, projectId);
-		if (!project) {
-			throw new Response("Project not found", { status: 404 });
-		}
+		const project = await fetchAdminProject(context.db, projectId);
 		return { project };
 	} catch (error: unknown) {
 		console.error("Error fetching project:", error);
