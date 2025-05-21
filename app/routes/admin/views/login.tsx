@@ -1,7 +1,5 @@
-import type { Route } from "./+types/login";
 import type React from "react";
 import { useState } from "react";
-import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { Form, redirect } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import {
@@ -10,12 +8,14 @@ import {
 	checkSession,
 	sign,
 } from "~/routes/common/utils/auth";
+import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { FormCard } from "../components/ui/FormCard";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Alert } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
 import { Field, Label } from "../components/ui/fieldset";
 import { Input } from "../components/ui/input";
+import type { Route } from "./+types/login";
 
 export const links: Route.LinksFunction = () => [
 	{ rel: "stylesheet", href: adminThemeStylesheet },
@@ -62,7 +62,7 @@ export const action = async ({
 			const response = redirect("/admin");
 			response.headers.set(
 				"Set-Cookie",
-				`${COOKIE_NAME}=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${COOKIE_MAX_AGE}`,
+				`${COOKIE_NAME}=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${COOKIE_MAX_AGE}`,
 			);
 			return response;
 		}
