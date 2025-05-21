@@ -92,6 +92,17 @@
 		inset -0.5px -0.5px 1px #0000005b,
 		0.222px 0.222px 0.314px -1px #0003,
 		-0.5px -0.5px 0 0 #00000022;
+	--shadow-admin-button-error:
+		inset 1px 1px 1px #ffffffb3,
+		inset -1px -1px 1px #0000003b,
+		0.444584px 0.444584px 0.628737px -0.75px #00000042,
+		1.21072px 1.21072px 1.71222px -1.5px #0000003f,
+		-0.5px -0.5px 0 0 #000000af;
+	--shadow-admin-button-error-active:
+		inset 0.5px 0.5px 1px #ffffffb3,
+		inset -0.5px -0.5px 1px #0000005b,
+		0.222px 0.222px 0.314px -1px #0003,
+		-0.5px -0.5px 0 0 #000000ac;
 	--shadow-admin-led: inset 1px 1px 2px #0000001c, 0px 1px 0px 0px #ffffff30;
 
 	--font-admin-sans: var(--font-sans);
@@ -162,6 +173,14 @@ h6 {
 
 	.shadow-admin-button-neutral-active {
 		box-shadow: var(--shadow-admin-button-neutral-active);
+	}
+
+	.shadow-admin-button-error {
+		box-shadow: var(--shadow-admin-button-error);
+	}
+
+	.shadow-admin-button-error-active {
+		box-shadow: var(--shadow-admin-button-error-active);
 	}
 
 	.shadow-admin-led {
