@@ -105,6 +105,15 @@ Consistent formatting keeps the project easy to read and maintain. Format and li
 bun run format
 ```
 
+This repository uses Husky to automatically run formatting and linting before
+each commit. After installing dependencies, run:
+
+```bash
+bun run prepare
+```
+
+to set up the pre-commit hooks.
+
 For broader styling guidance, see [docs/tigerstyle.md](docs/tigerstyle.md) and [.junie/guidelines.md](.junie/guidelines.md).
 
 ## Services and Business Logic
