@@ -6,12 +6,22 @@ const requestHandler = createRequestHandler(
         serverBuildModuleResolver,
         import.meta.env.MODE,
 );
+const typeMap: Record<string, string> = {
+        jpg: "image/jpeg",
+        jpeg: "image/jpeg",
+        png: "image/png",
+        webp: "image/webp",
+        gif: "image/gif",
+        svg: "image/svg+xml",
+};
 export default {
         async fetch(request, env, ctx) {
-                console.log("WORKER INVOKED", new Date().toISOString(), request.url);
-		const url = new URL(request.url);
-		if (url.pathname.startsWith("/assets/")) {
-			const key = url.pathname.slice("/assets/".length);
+                if (import.meta.env.MODE !== "production") {
+                        console.log("WORKER INVOKED", new Date().toISOString(), request.url);
+                }
+                const url = new URL(request.url);
+                if (url.pathname.startsWith("/assets/")) {
+                        const key = url.pathname.slice("/assets/".length);
 			if (!key) {
 				return new Response("Missing asset key", { status: 400 });
 			}
@@ -20,20 +30,12 @@ export default {
 				if (!object) {
 					return new Response("Not found", { status: 404 });
 				}
-				const ext = key.split(".").pop()?.toLowerCase() as
-					| keyof typeof typeMap
-					| undefined;
-				const typeMap: Record<string, string> = {
-					jpg: "image/jpeg",
-					jpeg: "image/jpeg",
-					png: "image/png",
-					webp: "image/webp",
-					gif: "image/gif",
-					svg: "image/svg+xml",
-				};
-				const contentType =
-					object.httpMetadata?.contentType ||
-					(ext && typeMap[ext]) ||
+                                const ext = key.split(".").pop()?.toLowerCase() as
+                                        | keyof typeof typeMap
+                                        | undefined;
+                                const contentType =
+                                        object.httpMetadata?.contentType ||
+                                        (ext && typeMap[ext]) ||
 					"application/octet-stream";
 				return new Response(object.body, {
 					status: 200,
