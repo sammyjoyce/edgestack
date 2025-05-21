@@ -9,7 +9,6 @@ import {
 	useActionData,
 	useLocation,
 } from "react-router";
-import { deleteProject } from "~/database/projectRepo";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer/index";
 import { assert } from "~/utils/assert";
 import { checkSession } from "~/utils/auth";
@@ -26,7 +25,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 		throw redirect("/admin/login");
 	}
 	try {
-		const projects = await fetchAdminProjectsList(context.db);
+		const projects = await fetchAdminProjectsList(context.cms);
 		return { projects };
 	} catch (error: unknown) {
 		console.error("Failed to load projects:", error);
@@ -59,7 +58,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 			);
 		}
 		try {
-			await deleteProject(context.db, projectId);
+			await context.cms.deleteProject(projectId);
 			return data({ success: true, projectId });
 		} catch (error: unknown) {
 			console.error("Failed to delete project:", error);

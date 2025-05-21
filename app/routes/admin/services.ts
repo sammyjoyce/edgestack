@@ -1,14 +1,12 @@
-import type { DrizzleD1Database } from "drizzle-orm/d1";
 import type { AppLoadContext } from "react-router";
-import { getAllContent } from "~/database/contentRepo";
+import type { CmsClient } from "~/services/cms.client";
 import { listStoredImages } from "~/utils/upload.server";
-import type * as schema from "../../database/schema";
 
 export async function fetchAdminContent(
-	db: DrizzleD1Database<typeof schema>,
+	cms: CmsClient,
 ): Promise<Record<string, string>> {
 	try {
-		return await getAllContent(db);
+		return await cms.getAllContent();
 	} catch (error) {
 		throw new Error(
 			`fetchAdminContent failed: ${

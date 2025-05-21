@@ -1,6 +1,5 @@
 import React from "react";
 import { Form, redirect, useNavigate } from "react-router";
-import { deleteProject } from "~/database/projectRepo";
 import {
 	Alert,
 	AlertDescription,
@@ -23,7 +22,7 @@ export async function loader({ params, context, request }: Route.LoaderArgs) {
 		throw new Response("Invalid Project ID", { status: 400 });
 	}
 	try {
-		const project = await fetchAdminProject(context.db, projectId);
+		const project = await fetchAdminProject(context.cms, projectId);
 		return { project };
 	} catch (error: unknown) {
 		console.error("Error fetching project:", error);
@@ -44,7 +43,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
 		return { success: false, error: "Deletion was not confirmed" };
 	}
 	try {
-		await deleteProject(context.db, projectId);
+		await context.cms.deleteProject(projectId);
 		return redirect("/admin/projects");
 	} catch (error: unknown) {
 		console.error("Error deleting project:", error);
