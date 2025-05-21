@@ -12,7 +12,8 @@ declare namespace Cloudflare {
 		CLOUDFLARE_D1_TOKEN: string;
                 ASSETS_BUCKET: R2Bucket;
                 DB: D1Database;
-                DRIZZLE_DO: DurableObjectNamespace;
+                DRIZZLE_WRITE_DO: DurableObjectNamespace;
+                DRIZZLE_READ_DO: DurableObjectNamespace;
                 SESSION_DO: DurableObjectNamespace;
         }
 }

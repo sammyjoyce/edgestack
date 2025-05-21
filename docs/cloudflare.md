@@ -4,7 +4,7 @@ This project demonstrates how to combine several Cloudflare services together in
 
 ## Workers
 
-The Worker entry point lives in `workers/app.ts`. It serves static files from an R2 bucket and routes all other requests through the `DrizzleDurable` Durable Object. Wrangler is used for local development and deployment.
+The Worker entry point lives in `workers/app.ts`. It serves static files from an R2 bucket and routes all other requests through Durable Objects. Wrangler is used for local development and deployment.
 
 To start the Worker locally:
 
@@ -24,10 +24,11 @@ bun wrangler versions deploy # Promote a version to production
 
 ## Durable Objects
 
-Durable Objects provide stateful logic. This template includes two examples:
+Durable Objects provide stateful logic. This template includes three examples:
 
 - `SessionDurable` in `workers/session-durable.ts` – a basic key/value store for session data.
-- `DrizzleDurable` in `workers/drizzle-durable.ts` – handles application requests and exposes the D1 database via Drizzle ORM.
+- `DrizzleReadDurable` in `workers/drizzle-read-durable.ts` – handles read-only application requests.
+- `DrizzleWriteDurable` in `workers/drizzle-write-durable.ts` – handles write operations and exposes the D1 database via Drizzle ORM.
 
 Both objects are registered in `wrangler.jsonc` so they are created automatically when you deploy.
 
