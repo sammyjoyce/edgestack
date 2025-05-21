@@ -2,7 +2,7 @@ import React from "react";
 import { Form, redirect } from "react-router";
 import { Heading } from "~/routes/admin/components/ui/heading";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import { updateProject } from "~/routes/common/db";
+import { updateProject } from "~/services/db.server";
 import { deleteStoredImage, handleImageUpload } from "~/utils/upload.server";
 import { validateProjectUpdate } from "../../../../../../database/valibot-validation.js";
 import { Container } from "../../../../common/components/ui/Container";

@@ -22,10 +22,11 @@
 		"jsxImportSource": "react",
 		"baseUrl": ".",
 		"rootDirs": ["app", ".react-router/types/app"],
-		"paths": {
-			"~/database/*": ["./database/*"],
-			"~/*": ["./app/*"]
-		},
+               "paths": {
+                        "~/database/*": ["./database/*"],
+                        "~/services/*": ["./services/*"],
+                        "~/*": ["./app/*"]
+                },
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"verbatimModuleSyntax": true
