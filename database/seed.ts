@@ -13,7 +13,7 @@ import type { NewContent, NewProject } from "./schema";
  * ```
  */
 
-// Main seed function that populates the database
+// Seed the database with starter content
 export async function seedDatabase(d1: D1Database) {
 	const drizzleDb = drizzle(d1, { schema });
 	console.log("🌱 Starting database seed...");
@@ -32,7 +32,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 	const contentItems: NewContent[] = [
 		{
 			key: "hero_title",
-                       value: "Big Impact for Modern Brands",
+			value: "Big Impact for Modern Brands",
 			page: "home",
 			section: "hero",
 			type: "text",
@@ -40,8 +40,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "hero_subtitle",
-                       value:
-                               "Delivering high-quality solutions since 2010.",
+			value: "Delivering high-quality solutions since 2010.",
 			page: "home",
 			section: "hero",
 			type: "text",
@@ -65,8 +64,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "services_intro_text",
-                       value:
-                               "We offer a variety of services to help your business grow.",
+			value: "We offer a variety of services to help your business grow.",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -74,7 +72,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_1_title",
-                       value: "Design",
+			value: "Design",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -82,8 +80,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_1_text",
-                       value:
-                               "Creative designs tailored to your brand.",
+			value: "Creative designs tailored to your brand.",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -91,7 +88,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_1_image",
-                       value: "/assets/service-design.jpg",
+			value: "/assets/service-design.jpg",
 			page: "home",
 			section: "services",
 			type: "image",
@@ -99,7 +96,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_2_title",
-                       value: "Development",
+			value: "Development",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -107,8 +104,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_2_text",
-                       value:
-                               "Robust solutions built with the latest technologies.",
+			value: "Robust solutions built with the latest technologies.",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -116,7 +112,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_2_image",
-                       value: "/assets/service-development.jpg",
+			value: "/assets/service-development.jpg",
 			page: "home",
 			section: "services",
 			type: "image",
@@ -124,7 +120,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_3_title",
-                       value: "Marketing",
+			value: "Marketing",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -132,8 +128,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_3_text",
-                       value:
-                               "Strategies that connect you with your audience.",
+			value: "Strategies that connect you with your audience.",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -141,7 +136,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_3_image",
-                       value: "/assets/service-marketing.jpg",
+			value: "/assets/service-marketing.jpg",
 			page: "home",
 			section: "services",
 			type: "image",
@@ -149,7 +144,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_4_title",
-                       value: "Support",
+			value: "Support",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -157,8 +152,7 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_4_text",
-                       value:
-                               "Reliable support to keep things running smoothly.",
+			value: "Reliable support to keep things running smoothly.",
 			page: "home",
 			section: "services",
 			type: "text",
@@ -166,24 +160,24 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 		},
 		{
 			key: "service_4_image",
-                       value: "/assets/service-support.jpg",
+			value: "/assets/service-support.jpg",
 			page: "home",
 			section: "services",
 			type: "image",
 			sortOrder: 14,
 		},
-               {
-                        key: "about_title",
-                        value: "About Us",
+		{
+			key: "about_title",
+			value: "About Us",
 			page: "home",
 			section: "about",
 			type: "text",
 			sortOrder: 1,
 		},
-               {
-                        key: "about_text",
-                       value:
-                               "Our team delivers results with a focus on quality and clear communication.",
+		{
+			key: "about_text",
+			value:
+				"Our team delivers results with a focus on quality and clear communication.",
 			page: "home",
 			section: "about",
 			type: "text",
@@ -197,25 +191,25 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "image",
 			sortOrder: 3,
 		},
-               {
-                        key: "contact_phone",
-                        value: "000-000-0000",
+		{
+			key: "contact_phone",
+			value: "000-000-0000",
 			page: "home",
 			section: "contact",
 			type: "text",
 			sortOrder: 1,
 		},
-               {
-                        key: "contact_email",
-                        value: "info@example.com",
+		{
+			key: "contact_email",
+			value: "info@example.com",
 			page: "home",
 			section: "contact",
 			type: "text",
 			sortOrder: 2,
 		},
-               {
-                        key: "contact_address",
-                        value: "City, ST",
+		{
+			key: "contact_address",
+			value: "City, ST",
 			page: "home",
 			section: "contact",
 			type: "text",
@@ -238,18 +232,17 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 			type: "text",
 			sortOrder: 2,
 		},
-               {
-                        key: "meta_title",
-                       value: "Your Company | Digital Solutions",
+		{
+			key: "meta_title",
+			value: "Your Company | Digital Solutions",
 			page: "global",
 			section: "meta",
 			type: "text",
 			sortOrder: 1,
 		},
-               {
-                        key: "meta_description",
-                       value:
-                               "Delivering high-quality solutions since 2010.",
+		{
+			key: "meta_description",
+			value: "Delivering high-quality solutions since 2010.",
 			page: "global",
 			section: "meta",
 			type: "text",
@@ -274,58 +267,59 @@ async function seedContent(db: DrizzleD1Database<typeof schema>) {
 	}
 }
 async function seedProjects(db: DrizzleD1Database<typeof schema>) {
-       const projects: NewProject[] = [
-               {
-                       title: "Responsive Website",
-                       description: "A modern responsive website for a local business.",
-                       details: "Features: accessible design, CMS integration",
-                       imageUrl: "/assets/project-waterfront.jpg",
-                       slug: "responsive-website",
-                       published: true,
-                       isFeatured: true,
-                       sortOrder: 1,
-               },
-               {
-                       title: "Productivity App",
-                       description: "A mobile app that helps users stay organized.",
-                       details: "Features: cross-platform support, offline mode, push notifications",
-                       imageUrl: "/assets/project-heritage.jpg",
-                       slug: "productivity-app",
-                       published: true,
-                       isFeatured: true,
-                       sortOrder: 2,
-               },
-               {
-                       title: "E-commerce Platform",
-                       description: "A scalable online store with secure payments.",
-                       details: "Features: custom integrations, flexible catalog, analytics",
-                       imageUrl: "/assets/project-apartments.jpg",
-                       slug: "ecommerce-platform",
-                       published: true,
-                       isFeatured: true,
-                       sortOrder: 3,
-               },
-               {
-                       title: "Analytics Dashboard",
-                       description: "A dashboard providing real-time insights for your team.",
-                       details: "Features: dynamic charts, exportable reports",
-                       imageUrl: "/assets/project-kitchen.jpg",
-                       slug: "analytics-dashboard",
-                       published: true,
-                       isFeatured: false,
-                       sortOrder: 4,
-               },
-               {
-                       title: "Portfolio Showcase",
-                       description: "A clean and simple portfolio site.",
-                       details: "Features: image galleries, contact form",
-                       imageUrl: "/assets/project-sustainable.jpg",
-                       slug: "portfolio-showcase",
-                       published: true,
-                       isFeatured: false,
-                       sortOrder: 5,
-               },
-       ];
+	const projects: NewProject[] = [
+		{
+			title: "Responsive Website",
+			description: "A modern responsive website for a local business.",
+			details: "Features: accessible design, CMS integration",
+			imageUrl: "/assets/project-waterfront.jpg",
+			slug: "responsive-website",
+			published: true,
+			isFeatured: true,
+			sortOrder: 1,
+		},
+		{
+			title: "Productivity App",
+			description: "A mobile app that helps users stay organized.",
+			details:
+				"Features: cross-platform support, offline mode, push notifications",
+			imageUrl: "/assets/project-heritage.jpg",
+			slug: "productivity-app",
+			published: true,
+			isFeatured: true,
+			sortOrder: 2,
+		},
+		{
+			title: "E-commerce Platform",
+			description: "A scalable online store with secure payments.",
+			details: "Features: custom integrations, flexible catalog, analytics",
+			imageUrl: "/assets/project-apartments.jpg",
+			slug: "ecommerce-platform",
+			published: true,
+			isFeatured: true,
+			sortOrder: 3,
+		},
+		{
+			title: "Analytics Dashboard",
+			description: "A dashboard providing real-time insights for your team.",
+			details: "Features: dynamic charts, exportable reports",
+			imageUrl: "/assets/project-kitchen.jpg",
+			slug: "analytics-dashboard",
+			published: true,
+			isFeatured: false,
+			sortOrder: 4,
+		},
+		{
+			title: "Portfolio Showcase",
+			description: "A clean and simple portfolio site.",
+			details: "Features: image galleries, contact form",
+			imageUrl: "/assets/project-sustainable.jpg",
+			slug: "portfolio-showcase",
+			published: true,
+			isFeatured: false,
+			sortOrder: 5,
+		},
+	];
 	for (const project of projects) {
 		try {
 			await db.insert(schema.projects).values(project).run();

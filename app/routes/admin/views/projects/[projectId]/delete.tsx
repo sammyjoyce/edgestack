@@ -1,7 +1,6 @@
 import type { Route } from "./+types/delete";
 import React from "react";
 import { Form, redirect, useNavigate } from "react-router";
-// Removed data import; use plain objects or throw new Response.
 import {
 	Alert,
 	AlertDescription,
@@ -17,7 +16,6 @@ import { Label } from "../../../components/ui/fieldset";
 import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
 
-// Removed missing Route type import.
 export async function loader({ params, context, request }: Route.LoaderArgs) {
 	const projectId = Number(params.projectId);
 	if (Number.isNaN(projectId)) {

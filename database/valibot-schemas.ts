@@ -3,7 +3,7 @@ import {
 	createSelectSchema,
 	createUpdateSchema,
 } from "drizzle-valibot";
-import { nullable, number, object, optional, picklist, string } from "valibot"; // Removed enumType, added nullable
+import { nullable, number, object, optional, picklist, string } from "valibot";
 import { content, media, projects } from "./schema";
 const ThemeEnum = { Light: "light", Dark: "dark" } as const;
 type Theme = (typeof ThemeEnum)[keyof typeof ThemeEnum];
