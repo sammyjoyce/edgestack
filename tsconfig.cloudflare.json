@@ -23,9 +23,10 @@
 		"baseUrl": ".",
 		"rootDirs": ["app", ".react-router/types/app"],
                "paths": {
-                        "~/database/*": ["./database/*"],
-                        "~/services/*": ["./services/*"],
-                        "~/*": ["./app/*"]
+                "~/database/*": ["./database/*"],
+                "~/services/*": ["./services/*"],
+                "~/utils/*": ["./utils/*"],
+                "~/*": ["./app/*"]
                 },
 		"esModuleInterop": true,
 		"resolveJsonModule": true,

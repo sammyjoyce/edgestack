@@ -2,12 +2,7 @@ import type React from "react";
 import { useState } from "react";
 import { Form, redirect } from "react-router";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
-import {
-	COOKIE_MAX_AGE,
-	COOKIE_NAME,
-	checkSession,
-	sign,
-} from "~/routes/common/utils/auth";
+import { COOKIE_MAX_AGE, COOKIE_NAME, checkSession, sign } from "~/utils/auth";
 import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { FormCard } from "../components/ui/FormCard";
 import { PageHeader } from "../components/ui/PageHeader";
