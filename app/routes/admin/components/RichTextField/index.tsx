@@ -12,8 +12,8 @@ import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import clsx from "clsx";
 import type { EditorState, LexicalEditor } from "lexical";
 import React, { type JSX, useCallback, useMemo, useRef } from "react";
-import { lexicalTheme } from "./lexicalTheme";
 import LexicalToolbar from "~/routes/admin/components/RichTextField/Toolbar";
+import { lexicalTheme } from "./lexicalTheme";
 
 interface Props {
 	name: string;

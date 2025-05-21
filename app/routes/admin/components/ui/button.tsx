@@ -34,7 +34,7 @@ export interface ButtonProps {
 	"aria-label"?: string;
 
 	// Allow any other props to be passed through
-	[key: string]: any;
+	[key: string]: unknown;
 }
 
 export const Button = forwardRef<HTMLElement, ButtonProps>((props, ref) => {
@@ -127,20 +127,20 @@ export const Button = forwardRef<HTMLElement, ButtonProps>((props, ref) => {
 	const ComponentToRender =
 		as ?? (to ? RouterLink : href ? "a" : Headless.Button);
 
-	const finalProps: any = { ...commonProps };
+	const finalProps: Record<string, unknown> = { ...commonProps };
 
 	if (ComponentToRender === Headless.Button) {
 		finalProps.type = type;
-		delete finalProps.to;
-		delete finalProps.href;
+		finalProps.to = undefined;
+		finalProps.href = undefined;
 	} else if (ComponentToRender === RouterLink) {
 		finalProps.to = to;
-		delete finalProps.href;
-		delete finalProps.type;
+		finalProps.href = undefined;
+		finalProps.type = undefined;
 	} else if (ComponentToRender === "a") {
 		finalProps.href = href;
-		delete finalProps.to;
-		delete finalProps.type;
+		finalProps.to = undefined;
+		finalProps.type = undefined;
 	}
 
 	return <ComponentToRender {...finalProps}>{children}</ComponentToRender>;

@@ -4,7 +4,7 @@ import {
 	FolderIcon,
 	HomeIcon,
 } from "@heroicons/react/24/outline";
-import type { Route } from "./+types/_layout";
+import clsx from "clsx";
 import type React from "react";
 import {
 	NavLink,
@@ -17,7 +17,7 @@ import { checkSession } from "~/routes/common/utils/auth";
 import adminThemeStylesheet from "../../../admin-theme.css?url";
 import { AdminErrorBoundary } from "../components/AdminErrorBoundary";
 import { SidebarLayout } from "../components/ui/sidebar-layout";
-import clsx from "clsx";
+import type { Route } from "./+types/_layout";
 
 // Links for stylesheet
 export const links: Route.LinksFunction = () => [
@@ -29,8 +29,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 	const url = new URL(request.url);
 	const isLoginRoute = url.pathname === "/admin/login";
 	const isLogoutRoute = url.pathname === "/admin/logout";
-        const env = context.cloudflare?.env;
-        const loggedIn = env ? await checkSession(request, env) : false;
+	const env = context.cloudflare?.env;
+	const loggedIn = env ? await checkSession(request, env) : false;
 	if (!loggedIn && !isLoginRoute && !isLogoutRoute) {
 		return redirect("/admin/login");
 	}
@@ -68,11 +68,11 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 	const sidebarNav = (
 		<div className="flex h-full flex-col bg-admin-screen px-6 py-4">
 			<div className="flex h-16 items-center border-b border-admin-border mb-2 pb-2">
-                               <img
-                                       src="/assets/logo_284x137-KoakP1Oi.png"
-                                       alt="Company Logo"
-                                       className="h-8 mx-auto filter invert"
-                               />
+				<img
+					src="/assets/logo_284x137-KoakP1Oi.png"
+					alt="Company Logo"
+					className="h-8 mx-auto filter invert"
+				/>
 			</div>
 			<div className="mb-2 mt-2 px-1 text-xs font-semibold uppercase tracking-wide text-admin-text-muted">
 				Admin Menu
@@ -168,11 +168,11 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
 	return (
 		<SidebarLayout
 			navbar={
-                               <img
-                                       src="/assets/logo_284x137-KoakP1Oi.png"
-                                       alt="Company Logo"
-                                       className="h-8"
-                               />
+				<img
+					src="/assets/logo_284x137-KoakP1Oi.png"
+					alt="Company Logo"
+					className="h-8"
+				/>
 			}
 			sidebar={sidebarNav}
 		>

@@ -182,7 +182,7 @@ export function DropdownShortcut({
 		>
 			{(Array.isArray(keys) ? keys : keys.split("")).map((char, index) => (
 				<kbd
-					key={index}
+					key={char}
 					className={clsx(
 						"min-w-[1.5ch] text-center font-sans",
 						index > 0 && char.length > 1 && "pl-0.5",
