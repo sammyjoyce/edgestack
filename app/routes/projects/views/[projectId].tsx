@@ -1,12 +1,12 @@
 import clsx from "clsx";
 import React from "react";
-import { data, Link, useOutletContext } from "react-router";
+import { Link, data, useOutletContext } from "react-router";
 import { ConditionalRichTextRenderer } from "~/routes/common/components/ConditionalRichTextRenderer";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { getProjectById } from "~/routes/common/db";
 import { assert } from "~/routes/common/utils/assert";
-import type { Route } from "./+types/[projectId]";
 import type { loader as parentLayoutLoader } from "~/routes/projects/views/_layout";
+import type { Route } from "./+types/[projectId]";
 
 export const loader = async ({
 	params,
@@ -26,11 +26,10 @@ export const loader = async ({
 			"loader must return a project",
 		);
 		return { project };
-	} catch (error: any) {
-		throw data(
-			{ message: error.message || "Failed to load project details" },
-			{ status: 500 },
-		);
+	} catch (error: unknown) {
+		const message =
+			error instanceof Error ? error.message : "Failed to load project details";
+		throw data({ message }, { status: 500 });
 	}
 };
 

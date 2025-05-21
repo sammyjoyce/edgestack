@@ -10,6 +10,7 @@ const icons = {
 			fill="currentColor"
 			className="size-5"
 		>
+			<title>Info</title>
 			<path
 				fillRule="evenodd"
 				d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z"
@@ -24,6 +25,7 @@ const icons = {
 			fill="currentColor"
 			className="size-5"
 		>
+			<title>Success</title>
 			<path
 				fillRule="evenodd"
 				d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z"
@@ -38,6 +40,7 @@ const icons = {
 			fill="currentColor"
 			className="size-5"
 		>
+			<title>Warning</title>
 			<path
 				fillRule="evenodd"
 				d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-5.5-2.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM10 12a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75H10Z"
@@ -52,6 +55,7 @@ const icons = {
 			fill="currentColor"
 			className="size-5"
 		>
+			<title>Error</title>
 			<path
 				fillRule="evenodd"
 				d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z"
