@@ -1,6 +1,7 @@
 import type { AppDatabase } from "~/database";
 import * as schema from "~/database/schema";
 import type { NewContent, NewProject, Project } from "~/database";
+import type { ProjectListOptions } from "~/database/projectRepo";
 import {
     getAllContent,
     updateContent,
@@ -9,6 +10,7 @@ import {
     getAllProjects,
     getFeaturedProjects,
     getProjectById,
+    getProjectsPage,
     createProject,
     updateProject,
     deleteProject,
@@ -41,6 +43,10 @@ export class CmsClient {
 
     async getFeaturedProjects(): Promise<Project[]> {
         return getFeaturedProjects(this.db);
+    }
+
+    async getProjectsPage(options: ProjectListOptions = {}): Promise<Project[]> {
+        return getProjectsPage(this.db, options);
     }
 
     async getProjectById(id: number): Promise<Project | undefined> {

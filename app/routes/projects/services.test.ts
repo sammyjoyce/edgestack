@@ -8,7 +8,7 @@ describe("fetchProjectsList", () => {
 		const mockProjects: Array<{ id: number }> = [{ id: 1 }];
 		const cms: Partial<CmsClient> = {
 			getAllContent: async () => mockContent,
-			getAllProjects: async () => mockProjects,
+			getProjectsPage: async () => mockProjects,
 		};
 		const result = await fetchProjectsList(cms as CmsClient);
 		expect(result).toEqual({ content: mockContent, projects: mockProjects });
@@ -19,7 +19,7 @@ describe("fetchProjectsList", () => {
 			getAllContent: async () => {
 				throw new Error("oops");
 			},
-			getAllProjects: async () => [],
+			getProjectsPage: async () => [],
 		};
 		await expect(fetchProjectsList(cms as CmsClient)).rejects.toThrow(
 			"fetchProjectsList failed: oops",

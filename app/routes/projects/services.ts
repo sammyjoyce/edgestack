@@ -1,12 +1,14 @@
+import type { ProjectListOptions } from "~/database/projectRepo";
 import type { Project } from "~/database/schema";
 import type { CmsClient } from "~/services/cms.client";
 
 export async function fetchProjectsList(
 	cms: CmsClient,
+	options: ProjectListOptions = {},
 ): Promise<{ content: Record<string, string>; projects: Project[] }> {
 	try {
 		const content = await cms.getAllContent();
-		const projects = await cms.getAllProjects();
+		const projects = await cms.getProjectsPage(options);
 		return { content, projects };
 	} catch (error) {
 		throw new Error(
