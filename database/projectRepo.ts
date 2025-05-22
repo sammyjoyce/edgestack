@@ -1,11 +1,12 @@
 import { asc, desc, eq, sql } from "drizzle-orm";
-import type { AppDatabase } from "./index";
 import { assert } from "~/utils/assert";
+import { withTiming } from "~/utils/timing";
+import type { AppDatabase } from "./index";
 import * as schema from "./schema";
 import type { NewProject, Project } from "./schema";
 
 let getProjectByIdPrepared: ReturnType<
-        AppDatabase["select"]["prepare"]
+	AppDatabase["select"]["prepare"]
 > | null = null;
 
 function ensureGetProjectByIdPrepared(db: AppDatabase) {
@@ -22,69 +23,62 @@ function ensureGetProjectByIdPrepared(db: AppDatabase) {
 	return getProjectByIdPrepared;
 }
 
-export async function getAllProjects(
-        db: AppDatabase,
-): Promise<Project[]> {
+export async function getAllProjects(db: AppDatabase): Promise<Project[]> {
 	assert(db, "getAllProjects: db is required");
-	const t0 = performance.now();
-	const result = await db
-		.select()
-		.from(schema.projects)
-		.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt))
-		.all();
-	if (process.env.NODE_ENV !== "production")
-		console.log(`getAllProjects took ${performance.now() - t0}ms`);
+	const result = await withTiming("getAllProjects query", () =>
+		db
+			.select()
+			.from(schema.projects)
+			.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt))
+			.all(),
+	);
 	assert(Array.isArray(result), "getAllProjects: must return array");
 	return result;
 }
 
-export async function getFeaturedProjects(
-        db: AppDatabase,
-): Promise<Project[]> {
+export async function getFeaturedProjects(db: AppDatabase): Promise<Project[]> {
 	assert(db, "getFeaturedProjects: db is required");
-	const t0 = performance.now();
-	const result = await db
-		.select()
-		.from(schema.projects)
-		.where(eq(schema.projects.isFeatured, true))
-		.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt))
-		.all();
-	if (process.env.NODE_ENV !== "production")
-		console.log(`getFeaturedProjects took ${performance.now() - t0}ms`);
+	const result = await withTiming("getFeaturedProjects query", () =>
+		db
+			.select()
+			.from(schema.projects)
+			.where(eq(schema.projects.isFeatured, true))
+			.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt))
+			.all(),
+	);
 	assert(Array.isArray(result), "getFeaturedProjects: must return array");
-        return result;
+	return result;
 }
 
 export interface ProjectListOptions {
-        limit?: number;
-        offset?: number;
-        featured?: boolean;
+	limit?: number;
+	offset?: number;
+	featured?: boolean;
 }
 
 export async function getProjectsPage(
-        db: AppDatabase,
-        options: ProjectListOptions = {},
+	db: AppDatabase,
+	options: ProjectListOptions = {},
 ): Promise<Project[]> {
-        assert(db, "getProjectsPage: db is required");
-        const { limit = 10, offset = 0, featured } = options;
-        let query = db
-                .select()
-                .from(schema.projects)
-                .orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt));
-        if (typeof featured === "boolean") {
-                query = query.where(eq(schema.projects.isFeatured, featured));
-        }
-        const t0 = performance.now();
-        const result = await query.limit(limit).offset(offset).all();
-        if (process.env.NODE_ENV !== "production")
-                console.log(`getProjectsPage took ${performance.now() - t0}ms`);
-        assert(Array.isArray(result), "getProjectsPage: must return array");
-        return result;
+	assert(db, "getProjectsPage: db is required");
+	const { limit = 10, offset = 0, featured } = options;
+	let query = db
+		.select()
+		.from(schema.projects)
+		.orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt));
+	if (typeof featured === "boolean") {
+		query = query.where(eq(schema.projects.isFeatured, featured));
+	}
+	const result = await withTiming("getProjectsPage query", () =>
+		query.limit(limit).offset(offset).all(),
+	);
+	assert(Array.isArray(result), "getProjectsPage: must return array");
+	return result;
 }
 
 export async function getProjectById(
-        db: AppDatabase,
-        id: number,
+	db: AppDatabase,
+	id: number,
 ): Promise<Project | undefined> {
 	assert(db, "getProjectById: db is required");
 	assert(
@@ -93,7 +87,9 @@ export async function getProjectById(
 	);
 
 	const prepared = ensureGetProjectByIdPrepared(db);
-	const result = await prepared.execute({ id });
+	const result = await withTiming("getProjectById query", () =>
+		prepared.execute({ id }),
+	);
 
 	assert(
 		!result ||
@@ -107,8 +103,8 @@ export async function getProjectById(
 }
 
 export async function createProject(
-        db: AppDatabase,
-        projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">,
+	db: AppDatabase,
+	projectData: Omit<NewProject, "id" | "createdAt" | "updatedAt">,
 ): Promise<Project> {
 	assert(db, "createProject: db is required");
 	assert(
@@ -120,11 +116,9 @@ export async function createProject(
 		isFeatured: projectData.isFeatured ?? false,
 		sortOrder: projectData.sortOrder ?? 0,
 	};
-	const result = await db
-		.insert(schema.projects)
-		.values(dataWithDefaults)
-		.returning()
-		.get();
+	const result = await withTiming("createProject query", () =>
+		db.insert(schema.projects).values(dataWithDefaults).returning().get(),
+	);
 	assert(
 		result && typeof result === "object" && "id" in result,
 		"createProject: must return project",
@@ -133,9 +127,9 @@ export async function createProject(
 }
 
 export async function updateProject(
-        db: AppDatabase,
-        id: number,
-        projectData: Partial<Omit<NewProject, "id" | "createdAt">>,
+	db: AppDatabase,
+	id: number,
+	projectData: Partial<Omit<NewProject, "id" | "createdAt">>,
 ): Promise<Project | undefined> {
 	assert(db, "updateProject: db is required");
 	assert(
@@ -149,12 +143,14 @@ export async function updateProject(
 		isFeatured: projectData.isFeatured,
 		sortOrder: projectData.sortOrder,
 	};
-	const result = await db
-		.update(schema.projects)
-		.set(dataToUpdate)
-		.where(eq(schema.projects.id, id))
-		.returning()
-		.get();
+	const result = await withTiming("updateProject query", () =>
+		db
+			.update(schema.projects)
+			.set(dataToUpdate)
+			.where(eq(schema.projects.id, id))
+			.returning()
+			.get(),
+	);
 	assert(
 		!result || (typeof result === "object" && "id" in result),
 		"updateProject: must return object or undefined",
@@ -163,18 +159,17 @@ export async function updateProject(
 }
 
 export async function deleteProject(
-        db: AppDatabase,
-        id: number,
+	db: AppDatabase,
+	id: number,
 ): Promise<{ success: boolean; meta?: unknown }> {
 	assert(db, "deleteProject: db is required");
 	assert(
 		typeof id === "number" && !Number.isNaN(id),
 		"deleteProject: id must be a number",
 	);
-	const result = await db
-		.delete(schema.projects)
-		.where(eq(schema.projects.id, id))
-		.run();
+	const result = await withTiming("deleteProject query", () =>
+		db.delete(schema.projects).where(eq(schema.projects.id, id)).run(),
+	);
 	assert(
 		typeof result.success === "boolean",
 		"deleteProject: must return success boolean",
