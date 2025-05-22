@@ -26,7 +26,7 @@ Here's an actionable, enumerated task list derived from the analysis of the repo
 - [x] **18.** Clearly document potential scalability concerns with the current architecture (Durable Objects and D1 limitations).
 - [x] **19.** Keep database interaction code database-agnostic for ease of future migration from Cloudflare D1 to alternative DBs (e.g., PostgreSQL).
 - [x] **20.** Add pagination and filtering examples for fetching large datasets, demonstrating Drizzle's capabilities.
-- [ ] **21.** Expand performance instrumentation (e.g., query timing) to consistently monitor and optimize database performance.
+- [x] **21.** Expand performance instrumentation (e.g., query timing) to consistently monitor and optimize database performance.
 - [ ] **22.** Implement structured logging and consistent error handling practices across loaders, actions, and Durable Objects.
 - [ ] **23.** Provide sample GitHub Actions CI workflow (lint, tests, type checks) to enhance maintainability.
 - [ ] **24.** Regularly enforce coding guidelines from TigerStyle via automated lint rules or periodic code audits.
