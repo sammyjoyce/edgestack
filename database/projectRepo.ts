@@ -52,7 +52,34 @@ export async function getFeaturedProjects(
 	if (process.env.NODE_ENV !== "production")
 		console.log(`getFeaturedProjects took ${performance.now() - t0}ms`);
 	assert(Array.isArray(result), "getFeaturedProjects: must return array");
-	return result;
+        return result;
+}
+
+export interface ProjectListOptions {
+        limit?: number;
+        offset?: number;
+        featured?: boolean;
+}
+
+export async function getProjectsPage(
+        db: AppDatabase,
+        options: ProjectListOptions = {},
+): Promise<Project[]> {
+        assert(db, "getProjectsPage: db is required");
+        const { limit = 10, offset = 0, featured } = options;
+        let query = db
+                .select()
+                .from(schema.projects)
+                .orderBy(asc(schema.projects.sortOrder), desc(schema.projects.createdAt));
+        if (typeof featured === "boolean") {
+                query = query.where(eq(schema.projects.isFeatured, featured));
+        }
+        const t0 = performance.now();
+        const result = await query.limit(limit).offset(offset).all();
+        if (process.env.NODE_ENV !== "production")
+                console.log(`getProjectsPage took ${performance.now() - t0}ms`);
+        assert(Array.isArray(result), "getProjectsPage: must return array");
+        return result;
 }
 
 export async function getProjectById(
