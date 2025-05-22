@@ -1,25 +1,28 @@
 import { eq } from "drizzle-orm";
 import type { BatchItem } from "drizzle-orm/batch";
-import type { AppDatabase } from "./index";
 import { assert } from "~/utils/assert";
+import { withTiming } from "~/utils/timing";
+import type { AppDatabase } from "./index";
 import * as schema from "./schema";
 import type { NewContent } from "./schema";
 import { validateContentUpdate } from "./valibot-validation";
 
 export async function getAllContent(
-        db: AppDatabase,
+	db: AppDatabase,
 ): Promise<Record<string, string>> {
 	console.info(`[DB getAllContent] Invoked at: ${new Date().toISOString()}`);
 	assert(db, "getAllContent: db is required");
 	try {
-		const rows = await db
-			.select({
-				key: schema.content.key,
-				value: schema.content.value,
-				theme: schema.content.theme,
-			})
-			.from(schema.content)
-			.all();
+		const rows = await withTiming("getAllContent query", () =>
+			db
+				.select({
+					key: schema.content.key,
+					value: schema.content.value,
+					theme: schema.content.theme,
+				})
+				.from(schema.content)
+				.all(),
+		);
 
 		const contentMap: Record<string, string> = {};
 		for (const row of rows) {
@@ -48,9 +51,9 @@ export async function getAllContent(
 }
 
 export async function updateContent(
-        db: AppDatabase,
-        updates: Record<
-                string,
+	db: AppDatabase,
+	updates: Record<
+		string,
 		| string
 		| number
 		| boolean
@@ -107,8 +110,8 @@ export async function updateContent(
 		console.info(
 			`[DB updateContent] Executing ${statements.length} statements`,
 		);
-		const results = await db.batch(
-			statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]],
+		const results = await withTiming("updateContent batch", () =>
+			db.batch(statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]]),
 		);
 		return results;
 	} catch (error) {
