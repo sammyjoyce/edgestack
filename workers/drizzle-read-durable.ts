@@ -1,6 +1,7 @@
 import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1";
 import { DefaultLogger } from "drizzle-orm/logger";
 import { createRequestHandler } from "react-router";
+import { logger, logError } from "../utils/logger";
 import type {
   DurableObjectState,
   ExecutionContext,
@@ -35,10 +36,16 @@ export class DrizzleReadDurable implements DurableObject {
    * load context.
    */
   async fetch(request: Request) {
+    logger.info("read durable request", { url: request.url });
     const loadContext = {
       cloudflare: { env: this.env, ctx: {} as Omit<ExecutionContext, "props"> },
       db: this.db,
     };
-    return requestHandler(request, loadContext);
+    try {
+      return await requestHandler(request, loadContext);
+    } catch (err) {
+      logError("read durable failed", err);
+      return new Response("Internal Error", { status: 500 });
+    }
   }
 }

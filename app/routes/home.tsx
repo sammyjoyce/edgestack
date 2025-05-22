@@ -4,6 +4,7 @@ import Footer from "~/routes/common/components/Footer";
 import Header from "~/routes/common/components/Header";
 import RecentProjects from "~/routes/common/components/RecentProjects";
 import { assert } from "~/utils/assert";
+import { logError, logger } from "~/utils/logger";
 import type { Project } from "../../../database/schema";
 import type { Route } from "./+types/route";
 import AboutUs from "./components/AboutUs";
@@ -30,30 +31,22 @@ export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
 };
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-	console.info(
-		`[HOME LOADER START] Invoked at: ${new Date().toISOString()}, URL: ${request.url}`,
-	);
+	logger.info("HOME loader start", { url: request.url });
 	assert(request instanceof Request, "loader: request must be a Request");
 	assert(context?.cms, "loader: missing CMS client in context");
 	const url = new URL(request.url);
 	const revalidate = url.searchParams.get("revalidate") === "true";
-	if (DEBUG) console.log("[HOME LOADER] Revalidation requested:", revalidate);
+	if (DEBUG) logger.debug("HOME revalidation requested", { revalidate });
 	let content: Record<string, string> = {};
 	let projects: Project[] = [];
 	try {
 		({ content, projects } = await loadHomeData(context.cms));
 		if (DEBUG) {
-			console.log("[HOME LOADER] Content keys loaded:", Object.keys(content));
-			console.log("[HOME LOADER] Project count:", projects.length);
+			logger.debug("HOME content loaded", { keys: Object.keys(content) });
+			logger.debug("HOME project count", { count: projects.length });
 		}
 	} catch (error: unknown) {
-		if (DEBUG) {
-			console.error("[HOME LOADER] Error fetching data:", error);
-			if (error instanceof Error) {
-				console.error("[HOME LOADER] Error message:", error.message);
-				console.error("[HOME LOADER] Error stack:", error.stack);
-			}
-		}
+		logError("HOME data fetch failed", error);
 	}
 	assert(typeof content === "object", "loader: content must be an object");
 	assert(Array.isArray(projects), "loader: projects must be an array");
@@ -69,7 +62,7 @@ export default function HomeRoute({
 }: Route.ComponentProps): JSX.Element {
 	const { content, projects, revalidatedAt } = loaderData;
 	if (DEBUG && revalidatedAt)
-		console.log("[HOME ROUTE] Revalidated at:", revalidatedAt);
+		logger.debug("HOME route revalidated", { at: revalidatedAt });
 	assert(typeof content === "object", "HomeRoute: content must be an object");
 	assert(Array.isArray(projects), "HomeRoute: projects must be an array");
 	const typedContent = content as unknown as Record<string, string>;
