@@ -5,6 +5,7 @@ import { data, redirect } from "react-router";
 import { ValiError, file } from "valibot";
 import { FadeIn } from "~/routes/common/components/ui/FadeIn";
 import { checkSession } from "~/utils/auth";
+import { logError, logger } from "~/utils/logger";
 import { deleteStoredImage, handleImageUpload } from "~/utils/upload.server";
 import * as FullSchema from "../../../../database/schema";
 import { schema } from "../../../../database/schema";
@@ -28,7 +29,7 @@ export async function loader({ context, request }: Route.LoaderArgs) {
 		const images = await fetchStoredImages(context);
 		return { images };
 	} catch (error) {
-		console.error("Failed to load images:", error);
+		logError("Image loader failed", error);
 		throw data(
 			{ error: "Unable to load images. Please try again later." },
 			{ status: 500 },
@@ -193,7 +194,7 @@ export async function action({ request, context }: Route.ActionArgs) {
 				return await handleUploadImage(formData, context);
 		}
 	} catch (error) {
-		console.error("Action error:", error);
+		logError("Image action failed", error);
 		return data(
 			{ success: false, error: "An unexpected error occurred" },
 			{ status: 500 },

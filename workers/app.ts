@@ -1,4 +1,5 @@
 import { createRequestHandler } from "react-router";
+import { logger, logError } from "../utils/logger";
 const serverBuildModuleResolver = () => {
         return import("virtual:react-router/server-build");
 };
@@ -17,7 +18,7 @@ const typeMap: Record<string, string> = {
 export default {
         async fetch(request, env, ctx) {
                 if (import.meta.env.MODE !== "production") {
-                        console.log("WORKER INVOKED", new Date().toISOString(), request.url);
+                        logger.debug("worker invoked", { url: request.url });
                 }
                 const url = new URL(request.url);
                 if (url.pathname.startsWith("/assets/")) {
@@ -45,9 +46,10 @@ export default {
 						"Access-Control-Allow-Origin": "*",
 					},
 				});
-			} catch (err) {
-				return new Response("Error fetching asset", { status: 500 });
-			}
+                        } catch (err) {
+                                logError("asset fetch failed", err, { key });
+                                return new Response("Error fetching asset", { status: 500 });
+                        }
 		}
                 const isRead = request.method === "GET";
                 const id = isRead
