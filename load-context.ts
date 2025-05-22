@@ -1,6 +1,7 @@
 import type { ExecutionContext } from "@cloudflare/workers-types";
 import { drizzle } from "drizzle-orm/d1";
 import { DefaultLogger } from "drizzle-orm/logger";
+import { logger } from "~/utils/logger";
 import type { AppLoadContext } from "react-router";
 import * as schema from "./database/schema";
 import type { AppDatabase } from "~/database";
@@ -33,9 +34,9 @@ type GetLoadContextArgs = {
 export function getLoadContext({ context }: GetLoadContextArgs) {
         const env = context.cloudflare.env;
         if (["CHANGE_ME", "admin", "dev", "password"].includes(env.ADMIN_PASSWORD)) {
-                console.warn(
-                        "[SECURITY] ADMIN_PASSWORD is set to an insecure default value. Please update this secret.",
-                );
+                logger.warn("Insecure default admin password detected", {
+                        hint: "Update the ADMIN_PASSWORD secret",
+                });
         }
         const db = drizzle(env.DB, {
                 schema,
